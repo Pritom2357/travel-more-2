@@ -95,8 +95,9 @@
     Nav (Header) Container
   */
   .nav-settings {
-    position: {% if section.settings.is_sticky_header %}sticky{% else %}relative{% endif %};
+    position: {% if section.settings.is_sticky_header %}fixed{% else %}relative{% endif %};
     top: 0;
+    left: 0;
     z-index: 1000;
     width: 100%;
     background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, {{ section.settings.header_bg_opacity }}) !important;
