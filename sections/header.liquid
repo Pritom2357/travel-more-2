@@ -190,7 +190,7 @@
 
      const exemptPages = "{{ section.settings.exempt_padding_pages }}".split(',').map(page => page.trim());
 
-     if(!exemptPages.includes(currentHandle) {% if section.settings.adjust_body_padding %}true{% else %}false{% endif %})
+     if(!exemptPages.includes(currentHandle) && {% if section.settings.adjust_body_padding %}true{% else %}false{% endif %})
 
      document.addEventListener('scroll', function(){
       if(window.scrollY > 50){
