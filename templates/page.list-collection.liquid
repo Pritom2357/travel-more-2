@@ -1,0 +1,31 @@
+<div class="list-collections-template">
+  <div class="container">
+    <div class="header">
+      <h2>{{ page_title }}</h2>
+    </div>
+    <div class="main-collections my-5">
+      <div class="row">
+        {% for collection in collections %}
+          {% if collection.handle != 'home-page' %}
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="collection-img">
+                    <img
+                      src="{{ collection.featured_image | img_url: 'medium' }}"
+                      width="100%"
+                      alt="{{ collection.title }}"
+                    >
+                  </div>
+                  <div class="card-footer">
+                    <h3>{{ collection.title | escape | link_to: collection.url }}</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,361 @@
+<section
+  class="image-with-text-section"
+  style="background-color: {{ section.settings.background_color }};"
+  id="{{ section.settings.section_id | default: '' }}"
+>
+  <div class="container">
+    <div class="row align-items-center">
+      {% comment %}
+        Capture the image column to easily position it left or right based on settings.
+      {% endcomment %}
+      {% capture image_option %}
+        <div class="col-md-6 image-column">
+          {% if section.settings.image != blank %}
+            <div class="image-wrapper">
+              <img
+                src="{{ section.settings.image | img_url: '800x' }}"
+                alt="{{ block.settings.title | escape }}"
+                class="responsive-image"
+                loading="lazy"
+              >
+            </div>
+          {% else %}
+            <div class="placeholder-image">
+              {{ 'placeholder-image.svg' | asset_url | placeholder_svg_tag: 'Image' }}
+            </div>
+          {% endif %}
+        </div>
+      {% endcapture %}
+
+      <!-- Position the image on the left if selected -->
+      {% if section.settings.position == 'left' %}
+        {{ image_option }}
+      {% endif %}
+
+      <!-- Text Column -->
+      <div class="col-md-6 text-column">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'title' %}
+              <h2 class="section-title animated fadeInUp">{{ block.settings.title }}</h2>
+            {% when 'description' %}
+              <div class="section-description animated fadeInUp">
+                {{ block.settings.description }}
+              </div>
+            {% when 'action' %}
+              <div class="section-action animated fadeInUp">
+                <a href="{{ block.settings.btn_url }}" class="btn btn-{{ block.settings.btn_style }}">
+                  {{ block.settings.btn_label }}
+                </a>
+              </div>
+          {% endcase %}
+        {% endfor %}
+      </div>
+
+      <!-- Position the image on the right if selected -->
+      {% if section.settings.position == 'right' %}
+        {{ image_option }}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Embedded CSS -->
+<style>
+  /* Image With Text Section */
+  .image-with-text-section {
+    padding: 80px 0;
+    transition: background-color 0.3s ease;
+  }
+
+  .image-with-text-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .image-with-text-section .image-column,
+  .image-with-text-section .text-column {
+    margin-bottom: 30px;
+  }
+
+  .image-with-text-section .image-wrapper {
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .image-with-text-section .responsive-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .image-with-text-section .responsive-image:hover {
+    transform: scale(1.05);
+  }
+
+  .image-with-text-section .placeholder-image {
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    background-color: #eaeaea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+  }
+
+  .image-with-text-section .section-title {
+    font-size: 2.5rem;
+    color: #333333;
+    margin-bottom: 20px;
+  }
+
+  .image-with-text-section .section-description {
+    font-size: 1.1rem;
+    color: #555555;
+    margin-bottom: 30px;
+  }
+
+  .image-with-text-section .section-action .btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .image-with-text-section .btn-primary {
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+  }
+
+  .image-with-text-section .btn-primary:hover,
+  .image-with-text-section .btn-primary:focus {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    outline: none;
+  }
+
+  .image-with-text-section .btn-secondary {
+    background-color: #95a5a6;
+    color: #ffffff;
+    border: none;
+  }
+
+  .image-with-text-section .btn-secondary:hover,
+  .image-with-text-section .btn-secondary:focus {
+    background-color: #7f8c8d;
+    transform: translateY(-2px);
+    outline: none;
+  }
+
+  /* Animations */
+  .animated {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fadeInUp {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 992px) {
+    .image-with-text-section {
+      padding: 60px 0;
+    }
+
+    .image-with-text-section .section-title {
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    .image-with-text-section .section-description {
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .image-with-text-section .section-action {
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .image-with-text-section {
+      padding: 40px 0;
+    }
+
+    .image-with-text-section .section-title {
+      font-size: 1.8rem;
+    }
+
+    .image-with-text-section .section-description {
+      font-size: 0.95rem;
+    }
+
+    .image-with-text-section .section-action .btn {
+      width: 100%;
+      padding: 12px 0;
+    }
+  }
+
+  /* Accessibility Enhancements */
+  .image-with-text-section .btn:focus,
+  .image-with-text-section .btn:hover {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5);
+  }
+</style>
+
+<!-- Embedded JavaScript -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Animate elements on scroll
+    const animatedElements = document.querySelectorAll('.image-with-text-section .animated');
+
+    const observerOptions = {
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fadeInUp');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    animatedElements.forEach(el => {
+      observer.observe(el);
+    });
+
+    // Optional: Toggle Image and Text Position Dynamically
+    // If you want to allow users to switch positions dynamically on the frontend,
+    // you can implement a toggle button or similar UI element.
+    // This feature is not included by default but can be added as needed.
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Image With Text",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Image Position",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "See more"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Main Title",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "This is the main title"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Your descriptive text goes here.</p>"
+        }
+      ]
+    },
+    {
+      "type": "action",
+      "name": "Action Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "btn_label",
+          "label": "Button Label",
+          "default": "See More"
+        },
+        {
+          "type": "url",
+          "id": "btn_url",
+          "label": "Button Link",
+          "default": "/"
+        },
+        {
+          "type": "select",
+          "id": "btn_style",
+          "label": "Button Style",
+          "default": "primary",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with Text",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "action"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

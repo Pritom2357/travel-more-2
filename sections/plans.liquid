@@ -1,0 +1,635 @@
+<!-- Featured Tours Section -->
+<section class="featured-tours-section py-5" style="background-color: {{ section.settings.bg_color }};">
+  <div class="container text-center">
+    <!-- Section Title -->
+    <div class="text-center mb-4">
+      <h6 class="text-primary fw-bold">Featured Tour</h6>
+      <h2
+        class="fw-bold mb-4 section-title"
+        style="
+          color: {{ section.settings.title_color }};
+          font-size: {{ section.settings.title_size }}px;
+        "
+      >
+        {{ section.settings.section_title }}
+      </h2>
+      <p
+        class="section-subtitle mb-5"
+        style="
+          color: {{ section.settings.subtitle_color }};
+          font-size: {{ section.settings.subtitle_size }}px;
+        "
+      >
+        {{ section.settings.section_subtitle }}
+      </p>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="filter-buttons text-center mb-4">
+      {% for button in section.settings.filter_buttons.links %}
+        <a
+          href="{{ button.url }}"
+          class="btn btn-filter"
+          style="
+            background-color: {{ section.settings.filter_button_bg_color }};
+            color: {{ section.settings.filter_button_text_color }};
+          "
+        >
+          {{ button.title }}
+        </a>
+      {% endfor %}
+    </div>
+
+    <!-- Responsive Tour Cards Grid -->
+    <div class="tours-grid">
+      {% for block in section.blocks limit: 4 %}
+        <div
+          class="tour-item shadow-lg border-0 hover-zoom"
+          style="
+            grid-column: span {{ block.settings.grid_span }};
+            grid-row: span {{ block.settings.grid_height_span }};
+            background-color: {{ block.settings.card_bg_color }};
+          "
+        >
+          <a href="{{ block.settings.event_url }}" class="text-decoration-none text-dark">
+            <div
+              class="card h-100 border-0"
+              style="
+                background-color: {{ block.settings.card_bg_color }};
+                border-radius: 12px;
+                overflow: hidden;
+              "
+            >
+              <div
+                class="card-img-wrapper position-relative overflow-hidden"
+                style="border-radius: 12px 12px 0 0;"
+              >
+                <img
+                  src="{{ block.settings.image | img_url: '800x600' }}"
+                  class="card-img-top img-fluid"
+                  alt="{{ block.settings.title }}"
+                  loading="lazy"
+                  style="height: 250px; object-fit: cover; transition: transform 0.3s ease;"
+                >
+                <!-- Overlay -->
+                <div class="overlay">
+                  <div class="tour-info text-center">
+                    <h5
+                      class="tour-title fw-bold"
+                      style="
+                        color: {{ block.settings.title_color }};
+                        font-size: {{ section.settings.title_size }}px;
+                      "
+                    >
+                      {{ block.settings.title }}
+                    </h5>
+                    <p
+                      class="tour-description"
+                      style="
+                        color: {{ block.settings.description_color }};
+                        font-size: {{ section.settings.subtitle_size }}px;
+                      "
+                    >
+                      {{ block.settings.description }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {% assign has_any_field = false %}
+              {% if block.settings.dest_checker
+                or block.settings.date_checker
+                or block.settings.duration_checker
+                or block.settings.cost_checker
+              %}
+                {% assign has_any_field = true %}
+              {% endif %}
+
+              {% if has_any_field %}
+                <!-- If ANY optional field is ON, show them in the card body -->
+                <div class="card-body d-flex flex-column" style="padding: 1rem 1.25rem;">
+                  {% if block.settings.dest_checker %}
+                    <p
+                      class="mb-2"
+                      style="
+                        color: {{ block.settings.dest_color }};
+                        font-size: {{ block.settings.dest_font_size }}px;
+                      "
+                    >
+                      <i
+                        class="bi bi-geo-alt-fill"
+                        style="color: {{ block.settings.dest_color }};"
+                      ></i>
+                      {{ block.settings.destination }}
+                    </p>
+                  {% endif %}
+
+                  <div class="mt-auto">
+                    <div class="d-flex justify-content-between mb-3">
+                      {% if block.settings.date_checker %}
+                        <div
+                          style="
+                            color: {{ block.settings.date_color }};
+                            font-size: {{ block.settings.date_font_size }}px;
+                          "
+                        >
+                          <i
+                            class="bi bi-calendar-event"
+                            style="color: {{ block.settings.date_color }};"
+                          ></i>
+                          {{ block.settings.date }}
+                        </div>
+                      {% endif %}
+                      {% if block.settings.duration_checker %}
+                        <div
+                          style="
+                            color: {{ block.settings.duration_color }};
+                            font-size: {{ block.settings.duration_font_size }}px;
+                          "
+                        >
+                          <i
+                            class="bi bi-clock"
+                            style="color: {{ block.settings.duration_color }};"
+                          ></i>
+                          {{ block.settings.duration }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    {% if block.settings.cost_checker %}
+                      <div class="text-center">
+                        <div
+                          class="badge p-2"
+                          style="
+                            color: {{ block.settings.cost_color }};
+                            font-size: {{ block.settings.cost_font_size }}px;
+                            background-color: {{ block.settings.cost_bg_color }};
+                          "
+                        >
+                          ${{ block.settings.cost }}/day
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <!-- "Learn More" Button in Footer -->
+                <div
+                  class="card-footer border-0 text-center"
+                  style="
+                    background-color: {{ block.settings.card_bg_color }};
+                    border-radius: 0 0 12px 12px;
+                    padding: 1rem;
+                  "
+                >
+                  <button class="btn btn-outline-primary btn-sm">
+                    Learn More
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+
+              {% else %}
+                <!-- If ALL optional fields are OFF, show ONLY a centered Learn More button -->
+                <div
+                  class="card-body d-flex flex-column align-items-center justify-content-center"
+                  style="padding: 1rem 1.25rem;"
+                >
+                  <button class="btn btn-outline-primary btn-sm">
+                    Learn More
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+              {% endif %}
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- See All Tours Button -->
+    <div class="mt-5">
+      <a
+        href="/all-events"
+        class="btn btn-primary px-4 py-2"
+        style="
+          color: {{ section.settings.see_more_color }};
+          background-color: {{ section.settings.see_more_bg_color }};
+          border-radius: 8px;
+        "
+      >
+        <i class="bi bi-arrow-right" style="color: {{ section.settings.see_more_color }};"></i>
+        {{ section.settings.btn_text }}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Tours",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Our Best Tours"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Font Size",
+      "default": 36,
+      "min": 16,
+      "max": 64,
+      "step": 1
+    },
+    {
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "default": "Explore our exclusive tours and find the perfect adventure for you."
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle Font Size",
+      "default": 18,
+      "min": 12,
+      "max": 32,
+      "step": 1
+    },
+    {
+      "type": "header",
+      "content": "Filter Button Settings"
+    },
+    {
+      "type": "link_list",
+      "id": "filter_buttons",
+      "label": "Filter Buttons"
+    },
+    {
+      "type": "color",
+      "id": "filter_button_bg_color",
+      "label": "Filter Button Background Color",
+      "default": "#007bff"
+    },
+    {
+      "type": "color",
+      "id": "filter_button_text_color",
+      "label": "Filter Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "color",
+      "id": "see_more_color",
+      "label": "Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "see_more_bg_color",
+      "label": "Background Color",
+      "default": "#007bff"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Text",
+      "default": "See more"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tour_card",
+      "name": "Tour Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Enter tour name"
+        },
+        {
+          "type": "url",
+          "id": "event_url",
+          "label": "Event URL",
+          "default": "/"
+        },
+        {
+          "type": "range",
+          "id": "grid_span",
+          "label": "Grid Span (1-4)",
+          "default": 1,
+          "min": 1,
+          "max": 4,
+          "step": 1
+        },
+        {
+          "type": "range",
+          "id": "grid_height_span",
+          "label": "Height Span (1-4)",
+          "default": 1,
+          "min": 1,
+          "max": 4,
+          "step": 1
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "description_color",
+          "label": "Description Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "card_bg_color",
+          "label": "Card Background Color",
+          "default": "#fff"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Brief description of the tour."
+        },
+        {
+          "type": "header",
+          "content": "Destination"
+        },
+        {
+          "type": "checkbox",
+          "id": "dest_checker",
+          "label": "Show Destination?",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "destination",
+          "label": "Destination"
+        },
+        {
+          "type": "color",
+          "id": "dest_color",
+          "label": "Color",
+          "default": "#007bff"
+        },
+        {
+          "type": "range",
+          "id": "dest_font_size",
+          "label": "Font Size",
+          "default": 16,
+          "min": 10,
+          "max": 40
+        },
+        {
+          "type": "header",
+          "content": "Date"
+        },
+        {
+          "type": "checkbox",
+          "id": "date_checker",
+          "label": "Show Date?",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "date"
+        },
+        {
+          "type": "color",
+          "id": "date_color",
+          "label": "Color",
+          "default": "#007bff"
+        },
+        {
+          "type": "range",
+          "id": "date_font_size",
+          "label": "Date Size",
+          "default": 16,
+          "min": 10,
+          "max": 40
+        },
+        {
+          "type": "header",
+          "content": "Duration"
+        },
+        {
+          "type": "checkbox",
+          "id": "duration_checker",
+          "label": "Show Duration?",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "duration",
+          "label": "Duration"
+        },
+        {
+          "type": "color",
+          "id": "duration_color",
+          "label": "Color",
+          "default": "#007bff"
+        },
+        {
+          "type": "range",
+          "id": "duration_font_size",
+          "label": "Font Size",
+          "default": 16,
+          "min": 10,
+          "max": 40
+        },
+        {
+          "type": "header",
+          "content": "Cost"
+        },
+        {
+          "type": "checkbox",
+          "id": "cost_checker",
+          "label": "Show Cost?",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "cost",
+          "label": "Cost"
+        },
+        {
+          "type": "color",
+          "id": "cost_color",
+          "label": "Color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "cost_bg_color",
+          "label": "Background Color",
+          "default": "#fff"
+        },
+        {
+          "type": "range",
+          "id": "cost_font_size",
+          "label": "Font Size",
+          "default": 16,
+          "min": 10,
+          "max": 40
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Tours",
+      "category": "Tours"
+    }
+  ]
+}
+{% endschema %}
+
+<!-- Additional CSS for Hover Effects, Grid Layout, and Responsiveness -->
+<style>
+  .featured-tours-section .section-title {
+    margin-bottom: 1rem;
+  }
+
+  .featured-tours-section .section-subtitle {
+    margin-bottom: 2rem;
+  }
+
+  .btn-filter {
+    display: inline-block;
+    margin: 0.25rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px; /* Rounded edges for filter buttons */
+    font-size: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .btn-filter:hover {
+    opacity: 0.8;
+    text-decoration: none;
+  }
+
+  .tours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .tour-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px; /* Round edges for the tour item container */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12),
+                0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  .tour-item:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14),
+                0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .hover-zoom img {
+    transition: transform 0.3s ease;
+  }
+
+  .hover-zoom:hover img {
+    transform: scale(1.05);
+  }
+
+  .overlay {
+    /* Subtle gradient for the overlay */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.6)
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 12px; /* Match the card radius */
+  }
+
+  .tour-item:hover .overlay {
+    opacity: 1;
+  }
+
+  .tour-info {
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .tour-title {
+    margin-bottom: 0.5rem;
+  }
+
+  .tour-description {
+    margin-bottom: 0;
+  }
+
+  /* Responsive Grid Spanning */
+  @media (min-width: 1200px) {
+    .tours-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    .tours-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    .tours-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .tours-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

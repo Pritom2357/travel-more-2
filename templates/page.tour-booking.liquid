@@ -1,0 +1,173 @@
+{% comment %}
+  Custom Page: Tour Booking
+  - Reads the query parameters from the URL: dest, desc, price, type
+  - Displays a form with "Number of People", "Number of Days", "Start Date"
+  - Dynamically calculates "price = people * days * unit_price"
+  - On "Add to Cart", it sends line item properties to the cart, including the computed price
+  - Must attach to a real product or "dummy product" to add to cart
+{% endcomment %}
+
+{% assign product_handle = 'dummy-tour-product' %}
+{% assign booking_product = all_products[product_handle] %}
+
+{% if booking_product == null %}
+  <!-- If there's no product with the handle "dummy-tour-product", prompt admin to create one. -->
+  <p style="color: red; padding: 2rem;">
+    <strong>Error:</strong> No product found with handle <code>{{ product_handle }}</code>. Please create a product in
+    Shopify admin with that handle or update the template to use an existing product handle.
+  </p>
+{% endif %}
+
+<div class="container mt-5 mb-5" id="tourBookingContainer">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <!-- The main booking details -->
+      <div class="card p-4">
+        <h1 id="destinationTitle">Tour Title</h1>
+        <p id="destinationDesc" class="text-muted">Destination description here...</p>
+
+        <!-- Dynamic product form (if booking_product exists) -->
+        {% if booking_product %}
+          {%- form 'product', booking_product, id: 'tour-booking-form' -%}
+            <!-- We'll store the variant ID in a hidden field (use the first available variant) -->
+            {% assign first_variant = booking_product.selected_or_first_available_variant %}
+            <input type="hidden" name="id" value="{{ first_variant.id }}">
+
+            <!-- Number of People -->
+            <div class="mb-3">
+              <label for="peopleCount" class="form-label">Number of People</label>
+              <input
+                type="number"
+                id="peopleCount"
+                class="form-control"
+                name="properties[Number of People]"
+                value="1"
+                min="1"
+              >
+            </div>
+            <!-- Number of Days -->
+            <div class="mb-3">
+              <label for="daysCount" class="form-label">Number of Days</label>
+              <input
+                type="number"
+                id="daysCount"
+                class="form-control"
+                name="properties[Number of Days]"
+                value="1"
+                min="1"
+              >
+            </div>
+            <!-- Start Date -->
+            <div class="mb-3">
+              <label for="tripDate" class="form-label">Start Date</label>
+              <input
+                type="date"
+                id="tripDate"
+                class="form-control"
+                name="properties[Start Date]"
+              >
+            </div>
+
+            <!-- Store the destination name, description, and unit price as hidden line item properties -->
+            <input
+              type="hidden"
+              id="destNameInput"
+              name="properties[Destination Title]"
+              value=""
+            >
+            <input
+              type="hidden"
+              id="destDescInput"
+              name="properties[Destination Description]"
+              value=""
+            >
+            <input
+              type="hidden"
+              id="unitPriceInput"
+              name="properties[Unit Price]"
+              value=""
+            >
+
+            <!-- Computed Price Display -->
+            <div class="my-3">
+              <h4>Total Price: <span id="computedPrice" style="font-weight:bold;">$0</span></h4>
+              <small class="text-muted">
+                (This total is stored in line item properties for reference, not used in final Shopify checkout.)
+              </small>
+            </div>
+            <input
+              type="hidden"
+              id="computedPriceInput"
+              name="properties[Computed Price]"
+              value=""
+            >
+
+            <!-- Add to Cart Button -->
+            <button type="submit" name="add" class="btn btn-primary w-100 mt-3">Add to Cart</button>
+          {% endform %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // 1) Parse URL params to get the selected destination's data
+  // e.g. /pages/tour-booking?dest=Maldives&desc=Lorem+ipsum&price=200&type=Adventure
+  const params = new URLSearchParams(window.location.search);
+  const destTitle = params.get('dest') || 'Unknown Destination';
+  const destDesc = params.get('desc') || 'No description available.';
+  const unitPrice = parseFloat(params.get('price') || '0');
+  // We can also read 'type' if needed: const tourType = params.get('type');
+
+  // 2) Update the page content
+  const destinationTitleEl = document.getElementById('destinationTitle');
+  const destinationDescEl = document.getElementById('destinationDesc');
+
+  destinationTitleEl.textContent = destTitle;
+  destinationDescEl.textContent = destDesc;
+
+  // 3) Inject hidden line item properties so we know which destination was chosen
+  const destNameInput = document.getElementById('destNameInput');
+  const destDescInput = document.getElementById('destDescInput');
+  const unitPriceInput = document.getElementById('unitPriceInput');
+  destNameInput.value = destTitle;
+  destDescInput.value = destDesc;
+  unitPriceInput.value = unitPrice.toString();
+
+  // 4) Handle dynamic price calculation
+  const peopleCountEl = document.getElementById('peopleCount');
+  const daysCountEl = document.getElementById('daysCount');
+  const computedPriceEl = document.getElementById('computedPrice');
+  const computedPriceInput = document.getElementById('computedPriceInput');
+
+  function recalcPrice() {
+    const people = parseInt(peopleCountEl.value || '1', 10);
+    const days = parseInt(daysCountEl.value || '1', 10);
+    const total = people * days * unitPrice;
+
+    // Display
+    computedPriceEl.textContent = `$${total.toLocaleString()}`;
+    // Store in hidden input for line item property
+    computedPriceInput.value = `$${total.toFixed(2)}`;
+  }
+
+  // Recalc on input changes
+  peopleCountEl.addEventListener('input', recalcPrice);
+  daysCountEl.addEventListener('input', recalcPrice);
+
+  // Initialize once
+  recalcPrice();
+});
+</script>
+
+<style>
+  #tourBookingContainer {
+    min-height: 70vh;
+  }
+  #tourBookingContainer .card {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+</style>

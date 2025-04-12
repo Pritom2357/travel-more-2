@@ -1,0 +1,687 @@
+{% comment %}
+  Product template for a travel agency.
+  Includes additional line item properties:
+  - Travelers Count
+  - Days Count
+  - Travel Start Date
+  - Travel Preferences
+{% endcomment %}
+
+{%- assign product_form_id = 'product-form-' | append: section.id -%}
+<div class="container mt-5 mb-5">
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="row">
+          <!-- LEFT COLUMN: Images -->
+          <div class="col-md-6">
+            <div class="images p-3">
+              <div class="text-center p-4">
+                <img
+                  id="main-image"
+                  src="{{ product.featured_image | img_url:'original' }}"
+                  width="100%"
+                  alt="{{ product.title | escape }}"
+                >
+              </div>
+              {% if product.images.size > 1 %}
+                <div class="thumbnail text-center">
+                  {% for image in product.images %}
+                    <img
+                      onclick="change_image(this)"
+                      src="{{ image.src | img_url:'original' }}"
+                      width="70"
+                      alt="{{ product.title | escape }}"
+                      style="cursor:pointer;"
+                    >
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN: Product Form & Details -->
+          <div class="col-md-6">
+            <div class="product p-4">
+              <!-- Back Link -->
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <i class="fa fa-long-arrow-left"></i>
+                  <span class="ml-1">Back</span>
+                </div>
+              </div>
+
+              <!-- Product Form -->
+              {%- form 'product', product, id: product_form_id -%}
+                <!-- Hidden field for variant ID if no variants are selected yet -->
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+                <!-- Dynamic blocks from the schema -->
+                {% for block in section.blocks %}
+                  {% case block.type %}
+                    {% when 'vendor' %}
+                      <div class="mt-4 mb-3">
+                        <span class="text-uppercase text-muted brand">{{ product.vendor }}</span>
+                      </div>
+
+                    {% when 'title' %}
+                      <h5 class="text-uppercase">{{ product.title | escape }}</h5>
+
+                    {% when 'price' %}
+                      <div class="price d-flex flex-row align-items-center">
+                        {% render 'price', product: product %}
+                      </div>
+
+                    {% when 'description' %}
+                      <p class="product-description">
+                        {{ product.description }}
+                      </p>
+
+                    {% when 'liquid' %}
+                      {{ block.settings.liquid }}
+
+                    {% when 'variants' %}
+                      {% unless product.has_only_default_variant %}
+                        <div class="product-variants mt-5" id="product-variants">
+                          {% for option in product.options_with_values %}
+                            {% liquid
+                              assign variants_available_arr = product.variants | map: 'available'
+                              assign variants_option1_arr = product.variants | map: 'option1'
+                              assign variants_option2_arr = product.variants | map: 'option2'
+                              assign variants_option3_arr = product.variants | map: 'option3'
+                            %}
+                            <div class="option {{ option.name | downcase }} mt-3 variant-option">
+                              <h6 class="text-uppercase">{{ option.name }}</h6>
+                              <div class="d-flex flex-row flex-wrap">
+                                {% for value in option.values %}
+                                  {% liquid
+                                    assign option_disabled = true
+
+                                    for option1_name in variants_option1_arr
+                                      case option.position
+                                        when 1
+                                          if variants_option1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                                            assign option_disabled = false
+                                          endif
+                                        when 2
+                                          if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                                            assign option_disabled = false
+                                          endif
+                                        when 3
+                                          if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                                            assign option_disabled = false
+                                          endif
+                                      endcase
+                                    endfor
+                                  %}
+
+                                  <label class="radio">
+                                    <input
+                                      type="radio"
+                                      name="{{- option.name | handleize -}}"
+                                      value="{{- value | handleize | escape -}}"
+                                      {% if option.selected_value == value %}
+                                        checked
+                                      {% endif %}
+                                      {% if option_disabled %}
+                                        disabled
+                                      {% endif %}
+                                    >
+                                    <span
+                                      {% if option_disabled %}
+                                        title="unavailable"
+                                      {% endif %}
+                                    >
+                                      {{ value | escape }}
+                                    </span>
+                                  </label>
+                                {% endfor %}
+                              </div>
+                            </div>
+                          {% endfor %}
+                        </div>
+
+                        <!-- Hidden select to capture the chosen variant -->
+                        <select name="id" id="variant_selector" class="d-none">
+                          {% for variant in product.variants %}
+                            <option
+                              value="{{ variant.id }}"
+                              data-name="{{ variant.title | handleize | escape }}"
+                              {% if variant == current_variant %}
+                                selected
+                              {% endif %}
+                              {% if variant.available == false %}
+                                data-sold="true"
+                              {% endif %}
+                              {% if variant.image %}
+                                data-image-url="{{ variant.image | img_url:'original' }}"
+                              {% endif %}
+                              {% if variant.price %}
+                                data-price="{{ variant.price | money }}"
+                              {% endif %}
+                            >
+                              {{ variant.title | escape }}
+                            </option>
+                          {% endfor %}
+                        </select>
+                      {% endunless %}
+
+                    {% when 'quantity' %}
+                      <div class="quantity-selectior mt-4">
+                        <h6>{{ section.settings.input_header }}</h6>
+                        <input
+                          type="number"
+                          class="form-control"
+                          name="quantity"
+                          value="1"
+                          min="1"
+                        >
+                      </div>
+
+                    {% when 'add_to_cart_btn' %}
+                      <div class="cart mt-4 align-items-center">
+                        <button
+                          type="submit"
+                          name="add"
+                          class="btn btn-default text-uppercase mr-2 px-4 add_to_cart"
+                          id="add-to-cart-button"
+                        >
+                          Add to cart
+                        </button>
+                        <i class="fa fa-heart text-muted"></i>
+                        <i class="fa fa-share-alt text-muted"></i>
+                      </div>
+
+                    {%- when 'travelers_count' -%}
+                      <div class="line-item-field mt-4">
+                        <label for="travelers_field" class="form-label">Number of Travelers</label>
+                        <input
+                          id="travelers_field"
+                          name="properties[Number of Travelers]"
+                          type="number"
+                          class="form-control"
+                          min="1"
+                          value="1"
+                        >
+                        <small class="text-muted">How many people are traveling?</small>
+                      </div>
+
+                    {%- when 'days_count' -%}
+                      <div class="line-item-field mt-4">
+                        <label for="days_field" class="form-label">Number of Days</label>
+                        <input
+                          id="days_field"
+                          name="properties[Trip Duration (Days)]"
+                          type="number"
+                          class="form-control"
+                          min="1"
+                          value="1"
+                        >
+                        <small class="text-muted">Length of your trip in days.</small>
+                      </div>
+
+                    {%- when 'travel_date' -%}
+                      <div class="line-item-field mt-4">
+                        <label for="date_field" class="form-label">Start Date</label>
+                        <input
+                          id="date_field"
+                          name="properties[Travel Start Date]"
+                          type="date"
+                          class="form-control"
+                          min="{{ 'now' | date: '%Y-%m-%d' }}"
+                        >
+                        <small class="text-muted">Choose your preferred start date.</small>
+                      </div>
+
+                    {%- when 'travel_prefs' -%}
+                      <div class="line-item-field mt-4">
+                        <label for="prefs_field" class="form-label">Preferences / Notes</label>
+                        <textarea
+                          id="prefs_field"
+                          name="properties[Travel Preferences]"
+                          class="form-control"
+                          rows="3"
+                          placeholder="e.g. Dietary restrictions, flight preferences..."
+                        ></textarea>
+                        <small class="text-muted">Add any special requests or preferences.</small>
+                      </div>
+                  {% endcase %}
+                {% endfor %}
+              {% endform %}
+              <!-- End of product form -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript for variant & image selection -->
+<script>
+  // Keep track of original main image and initial price
+  const main_image_url = document.getElementById("main-image").src;
+  let initial_price = '';
+  const priceElement = document.getElementById("variant-price-individual");
+  if (priceElement) {
+    initial_price = priceElement.innerText;
+  }
+
+  // Change displayed image on thumbnail click
+  function change_image(image) {
+    var main_image = document.getElementById("main-image");
+    main_image.src = image.src;
+  }
+
+  // Variant selection logic
+  window.addEventListener('DOMContentLoaded', async () => {
+    const product_url = '{{ product.url }}';
+
+    // A function to update the hidden <select> based on chosen radio inputs
+    const variantSelector = async () => {
+      const options = document.querySelectorAll('#product-variants .option');
+      let option_value = [];
+
+      // Gather checked radio values and build the combined variant string
+      options.forEach(elm => {
+        let selected = elm.querySelector('input:checked');
+        if (selected) {
+          option_value.push(selected.value);
+        }
+      });
+      option_value = option_value.join('-');
+      console.log('Selected variant slug:', option_value);
+
+      // Update the hidden <select> option to match the chosen variant
+      const selOptions = document.querySelectorAll('#variant_selector option');
+      selOptions.forEach(elm => {
+        const name = elm.dataset.name;  // e.g. "blue-small"
+        const sold = elm.dataset.sold;
+        const image_url = elm.dataset.imageUrl;
+        const variant_price = elm.dataset.price;
+        elm.removeAttribute('selected');
+
+        if (name === option_value) {
+          const btn = document.querySelector('[name="add"]');
+          if (sold) {
+            btn.setAttribute('disabled', 'true');
+            btn.innerText = 'Sold Out';
+          } else {
+            elm.setAttribute('selected', 'true');
+            btn.removeAttribute('disabled');
+            btn.innerText = 'Add To Cart';
+          }
+
+          // Update main image if the variant has an image
+          const image_url_set = document.getElementById("main-image");
+          if (image_url) {
+            image_url_set.src = image_url;
+          } else {
+            image_url_set.src = main_image_url;
+          }
+
+          // Update displayed price if the variant has a different price
+          if (priceElement) {
+            if (variant_price) {
+              priceElement.innerText = variant_price;
+            } else {
+              priceElement.innerText = initial_price;
+            }
+          }
+        }
+      });
+    };
+
+    // Run once on page load
+    await variantSelector();
+
+    // Whenever the user clicks on a variant radio, re-run the variant selector
+    const optionSelectors = document.querySelectorAll('#product-variants label.radio');
+    optionSelectors.forEach(elm => {
+      elm.addEventListener('click', () => {
+        variantSelector().then(() => {
+          const variantId = document.querySelector('#variant_selector').value;
+          const url = `${product_url}?variant=${variantId}`;
+          window.history.replaceState({}, '', url);
+        });
+      });
+    });
+  });
+</script>
+
+<!-- Modern CSS Styles -->
+<style>
+  .container {
+    max-width: 1200px;
+  }
+  /* Card Styling */
+  .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  /* Image Gallery Styling */
+  .images {
+    background-color: #f9f9f9;
+  }
+  .images #main-image {
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  .images #main-image:hover {
+    transform: scale(1.05);
+  }
+  .thumbnail img {
+    margin: 5px;
+    border-radius: 5px;
+    transition: transform 0.3s ease, border 0.3s ease;
+  }
+  .thumbnail img:hover {
+    transform: scale(1.1);
+    border: 2px solid #0d6efd;
+  }
+  /* Product Details Styling */
+  .product {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .product .d-flex.justify-content-between.align-items-center {
+    margin-bottom: 20px;
+  }
+  .product .d-flex.align-items-center i {
+    font-size: 1.2rem;
+    margin-right: 8px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .product .d-flex.align-items-center i:hover {
+    color: #0d6efd;
+  }
+  .product h5 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  .product .brand {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+  .price {
+    font-size: 1.3rem;
+    color: #343a40;
+    margin-bottom: 15px;
+  }
+  .product-description {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  /* Variant Selector Styling */
+  .product-variants {
+    margin-bottom: 20px;
+  }
+  .product-variants h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .variant-option .radio {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-radius 0.3s ease;
+  }
+  .variant-option .radio input[type="radio"] {
+    margin-right: 8px;
+    accent-color: #0d6efd; /* For modern browsers */
+  }
+  .variant-option .radio span {
+    font-size: 0.95rem;
+    color: #343a40;
+  }
+  .variant-option .radio:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+  }
+  .variant-option .radio.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .variant-option .radio input[type="radio"]:disabled + span {
+    color: #aaa;
+    cursor: not-allowed;
+  }
+  /* Quantity Selector Styling */
+  .quantity-selectior input[type="number"] {
+    width: 80px;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  .quantity-selectior input[type="number"]:focus {
+    border-color: #0d6efd;
+    outline: none;
+  }
+  /* New Line Item Fields */
+  .line-item-field label {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .line-item-field input,
+  .line-item-field textarea {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 1rem;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  .line-item-field input:focus,
+  .line-item-field textarea:focus {
+    border-color: #0d6efd;
+    outline: none;
+  }
+  /* Add to Cart Button Styling */
+  .cart {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .add_to_cart {
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .add_to_cart:hover {
+    background-color: #0b5ed7;
+  }
+  .add_to_cart:disabled,
+  .add_to_cart[disabled] {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+  .cart i {
+    font-size: 1.2rem;
+    color: #6c757d;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .cart i:hover {
+    color: #0d6efd;
+  }
+  /* Back Button Styling */
+  .product .d-flex.align-items-center {
+    font-size: 1rem;
+    color: #0d6efd;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .product .d-flex.align-items-center:hover {
+    color: #084298;
+  }
+  /* Responsive Design Enhancements */
+  @media (max-width: 768px) {
+    .container {
+      padding: 15px;
+    }
+    .card {
+      box-shadow: none;
+    }
+    .images #main-image {
+      height: auto;
+    }
+    .thumbnail img {
+      width: 50px;
+      margin: 3px;
+    }
+    .product {
+      padding: 15px;
+    }
+    .price {
+      font-size: 1.2rem;
+    }
+    .product h5 {
+      font-size: 1.3rem;
+    }
+    .cart {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .add_to_cart {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Travel Product Template",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Input heading"
+    },
+    {
+      "type": "text",
+      "id": "input_header",
+      "label": "Quantity Input Header",
+      "default": "How many packages?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "vendor",
+      "name": "Vendor",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "variants",
+      "name": "Variants Picker",
+      "limit": 1
+    },
+    {
+      "type": "quantity",
+      "name": "Quantity Selector",
+      "limit": 1
+    },
+    {
+      "type": "travelers_count",
+      "name": "Travelers Count",
+      "limit": 1
+    },
+    {
+      "type": "days_count",
+      "name": "Days Count",
+      "limit": 1
+    },
+    {
+      "type": "travel_date",
+      "name": "Travel Date",
+      "limit": 1
+    },
+    {
+      "type": "travel_prefs",
+      "name": "Travel Preferences",
+      "limit": 1
+    },
+    {
+      "type": "add_to_cart_btn",
+      "name": "Add to Cart Button",
+      "limit": 1
+    },
+    {
+      "type": "liquid",
+      "name": "Additional Liquid Code",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "liquid",
+          "label": "Liquid Code"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "title"
+      },
+      {
+        "type": "price"
+      },
+      {
+        "type": "description"
+      },
+      {
+        "type": "variants"
+      },
+      {
+        "type": "quantity"
+      },
+      {
+        "type": "travelers_count"
+      },
+      {
+        "type": "days_count"
+      },
+      {
+        "type": "travel_date"
+      },
+      {
+        "type": "travel_prefs"
+      },
+      {
+        "type": "add_to_cart_btn"
+      }
+    ]
+  }
+}
+{% endschema %}

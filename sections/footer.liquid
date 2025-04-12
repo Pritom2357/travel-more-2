@@ -1,0 +1,469 @@
+<section id="custom-footer">
+  <div style="height: 50px; background: #ffffff; position: relative;"></div>
+
+  <section style="position: relative; z-index: 1; background-color: {{ section.settings.section_bg_color }};">
+    <div
+      style="
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        background: transparent;
+        z-index: 2;
+        display: flex;
+        justify-content: center;
+      "
+    >
+      <div
+        style="
+          background: {{ section.settings.newsletter_bg_color }};
+          opacity: {{ section.settings.news_opacity }};
+          border-radius: 10px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+          max-width: 800px;
+          width: 90%;
+          padding: 10px;
+          display: flex; /* Enable Flexbox */
+          flex-direction: column; /* Stack children vertically */
+          align-items: center; /* Center children horizontally */
+          justify-content: center; /* Center children vertically */
+          text-align: center; /* Center text */
+          margin: 0 auto; /* Center the div itself */
+        "
+      >
+        <h4 class="mb-3" style="color: #fff;">
+          {{ section.settings.newsletter_title }}
+        </h4>
+
+        <form
+          action="{{ section.settings.newsletter_action }}"
+          method="post"
+          style="
+            display: flex;
+            flex-direction: row; /* Place input and button in one row */
+            justify-content: center;
+            align-items: center;
+            gap: 10px; /* Space between input and button */
+            width: 100%; /* Ensure the form spans the full width */
+            max-width: 600px; /* Limit maximum width */
+            z-index: 2;
+          "
+        >
+          <input
+            type="email"
+            class="form-control"
+            placeholder="{{ section.settings.newsletter_placeholder }}"
+            required
+            style="flex: 1; max-width: 400px; padding: 10px;"
+          >
+          <button
+            class="btn btn-dark"
+            type="submit"
+            style="flex: 0; padding: 10px 20px;"
+          >
+            {{ section.settings.newsletter_button }}
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div
+      class="container info-section"
+      style="
+        padding: 2rem 1rem 2rem 1rem;
+        position: relative;
+        z-index: 1;
+      "
+    >
+      <div class="row align-items-center">
+        <!-- Left Image -->
+        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+          <img
+            src="{{ section.settings.info_section_image | img_url: '600x' }}"
+            alt="{{ section.settings.info_section_alt }}"
+            style="max-width: 100%; border-radius: 8px;"
+          >
+        </div>
+
+        <div class="col-md-6">
+          <h2
+            style="
+              font-family: 'Cormorant Garamond', serif;
+              font-size: 2rem;
+              margin-bottom: 1rem;
+            "
+          >
+            {{ section.settings.info_section_heading }}
+          </h2>
+          <p style="font-size: 1rem; line-height: 1.6;">
+            {{ section.settings.info_section_text }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-dark text-white pt-5 pb-4">
+    <div class="container">
+      <!-- (a) Heading: "Make memories with us" -->
+      <div class="text-center mb-4">
+        <h2
+          class="fw-light mb-2"
+          style="font-family: 'Cormorant Garamond', serif; font-size: 2rem;"
+        >
+          {{ section.settings.cta_title }}
+        </h2>
+
+        <div
+          style="
+            width: 60px;
+            height: 2px;
+            background: #ffffff;
+            margin: 0.5rem auto 1rem auto;
+          "
+        ></div>
+
+        <p class="text-muted" style="font-size: 1rem;">
+          {{ section.settings.cta_subtitle }}
+        </p>
+      </div>
+
+      <div class="mb-4 text-center">
+        <h5 class="mb-3">{{ section.settings.social_title }}</h5>
+        <div class="social-icons d-flex justify-content-center">
+          {% for block in section.blocks %}
+            {% if block.type == 'social_link' %}
+              <a
+                href="{{ block.settings.url }}"
+                class="text-white mx-2 fs-4"
+                aria-label="{{ block.settings.platform }}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="bi bi-{{ block.settings.platform }}"></i>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="text-center mb-4">
+        <h5 class="mb-3">{{ section.settings.carousel_title }}</h5>
+        <div class="d-flex align-items-center justify-content-center">
+          <!-- Prev Button -->
+          <button
+            class="me-3 btn btn-primary"
+            type="button"
+            data-bs-target="#footerCarousel"
+            data-bs-slide="prev"
+          >
+            <i class="bi bi-arrow-left"></i>
+          </button>
+
+          <div
+            id="footerCarousel"
+            class="carousel slide"
+            data-bs-ride="carousel"
+            style="max-width: 300px;"
+          >
+            <div class="carousel-inner">
+              {% assign all_images = section.blocks | where: 'type', 'carousel_image' %}
+              {% assign index = 0 %}
+              {% for block in all_images %}
+                <div class="carousel-item {% if index == 0 %}active{% endif %}">
+                  <img
+                    src="{{ block.settings.image | img_url: 'original' }}"
+                    class="carousel-image d-block rounded-3 mx-auto"
+                    alt="{{ block.settings.alt }}"
+                    loading="lazy"
+                    style="width: 200px; height: 200px; object-fit: cover;"
+                  >
+                </div>
+                {% assign index = index | plus: 1 %}
+              {% endfor %}
+            </div>
+          </div>
+
+          <button
+            class="btn btn-primary ms-3"
+            type="button"
+            data-bs-target="#footerCarousel"
+            data-bs-slide="next"
+          >
+            <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div
+        style="
+          width: 1000px;
+          height: 2px;
+          background: #ffffff;
+          margin: 2rem auto;
+        "
+      ></div>
+
+      <div class="row align-items-center text-center text-md-start">
+        <!-- Logo + Tagline on the left -->
+        <div class="col-md-6 mb-4 mb-md-0">
+          <img
+            src="{{ section.settings.logo | img_url: '100x100' }}"
+            alt="{{ section.settings.logo_alt }}"
+            style="height: 50px;"
+          >
+          <p class="mb-0 small">
+            {{ section.settings.tagline }}
+          </p>
+        </div>
+
+        <!-- Navigation on the right -->
+        <div class="col-md-6 text-md-end">
+          <ul class="list-inline mb-0">
+            {% for block in section.blocks %}
+              {% if block.type == 'footer_link' %}
+                <li class="list-inline-item mx-3">
+                  <a href="{{ block.settings.url }}" class="text-muted text-decoration-none">
+                    {{ block.settings.title }}
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+</section>
+
+<script>
+  var footerCarousel = document.querySelector('#footerCarousel');
+  if (footerCarousel) {
+    var carousel = new bootstrap.Carousel(footerCarousel, {
+      interval: 3000,
+      wrap: true
+    });
+  }
+</script>
+
+<style>
+  #custom-footer footer {
+    background-color: #1b1b1b;
+    color: #ffffff;
+  }
+  #custom-footer footer h2,
+  #custom-footer footer h5 {
+    font-family: 'Arial', sans-serif;
+  }
+
+  #custom-footer .social-icons a {
+    transition: color 0.3s, transform 0.3s;
+  }
+  #custom-footer .social-icons a:hover {
+    color: #00aaff;
+    transform: scale(1.2);
+  }
+
+  #custom-footer .carousel img {
+    border: 2px solid #ffffff;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  #custom-footer .carousel img:hover {
+    transform: scale(1.05);
+    border-color: #00aaff;
+  }
+
+  #custom-footer .list-inline-item a {
+    transition: color 0.3s, text-decoration 0.3s;
+  }
+  #custom-footer .list-inline-item a:hover {
+    color: #00aaff;
+    text-decoration: underline;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Custom Footer",
+  "max_blocks": 20,
+  "settings": [
+    {
+      "type": "color",
+      "id": "newsletter_bg_color",
+      "label": "Newsletter Banner Color",
+      "default": "#08c"
+    },
+    {
+      "type": "range",
+      "id": "news_opacity",
+      "label": "Newsletter opacity",
+      "default": 0.5,
+      "min": 0,
+      "max": 1,
+      "step": 0.1
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Newsletter Banner Title",
+      "default": "Subscribe to Our Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Newsletter Placeholder Text",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button",
+      "label": "Newsletter Button Text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "url",
+      "id": "newsletter_action",
+      "label": "Newsletter Form Action URL",
+      "default": "/"
+    },
+    {
+      "type": "image_picker",
+      "id": "info_section_image",
+      "label": "Info Section Image"
+    },
+    {
+      "type": "text",
+      "id": "info_section_alt",
+      "label": "Info Section Image Alt Text",
+      "default": "Scenic Image"
+    },
+    {
+      "type": "text",
+      "id": "info_section_heading",
+      "label": "Info Section Heading",
+      "default": "Hit The Road"
+    },
+    {
+      "type": "textarea",
+      "id": "info_section_text",
+      "label": "Info Section Description",
+      "default": "If you are looking for a fun, exciting and challenging outdoor adventure activity center..."
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "Main Footer Heading",
+      "default": "Make memories with us"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_subtitle",
+      "label": "Footer Subtitle",
+      "default": "Join us on unforgettable adventures around the world."
+    },
+    {
+      "type": "text",
+      "id": "social_title",
+      "label": "Social Media Section Title",
+      "default": "Follow Us"
+    },
+    {
+      "type": "text",
+      "id": "carousel_title",
+      "label": "Carousel Section Title",
+      "default": "Our Gallery"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Footer Logo"
+    },
+    {
+      "type": "text",
+      "id": "logo_alt",
+      "label": "Logo Alt Text",
+      "default": "Company Logo"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Logo Tagline",
+      "default": "Life's a journey"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "social_link",
+      "name": "Social Link",
+      "settings": [
+        {
+          "type": "select",
+          "id": "platform",
+          "label": "Platform",
+          "options": [
+            { "value": "facebook",  "label": "Facebook" },
+            { "value": "twitter",   "label": "Twitter" },
+            { "value": "instagram", "label": "Instagram" },
+            { "value": "linkedin",  "label": "LinkedIn" }
+          ],
+          "default": "facebook"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL",
+          "default": "/"
+        }
+      ]
+    },
+    {
+      "type": "carousel_image",
+      "name": "Carousel Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Image Alt Text",
+          "default": "Gallery Image"
+        }
+      ]
+    },
+    {
+      "type": "footer_link",
+      "name": "Footer Navigation Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Link Title",
+          "default": "Home"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL",
+          "default": "/"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Footer",
+      "category": "Footer"
+    }
+  ]
+}
+{% endschema %}

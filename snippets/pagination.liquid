@@ -1,0 +1,53 @@
+{% if paginate.pages > 1 %}
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if paginate.previous %}
+        <li class="page-item">
+          <a class="page-link" href="{{ paginate.previous.url }}">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="visually-hidden">Previous</span>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span aria-hidden="true" class="page-link">&laquo;</span>
+          <span class="visually-hidden">Previous</span>
+        </li>
+      {% endif %}
+
+      {% for part in paginate.parts %}
+        {% if part.is_link %}
+          <li class="page-item">
+            <a class="page-link" href="{{ part.url }}"><span class="visually-hidden">page</span>{{ part.title }}</a>
+          </li>
+        {% else %}
+          {% if part.title == paginate.current_page %}
+            <li class="page-item active" aria-current="page">
+              <span class="page-link">{{ part.title }}</span>
+              <span class="visually-hidden">page</span>
+            </li>
+          {% else %}
+            <li class="page-item ">
+              <span class="page-link">{{ part.title }}</span>
+              <span class="visually-hidden">page</span>
+            </li>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      {% if paginate.next %}
+        <li class="page-item">
+          <a class="page-link" href="{{ paginate.next.url }}">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="visually-hidden">Next</span>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span aria-hidden="true" class="page-link">&laquo;</span>
+          <span class="visually-hidden">Next</span>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}

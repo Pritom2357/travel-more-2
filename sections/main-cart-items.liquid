@@ -1,0 +1,508 @@
+<div class="cart-page" id="{{ section.id }}">
+  <div class="cart-heading p-4 mb-4">
+    <div class="header bg-dark d-flex align-items-center justify-content-center">
+      <h3 class="text-light">Your Cart</h3>
+    </div>
+  </div>
+  <div class="container my-6">
+    <form action="{{ routes.cart_url }}" method="post" id="cart">
+      <div class="row">
+        <div class="col-md-9">
+          <div class="card-table">
+            <table class="table table-responsive">
+              <thead>
+                <tr>
+                  <th>Product Info</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Final Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for line_items in cart.items %}
+                  <tr>
+                    <td>
+                      <div class="item-content d-felx">
+                        <div class="item-image p-2">
+                          {% if line_items.image != empty %}
+                            <img src="{{ line_items.image | image_url: width: 300}}" width="100px" height="auto">
+                          {% endif %}
+                        </div>
+                        <div class="content">
+                          <p class="title mb-1">{{ line_items.product.title | link_to: line_items.url }}</p>
+                          <div class="price">
+                            <span>{{ line_items.original_price | money_with_currency }}</span>
+                          </div>
+                          {% if line_items.product.has_only_default_variant == false
+                            or line_items.properties.size != 0
+                            or line_items.selling_plan_allocation != null
+                          %}
+                            {% if line_items.product.has_only_default_variant == false %}
+                              <div class="item-options">
+                                {% for option in line_items.options_with_values %}
+                                  <span>{{ option.name | escape }} : {{ option.value }}</span> <br>
+                                {% endfor %}
+                              </div>
+                            {% endif %}
+                            {% if line_items.selling_plan_allocation %}
+                              <div class="selling-plan">
+                                <span>Selling plan: {{ line_items.selling_plan_allocation.selling_plan.name }}</span>
+                              </div>
+                            {% endif %}
+                          {% endif %}
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="price-wrapper">
+                        {% if line_items.original_price != line_items.final_price %}
+                          <del>{{ line_items.original_price | money }}</del><br>
+                          <span class="sale-price">{{ line_items.final_price | money }}</span>
+                        {% else %}
+                          <span>{{ line_items.original_price | money_with_currency }}</span>
+                        {% endif %}
+                      </div>
+                    </td>
+                    <td>
+                      <div class="quantity-area">
+                        <div class="input-group mb-3" style="width: 200px;">
+                          <div class="input-group-prepend">
+                            <a
+                              href="/cart/change?id={{ line_items.key }}&quantity={{ line_items.quantity | minus:1 }}"
+                              class="nav-link input-group-text"
+                              >-</a
+                            >
+                          </div>
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="updates[]"
+                            value="{{ line_items.quantity }}"
+                          >
+                          <div class="input-group-append">
+                            <a
+                              href="/cart/change?id={{ line_items.key }}&quantity={{ line_items.quantity | plus:1 }}"
+                              class="nav-link input-group-text"
+                              >+</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="final-price-wrapper">
+                        {% if line_items.original_line_price != line_items.final_line_price %}
+                          <del>{{ line_items.original_line_price | money }}</del><br>
+                          <span class="final-sale-price">{{ line_items.final_line_price | money }}</span>
+                        {% else %}
+                          <span>{{ line_items.original_line_price | money_with_currency }}</span>
+                        {% endif %}
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="checkout-card">
+            <div class="card">
+              <div class="card-body">
+                <div class="card-info d-felx justify-content-between">
+                  <strong>Subtotal:</strong>
+                  <h4 class="cart-subtotal">{{ cart.total_price | money_with_currency }}</h4>
+                </div>
+                <hr class="my-3">
+                <div class="cart-note">
+                  <label>Note: </label>
+                  <textarea class="form-control" name="note" placeholder="Note">{{ cart.note }}</textarea>
+                </div>
+                <div class="cart-actions">
+                  <button type="submit" name="update" class="btn btn-primary w-100 my-2">Update</button>
+                  <button type="submit" name="checkout" class="btn btn-secondary w-100 my-2">Checkout</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+    /* =========================
+     General Styles
+  ========================= */
+
+  /* Reset some basic elements */
+  .cart-page,
+  .cart-page * {
+    box-sizing: border-box;
+  }
+
+  /* Body font and background */
+  .cart-page {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f8f9fa;
+    padding: 20px 0;
+  }
+
+  /* Container */
+  .cart-page .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Heading Styles */
+  .cart-page .cart-heading h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  /* =========================
+     Cart Table Styles
+  ========================= */
+
+  .cart-page .card-table {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .cart-page table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .cart-page th,
+  .cart-page td {
+    padding: 15px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .cart-page th {
+    background-color: #f1f1f1;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #495057;
+  }
+
+  .cart-page tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Product Info */
+  .cart-page .item-content {
+    display: flex;
+    align-items: center;
+  }
+
+  .cart-page .item-image img {
+    border-radius: 8px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .cart-page .item-image img:hover {
+    transform: scale(1.05);
+  }
+
+  .cart-page .content {
+    margin-left: 15px;
+  }
+
+  .cart-page .content .title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #343a40;
+    text-decoration: none;
+  }
+
+  .cart-page .content .title:hover {
+    text-decoration: underline;
+  }
+
+  .cart-page .content .price span {
+    font-size: 1rem;
+    color: #28a745;
+  }
+
+  .cart-page .item-options span {
+    display: inline-block;
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+
+  .cart-page .selling-plan span {
+    display: block;
+    font-size: 0.85rem;
+    color: #17a2b8;
+    margin-top: 5px;
+  }
+
+  /* Price Wrapper */
+  .cart-page .price-wrapper del {
+    color: #dc3545;
+    font-size: 0.9rem;
+  }
+
+  .cart-page .price-wrapper .sale-price {
+    color: #28a745;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .cart-page .price-wrapper span {
+    font-size: 1rem;
+    color: #343a40;
+  }
+
+  /* Quantity Area */
+  .cart-page .quantity-area .input-group {
+    display: flex;
+    align-items: center;
+  }
+
+  .cart-page .quantity-area .input-group a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    background-color: #f1f1f1;
+    color: #343a40;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .cart-page .quantity-area .input-group a:hover {
+    background-color: #343a40;
+    color: #fff;
+  }
+
+  .cart-page .quantity-area .form-control {
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    margin: 0 5px;
+    font-size: 1rem;
+  }
+
+  .cart-page .quantity-area .form-control:focus {
+    border-color: #0d6efd;
+    outline: none;
+    box-shadow: none;
+  }
+
+  /* Final Price Wrapper */
+  .cart-page .final-price-wrapper del {
+    color: #dc3545;
+    font-size: 0.9rem;
+  }
+
+  .cart-page .final-price-wrapper .final-sale-price {
+    color: #28a745;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .cart-page .final-price-wrapper span {
+    font-size: 1rem;
+    color: #343a40;
+  }
+
+  /* =========================
+     Checkout Card Styles
+  ========================= */
+
+  .cart-page .checkout-card .card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+
+  .cart-page .checkout-card .card-body {
+    padding: 20px;
+  }
+
+  .cart-page .checkout-card .card-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .cart-page .checkout-card .card-info strong {
+    font-size: 1.1rem;
+    color: #343a40;
+  }
+
+  .cart-page .checkout-card .cart-subtotal {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #28a745;
+  }
+
+  .cart-page .checkout-card hr {
+    border: 0;
+    height: 1px;
+    background-color: #dee2e6;
+    margin: 20px 0;
+  }
+
+  .cart-page .cart-note label {
+    font-size: 1rem;
+    color: #343a40;
+  }
+
+  .cart-page .cart-note textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    resize: vertical;
+    font-size: 1rem;
+    margin-top: 5px;
+  }
+
+  .cart-page .cart-note textarea:focus {
+    border-color: #0d6efd;
+    outline: none;
+    box-shadow: none;
+  }
+
+  .cart-page .cart-actions button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .cart-page .cart-actions .btn-primary {
+    background-color: #0d6efd;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .cart-page .cart-actions .btn-primary:hover {
+    background-color: #0b5ed7;
+  }
+
+  .cart-page .cart-actions .btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+  }
+
+  .cart-page .cart-actions .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+
+  /* =========================
+     Responsive Styles
+  ========================= */
+
+  @media (max-width: 992px) {
+    .cart-page .container.my-6 {
+      padding: 0 15px;
+    }
+
+    .cart-page .quantity-area .input-group {
+      width: 100%;
+    }
+
+    .cart-page .quantity-area .input-group a {
+      width: 30px;
+      height: 30px;
+      font-size: 1rem;
+    }
+
+    .cart-page .quantity-area .form-control {
+      width: 50px;
+      margin: 0 3px;
+    }
+
+    .cart-page .checkout-card {
+      margin-top: 30px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .cart-page .card-table table,
+    .cart-page .card-table thead,
+    .cart-page .card-table tbody,
+    .cart-page .card-table th,
+    .cart-page .card-table td,
+    .cart-page .card-table tr {
+      display: block;
+    }
+
+    .cart-page .card-table thead tr {
+      display: none;
+    }
+
+    .cart-page .card-table tr {
+      margin-bottom: 15px;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .cart-page .card-table td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 5px;
+      border: none;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .cart-page .card-table td:last-child {
+      border-bottom: none;
+    }
+
+    .cart-page .checkout-card .card-body {
+      padding: 15px;
+    }
+
+    .cart-page .checkout-card .cart-actions button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .cart-page .cart-heading h3 {
+      font-size: 1.5rem;
+    }
+
+    .cart-page .checkout-card .card-info strong,
+    .cart-page .checkout-card .cart-subtotal {
+      font-size: 1rem;
+    }
+
+    .cart-page .cart-note textarea {
+      height: 60px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,112 @@
+{% assign collection = section.settings.collection %}
+
+<div class="container">
+  <div class="section-heading">
+    {% if section.settings.collection != blank %}
+      <h2>{{ section.settings.collection_text }} ({{ collection.all_products_count }})</h2>
+    {% else %}
+      <h2>{{ section.settings.collection_text }}</h2>
+    {% endif %}
+  </div>
+  <div class="row">
+    {% for product in collection.products limit: section.settings.max_product_limit %}
+      <div class="col-md-{{ section.settings.section_divider }}">
+        <div class="card m-2 p-2">
+          <img
+            src="{{ product.featured_image | img_url: 'medium' }}"
+            alt="{{ product.title }}"
+            loading="lazy"
+            class="{% if product.images.size>1 %}featured-image{% endif %}"
+          >
+          {% if product.images.size > 1 %}
+            <img
+              src="{{ product.images[1] | img_url: 'medium' }}"
+              class="second-image"
+            >
+          {% endif %}
+        </div>
+        <div class="product-info">
+          <h3 class="product-title">{{ product.title }}</h3>
+          <strong class="price">Price: {{ product.price | money }}</strong>
+        </div>
+        <div>
+          <button class="btn btn-primary">
+            {{ section.settings.btn_text }}
+          </button>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  {% if collection.all_products_count > section.settings.max_product_limit %}
+    <div class="more-products text-center">
+      <a href="{{ collection.url }}" class="btn btn-secondary">View All</a>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .card:hover img.featured-image{
+    display:none;
+  }
+
+  img.second-image{
+    display:none;
+  }
+
+  .card:hover img.second-image{
+    display:block;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Collection Settings"
+    },
+    {
+      "type": "text",
+      "id": "collection_text",
+      "label": "Collection Text",
+      "default": "Featured Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "range",
+      "id": "section_divider",
+      "label": "Section Divider",
+      "default": 4,
+      "min": 1,
+      "max": 6,
+      "step": 1
+    },
+    {
+      "type": "range",
+      "id": "max_product_limit",
+      "label": "Maximum Product Limit",
+      "default": 2,
+      "min": 1,
+      "max": 12,
+      "step": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

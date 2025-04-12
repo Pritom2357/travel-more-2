@@ -1,0 +1,56 @@
+<div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+  <div class="card h-100 shadow-sm product-card">
+    <!-- Product Image -->
+    <a href="{{ product.url }}" class="text-decoration-none">
+      {% if product.featured_image != blank %}
+        <div class="image-container position-relative">
+          <img
+            src="{{ product.featured_image | img_url:'medium' }}"
+            class="card-img-top img-fluid rounded-top featured-img"
+            alt="{{ product.title }}"
+            loading="lazy"
+          >
+          {% if product.images.size > 1 and show_second_img %}
+            <img
+              src="{{ product.images[1] | img_url:'medium' }}"
+              class="card-img-top img-fluid rounded-top second-img"
+              alt="{{ product.title }}"
+              loading="lazy"
+            >
+          {% endif %}
+
+          <!-- Badges -->
+          {% if product.tags contains 'new' %}
+            <span class="badge badge-new">New</span>
+          {% endif %}
+          {% if product.compare_at_price > product.price %}
+            <span class="badge badge-sale">Sale</span>
+          {% endif %}
+        </div>
+      {% endif %}
+    </a>
+
+    <!-- Card Body -->
+    <div class="card-body d-flex flex-column">
+      <!-- Product Title -->
+      <h5 class="card-title">
+        <a href="{{ product.url }}" class="text-dark text-decoration-none">
+          {{ product.title }}
+        </a>
+      </h5>
+
+      <!-- Product Price -->
+      <div class="mt-auto">
+        {% render 'price', product: product %}
+        {% if show_vendor %}
+          <span class="text-uppercase vendor-name">{{ product.vendor }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Card Footer -->
+    <div class="card-footer bg-transparent border-0">
+      <a href="{{ product.url }}" class="btn btn-primary w-100 view-details-btn">View Details</a>
+    </div>
+  </div>
+</div>

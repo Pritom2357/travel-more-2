@@ -1,0 +1,779 @@
+{%- assign bg_img_url = section.settings.bg_img | img_url: '1600x' -%}
+<!-- Convert Form Background Color -->
+{% assign input_hex_color = section.settings.form_bg_color %}
+{% include 'hex-to-rgb' %}
+{% assign form_red = red %}
+{% assign form_green = green %}
+{% assign form_blue = blue %}
+
+<!-- Convert Header Background Color -->
+{% assign input_hex_color = section.settings.bg_header %}
+{% include 'hex-to-rgb' %}
+{% assign header_red = red %}
+{% assign header_green = green %}
+{% assign heaeder_blue = blue %}
+
+{% comment %}
+  Determine the alignment class based on the user's selection
+{% endcomment %}
+{% assign alignment_class = 'justify-content-start' %}
+{% if section.settings.header_alignment == 'center' %}
+  {% assign alignment_class = 'justify-content-center' %}
+{% elsif section.settings.header_alignment == 'right' %}
+  {% assign alignment_class = 'justify-content-end' %}
+{% endif %}
+
+<section class="hero-section align-items-center">
+  <div class="hero-overlay"></div>
+  {% if section.settings.is_header %}
+    <nav class="navbar navbar-expand-lg nav-settings">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img
+            src="{{ section.settings.logo | img_url: '100px' }}"
+            alt="{{ shop.name }}"
+            style="width: {{ section.settings.logo_size }}px; height: auto"
+          >
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="bi bi-list btn-outline-success"></i>
+        </button>
+        <div class="collapse navbar-collapse nav-text" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-2 mb-lg-0 {{ alignment_class }} flex-grow-1">
+            {% for menu in section.settings.menu.links %}
+              <li class="nav-item {% if menu.links.size > 1 %} dropdown {% endif %}">
+                <a
+                  class="nav-link active {% if menu.links.size > 1 %} dropdown-toggle {% endif %}"
+                  aria-current="page"
+                  href="{{ menu.url }}"
+                  {% if menu.links.size > 1 %}
+                    id="navbarDropdown_{{ forloop.index }}"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  {% endif %}
+                >
+                  {{- menu.title -}}
+                </a>
+                {% if menu.links.size > 1 %}
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown_{{ forloop.index }}">
+                    {% for sub_menu in menu.links %}
+                      <li>
+                        <a class="dropdown-item" href="{{ sub_menu.url }}">{{ sub_menu.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+          {% if section.settings.enable_search_bar %}
+            <form class="d-flex">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success ml-2" type="submit">
+                <i class="bi bi-search btn-outline-success"></i>
+              </button>
+              <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
+                <i class="bi bi-person"></i>
+              </a>
+              <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2" aria-label="Cart">
+                <i class="bi bi-cart"></i>
+              </a>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+    <div class="line"></div>
+  {% endif %}
+
+  <div class="container position-relative d-flex">
+    <div class="row align-items-center">
+      <!-- Left content (headline and buttons) -->
+      <div class="col-lg-7 col-md-12">
+        <h1 class="hero-title">
+          {% if section.settings.title_text %}
+            {{ section.settings.title_text }}
+          {% endif %}
+        </h1>
+        <p class="hero-subtitle">
+          {% if section.settings.sub_title_text %}
+            {{ section.settings.sub_title_text }}
+          {% endif -%}
+        </p>
+        <div class="btn-group">
+          <a href="{{ section.settings.btn1_url }}" class="btn btn-primary mr-3 pr-3 btn1">
+            {{ section.settings.btn1_text }}
+          </a>
+          <a href="{{ section.settings.btn2_url }}" class="btn btn-outline-light btn2">
+            {{ section.settings.btn2_text }}
+          </a>
+        </div>
+      </div>
+
+      <!-- Right content (booking form) -->
+      {% if section.settings.if_form %}
+        <div class="col-lg-4 col-md-8 offset-lg-1 offset-md-0">
+          <div class="booking-form px-4 py-4 rounded justify-content-center">
+            <h3 class="mb-4 font-weight-bold">{{ section.settings.form_title }}</h3>
+
+            <!-- Destination (populated from 'destination_block' schema blocks) -->
+            <div class="form-group">
+              <label for="destinationSelect">{{ section.settings.input1 }}</label>
+              <select class="form-control" id="destinationSelect">
+                {% for block in section.blocks %}
+                  {% if block.type == 'destination_block' %}
+                    <option
+                      value="{{ block.settings.destination_title | escape }}"
+                      data-dest-description="{{ block.settings.destination_description | escape }}"
+                      data-dest-price="{{ block.settings.unit_price }}"
+                    >
+                      {{ block.settings.destination_title }}
+                    </option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Tour Type -->
+            <div class="form-group">
+              <label for="tourType">{{ section.settings.input2 }}</label>
+              <select class="form-control" id="tourType">
+                <option value="Adventure">Adventure</option>
+                <option value="Honeymoon">Honeymoon</option>
+                <option value="Family">Family</option>
+                <option value="Luxury">Luxury</option>
+              </select>
+            </div>
+
+            <!-- Month (optional - controlled by schema input3) -->
+            {% if section.settings.input3 != blank %}
+              <div class="form-group">
+                <label for="month">{{ section.settings.input3 }}</label>
+                <select class="form-control" id="month">
+                  <option>January</option>
+                  <option>February</option>
+                  <option>March</option>
+                  <option>April</option>
+                  <option>May</option>
+                  <option>June</option>
+                  <option>July</option>
+                  <option>August</option>
+                  <option>September</option>
+                  <option>October</option>
+                  <option>November</option>
+                  <option>December</option>
+                </select>
+              </div>
+            {% endif %}
+
+            <!-- Price Range (example - optional) -->
+            <div class="form-group">
+              <label for="priceRange">
+                Price Range: <span>${{ section.settings.min_price }} - ${{ section.settings.max_price }}</span>
+              </label>
+              <input
+                type="range"
+                class="custom-range"
+                id="priceRange"
+                min="{{ section.settings.min_price }}"
+                max="{{ section.settings.max_price }}"
+                step="10"
+                value="{{ section.settings.min_price }}"
+              >
+              <span id="currentPrice" class="mr-3">${{ section.settings.min_price }}</span>
+            </div>
+
+            <!-- Book Now Button -->
+            <button class="btn btn-primary btn-block" id="bookNowBtn">Book Now</button>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Price Range
+    const priceRange = document.getElementById('priceRange');
+    const currentPrice = document.getElementById('currentPrice');
+
+    function updatePrice() {
+      currentPrice.textContent = `$${priceRange.value}`;
+    }
+    updatePrice();
+    if(priceRange) {
+      priceRange.addEventListener('input', updatePrice);
+    }
+
+    // Book Now Button
+    const bookNowBtn = document.getElementById('bookNowBtn');
+    if(bookNowBtn) {
+      bookNowBtn.addEventListener('click', () => {
+        const destSelect = document.getElementById('destinationSelect');
+        const selectedOption = destSelect.options[destSelect.selectedIndex];
+
+        const destinationTitle = selectedOption.value; // e.g. "Maldives"
+        const destinationDescription = selectedOption.dataset.destDescription; 
+        const destinationPrice = selectedOption.dataset.destPrice; 
+        const tourType = document.getElementById('tourType').value;
+
+        // Just for example, we won't use 'month' or 'priceRange' here, but you could pass them if desired.
+        
+        // We redirect the user to a custom page, e.g. /pages/tour-booking, with query params
+        // for the selected destination, description, and price. 
+        // We'll parse these on the next page to display the correct info.
+
+        const url = `/pages/tour-booking?dest=${encodeURIComponent(destinationTitle)}&desc=${encodeURIComponent(destinationDescription)}&price=${encodeURIComponent(destinationPrice)}&type=${encodeURIComponent(tourType)}`;
+
+        window.location.href = url;
+      });
+    }
+  });
+</script>
+
+<style>
+  .hero-section .navbar-toggler {
+    z-index: 3;
+  }
+  .hero-section .nav-settings {
+    position: relative;
+    z-index: 2;
+    background-color: rgba({{ header_red }}, {{ header_green }}, {{ heaeder_blue }}, {{ section.settings.header_bg_opacity }}) !important;
+    color: {{ section.settings.header_text_color }};
+    font-size: {{ section.settings.menu_text_size }};
+  }
+  .hero-section .line {
+    display: block;
+    width: 95%;
+    height: 1px;
+    margin: 0 auto;
+    z-index:20;
+    background-color: #fff;
+    border-radius: 2px;
+  }
+  .hero-section .nav-settings .nav-link {
+    color: {{ section.settings.header_text_color }} !important;
+    transition: color 0.3s;
+    font-size: {{section.settings.menu_text_size}}px;
+  }
+  .hero-section .nav-settings .nav-link:hover {
+    color: {{ section.settings.header_text_hover_color }} !important;
+  }
+  .hero-section .nav-settings .btn-outline-success {
+    background-color: transparent;
+    border-color: transparent;
+    color: {{ section.settings.search_btn_text_color }} !important;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  }
+  .hero-section .nav-settings .btn-outline-success:hover {
+    background-color: {{ section.settings.search_btn_hover_color }} !important;
+    border-color: transparent;
+    color: {{ section.settings.search_btn_text_hover_color }} !important;
+  }
+  .hero-section .btn-outline-success i {
+    color: {{ section.settings.search_btn_text_color }} !important;
+    transition: color 0.3s ease;
+  }
+  .hero-section .btn-outline-success:hover i {
+    color: {{ section.settings.search_btn_text_hover_color }} !important;
+  }
+  .hero-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: url('{{ bg_img_url }}') center center no-repeat;
+    background-size: cover;
+  }
+  .hero-section .row.align-items-center {
+    min-height: 100vh;
+  }
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, {{section.settings.bg_overlay}});
+    z-index: 1;
+  }
+  .hero-section .container {
+    position: relative;
+    z-index: 2;
+  }
+  .hero-title {
+    font-family: "{{ section.settings.title_font }}", sans-serif;
+    font-size: {{section.settings.title_size}}rem;
+    line-height: 1.2;
+    font-weight: 700;
+    color: {{section.settings.title_color}};
+  }
+  .hero-subtitle {
+    font-size: {{section.settings.sub_title_size}}rem;
+    margin: 1rem 0 2rem 0;
+    color: {{section.settings.sub_title_color}};
+  }
+  /* Booking form styling */
+  .booking-form {
+    background-color: rgba({{ form_red }}, {{ form_green }}, {{ form_blue }}, {{ section.settings.form_bg_opacity }}) !important;
+    color: {{ section.settings.form_text_color }};
+    padding: 2rem 2rem;
+    margin-top: 2rem;
+    border-radius: 0.25rem;
+    border: 2px solid #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .booking-form .form-control {
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+    background-color: #ffffff;
+    color: #333;
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  .booking-form .form-control:focus {
+    border: 1px solid #449EED;
+    box-shadow: 0px 0px 6px rgba(68, 158, 237, 0.4);
+    outline: none;
+  }
+  .booking-form button {
+    border: 1px solid #449EED;
+    border-radius: 0.25rem;
+    background-color: #449EED;
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+  }
+  .booking-form button:hover {
+    background-color: #357ABD;
+    border-color: #357ABD;
+    color: #ffffff;
+  }
+  .booking-form label {
+    font-weight: 500;
+  }
+  .booking-form .form-group {
+    margin-bottom: 1.5rem;
+  }
+  .hero-section .btn1 {
+    background-color: {{ section.settings.btn1_color }} !important;
+    border-color: {{ section.settings.btn1_color }} !important;
+    color: {{section.settings.btn1_text_color}} !important;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  .hero-section .btn1:hover {
+    background-color: {{ section.settings.btn1_hover_color }} !important;
+    border-color: {{ section.settings.btn1_hover_color }} !important;
+    color: {{section.settings.btn1_text_hover_color}} !important;
+  }
+  .hero-section .btn2{
+    color: {{section.settings.btn2_text_color}} !important;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  }
+  .hero-section .btn2:hover {
+    background-color: {{ section.settings.btn2_hover_color }} !important;
+    border-color: {{ section.settings.btn2_hover_color }} !important;
+    color: {{ section.settings.btn2_text_hover_color }} !important;
+  }
+  .hero-section .btn1:focus, .hero-section .btn2:focus {
+    box-shadow: none !important;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Custom hero Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_header",
+      "label": "Do you want header in the Hero Section?",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "bg_header",
+      "label": "Header BG Color",
+      "default": "#449EED"
+    },
+    {
+      "type": "range",
+      "id": "header_bg_opacity",
+      "label": "Header BG Opacity",
+      "default": 0.4,
+      "min": 0,
+      "max": 1,
+      "step": 0.1
+    },
+    {
+      "type": "color",
+      "id": "header_text_color",
+      "label": "Header Text Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "header_text_hover_color",
+      "label": "Header Text Hover Color",
+      "default": "#ccc"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_size",
+      "label": "Logo Size (px)",
+      "default": 100,
+      "min": 50,
+      "max": 250,
+      "step": 10
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "range",
+      "id": "menu_text_size",
+      "label": "Menu Text Size (px)",
+      "default": 20,
+      "min": 10,
+      "max": 40,
+      "step": 1
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Search Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search_bar",
+      "label": "Enable Search Bar?",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "search_btn_color",
+      "label": "Search Button Color",
+      "default": "#449EED"
+    },
+    {
+      "type": "color",
+      "id": "search_btn_text_color",
+      "label": "Search Button Text Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "search_btn_hover_color",
+      "label": "Search Button Hover Color",
+      "default": "#357ABD"
+    },
+    {
+      "type": "color",
+      "id": "search_btn_text_hover_color",
+      "label": "Search Button Text Hover Color",
+      "default": "#fff"
+    },
+
+    {
+      "type": "header",
+      "content": "Background Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_img",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "range",
+      "id": "bg_overlay",
+      "label": "Background Overlay",
+      "default": 0.4,
+      "min": 0,
+      "max": 1,
+      "step": 0.1
+    },
+
+    {
+      "type": "header",
+      "content": "Introduction"
+    },
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "text",
+      "id": "title_text",
+      "label": "Title Text",
+      "default": "Dare to Live the Life you’ve wanted"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size (rem)",
+      "default": 3,
+      "min": 1,
+      "max": 6,
+      "step": 1
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#fff"
+    },
+    {
+      "type": "select",
+      "id": "title_font",
+      "label": "Title Font",
+      "options": [
+        { "value": "Helvetica, sans-serif", "label": "Helvetica" },
+        { "value": "Montserrat, sans-serif", "label": "Montserrat" },
+        { "value": "Roboto, sans-serif", "label": "Roboto" },
+        { "value": "Lato, sans-serif", "label": "Lato" }
+      ],
+      "default": "Helvetica, sans-serif"
+    },
+    {
+      "type": "header",
+      "content": "Sub Title"
+    },
+    {
+      "type": "text",
+      "id": "sub_title_text",
+      "label": "Sub Title Text",
+      "default": "We would love to help you realize your travel dreams..."
+    },
+    {
+      "type": "range",
+      "id": "sub_title_size",
+      "label": "Sub Title Size (rem)",
+      "default": 1,
+      "min": 1,
+      "max": 6,
+      "step": 0.1
+    },
+    {
+      "type": "color",
+      "id": "sub_title_color",
+      "label": "Sub Title Color",
+      "default": "#fff"
+    },
+    {
+      "type": "select",
+      "id": "sub_title_font",
+      "label": "Sub Title Font",
+      "options": [
+        { "value": "Helvetica, sans-serif", "label": "Helvetica" },
+        { "value": "Montserrat, sans-serif", "label": "Montserrat" },
+        { "value": "Roboto, sans-serif", "label": "Roboto" },
+        { "value": "Lato, sans-serif", "label": "Lato" }
+      ],
+      "default": "Helvetica, sans-serif"
+    },
+
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "btn1_text",
+      "label": "Button 1 Text",
+      "default": "Discover More"
+    },
+    {
+      "type": "color",
+      "id": "btn1_text_color",
+      "label": "Button 1 Text Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "btn1_color",
+      "label": "Button 1 Color",
+      "default": "#449EED"
+    },
+    {
+      "type": "color",
+      "id": "btn1_hover_color",
+      "label": "Button 1 Hover Color",
+      "default": "#357ABD"
+    },
+    {
+      "type": "color",
+      "id": "btn1_text_hover_color",
+      "label": "Button 1 Text Hover Color",
+      "default": "#fff"
+    },
+    {
+      "type": "url",
+      "id": "btn1_url",
+      "label": "Button 1 URL",
+      "default": "/"
+    },
+    {
+      "type": "text",
+      "id": "btn2_text",
+      "label": "Button 2 Text",
+      "default": "Watch Video"
+    },
+    {
+      "type": "color",
+      "id": "btn2_text_color",
+      "label": "Button 2 Text Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "btn2_hover_color",
+      "label": "Button 2 Hover Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "btn2_text_hover_color",
+      "label": "Button 2 Text Hover Color",
+      "default": "#fff"
+    },
+    {
+      "type": "url",
+      "id": "btn2_url",
+      "label": "Button 2 URL",
+      "default": "/"
+    },
+
+    {
+      "type": "header",
+      "content": "Form Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "if_form",
+      "label": "Do you want the form?",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "form_bg_color",
+      "label": "Form Background Color",
+      "default": "#F5F5F5"
+    },
+    {
+      "type": "range",
+      "id": "form_bg_opacity",
+      "label": "Form Background Opacity",
+      "default": 1,
+      "min": 0,
+      "max": 1,
+      "step": 0.1
+    },
+    {
+      "type": "color",
+      "id": "form_text_color",
+      "label": "Form Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Title",
+      "default": "Book Perfect Tour"
+    },
+    {
+      "type": "text",
+      "id": "input1",
+      "label": "Input Box 1",
+      "default": "Destination"
+    },
+    {
+      "type": "text",
+      "id": "input2",
+      "label": "Input Box 2",
+      "default": "Tour Type"
+    },
+    {
+      "type": "text",
+      "id": "input3",
+      "label": "Input Box 3 (Month)",
+      "default": "Month"
+    },
+    {
+      "type": "number",
+      "id": "min_price",
+      "label": "Minimum Price",
+      "default": 2340
+    },
+    {
+      "type": "number",
+      "id": "max_price",
+      "label": "Maximum Price",
+      "default": 3920
+    }
+  ],
+  "blocks": [
+    {
+      "type": "destination_block",
+      "name": "Destination Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "destination_title",
+          "label": "Destination Title",
+          "default": "Maldives"
+        },
+        {
+          "type": "textarea",
+          "id": "destination_description",
+          "label": "Destination Description",
+          "default": "Lorem ipsum..."
+        },
+        {
+          "type": "number",
+          "id": "unit_price",
+          "label": "Unit Price (per day, per person)",
+          "default": 200
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Custom Hero Section",
+      "category": "Hero Section"
+    }
+  ]
+}
+{% endschema %}

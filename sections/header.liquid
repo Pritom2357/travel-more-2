@@ -1,0 +1,309 @@
+{% assign bg_img_url = section.settings.bg_img | img_url: '1600x' %}
+
+<!-- Convert Header Background Color -->
+{% assign input_hex_color = section.settings.bg_header %}
+{% include 'hex-to-rgb' %}
+{% assign header_red = red %}
+{% assign header_green = green %}
+{% assign header_blue = blue %}
+
+<!-- Show header only if we are NOT on the home page -->
+{% if template.name != 'index' %}
+  <nav class="navbar navbar-expand-lg nav-settings">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img
+          src="{{ section.settings.logo | img_url: '100x' }}"
+          alt="{{ shop.name }}"
+          style="width: {{ section.settings.logo_size }}px; height: auto;"
+        >
+      </a>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="bi bi-list btn-outline-success"></i>
+      </button>
+
+      <div class="collapse navbar-collapse nav-text" id="navbarSupportedContent">
+        <!-- Determine alignment class for nav items -->
+        {% assign alignment_class = 'justify-content-start' %}
+        {% if section.settings.header_alignment == 'center' %}
+          {% assign alignment_class = 'justify-content-center' %}
+        {% elsif section.settings.header_alignment == 'right' %}
+          {% assign alignment_class = 'justify-content-end' %}
+        {% endif %}
+
+        <ul class="navbar-nav mb-2 mb-lg-0 {{ alignment_class }} flex-grow-1">
+          {% for menu in section.settings.menu.links %}
+            <li class="nav-item {% if menu.links.size > 1 %} dropdown {% endif %}">
+              <a
+                class="nav-link active {% if menu.links.size > 1 %} dropdown-toggle {% endif %}"
+                aria-current="page"
+                href="{{ menu.url }}"
+                {% if menu.links.size > 1 %}
+                  id="navbarDropdown_{{ forloop.index }}"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                {% endif %}
+              >
+                {{- menu.title -}}
+              </a>
+
+              {% if menu.links.size > 1 %}
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown_{{ forloop.index }}">
+                  {% for sub_menu in menu.links %}
+                    <li>
+                      <a class="dropdown-item" href="{{ sub_menu.url }}">{{ sub_menu.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% if section.settings.enable_search_bar %}
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success ml-2" type="submit">
+              <i class="bi bi-search btn-outline-success"></i>
+            </button>
+            <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
+              <i class="bi bi-person"></i>
+            </a>
+            <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2" aria-label="Cart">
+              <i class="bi bi-cart"></i>
+            </a>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+{% endif %}
+
+<style>
+  /*
+    Nav (Header) Container
+  */
+  .nav-settings {
+    position: relative;
+    z-index: 2;
+    background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, {{ section.settings.header_bg_opacity }}) !important;
+    color: {{ section.settings.header_text_color }} !important;
+    font-size: {{ section.settings.menu_text_size }}px;
+  }
+
+  /*
+    Nav Links
+  */
+  .nav-settings .nav-link {
+    color: {{ section.settings.header_text_color }} !important;
+    transition: color 0.3s, background-color 0.3s;
+  }
+
+  .nav-settings .nav-link:hover {
+    color: {{ section.settings.header_text_hover_color }} !important;
+    {% if section.settings.header_link_hover_bg != blank %}
+      background-color: {{ section.settings.header_link_hover_bg }} !important;
+    {% endif %}
+  }
+
+  /*
+    Dropdown items
+  */
+  .nav-settings .dropdown-item {
+    color: {{ section.settings.header_text_color }};
+    transition: color 0.3s, background-color 0.3s;
+  }
+  .nav-settings .dropdown-item:hover {
+    color: {{ section.settings.header_text_hover_color }} !important;
+    {% if section.settings.header_link_hover_bg != blank %}
+      background-color: {{ section.settings.header_link_hover_bg }} !important;
+    {% endif %}
+  }
+
+  /*
+    Search / Icons
+  */
+  .nav-settings .btn-outline-success {
+    background-color: transparent;
+    border-color: transparent;
+    color: {{ section.settings.search_btn_text_color }} !important;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  }
+  .nav-settings .btn-outline-success:hover {
+    background-color: {{ section.settings.search_btn_hover_color }} !important;
+    border-color: transparent;
+    color: {{ section.settings.search_btn_text_hover_color }} !important;
+  }
+  .nav-settings .btn-outline-success i {
+    color: {{ section.settings.search_btn_text_color }} !important;
+    transition: color 0.3s ease;
+  }
+  .nav-settings .btn-outline-success:hover i {
+    color: {{ section.settings.search_btn_text_hover_color }} !important;
+  }
+
+  /*
+    Example: If you want an underline or line below the nav
+    you could include something like this:
+  */
+  .nav-settings .line {
+    display: block;
+    width: 95%;
+    height: 1px;
+    margin: 0 auto;
+    z-index: 20;
+    background-color: #fff;
+    border-radius: 2px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Display Control"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_header",
+      "label": "Enable Header in This Section (ignored if home page)",
+      "default": true
+    },
+
+    {
+      "type": "header",
+      "content": "Header Background & Text"
+    },
+    {
+      "type": "color",
+      "id": "bg_header",
+      "label": "Header Background Color",
+      "default": "#449EED"
+    },
+    {
+      "type": "range",
+      "id": "header_bg_opacity",
+      "label": "Header Background Opacity",
+      "default": 0.4,
+      "min": 0,
+      "max": 1,
+      "step": 0.1
+    },
+    {
+      "type": "color",
+      "id": "header_text_color",
+      "label": "Header Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "header_text_hover_color",
+      "label": "Header Text Hover Color",
+      "default": "#ccc"
+    },
+    {
+      "type": "color",
+      "id": "header_link_hover_bg",
+      "label": "Nav Link Hover Background",
+      "default": "#eeeddd",
+      "info": "Optional. Leave blank to avoid a background color on hover."
+    },
+
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_size",
+      "label": "Logo Size (px)",
+      "default": 100,
+      "min": 50,
+      "max": 250,
+      "step": 10
+    },
+
+    {
+      "type": "header",
+      "content": "Menu Settings"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "range",
+      "id": "menu_text_size",
+      "label": "Menu Text Size (px)",
+      "default": 20,
+      "min": 10,
+      "max": 40,
+      "step": 1
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left",   "label": "Left Aligned" },
+        { "value": "center", "label": "Center Aligned" },
+        { "value": "right",  "label": "Right Aligned" }
+      ],
+      "default": "left"
+    },
+
+    {
+      "type": "header",
+      "content": "Search Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search_bar",
+      "label": "Enable Search Bar?",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "search_btn_text_color",
+      "label": "Search Button Text/Icons Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "search_btn_hover_color",
+      "label": "Search Button Hover BG",
+      "default": "#357ABD"
+    },
+    {
+      "type": "color",
+      "id": "search_btn_text_hover_color",
+      "label": "Search Button Hover Text/Icons",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header",
+      "category": "header"
+    }
+  ]
+}
+{% endschema %}

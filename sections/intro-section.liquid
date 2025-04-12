@@ -1,0 +1,248 @@
+<section class="adventure-section text-center text-md-start">
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- Text Column -->
+      <div class="{% if section.settings.isImage %}col-md-6{% else %}col-md-12{% endif %}">
+        <h1 class="adventure-heading">
+          <span class="text-info1">{{ section.settings.text1 }}</span>
+          <span class="text-info2">{{ section.settings.text2 }}</span>
+          <span class="text-info3">{{ section.settings.text3 }}</span>
+        </h1>
+        <div class="adventure-subheading subheader mt-4">
+          {{ section.settings.description }}
+        </div>
+        <p class="author-signature">
+          {{ section.settings.signature }}
+          <br>
+          <span class="designation">{{ section.settings.designation }}</span>
+        </p>
+      </div>
+
+      <!-- Image Column -->
+      {% if section.settings.isImage %}
+        <div class="col-md-6 text-center">
+          <div class="styled-image-wrapper">
+            <img src="{{ section.settings.img | img_url:'original' }}" alt="Image" class="styled-image img-fluid">
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .styled-image-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .styled-image-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 100%;
+    height: 100%;
+    background-color: {{ section.settings.bg_shadow_color }}; /* Background for shadow */
+    border-radius: 10px;
+    z-index: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .styled-image {
+    position: relative;
+    z-index: 2;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.5);
+  }
+
+  .adventure-section {
+    background-color: {{ section.settings.bg_color }};
+    padding: 4rem;
+  }
+
+  .text-info1, .text-info2, .text-info3 {
+    font-size: {{ section.settings.title_size }}px;
+  }
+
+  .text-info1 {
+    color: {{ section.settings.text1_color }};
+  }
+
+  .text-info2 {
+    color: {{ section.settings.text2_color }};
+  }
+  .text-info3 {
+    color: {{ section.settings.text3_color }};
+  }
+
+  .adventure-subheading {
+    color: {{ section.settings.description_color }};
+    font-size: {{ section.settings.description_size }}px;
+  }
+
+  .author-signature {
+    color: {{ section.settings.signature_color }};
+    font-size: {{ section.settings.signature_size }}px;
+    padding-top: 40px;
+  }
+
+  .designation {
+    color: {{ section.settings.designation_color }};
+    font-size: {{ section.settings.designaton_size }}px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Intro Section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "isImage",
+      "label": "Want Image?",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#fff"
+    },
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Image"
+    },
+    {
+      "type": "color",
+      "id": "bg_shadow_color",
+      "label": "Background Shadow Color",
+      "default": "#fff"
+    },
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "default": 50,
+      "min": 40,
+      "max": 80,
+      "step": 1
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text 1",
+      "default": "It's Time For a"
+    },
+    {
+      "type": "color",
+      "id": "text1_color",
+      "label": "Text 1 Color",
+      "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text 2",
+      "default": "New Adventure!"
+    },
+    {
+      "type": "color",
+      "id": "text2_color",
+      "label": "Text 2 Color",
+      "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text 3",
+      "default": "What are you waiting for?"
+    },
+    {
+      "type": "color",
+      "id": "text3_color",
+      "label": "Text 3 Color",
+      "default": "#fff"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Our team of travel insiders is obsessed with finding the best things to do everywhere we travel. From Paris to</p>\n<p>Phuket to Perth, from traditional tours to once-in-a-lifetime experiences, we have something for every kind of</p>\n<p>traveler. And we are proud to say that after 27 experience-packed years, we are the world leader. When</p>\n<p>planning your trip, why start anywhere else?</p>"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#000"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description Size",
+      "default": 10,
+      "min": 10,
+      "max": 40,
+      "step": 1
+    },
+    {
+      "type": "text",
+      "id": "signature",
+      "label": "Signature",
+      "default": "Pritom"
+    },
+    {
+      "type": "color",
+      "id": "signature_color",
+      "label": "Signature Color",
+      "default": "#000"
+    },
+    {
+      "type": "range",
+      "id": "signature_size",
+      "label": "Signature Size",
+      "default": 10,
+      "min": 10,
+      "max": 40,
+      "step": 1
+    },
+    {
+      "type": "text",
+      "id": "designation",
+      "label": "Designation",
+      "default": "CEO"
+    },
+    {
+      "type": "color",
+      "id": "designation_color",
+      "label": "Designation Color",
+      "default": "#000"
+    },
+    {
+      "type": "range",
+      "id": "designaton_size",
+      "label": "Designation Size",
+      "default": 10,
+      "min": 10,
+      "max": 40,
+      "step": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Intro Section",
+      "category": "Intro"
+    }
+  ]
+}
+{% endschema %}

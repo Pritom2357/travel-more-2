@@ -1,0 +1,165 @@
+{% schema %}
+{
+  "name": "Happy Travelers Reviews",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Happy Travelers"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image",
+      "info": "Upload or select an image to display above the reviews."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "id": "name",
+          "type": "text",
+          "label": "Reviewer Name",
+          "default": "Howard Reed"
+        },
+        {
+          "id": "date",
+          "type": "text",
+          "label": "Review Date",
+          "default": "2023-05-15"
+        },
+        {
+          "type": "number",
+          "id": "rating",
+          "label": "Star Rating (1-5)",
+          "default": 5,
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Review Title",
+          "default": "The planning process was excellent"
+        },
+        {
+          "id": "text",
+          "type": "textarea",
+          "label": "Review Text",
+          "default": "It was a life changing experience and we couldn’t be happier to have done it..."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Happy Travelers Reviews"
+    }
+  ]
+}
+{% endschema %}
+
+<section id="happy-travelers" style="padding: 2rem 1rem; background: #f9f9f9;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <!-- Section Title -->
+    {% if section.settings.section_title != blank %}
+      <h2 style="text-align: center; font-size: 2rem; margin-bottom: 1.5rem;">
+        {{ section.settings.section_title }}
+      </h2>
+    {% endif %}
+
+    <!-- Content Wrapper: Hero Image and Reviews -->
+    <div
+      style="
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        align-items: flex-start;
+        justify-content: center;
+      "
+    >
+      <!-- Hero Image -->
+      {% if section.settings.hero_image != blank %}
+        <div
+          style="
+            flex: 1 1 300px;
+            max-width: 400px;
+            text-align: center;
+          "
+        >
+          <img
+            src="{{ section.settings.hero_image | img_url: '1024x' }}"
+            alt="Traveler with passport"
+            style="max-width: 100%; height: auto; border-radius: 8px;"
+          >
+        </div>
+      {% endif %}
+
+      <!-- Reviews Grid -->
+      <div
+        class="reviews-wrapper"
+        style="
+          flex: 2 1 600px;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 1rem;
+        "
+      >
+        {% for block in section.blocks %}
+          {% if block.type == 'review' %}
+            <div
+              class="review-card"
+              style="
+                background: #fff;
+                border-radius: 8px;
+                padding: 1.5rem;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+              "
+            >
+              <!-- Rating (Stars) -->
+              <div style="color: #f39c12; margin-bottom: 0.5rem;">
+                {% assign rating = block.settings.rating | default: 0 %}
+                {% assign filled_stars = rating | floor %}
+                {% assign empty_stars = 5 | minus: filled_stars %}
+
+                {% for star in (1..filled_stars) %}
+                  <i class="bi bi-star-fill"></i>
+                {% endfor %}
+                {% for star in (1..empty_stars) %}
+                  <i class="bi bi-star"></i>
+                {% endfor %}
+              </div>
+
+              <!-- Review Title -->
+              <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">
+                {{ block.settings.title }}
+              </h3>
+
+              <!-- Author and Date -->
+              <p style="font-size: 0.9rem; color: #999; margin-bottom: 1rem;">
+                <strong>{{ block.settings.name }}</strong> &nbsp; | &nbsp;
+                {{ block.settings.date }}
+              </p>
+
+              <!-- Review Text -->
+              <p style="line-height: 1.5; margin-bottom: 0; flex-grow: 1;">
+                {{ block.settings.text }}
+              </p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- If no blocks are added, show a fallback message (optional) -->
+    {% if section.blocks.size == 0 %}
+      <p style="text-align: center; margin-top: 2rem; color: #666;">No reviews added yet.</p>
+    {% endif %}
+  </div>
+</section>

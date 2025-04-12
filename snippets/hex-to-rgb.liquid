@@ -1,0 +1,49 @@
+{% comment %}
+  Snippet: hex-to-rgb.liquid
+  Description: Converts a hex color string to its red, green, and blue decimal components.
+  Usage:
+    - Set the variable `input_hex_color` before including this snippet.
+    - After inclusion, `red`, `green`, and `blue` variables will be available.
+{% endcomment %}
+
+{% assign hex_digits = '0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F' | split: ',' %}
+{% assign hex_color = input_hex_color | remove: '#' | upcase %}
+
+{% assign red = 0 %}
+{% assign green = 0 %}
+{% assign blue = 0 %}
+
+{% assign color_components = 'red,green,blue' | split: ',' %}
+
+{% for component in color_components %}
+  {% assign slice_start = forloop.index0 | times: 2 %}
+  {% assign hex_component = hex_color | slice: slice_start, 2 %}
+  {% assign high = hex_component | slice: 0, 1 %}
+  {% assign low = hex_component | slice: 1, 1 %}
+
+  {% assign high_dec = 0 %}
+  {% for digit in hex_digits %}
+    {% if digit == high %}
+      {% assign high_dec = forloop.index0 %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% assign low_dec = 0 %}
+  {% for digit in hex_digits %}
+    {% if digit == low %}
+      {% assign low_dec = forloop.index0 %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% assign value = high_dec | times: 16 | plus: low_dec %}
+
+  {% if component == 'red' %}
+    {% assign red = value %}
+  {% elsif component == 'green' %}
+    {% assign green = value %}
+  {% elsif component == 'blue' %}
+    {% assign blue = value %}
+  {% endif %}
+{% endfor %}

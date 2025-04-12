@@ -1,0 +1,368 @@
+{% assign product = all_products[section.settings.product] %}
+
+<div class="featured-product-section">
+  <div class="container">
+    {% if product != blank %}
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="featured-image">
+            <img
+              src="{{ product.featured_image | img_url:'800x' }}"
+              alt="{{ product.title | escape }}"
+              width="100%"
+              id="featured-product-image"
+              loading="lazy"
+            >
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          {% form 'product', product, id: 'featured-product-form' %}
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'title' %}
+                  <h2 class="title">{{ product.title | escape }}</h2>
+                {% when 'price' %}
+                  <h3 class="price">{{ product.price | money }}</h3>
+                {% when 'variants' %}
+                  <div class="product-variants">
+                    <label for="ProductSelect-featured">Choose an option:</label>
+                    <select
+                      class="form-control"
+                      name="id"
+                      id="ProductSelect-featured"
+                      aria-label="Product Variant Selector"
+                    >
+                      {% for variant in product.variants %}
+                        <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                {% when 'description' %}
+                  <div class="description">
+                    {{ product.description }}
+                  </div>
+                {% when 'quantity' %}
+                  <div class="quantity-selector my-3">
+                    <label for="Quantity-featured">Quantity:</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      name="quantity"
+                      id="Quantity-featured"
+                      value="1"
+                      min="1"
+                      aria-label="Product Quantity"
+                    >
+                  </div>
+                {% when 'addToCart' %}
+                  <div class="action">
+                    <button type="submit" name="add" class="btn btn-primary">Add to Cart</button>
+                  </div>
+              {% endcase %}
+            {% endfor %}
+          {% endform %}
+        </div>
+      </div>
+    {% else %}
+      <div class="text-center">
+        <h4>Please select a product first</h4>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  /* Featured Product Section */
+  .featured-product-section {
+    padding: 60px 0;
+    background-color: #f9f9f9;
+  }
+
+  .featured-product-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .featured-product-section .featured-image img {
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    cursor: zoom-in;
+  }
+
+  .featured-product-section .featured-image img:hover {
+    transform: scale(1.05);
+  }
+
+  .featured-product-section .title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .featured-product-section .price {
+    font-size: 1.8rem;
+    color: #e74c3c;
+    margin-bottom: 20px;
+  }
+
+  .featured-product-section .description {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 30px;
+  }
+
+  .featured-product-section .product-variants label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .featured-product-section .product-variants select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='10' height='7' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23333' stroke-width='2' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px 7px;
+  }
+
+  .featured-product-section .quantity-selector {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .featured-product-section .quantity-selector label {
+    margin-right: 10px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .featured-product-section .quantity-selector input {
+    width: 80px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  .featured-product-section .action .btn {
+    padding: 15px 30px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #3498db;
+    color: #fff;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+
+  .featured-product-section .action .btn:hover {
+    background-color: #2980b9;
+  }
+
+  @media (max-width: 768px) {
+    .featured-product-section .row {
+      flex-direction: column;
+    }
+
+    .featured-product-section .col-md-6 {
+      width: 100%;
+      margin-bottom: 30px;
+    }
+
+    .featured-product-section .title {
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    .featured-product-section .price {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    .featured-product-section .description {
+      text-align: center;
+    }
+
+    .featured-product-section .action .btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  /* Accessibility Enhancements */
+  .featured-product-section .form-control:focus,
+  .featured-product-section .btn:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+  }
+</style>
+
+<!-- Embedded JavaScript -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const productForm = document.getElementById('featured-product-form');
+    const variantSelect = document.getElementById('ProductSelect-featured');
+    const priceElement = document.querySelector('.featured-product-section .price');
+    const featuredImage = document.getElementById('featured-product-image');
+
+    // Parse product variants data
+    const productVariants = {{ product.variants | json }};
+
+    if (variantSelect) {
+      variantSelect.addEventListener('change', function () {
+        const selectedVariantId = this.value;
+        const selectedVariant = productVariants.find(variant => variant.id == selectedVariantId);
+
+        if (selectedVariant) {
+          // Update the price
+          priceElement.innerHTML = Shopify.formatMoney(selectedVariant.price, "{{ shop.money_format }}");
+
+          // Update the featured image if a variant-specific image exists
+          if (selectedVariant.featured_image) {
+            featuredImage.src = selectedVariant.featured_image.src;
+          } else {
+            featuredImage.src = "{{ product.featured_image | img_url:'800x' }}";
+          }
+        }
+      });
+    }
+
+    // Handle Add to Cart with AJAX
+    productForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(productForm);
+      const variantId = formData.get('id');
+      const quantity = formData.get('quantity') || 1;
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: variantId,
+          quantity: quantity
+        }),
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Display a confirmation message (customize as needed)
+        alert(`${data.title} has been added to your cart.`);
+
+        // Optionally, update the cart count if you have a cart counter element
+        const cartCountElement = document.getElementById('CartCount');
+        if (cartCountElement) {
+          fetch('/cart.js')
+            .then(response => response.json())
+            .then(cart => {
+              cartCountElement.innerText = cart.item_count;
+            });
+        }
+
+        // Scroll to cart or a specific confirmation section (customize as needed)
+        // Example:
+        // document.getElementById('cart-section').scrollIntoView({ behavior: 'smooth' });
+      })
+      .catch(error => {
+        console.error('Error adding to cart:', error);
+        alert('There was an error adding the product to your cart.');
+      });
+    });
+
+    // Optional: Initialize Image Zoom (using ElevateZoom or any other library)
+    // Ensure jQuery is loaded if using a jQuery-based plugin
+    /*
+    if (typeof jQuery !== 'undefined') {
+      $("#featured-product-image").elevateZoom({
+        zoomType: "lens",
+        lensShape: "round",
+        lensSize: 200
+      });
+    }
+    */
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Featured Product",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Product title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Product price",
+      "limit": 1
+    },
+    {
+      "type": "variants",
+      "name": "Variants",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Product description",
+      "limit": 1
+    },
+    {
+      "type": "quantity",
+      "name": "Product quantity",
+      "limit": 1
+    },
+    {
+      "type": "addToCart",
+      "name": "Add to Cart",
+      "limit": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Product",
+      "category": "Product",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "price"
+        },
+        {
+          "type": "variants"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "quantity"
+        },
+        {
+          "type": "addToCart"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
