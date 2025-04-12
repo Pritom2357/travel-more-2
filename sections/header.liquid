@@ -95,12 +95,22 @@
     Nav (Header) Container
   */
   .nav-settings {
-    position: relative;
-    z-index: 2;
+    position: {% if section.settings.is_sticky_header %}sticky{% else %}relative{% endif %};
+    top: 0;
+    z-index: 1000;
+    width: 100%;
     background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, {{ section.settings.header_bg_opacity }}) !important;
     color: {{ section.settings.header_text_color }} !important;
     font-size: {{ section.settings.menu_text_size }}px;
+    transition: background-color 0.3s ease;
   }
+
+  {% if section.settings.is_sticky_header %}
+    .nav-settings.scrolled{
+      background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, 1) !important;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0,1);
+    }
+  {% endif %}
 
   /*
     Nav Links
@@ -167,6 +177,19 @@
     border-radius: 2px;
   }
 </style>
+
+{% if section.settings.is_sticky_header %}
+  <script>
+    document.addEventListener('scroll', function(){
+     const header = document.querySelector('.nav-settings');
+     if(window.scrollY > 50){
+        header.classList.add('scrolled')
+      }else{
+        header.classList.remove('scrolled');
+      }
+    })
+  </script>
+{% endif %}
 
 {% schema %}
 {
