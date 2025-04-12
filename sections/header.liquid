@@ -15,7 +15,8 @@
         <img
           src="{{ section.settings.logo | img_url: '100x' }}"
           alt="{{ shop.name }}"
-          style="width: {{ section.settings.logo_size }}px; height: auto;"
+          width= "{{ section.settings.logo_size }}"
+          height= "auto"
         >
       </a>
 
@@ -181,7 +182,13 @@
       "label": "Enable Header in This Section (ignored if home page)",
       "default": true
     },
-
+    {
+      "type": "checkbox",
+      "id": "is_sticky_header",
+      "label": "Sticky Header?",
+      "default": false,
+      "info": "Header will stay fixed on top when scrolling"
+    },
     {
       "type": "header",
       "content": "Header Background & Text"
