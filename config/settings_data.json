@@ -144,7 +144,7 @@
         "settings": {
           "is_header": true,
           "is_sticky_header": true,
-          "bg_header": "#383d42",
+          "bg_header": "#2a333d",
           "header_bg_opacity": 0.7,
           "header_text_color": "#ffffff",
           "header_text_hover_color": "#cccccc",
