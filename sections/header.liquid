@@ -185,7 +185,9 @@
      const header = document.querySelector('.nav-settings');
      const headerHeight = header.offsetHeight;
 
-     document.body.style.paddingTop = headerHeight + 'px';
+     {% if section.settings.adjust_body_padding %}
+      document.body.style.paddingTop = headerHeight + 'px';
+     {% endif %}
 
      document.addEventListener('scroll', function(){
       if(window.scrollY > 50){
@@ -218,6 +220,13 @@
       "label": "Sticky Header?",
       "default": false,
       "info": "Header will stay fixed on top when scrolling"
+    },
+    {
+      "type": "checkbox",
+      "id": "adjust_body_padding",
+      "label": "Enable padding for header",
+      "default": true,
+      "info": "When enabled, pushes page content down to prevent header overlap. Disable for pages with custom hero sections."
     },
     {
       "type": "header",
