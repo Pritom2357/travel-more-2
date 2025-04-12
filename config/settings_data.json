@@ -153,7 +153,7 @@
           "logo_size": 60,
           "menu": "main-menu",
           "menu_text_size": 20,
-          "header_alignment": "left",
+          "header_alignment": "center",
           "enable_search_bar": true,
           "search_btn_text_color": "#ffffff",
           "search_btn_hover_color": "#357abd",
