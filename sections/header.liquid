@@ -11,66 +11,74 @@
 {% if template.name != 'index' %}
   <nav class="navbar navbar-expand-lg nav-settings">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <img
-          src="{{ section.settings.logo | img_url: '100x' }}"
-          alt="{{ shop.name }}"
-          width= "{{ section.settings.logo_size }}"
-          height= "auto"
+      {% capture logo_html %}
+        <a class="navbar-brand" href="#">
+          <img
+            src="{{ section.settings.logo | img_url: '100x' }}"
+            alt="{{ shop.name }}"
+            width= "{{ section.settings.logo_size }}"
+            height= "auto"
+          >
+        </a>
+      {% endcapture %}
+
+      {% capture toggle_button %}
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
-      </a>
+          <i class="bi bi-list btn-outline-success"></i>
+        </button>
+      {% endcapture %}
 
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="bi bi-list btn-outline-success"></i>
-      </button>
-
-      <div class="collapse navbar-collapse nav-text" id="navbarSupportedContent">
-        <!-- Determine alignment class for nav items -->
-        {% assign alignment_class = 'justify-content-start' %}
-        {% if section.settings.header_alignment == 'center' %}
-          {% assign alignment_class = 'justify-content-center' %}
-        {% elsif section.settings.header_alignment == 'right' %}
-          {% assign alignment_class = 'justify-content-end' %}
-        {% endif %}
-
-        <ul class="navbar-nav mb-2 mb-lg-0 {{ alignment_class }} flex-grow-1">
-          {% for menu in section.settings.menu.links %}
-            <li class="nav-item {% if menu.links.size > 1 %} dropdown {% endif %}">
-              <a
-                class="nav-link active {% if menu.links.size > 1 %} dropdown-toggle {% endif %}"
-                aria-current="page"
-                href="{{ menu.url }}"
+      {% capture menu_html %}
+        <div class="collapse navbar-collapse nav-text" id="navbarSupportedContent">
+          <!-- Determine alignment class for nav items -->
+          {% assign alignment_class = 'justify-content-start' %}
+          {% if section.settings.header_alignment == 'center' %}
+            {% assign alignment_class = 'justify-content-center' %}
+          {% elsif section.settings.header_alignment == 'right' %}
+            {% assign alignment_class = 'justify-content-end' %}
+          {% endif %}
+  
+          <ul class="navbar-nav mb-2 mb-lg-0 {{ alignment_class }} flex-grow-1">
+            {% for menu in section.settings.menu.links %}
+              <li class="nav-item {% if menu.links.size > 1 %} dropdown {% endif %}">
+                <a
+                  class="nav-link active {% if menu.links.size > 1 %} dropdown-toggle {% endif %}"
+                  aria-current="page"
+                  href="{{ menu.url }}"
+                  {% if menu.links.size > 1 %}
+                    id="navbarDropdown_{{ forloop.index }}"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  {% endif %}
+                >
+                  {{- menu.title -}}
+                </a>
+  
                 {% if menu.links.size > 1 %}
-                  id="navbarDropdown_{{ forloop.index }}"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown_{{ forloop.index }}">
+                    {% for sub_menu in menu.links %}
+                      <li>
+                        <a class="dropdown-item" href="{{ sub_menu.url }}">{{ sub_menu.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
                 {% endif %}
-              >
-                {{- menu.title -}}
-              </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endcapture %}
 
-              {% if menu.links.size > 1 %}
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown_{{ forloop.index }}">
-                  {% for sub_menu in menu.links %}
-                    <li>
-                      <a class="dropdown-item" href="{{ sub_menu.url }}">{{ sub_menu.title }}</a>
-                    </li>
-                  {% endfor %}
-                </ul>
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-
+      {% capture search_html %}
         {% if section.settings.enable_search_bar %}
           <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -85,7 +93,41 @@
             </a>
           </form>
         {% endif %}
-      </div>
+      {% endcapture %}
+
+      <div class="d-lg-none order-1">{{ toggle_button }}</div>
+
+      {% case section.settings.header_layout %}
+        {% when 'logo_menu_search' %}
+          <div class="order-1 order-lg-1">{{ logo_html }}</div>
+          <div class="order-3 order-lg-2 flex-grow-1">{{ menu_html }}</div>
+          <div class="order-2 order-lg-3">{{ search_html }}</div>
+        {% when 'menu_logo_search' %}
+          <div class="order-2 order-lg-2">{{ logo_html }}</div>
+          <div class="order-3 order-lg-1 flex-grow-1">{{ menu_html }}</div>
+          <div class="order-1 order-lg-3">{{ search_html }}</div>
+        {% when 'menu_search_logo' %}
+          <div class="order-1 order-lg-3">{{ logo_html }}</div>
+          <div class="order-3 order-lg-1 flex-grow-1">{{ menu_html }}</div>
+          <div class="order-2 order-lg-2">{{ search_html }}</div>
+        {% when 'logo_search_menu' %}
+          <div class="order-1 order-lg-1">{{ logo_html }}</div>
+          <div class="order-3 order-lg-3 flex-grow-1">{{ menu_html }}</div>
+          <div class="order-2 order-lg-2">{{ search_html }}</div>
+        {% when 'search_logo_menu' %}
+          <div class="order-2 order-lg-2">{{ logo_html }}</div>
+          <div class="order-3 order-lg-3 flex-grow-1">{{ menu_html }}</div>
+          <div class="order-1 order-lg-1">{{ search_html }}</div>
+        {% when 'search_menu_logo' %}
+          <div class="order-3 order-lg-3">{{ logo_html }}</div>
+          <div class="order-2 order-lg-2 flex-grow-1">{{ menu_html }}</div>
+          <div class="order-1 order-lg-1">{{ search_html }}</div>
+        {% else %}
+          <div class="order-1 order-lg-1">{{ logo_html }}</div>
+          <div class="order-3 order-lg-2 flex-grow-1">{{ menu_html }}</div>
+          <div class="order-2 order-lg-3">{{ search_html }}</div>
+      {% endcase %}
+
     </div>
   </nav>
 {% endif %}
@@ -236,7 +278,21 @@
       ],
       "default": "left"
     },
-    
+    {
+      "type": "select",
+      "id": "header_layout",
+      "label": "Component Order",
+      "options": [
+        { "value": "logo_menu_search", "label": "Logo → Menu → Search" },
+        { "value": "menu_logo_search", "label": "Menu → Logo → Search" },
+        { "value": "menu_search_logo", "label": "Menu → Search → Logo" },
+        { "value": "logo_search_menu", "label": "Logo → Search → Menu" },
+        { "value": "search_logo_menu", "label": "Search → Logo → Menu" },
+        { "value": "search_menu_logo", "label": "Search → Menu → Logo" }
+      ],
+      "default": "logo_menu_search",
+      "info": "Arrange the order of header components"
+    },
     {
       "type": "header",
       "content": "Logo"
