@@ -159,7 +159,7 @@
           "search_btn_hover_color": "rgba(0,0,0,0)",
           "search_btn_text_hover_color": "#1ed4be",
           "is_sticky_header": false,
-          "adjust_body_padding": false,
+          "adjust_body_padding": true,
           "exempt_padding_pages_list": "footer-exemption"
         }
       },
