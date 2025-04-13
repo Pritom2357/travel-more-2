@@ -145,23 +145,23 @@
         "type": "header",
         "settings": {
           "is_header": true,
-          "is_sticky_header": true,
-          "adjust_body_padding": true,
-          "exempt_padding_pages_list": "footer-exemption",
-          "bg_header": "#2a333d",
-          "header_bg_opacity": 0.7,
-          "header_text_color": "#FFFFFF",
-          "header_text_hover_color": "#449eed",
-          "header_link_hover_bg": "rgba(0,0,0,0)",
+          "header_alignment": "center",
           "logo": "shopify://shop_images/logo.png",
           "logo_size": 60,
           "menu": "main-menu",
           "menu_text_size": 20,
-          "header_alignment": "center",
+          "bg_header": "#2a333d",
+          "header_bg_opacity": 0.7,
+          "header_text_color": "#ffffff",
+          "header_text_hover_color": "#449eed",
+          "header_link_hover_bg": "rgba(0,0,0,0)",
           "enable_search_bar": true,
           "search_btn_text_color": "#ffffff",
           "search_btn_hover_color": "#357abd",
-          "search_btn_text_hover_color": "#f3f3f3"
+          "search_btn_text_hover_color": "#f3f3f3",
+          "is_sticky_header": true,
+          "adjust_body_padding": true,
+          "exempt_padding_pages_list": "footer-exemption"
         }
       },
       "footer": {
