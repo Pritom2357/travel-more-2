@@ -36,6 +36,31 @@
         </button>
       {% endcapture %}
 
+      {% capture icons_html %}
+        <div class="d-flex icons-container">
+          <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
+            <i class="bi bi-person"></i>
+          </a>
+          <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2" aria-label="Cart">
+            <i class="bi bi-cart"></i>
+          </a>
+        </div>
+      {% endcapture %}
+
+      {% capture search_html %}
+        <div class="d-flex nav-utilities">
+          {% if section.settings.enable_search_bar %}
+            <form class="d-flex search-form">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+            </form>
+          {% endif %}
+          <div class="d-none d-lg-block">{{ icons_html }}</div>
+        </div>
+      {% endcapture %}
+
       {% capture menu_html %}
         <div class="collapse navbar-collapse nav-text" id="navbarSupportedContent">
           <!-- Determine alignment class for nav items -->
@@ -75,24 +100,20 @@
               </li>
             {% endfor %}
           </ul>
+          
+          <!-- Mobile-only search and icons -->
+          <div class="d-block d-lg-none mt-3 mobile-utilities">
+            {% if section.settings.enable_search_bar %}
+              <form class="d-flex mb-3">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">
+                  <i class="bi bi-search"></i>
+                </button>
+              </form>
+            {% endif %}
+            <div class="d-flex">{{ icons_html }}</div>
+          </div>
         </div>
-      {% endcapture %}
-
-      {% capture search_html %}
-        {% if section.settings.enable_search_bar %}
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success ml-2" type="submit">
-              <i class="bi bi-search btn-outline-success"></i>
-            </button>
-            <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
-              <i class="bi bi-person"></i>
-            </a>
-            <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2" aria-label="Cart">
-              <i class="bi bi-cart"></i>
-            </a>
-          </form>
-        {% endif %}
       {% endcapture %}
 
       <div class="d-lg-none order-1">{{ toggle_button }}</div>
@@ -218,6 +239,30 @@
     z-index: 20;
     background-color: #fff;
     border-radius: 2px;
+  }
+
+  /* Utilities container (search + icons) */
+  .nav-utilities {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Mobile utilities improvements */
+  @media (max-width: 991px) {
+    .mobile-utilities {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1rem;
+    }
+    
+    .search-form {
+      width: 100%;
+    }
+  }
+  
+  /* Icons container */
+  .icons-container {
+    display: flex;
+    align-items: center;
   }
 </style>
 
