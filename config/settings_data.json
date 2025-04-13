@@ -10,6 +10,8 @@
 {
   "current": {
     "logo_width": 90,
+    "color_scheme": "travel_blue",
+    "custom_text_color": "#FFFFFF",
     "type_header_font": "assistant_n4",
     "heading_scale": 100,
     "type_body_font": "assistant_n4",
@@ -148,7 +150,7 @@
           "exempt_padding_pages_list": "footer-exemption",
           "bg_header": "#2a333d",
           "header_bg_opacity": 0.7,
-          "header_text_color": "#ffffff",
+          "header_text_color": "#FFFFFF",
           "header_text_hover_color": "#449eed",
           "header_link_hover_bg": "rgba(0,0,0,0)",
           "logo": "shopify://shop_images/logo.png",
