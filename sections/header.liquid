@@ -223,73 +223,27 @@
   "settings": [
     {
       "type": "header",
-      "content": "Header Display Control"
+      "content": "Display Settings"
     },
     {
       "type": "checkbox",
       "id": "is_header",
-      "label": "Enable Header in This Section (ignored if home page)",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "is_sticky_header",
-      "label": "Sticky Header?",
-      "default": false,
-      "info": "Header will stay fixed on top when scrolling"
-    },
-    {
-      "type": "checkbox",
-      "id": "adjust_body_padding",
-      "label": "Add padding to body",
+      "label": "Enable Header",
       "default": true,
-      "info": "When enabled, pushes page content down to prevent header overlap. Disable for pages with custom hero sections."
+      "info": "Note: Header is automatically hidden on home page"
     },
     {
-      "type": "link_list",
-      "id": "exempt_padding_pages_list",
-      "label": "Pages to Exempt from Padding",
-      "info": "Create a menu with links to pages you want to exempt from body padding"
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Navigation Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
     },
-    {
-      "type": "header",
-      "content": "Header Background & Text"
-    },
-    {
-      "type": "color",
-      "id": "bg_header",
-      "label": "Header Background Color",
-      "default": "#449EED"
-    },
-    {
-      "type": "range",
-      "id": "header_bg_opacity",
-      "label": "Header Background Opacity",
-      "default": 0.4,
-      "min": 0,
-      "max": 1,
-      "step": 0.1
-    },
-    {
-      "type": "color",
-      "id": "header_text_color",
-      "label": "Header Text Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "header_text_hover_color",
-      "label": "Header Text Hover Color",
-      "default": "#ccc"
-    },
-    {
-      "type": "color",
-      "id": "header_link_hover_bg",
-      "label": "Nav Link Hover Background",
-      "default": "transparent",
-      "info": "Optional. Leave blank to avoid a background color on hover."
-    },
-
+    
     {
       "type": "header",
       "content": "Logo"
@@ -297,21 +251,21 @@
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo"
+      "label": "Logo image"
     },
     {
       "type": "range",
       "id": "logo_size",
-      "label": "Logo Size (px)",
+      "label": "Logo size (px)",
       "default": 100,
       "min": 50,
       "max": 250,
       "step": 10
     },
-
+    
     {
       "type": "header",
-      "content": "Menu Settings"
+      "content": "Navigation"
     },
     {
       "type": "link_list",
@@ -321,24 +275,52 @@
     {
       "type": "range",
       "id": "menu_text_size",
-      "label": "Menu Text Size (px)",
+      "label": "Text size (px)",
       "default": 20,
       "min": 10,
       "max": 40,
       "step": 1
     },
+    
     {
-      "type": "select",
-      "id": "header_alignment",
-      "label": "Header Alignment",
-      "options": [
-        { "value": "left",   "label": "Left Aligned" },
-        { "value": "center", "label": "Center Aligned" },
-        { "value": "right",  "label": "Right Aligned" }
-      ],
-      "default": "left"
+      "type": "header",
+      "content": "Colors"
     },
-
+    {
+      "type": "color",
+      "id": "bg_header",
+      "label": "Background color",
+      "default": "#449EED"
+    },
+    {
+      "type": "range",
+      "id": "header_bg_opacity",
+      "label": "Background opacity",
+      "default": 0.4,
+      "min": 0,
+      "max": 1,
+      "step": 0.1
+    },
+    {
+      "type": "color",
+      "id": "header_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "header_text_hover_color",
+      "label": "Text hover color",
+      "default": "#ccc"
+    },
+    {
+      "type": "color",
+      "id": "header_link_hover_bg",
+      "label": "Link hover background",
+      "default": "transparent",
+      "info": "Leave blank for no background color on hover"
+    },
+    
     {
       "type": "header",
       "content": "Search Bar"
@@ -346,26 +328,51 @@
     {
       "type": "checkbox",
       "id": "enable_search_bar",
-      "label": "Enable Search Bar?",
+      "label": "Enable search",
       "default": true
     },
     {
       "type": "color",
       "id": "search_btn_text_color",
-      "label": "Search Button Text/Icons Color",
+      "label": "Button icon color",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "search_btn_hover_color",
-      "label": "Search Button Hover BG",
+      "label": "Button hover background",
       "default": "#357ABD"
     },
     {
       "type": "color",
       "id": "search_btn_text_hover_color",
-      "label": "Search Button Hover Text/Icons",
+      "label": "Button hover icon color",
       "default": "#ffffff"
+    },
+    
+    {
+      "type": "header",
+      "content": "Sticky Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_sticky_header",
+      "label": "Enable sticky header",
+      "default": false,
+      "info": "Header will stay fixed at the top when scrolling"
+    },
+    {
+      "type": "checkbox",
+      "id": "adjust_body_padding",
+      "label": "Add padding to body",
+      "default": true,
+      "info": "Pushes content down to prevent header overlap"
+    },
+    {
+      "type": "link_list",
+      "id": "exempt_padding_pages_list",
+      "label": "Pages with no padding",
+      "info": "Select pages that should not have added padding"
     }
   ],
   "presets": [
