@@ -101,7 +101,7 @@
     z-index: 1000;
     width: 100%;
     background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, {{ section.settings.header_bg_opacity }}) !important;
-    color: {{ section.settings.header_text_color }} !important;
+    color: var(--text-color) !important;
     font-size: {{ section.settings.menu_text_size }}px;
     transition: background-color 0.3s ease;
   }
@@ -117,15 +117,13 @@
     Nav Links
   */
   .nav-settings .nav-link {
-    color: {{ section.settings.header_text_color }} !important;
+    color: var(--text-color) !important;
     transition: color 0.3s, background-color 0.3s;
   }
 
   .nav-settings .nav-link:hover {
-    color: {{ section.settings.header_text_hover_color }} !important;
-    {% if section.settings.header_link_hover_bg != blank %}
-      background-color: {{ section.settings.header_link_hover_bg }} !important;
-    {% endif %}
+    color: var(--secondary-color) !important;
+    background-color: rgba(var(--background-color), 0.9) !important;
   }
 
   /*
@@ -286,7 +284,7 @@
       "type": "color",
       "id": "header_link_hover_bg",
       "label": "Nav Link Hover Background",
-      "default": "#eeeddd",
+      "default": "transparent",
       "info": "Optional. Leave blank to avoid a background color on hover."
     },
 

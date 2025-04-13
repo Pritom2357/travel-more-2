@@ -47,7 +47,37 @@
             left: 0;
         }
   
-      </style>
+      :root {
+        --primary-color: {{ settings.custom_primary_color }};
+        --secondary-color: {{ settings.custom_secondary_color }};
+        --text-color: {{ settings.custom_text_color }};
+        --background-color: {{ settings.custom_background_color }};
+        
+        {% case settings.color_scheme %}
+          {% when 'travel_blue' %}
+            --primary-color: #449EED;
+            --secondary-color: #357ABD;
+            --text-color: #181818;
+            --background-color: #FFFFFF;
+          {% when 'sunset_orange' %}
+            --primary-color: #FF7D45;
+            --secondary-color: #E55A2B;
+            --text-color: #1C1C1C;
+            --background-color: #FFF9F5;
+          {% when 'tropical_green' %}
+            --primary-color: #4CAF50;
+            --secondary-color: #388E3C;
+            --text-color: #212121;
+            --background-color: #F5FFF7;
+          {% when 'desert_tan' %}
+            --primary-color: #D2B48C;
+            --secondary-color: #A89070;
+            --text-color: #3A3A3A;
+            --background-color: #FAF7F2;
+          {% when 'custom' %}
+        {% endcase %}
+      }
+    </style>
     <body>
       <div>
         <!-- header start -->
