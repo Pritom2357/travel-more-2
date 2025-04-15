@@ -1,13 +1,11 @@
 {% assign bg_img_url = section.settings.bg_img | img_url: '1600x' %}
 
-<!-- Convert Header Background Color -->
 {% assign input_hex_color = section.settings.bg_header %}
 {% include 'hex-to-rgb' %}
 {% assign header_red = red %}
 {% assign header_green = green %}
 {% assign header_blue = blue %}
 
-<!-- Show header only if we are NOT on the home page -->
 {% if template.name != 'index' %}
   <nav class="navbar navbar-expand-lg nav-settings">
     <div class="container-fluid">
@@ -65,7 +63,6 @@
 
       {% capture menu_html %}
         <div class="collapse navbar-collapse nav-text" id="navbarSupportedContent">
-          <!-- Determine alignment class for nav items -->
           {% assign alignment_class = 'justify-content-start' %}
           {% if section.settings.header_alignment == 'center' %}
             {% assign alignment_class = 'justify-content-center' %}
@@ -103,7 +100,6 @@
             {% endfor %}
           </ul>
           
-          <!-- Mobile-only search and icons -->
           <div class="d-block d-lg-none mt-3 mobile-utilities">
             {% if section.settings.enable_search_bar %}
               <form class="d-flex mb-3">
@@ -156,9 +152,7 @@
 {% endif %}
 
 <style>
-  /*
-    Nav (Header) Container
-  */
+
   .nav-settings {
     position: {% if section.settings.is_sticky_header %}fixed{% else %}relative{% endif %};
     top: 0;
@@ -178,9 +172,7 @@
     }
   {% endif %}
 
-  /*
-    Nav Links
-  */
+
   .nav-settings .nav-link {
     color: {{ section.settings.header_text_color }} !important;
     transition: color 0.3s, background-color 0.3s;
@@ -193,7 +185,6 @@
     {% endif %}
   }
 
-  /* Conditional base hover styles for nav links */
   .nav-settings .nav-link:hover {
     color: {{ section.settings.header_text_hover_color }} !important;
     {% if section.settings.header_link_hover_bg != blank and section.settings.menu_hover_effect == 'color' %}
@@ -201,9 +192,7 @@
     {% endif %}
   }
 
-  /*
-    Dropdown items
-  */
+ 
   .nav-settings .dropdown-item {
     color: {{ section.settings.header_text_color }};
     transition: color 0.3s, background-color 0.3s;
@@ -215,9 +204,6 @@
     {% endif %}
   }
 
-  /*
-    Search / Icons
-  */
   .nav-settings .btn-outline-success {
     background-color: transparent;
     border-color: transparent;
@@ -244,13 +230,11 @@
     border-radius: 2px;
   }
 
-  /* Utilities container (search + icons) */
   .nav-utilities {
     display: flex;
     align-items: center;
   }
   
-  /* Mobile utilities improvements */
   @media (max-width: 991px) {
     .mobile-utilities {
       border-top: 1px solid rgba(255,255,255,0.1);
@@ -276,13 +260,11 @@
     }
   }
   
-  /* Icons container */
   .icons-container {
     display: flex;
     align-items: center;
   }
 
-  /* Menu hover effects */
   {% case section.settings.menu_hover_effect %}
     {% when 'underline' %}
       .nav-settings .nav-link {
@@ -346,10 +328,8 @@
       }
     
     {% else %}
-      /* Default color change only, already implemented */
   {% endcase %}
 
-  /* Base icon styles */
   .nav-settings .btn-outline-success {
     background-color: transparent !important;
     border-color: transparent !important;
@@ -363,7 +343,6 @@
     display: inline-block;
   }
 
-  /* Clear all existing icon effect case statements and use only this one */
   {% case section.settings.icon_hover_effect %}
     
     {% when 'pulse' %}
@@ -393,7 +372,6 @@
       }
     
     {% when 'color' %}
-      /* Only change the icon color on hover */
       .nav-settings .btn-outline-success:hover i {
         color: {{ section.settings.search_btn_text_hover_color }} !important;
       }
@@ -412,7 +390,6 @@
     transform: translateY(-50%);
   }
 
-  /* Hide any duplicate logo that might appear from desktop layouts */
   @media (max-width: 991px) {
     .order-1, .order-2, .order-3 {
       .navbar-brand {
@@ -421,13 +398,11 @@
     }
   }
 
-  /* Fixed mobile menu positioning */
   @media (max-width: 991px) {
     .navbar {
       position: {% if section.settings.is_sticky_header %}fixed{% else %}absolute{% endif %};
     }
     
-    /* Fixed position for logo and toggle button */
     .mobile-logo-container {
       position: absolute;
       right: 15px;
@@ -441,7 +416,6 @@
       z-index: 1030;
     }
     
-    /* Position the dropdown menu below the header */
     .navbar-collapse {
       position: absolute;
       top: 100%;
@@ -456,54 +430,46 @@
       overflow-y: auto;
     }
     
-    /* Ensure consistent header height */
     .container-fluid {
       min-height: 60px;
       padding-top: 10px;
       padding-bottom: 10px;
     }
     
-    /* Remove previous mobile layout issues */
     .navbar-brand {
       margin-right: 0;
       margin-left: auto;
     }
   }
 
-  /* Mobile menu hover effect fixes */
   @media (max-width: 991px) {
-    /* Keep all existing hover effects with adjustments for mobile */
     
-    /* Fix for grow effect only - smaller scale on mobile */
     {% if section.settings.menu_hover_effect == 'grow' %}
       .nav-settings .nav-link:hover {
-        transform: scale(1.05) !important; /* Smaller scale for mobile */
+        transform: scale(1.05) !important; 
       }
     {% endif %}
     
-    /* Adjust underline/overline position */
     {% if section.settings.menu_hover_effect == 'underline' or section.settings.menu_hover_effect == 'overline' %}
       .nav-settings .nav-link::after,
       .nav-settings .nav-link::before {
         width: 0;
-        left: 0 !important; /* Start from left on mobile */
+        left: 0 !important;
       }
       
       .nav-settings .nav-link:hover::after,
       .nav-settings .nav-link:hover::before {
-        width: 100% !important; /* Full width underline */
+        width: 100% !important; 
         left: 0 !important;
       }
     {% endif %}
     
-    /* Keep proper spacing for mobile menu items */
     .nav-settings .nav-link {
       padding: 10px 15px !important;
       margin: 2px 0 !important;
-      overflow: hidden; /* Prevent content overflow */
+      overflow: hidden; 
     }
     
-    /* Fix dropdown menu styling */
     .nav-settings .dropdown-menu {
       background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, 0.85) !important;
       border: none;
@@ -512,7 +478,6 @@
       padding-left: 15px;
     }
     
-    /* Ensure dropdown items match main menu styling */
     .nav-settings .dropdown-item {
       color: {{ section.settings.header_text_color }} !important;
       padding: 8px 15px;
@@ -522,7 +487,6 @@
       color: {{ section.settings.header_text_hover_color }} !important;
     }
     
-    /* Add a container to prevent overflow */
     .navbar-nav {
       overflow-x: hidden;
     }
