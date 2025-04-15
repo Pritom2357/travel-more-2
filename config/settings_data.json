@@ -150,7 +150,7 @@
           "logo_size": 50,
           "menu": "main-menu",
           "menu_text_size": 23,
-          "menu_hover_effect": "border-bottom",
+          "menu_hover_effect": "glow",
           "underline_thickness": 1,
           "glow_intensity": 14,
           "grow_scale": 1.2,
@@ -170,7 +170,10 @@
           "scale_size": 1.5,
           "is_sticky_header": true,
           "adjust_body_padding": true,
-          "exempt_padding_pages_list": "footer-exemption"
+          "exempt_padding_pages_list": "footer-exemption",
+          "enable_search_modal": true,
+          "search_modal_title": "Search our destinations",
+          "popular_destinations": "Paris, Tokyo, New York, Bali, London, Rome"
         }
       },
       "footer": {
