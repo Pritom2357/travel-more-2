@@ -472,32 +472,38 @@
 
   /* Mobile menu hover effect fixes */
   @media (max-width: 991px) {
-    /* Reset problematic transformations for mobile */
-    .nav-settings .nav-link:hover {
-      transform: none !important; 
-      text-shadow: none !important;
-    }
+    /* Keep all existing hover effects with adjustments for mobile */
     
-    /* Replace with mobile-friendly alternatives */
+    /* Fix for grow effect only - smaller scale on mobile */
+    {% if section.settings.menu_hover_effect == 'grow' %}
+      .nav-settings .nav-link:hover {
+        transform: scale(1.05) !important; /* Smaller scale for mobile */
+      }
+    {% endif %}
+    
+    /* Adjust underline/overline position */
+    {% if section.settings.menu_hover_effect == 'underline' or section.settings.menu_hover_effect == 'overline' %}
+      .nav-settings .nav-link::after,
+      .nav-settings .nav-link::before {
+        width: 0;
+        left: 0 !important; /* Start from left on mobile */
+      }
+      
+      .nav-settings .nav-link:hover::after,
+      .nav-settings .nav-link:hover::before {
+        width: 100% !important; /* Full width underline */
+        left: 0 !important;
+      }
+    {% endif %}
+    
+    /* Keep proper spacing for mobile menu items */
     .nav-settings .nav-link {
-      border-left: 0px solid transparent;
-      transition: border-left-width 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-      padding-left: 10px !important;
+      padding: 10px 15px !important;
+      margin: 2px 0 !important;
+      overflow: hidden; /* Prevent content overflow */
     }
     
-    .nav-settings .nav-link:hover, 
-    .nav-settings .nav-link:active {
-      border-left: 4px solid {{ section.settings.header_text_hover_color }} !important;
-      background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, 0.7) !important;
-    }
-    
-    /* Remove before/after pseudo elements on mobile */
-    .nav-settings .nav-link::before, 
-    .nav-settings .nav-link::after {
-      display: none !important;
-    }
-    
-    /* Fix dropdown and hover behavior */
+    /* Fix dropdown menu styling */
     .nav-settings .dropdown-menu {
       background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, 0.85) !important;
       border: none;
@@ -506,15 +512,19 @@
       padding-left: 15px;
     }
     
+    /* Ensure dropdown items match main menu styling */
     .nav-settings .dropdown-item {
       color: {{ section.settings.header_text_color }} !important;
       padding: 8px 15px;
     }
     
     .nav-settings .dropdown-item:hover {
-      background-color: rgba(255,255,255,0.1) !important;
-      border-left: 4px solid {{ section.settings.header_text_hover_color }} !important;
-      padding-left: 11px;
+      color: {{ section.settings.header_text_hover_color }} !important;
+    }
+    
+    /* Add a container to prevent overflow */
+    .navbar-nav {
+      overflow-x: hidden;
     }
   }
 </style>
