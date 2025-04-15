@@ -160,7 +160,7 @@
           "search_btn_text_color": "#ffffff",
           "search_btn_hover_color": "rgba(0,0,0,0)",
           "search_btn_text_hover_color": "#1ed4be",
-          "icon_hover_effect": "pulse",
+          "icon_hover_effect": "color",
           "is_sticky_header": true,
           "adjust_body_padding": true,
           "exempt_padding_pages_list": "footer-exemption"
