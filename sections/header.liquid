@@ -151,6 +151,50 @@
   </nav>
 {% endif %}
 
+<!-- Search Modal -->
+<div class="search-modal" id="searchModal">
+  <div class="search-modal-content">
+    <div class="search-modal-header">
+      <h2>Search our destinations</h2>
+      <button type="button" class="search-close-btn" id="closeSearchModal">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="search-modal-body">
+      <form action="/search" method="get" class="search-modal-form">
+        <div class="search-input-group">
+          <i class="bi bi-search search-icon"></i>
+          <input 
+            type="text" 
+            name="q" 
+            id="searchModalInput" 
+            class="search-modal-input" 
+            placeholder="Where would you like to go?" 
+            autocomplete="off"
+          >
+        </div>
+        <button type="submit" class="search-modal-btn">Search</button>
+      </form>
+      
+      <div class="popular-searches">
+        <h3>Popular destinations</h3>
+        <div class="popular-searches-grid">
+          <a href="/search?q=Paris">Paris</a>
+          <a href="/search?q=Tokyo">Tokyo</a>
+          <a href="/search?q=New York">New York</a>
+          <a href="/search?q=Bali">Bali</a>
+          <a href="/search?q=London">London</a>
+          <a href="/search?q=Rome">Rome</a>
+        </div>
+      </div>
+      
+      <div class="search-results" id="searchResults">
+        <!-- Results will appear here -->
+      </div>
+    </div>
+  </div>
+</div>
+
 <style>
 
   .nav-settings {
@@ -491,6 +535,146 @@
       overflow-x: hidden;
     }
   }
+
+  /* Search Modal Styles */
+  .search-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .search-modal.show {
+    display: flex;
+    opacity: 1;
+  }
+
+  .search-modal-content {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: #fff;
+    margin-top: 10vh;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .search-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .search-modal-header h2 {
+    font-size: 28px;
+    margin: 0;
+    color: #fff;
+  }
+
+  .search-close-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .search-close-btn:hover {
+    transform: rotate(90deg);
+  }
+
+  .search-modal-form {
+    margin-bottom: 2rem;
+  }
+
+  .search-input-group {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 18px;
+  }
+
+  .search-modal-input {
+    width: 100%;
+    padding: 15px 15px 15px 50px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: rgba(255,255,255,0.9);
+  }
+
+  .search-modal-btn {
+    padding: 12px 30px;
+    background-color: {{ section.settings.bg_header }};
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .search-modal-btn:hover {
+    background-color: {{ section.settings.header_text_hover_color }};
+  }
+
+  .popular-searches {
+    margin-top: 2rem;
+  }
+
+  .popular-searches h3 {
+    font-size: 20px;
+    margin-bottom: 1rem;
+    color: #ddd;
+  }
+
+  .popular-searches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  .popular-searches-grid a {
+    background-color: rgba(255,255,255,0.1);
+    padding: 10px 15px;
+    border-radius: 4px;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+
+  .popular-searches-grid a:hover {
+    background-color: rgba(255,255,255,0.2);
+  }
+
+  @media (max-width: 767px) {
+    .search-modal-content {
+      padding: 1rem;
+      margin-top: 5vh;
+    }
+    
+    .popular-searches-grid {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+  }
 </style>
 
 {% if section.settings.is_sticky_header %}
@@ -530,6 +714,58 @@
     });
   </script>
 {% endif %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Search modal functionality
+    const searchModal = document.getElementById('searchModal');
+    const closeSearchModalBtn = document.getElementById('closeSearchModal');
+    const searchInputs = document.querySelectorAll('.form-control[type="search"]');
+    const searchModalInput = document.getElementById('searchModalInput');
+    
+    // Open modal when clicking on any search input
+    searchInputs.forEach(input => {
+      input.addEventListener('click', function(e) {
+        e.preventDefault();
+        searchModal.classList.add('show');
+        setTimeout(() => {
+          searchModalInput.focus();
+        }, 100);
+      });
+    });
+    
+    // Close modal with close button
+    closeSearchModalBtn.addEventListener('click', function() {
+      searchModal.classList.remove('show');
+    });
+    
+    // Close modal when clicking outside
+    searchModal.addEventListener('click', function(e) {
+      if (e.target === searchModal) {
+        searchModal.classList.remove('show');
+      }
+    });
+    
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && searchModal.classList.contains('show')) {
+        searchModal.classList.remove('show');
+      }
+    });
+    
+    // Make current inputs open the modal instead of submitting
+    const searchForms = document.querySelectorAll('.search-form');
+    searchForms.forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        searchModal.classList.add('show');
+        const searchValue = form.querySelector('input[type="search"]').value;
+        searchModalInput.value = searchValue;
+        searchModalInput.focus();
+      });
+    });
+  });
+</script>
 
 {% schema %}
 {
@@ -808,6 +1044,30 @@
       "id": "exempt_padding_pages_list",
       "label": "Pages with no padding",
       "info": "Select pages that should not have added padding"
+    },
+    {
+      "type": "header",
+      "content": "Search Modal"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search_modal",
+      "label": "Enable search modal",
+      "default": true,
+      "info": "Show a fullscreen search modal instead of a dropdown"
+    },
+    {
+      "type": "text",
+      "id": "search_modal_title",
+      "label": "Modal title",
+      "default": "Search our destinations"
+    },
+    {
+      "type": "text",
+      "id": "popular_destinations",
+      "label": "Popular destinations (comma separated)",
+      "default": "Paris, Tokyo, New York, Bali, London, Rome",
+      "info": "These will appear as quick search options"
     }
   ],
   "presets": [
