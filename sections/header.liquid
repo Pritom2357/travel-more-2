@@ -278,7 +278,7 @@
         bottom: 0;
         left: 50%;
         width: 0;
-        height: 2px;
+        height: {{ section.settings.underline_thickness | default: 2 }}px;
         background: {{ section.settings.header_text_hover_color }};
         transition: width 0.3s ease, left 0.3s ease;
       }
@@ -311,12 +311,12 @@
         transition: transform 0.3s ease, color 0.3s;
       }
       .nav-settings .nav-link:hover {
-        transform: scale(1.1);
+        transform: scale({{ section.settings.grow_scale | default: 1.1 }});
       }
     
     {% when 'glow' %}
       .nav-settings .nav-link:hover {
-        text-shadow: 0 0 8px {{ section.settings.header_text_hover_color }}, 0 0 12px rgba(255,255,255,0.5);
+        text-shadow: 0 0 {{ section.settings.glow_intensity | default: 8 }}px {{ section.settings.header_text_hover_color }}, 0 0 12px rgba(255,255,255,0.5);
       }
     
     {% when 'border-bottom' %}
@@ -530,6 +530,41 @@
     },
     {
       "type": "header",
+      "content": "Menu Effect Settings",
+      "info": "Settings for specific menu hover effects"
+    },
+    {
+      "type": "range",
+      "id": "underline_thickness",
+      "label": "Underline thickness (px)",
+      "default": 2,
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "info": "Only applies when Underline effect is selected"
+    },
+    {
+      "type": "range",
+      "id": "glow_intensity",
+      "label": "Glow intensity",
+      "default": 8,
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "info": "Only applies when Glow effect is selected"
+    },
+    {
+      "type": "range",
+      "id": "grow_scale",
+      "label": "Grow scale",
+      "default": 1.1,
+      "min": 1.05,
+      "max": 1.3,
+      "step": 0.05,
+      "info": "Only applies when Grow effect is selected"
+    },
+    {
+      "type": "header",
       "content": "Colors"
     },
     {
@@ -613,6 +648,61 @@
       ],
       "default": "background",
       "info": "Select hover effect for icons"
+    },
+    {
+      "type": "header",
+      "content": "Icon Effect Settings",
+      "info": "Settings for specific icon effects"
+    },
+    {
+      "type": "range",
+      "id": "pulse_intensity",
+      "label": "Pulse intensity",
+      "default": 1.2,
+      "min": 1.1,
+      "max": 2.0,
+      "step": 0.1,
+      "info": "Only applies when Pulse effect is selected"
+    },
+    {
+      "type": "range",
+      "id": "pulse_speed",
+      "label": "Pulse speed (seconds)",
+      "default": 0.8,
+      "min": 0.3,
+      "max": 2.0,
+      "step": 0.1,
+      "info": "Only applies when Pulse effect is selected"
+    },
+    {
+      "type": "range",
+      "id": "rotate_angle",
+      "label": "Rotation angle (degrees)",
+      "default": 15,
+      "min": -180,
+      "max": 180,
+      "step": 5,
+      "info": "Only applies when Rotate effect is selected"
+    },
+    {
+      "type": "range",
+      "id": "scale_size",
+      "label": "Scale size",
+      "default": 1.3,
+      "min": 1.1,
+      "max": 2.0,
+      "step": 0.1,
+      "info": "Only applies when Scale Up effect is selected"
+    },
+    {
+      "type": "range",
+      "id": "circle_size",
+      "label": "Circle size (px)",
+      "default": 36,
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "info": "Only applies when Circle Background effect is selected"
     },
     {
       "type": "header",
