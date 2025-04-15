@@ -423,9 +423,8 @@
 
   /* Fixed mobile menu positioning */
   @media (max-width: 991px) {
-    /* Fix navbar position */
     .navbar {
-      position: absolute;
+      position: {% if section.settings.is_sticky_header %}fixed{% else %}absolute{% endif %};
     }
     
     /* Fixed position for logo and toggle button */
