@@ -103,14 +103,14 @@
           
           <!-- Mobile-only search and icons -->
           <div class="d-block d-lg-none mt-3 mobile-utilities">
-            {% comment %} {% if section.settings.enable_search_bar %}
+            {% if section.settings.enable_search_bar %}
               <form class="d-flex mb-3">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">
                   <i class="bi bi-search"></i>
                 </button>
               </form>
-            {% endif %} {% endcomment %}
+            {% endif %}
             <div class="d-flex">{{ icons_html }}</div>
           </div>
         </div>
@@ -256,6 +256,7 @@
     }
     
     .search-form {
+      visibility: hidden;
       width: 100%;
     }
   }
