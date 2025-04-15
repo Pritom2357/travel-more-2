@@ -150,7 +150,7 @@
           "logo_size": 50,
           "menu": "main-menu",
           "menu_text_size": 23,
-          "menu_hover_effect": "grow",
+          "menu_hover_effect": "border-bottom",
           "underline_thickness": 1,
           "glow_intensity": 14,
           "grow_scale": 1.2,
