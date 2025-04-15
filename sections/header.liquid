@@ -36,6 +36,8 @@
         </button>
       {% endcapture %}
 
+      <div class="d-lg-none ms-auto mobile-logo-container">{{ logo_html }}</div>
+
       {% capture icons_html %}
         <div class="d-flex icons-container">
           <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
@@ -120,7 +122,7 @@
 
       {% case section.settings.header_layout %}
         {% when 'logo_menu_search' %}
-          <div class="order-1 order-lg-1">{{ logo_html }}</div>
+          <div class="d-none d-lg-block order-lg-1">{{ logo_html }}</div>
           <div class="order-3 order-lg-2 flex-grow-1">{{ menu_html }}</div>
           <div class="order-2 order-lg-3">{{ search_html }}</div>
         {% when 'menu_logo_search' %}
@@ -401,6 +403,21 @@
     margin: 0 !important;
     padding: 0 !important;
     height: auto !important;
+  }
+
+  .mobile-logo-container {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  @media (max-width: 991px) {
+    .order-1, .order-2, .order-3 {
+      .navbar-brand {
+        display: none;
+      }
+    }
   }
 </style>
 
