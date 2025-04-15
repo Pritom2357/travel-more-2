@@ -168,8 +168,8 @@
           "pulse_speed": 0.8,
           "rotate_angle": 30,
           "scale_size": 1.5,
-          "is_sticky_header": false,
-          "adjust_body_padding": false,
+          "is_sticky_header": true,
+          "adjust_body_padding": true,
           "exempt_padding_pages_list": "footer-exemption"
         }
       },
