@@ -1,1 +1,562 @@
-{"sections":{"custom_hero_VL6Rmr":{"type":"custom-hero","blocks":{"destination_block_MF3rtH":{"type":"destination_block","settings":{"destination_title":"Australlia","destination_description":"Lorem ipsum...","unit_price":20000}},"destination_block_xdCeMQ":{"type":"destination_block","settings":{"destination_title":"Maldives","destination_description":"Lorem ipsum...","unit_price":2000}},"destination_block_iUNqXE":{"type":"destination_block","settings":{"destination_title":"bangladesh","destination_description":"Lorem ipsum...","unit_price":200}},"destination_block_hdKfi8":{"type":"destination_block","settings":{"destination_title":"Japan","destination_description":"Lorem ipsum...","unit_price":200}},"destination_block_6bhj7K":{"type":"destination_block","settings":{"destination_title":"Korea","destination_description":"Lorem ipsum...","unit_price":200}}},"block_order":["destination_block_MF3rtH","destination_block_xdCeMQ","destination_block_iUNqXE","destination_block_hdKfi8","destination_block_6bhj7K"],"settings":{"is_header":true,"bg_header":"#449eed","header_bg_opacity":0.1,"header_text_color":"#ffffff","header_text_hover_color":"#263036","logo":"shopify:\/\/shop_images\/logo.png","logo_size":60,"menu":"main-menu","menu_text_size":18,"header_alignment":"center","enable_search_bar":true,"search_btn_color":"#ed4444","search_btn_text_color":"#ffffff","search_btn_hover_color":"#bd3535","search_btn_text_hover_color":"#ffffff","bg_img":"shopify:\/\/shop_images\/dest6.jpg","bg_overlay":0.4,"title_text":"Dare to Live the Life you’ve wanted","title_size":4,"title_color":"#e4fffd","title_font":"Helvetica, sans-serif","sub_title_text":"We would love to help you realize your travel dreams, to start a new. Take the first steps towards making your dream a reality.","sub_title_size":1.1,"sub_title_color":"#ffffff","sub_title_font":"Helvetica, sans-serif","btn1_text":"Discover More","btn1_text_color":"#ffffff","btn1_color":"#449eed","btn1_hover_color":"#357abd","btn1_text_hover_color":"#ffffff","btn1_url":"shopify:\/\/collections\/all","btn2_text":"Watch Video","btn2_text_color":"#ffffff","btn2_hover_color":"#ffffff","btn2_text_hover_color":"#121212","btn2_url":"\/","if_form":true,"form_bg_color":"#74c6c8","form_bg_opacity":0.3,"form_text_color":"#e2fafa","form_title":"Book Perfect Tour","input1":"Destination","input2":"Tour Type","input3":"Month","min_price":2340,"max_price":3920}},"featured_collection":{"type":"featured-collection","disabled":true,"settings":{"collection_text":"Featured Products","collection":"new","btn_text":"Shop Now","section_divider":4,"max_product_limit":7}},"intro_section_tH7HDm":{"type":"intro-section","settings":{"isImage":true,"bg_color":"#ddf5f5","img":"shopify:\/\/shop_images\/beach.jpg","bg_shadow_color":"#d0e4e3","title_size":48,"text1":"It's Time For a","text1_color":"#1773b0","text2":"New Adventure!","text2_color":"#85d0d7","text3":"What are you waiting for?","text3_color":"#1773b0","description":"<p>Our team of travel insiders is obsessed with finding the best things to do everywhere we travel. From Paris to Phuket to Perth, from traditional tours to once-in-a-lifetime experiences, we have something for every kind of traveler. And we are proud to say that after 27 experience-packed years, we are the world leader. When planning your trip, why start anywhere else?<\/p>","description_color":"#000000","description_size":16,"signature":"Erica Johnson","signature_color":"#1773b0","signature_size":18,"designation":"CEO Founder","designation_color":"#000000","designaton_size":16}},"specialty_J9NYdd":{"type":"specialty","blocks":{"images_cnrWV6":{"type":"images","settings":{"image":"shopify:\/\/shop_images\/relax.png","image_text":"Relax and Enjoy","title_color":"#1773b0","img_description":"","description_color":"#000000","card_bg_color":"#85d0d7"}},"images_aVznfc":{"type":"images","settings":{"image":"shopify:\/\/shop_images\/local.png","image_text":"Try Local Foods","title_color":"#8c4d22","img_description":"","description_color":"#f12222","card_bg_color":"#eabdae"}},"images_6HW4pD":{"type":"images","settings":{"image":"shopify:\/\/shop_images\/discover.png","image_text":"Discover New Places","title_color":"#1773b0","img_description":"","description_color":"#000000","card_bg_color":"#ddf5f5"}},"images_nmcBYn":{"type":"images","settings":{"image":"shopify:\/\/shop_images\/price.png","image_text":"At Low Prices","title_color":"#7e2f7e","img_description":"","description_color":"#000000","card_bg_color":"#f3d5fd"}}},"block_order":["images_cnrWV6","images_aVznfc","images_6HW4pD","images_nmcBYn"],"settings":{"bg_color":"#bff5e8","title_size":23,"sub_title_size":16}},"featured_product_QwMRGG":{"type":"featured-product","blocks":{"title_DNX7yF":{"type":"title","settings":{}},"price_Whpx8i":{"type":"price","settings":{}},"variants_KUtaMc":{"type":"variants","settings":{}},"description_cHXqNC":{"type":"description","settings":{}},"quantity_XBpa7h":{"type":"quantity","settings":{}},"add_to_cart_bwcCDG":{"type":"addToCart","settings":{}}},"block_order":["title_DNX7yF","price_Whpx8i","variants_KUtaMc","description_cHXqNC","quantity_XBpa7h","add_to_cart_bwcCDG"],"disabled":true,"settings":{"product":"b"}},"image_with_text_LWfBGm":{"type":"image-with-text","blocks":{"title_DCrpDM":{"type":"title","settings":{"title":"Mara kha tora"}},"description_M9VFU6":{"type":"description","settings":{"description":"<p>Mew biral goblet<\/p>"}},"action_LpM6hP":{"type":"action","settings":{"btn_label":"See more","btn_url":"","btn_style":"primary"}}},"block_order":["title_DCrpDM","description_M9VFU6","action_LpM6hP"],"disabled":true,"settings":{"position":"left","background_color":"#effffb","section_id":"See more"}},"dynamic_destination_zkGe8K":{"type":"dynamic-destination","blocks":{"destination_rPcB6R":{"type":"destination","settings":{"image":"shopify:\/\/shop_images\/dest4.jpg","image_text":"Deep Sea Adventures","img_description":"5 remaining","grid_span":2,"grid_height_span":2,"title_color":"#ffffff","description_color":"#ffffff","card_bg_color":"rgba(0,0,0,0)"}},"destination_FQjwRT":{"type":"destination","settings":{"image":"shopify:\/\/shop_images\/dest1.jpg","image_text":"Destination Name","img_description":"Number of Tours","grid_span":1,"grid_height_span":1,"title_color":"#ffffff","description_color":"#ffffff","card_bg_color":"rgba(0,0,0,0)"}},"destination_ztVHnE":{"type":"destination","settings":{"image":"shopify:\/\/shop_images\/dest5.jpg","image_text":"Destination Name","img_description":"Number of Tours","grid_span":1,"grid_height_span":1,"title_color":"#ffffff","description_color":"#ffffff","card_bg_color":"rgba(0,0,0,0)"}},"destination_4bC4qN":{"type":"destination","settings":{"image":"shopify:\/\/shop_images\/beach2.jpg","image_text":"Destination Name","img_description":"Number of Tours","grid_span":2,"grid_height_span":1,"title_color":"#ffffff","description_color":"#ffffff","card_bg_color":"rgba(0,0,0,0)"}}},"block_order":["destination_rPcB6R","destination_FQjwRT","destination_ztVHnE","destination_4bC4qN"],"settings":{"bg_color":"#ffffff","section_title":"Best Offers This Month","title_color":"#000000","title_size":36,"section_subtitle":"Find your destinations, you deserve this","subtitle_color":"#666666","subtitle_size":18,"filter_buttons":"","filter_button_bg_color":"#00cfcf","filter_button_text_color":"#ffffff"}},"stats_section_JFBK8d":{"type":"stats-section","settings":{"background_image":"shopify:\/\/shop_images\/dest6.jpg","overlay_color":"#000000","text_color":"rgba(0,0,0,0)","overlay_opacity":0.5,"stat_1_number":"12","stat_1_label":"Amazing Deals","stat_2_number":"670","stat_2_label":"Sold Tours","stat_3_number":"24","stat_3_label":"New Tours","stat_4_number":"980","stat_4_label":"Happy Customers"}},"plans_eq7HhF":{"type":"plans","blocks":{"tour_card_eJTdqr":{"type":"tour_card","settings":{"image":"shopify:\/\/shop_images\/dest6.jpg","title":"Paradise Island","event_url":"\/","grid_span":1,"grid_height_span":1,"title_color":"#ffffff","description_color":"#ffffff","card_bg_color":"#ffffff","description":"Must Love it","dest_checker":true,"destination":"Paradise Island","dest_color":"#007bff","dest_font_size":21,"date_checker":true,"date":"30\/03\/3025","date_color":"#007bff","date_font_size":16,"duration_checker":true,"duration":"8 days","duration_color":"#007bff","duration_font_size":16,"cost_checker":true,"cost":"3500","cost_color":"#007bff","cost_bg_color":"#ffffff","cost_font_size":16}},"tour_card_nCghwJ":{"type":"tour_card","settings":{"image":"shopify:\/\/shop_images\/dest1.jpg","title":"Chakra City","event_url":"\/","grid_span":1,"grid_height_span":1,"title_color":"#fbf9f3","description_color":"#caf178","card_bg_color":"#ffffff","description":"Unleash your imagination","dest_checker":true,"destination":"Chakra City","dest_color":"#75782a","dest_font_size":18,"date_checker":true,"date":"02\/02\/2025","date_color":"#75782a","date_font_size":17,"duration_checker":true,"duration":"10 days","duration_color":"#75782a","duration_font_size":20,"cost_checker":true,"cost":"100","cost_color":"#75782a","cost_bg_color":"#ffffff","cost_font_size":11}},"tour_card_cwmfia":{"type":"tour_card","settings":{"image":"shopify:\/\/shop_images\/dest3.jpg","title":"Desert","event_url":"\/","grid_span":1,"grid_height_span":1,"title_color":"#ffffff","description_color":"#ffffff","card_bg_color":"rgba(0,0,0,0)","description":"Brief description of the tour.","dest_checker":true,"destination":"Sahara Desert","dest_color":"#c53454","dest_font_size":16,"date_checker":true,"date":"23\/02\/2025","date_color":"#c53454","date_font_size":16,"duration_checker":true,"duration":"7 days","duration_color":"#c53454","duration_font_size":16,"cost_checker":true,"cost":"300","cost_color":"#c53454","cost_bg_color":"#ffffff","cost_font_size":16}},"tour_card_irrECD":{"type":"tour_card","settings":{"image":"shopify:\/\/shop_images\/beach2.jpg","title":"Best Beach","event_url":"\/","grid_span":1,"grid_height_span":1,"title_color":"#ffffff","description_color":"#ffffff","card_bg_color":"#ffffff","description":"Must love it","dest_checker":true,"destination":"Mariana Trench","dest_color":"#007bff","dest_font_size":16,"date_checker":true,"date":"07\/03\/2025","date_color":"#007bff","date_font_size":16,"duration_checker":true,"duration":"4 days","duration_color":"#007eff","duration_font_size":16,"cost_checker":true,"cost":"25","cost_color":"#007bff","cost_bg_color":"#ffffff","cost_font_size":16}}},"block_order":["tour_card_eJTdqr","tour_card_nCghwJ","tour_card_cwmfia","tour_card_irrECD"],"settings":{"bg_color":"#effffd","section_title":"Our Best Tours","title_color":"#000000","title_size":36,"section_subtitle":"Explore our exclusive tours and find the perfect adventure for you.","subtitle_color":"#666666","subtitle_size":18,"filter_buttons":"","filter_button_bg_color":"#007bff","filter_button_text_color":"#ffffff","see_more_color":"#ffffff","see_more_bg_color":"#449eed","btn_text":"See more Tours"}},"experience_DajhgX":{"type":"experience","blocks":{"review_Wt68d6":{"type":"review","settings":{"name":"Maria Kovenji","date":"2023-05-15","rating":4,"title":"The planning process was excellent","text":"It was a life changing experience and we couldn’t be happier to have done it..."}}},"block_order":["review_Wt68d6"],"settings":{"section_title":"Happy Travelers","hero_image":"shopify:\/\/shop_images\/happy3.jpg"}}},"order":["custom_hero_VL6Rmr","featured_collection","intro_section_tH7HDm","specialty_J9NYdd","featured_product_QwMRGG","image_with_text_LWfBGm","dynamic_destination_zkGe8K","stats_section_JFBK8d","plans_eq7HhF","experience_DajhgX"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "custom_hero_VL6Rmr": {
+      "type": "custom-hero",
+      "blocks": {
+        "destination_block_MF3rtH": {
+          "type": "destination_block",
+          "settings": {
+            "destination_title": "Australlia",
+            "destination_description": "Lorem ipsum...",
+            "unit_price": 20000
+          }
+        },
+        "destination_block_xdCeMQ": {
+          "type": "destination_block",
+          "settings": {
+            "destination_title": "Maldives",
+            "destination_description": "Lorem ipsum...",
+            "unit_price": 2000
+          }
+        },
+        "destination_block_iUNqXE": {
+          "type": "destination_block",
+          "settings": {
+            "destination_title": "bangladesh",
+            "destination_description": "Lorem ipsum...",
+            "unit_price": 200
+          }
+        },
+        "destination_block_hdKfi8": {
+          "type": "destination_block",
+          "settings": {
+            "destination_title": "Japan",
+            "destination_description": "Lorem ipsum...",
+            "unit_price": 200
+          }
+        },
+        "destination_block_6bhj7K": {
+          "type": "destination_block",
+          "settings": {
+            "destination_title": "Korea",
+            "destination_description": "Lorem ipsum...",
+            "unit_price": 200
+          }
+        }
+      },
+      "block_order": [
+        "destination_block_MF3rtH",
+        "destination_block_xdCeMQ",
+        "destination_block_iUNqXE",
+        "destination_block_hdKfi8",
+        "destination_block_6bhj7K"
+      ],
+      "settings": {
+        "is_header": true,
+        "bg_header": "#449eed",
+        "header_bg_opacity": 0.1,
+        "header_text_color": "#ffffff",
+        "header_text_hover_color": "#c1d8e5",
+        "logo": "shopify://shop_images/logo.png",
+        "logo_size": 60,
+        "menu": "main-menu",
+        "menu_text_size": 18,
+        "header_alignment": "center",
+        "enable_search_bar": true,
+        "search_btn_color": "#ed4444",
+        "search_btn_text_color": "#ffffff",
+        "search_btn_hover_color": "#bd3535",
+        "search_btn_text_hover_color": "#ffffff",
+        "bg_img": "shopify://shop_images/dest6.jpg",
+        "bg_overlay": 0.4,
+        "title_text": "Dare to Live the Life you’ve wanted",
+        "title_size": 4,
+        "title_color": "#e4fffd",
+        "title_font": "Helvetica, sans-serif",
+        "sub_title_text": "We would love to help you realize your travel dreams, to start a new. Take the first steps towards making your dream a reality.",
+        "sub_title_size": 1.1,
+        "sub_title_color": "#ffffff",
+        "sub_title_font": "Helvetica, sans-serif",
+        "btn1_text": "Discover More",
+        "btn1_text_color": "#ffffff",
+        "btn1_color": "#449eed",
+        "btn1_hover_color": "#357abd",
+        "btn1_text_hover_color": "#ffffff",
+        "btn1_url": "shopify://collections/all",
+        "btn2_text": "Watch Video",
+        "btn2_text_color": "#ffffff",
+        "btn2_hover_color": "#ffffff",
+        "btn2_text_hover_color": "#121212",
+        "btn2_url": "/",
+        "if_form": true,
+        "form_bg_color": "#74c6c8",
+        "form_bg_opacity": 0.3,
+        "form_text_color": "#e2fafa",
+        "form_title": "Book Perfect Tour",
+        "input1": "Destination",
+        "input2": "Tour Type",
+        "input3": "Month",
+        "min_price": 2340,
+        "max_price": 3920
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "disabled": true,
+      "settings": {
+        "collection_text": "Featured Products",
+        "collection": "new",
+        "btn_text": "Shop Now",
+        "section_divider": 4,
+        "max_product_limit": 7
+      }
+    },
+    "intro_section_tH7HDm": {
+      "type": "intro-section",
+      "settings": {
+        "isImage": true,
+        "bg_color": "#ddf5f5",
+        "img": "shopify://shop_images/beach.jpg",
+        "bg_shadow_color": "#d0e4e3",
+        "title_size": 48,
+        "text1": "It's Time For a",
+        "text1_color": "#1773b0",
+        "text2": "New Adventure!",
+        "text2_color": "#85d0d7",
+        "text3": "What are you waiting for?",
+        "text3_color": "#1773b0",
+        "description": "<p>Our team of travel insiders is obsessed with finding the best things to do everywhere we travel. From Paris to Phuket to Perth, from traditional tours to once-in-a-lifetime experiences, we have something for every kind of traveler. And we are proud to say that after 27 experience-packed years, we are the world leader. When planning your trip, why start anywhere else?</p>",
+        "description_color": "#000000",
+        "description_size": 16,
+        "signature": "Erica Johnson",
+        "signature_color": "#1773b0",
+        "signature_size": 18,
+        "designation": "CEO Founder",
+        "designation_color": "#000000",
+        "designaton_size": 16
+      }
+    },
+    "specialty_J9NYdd": {
+      "type": "specialty",
+      "blocks": {
+        "images_cnrWV6": {
+          "type": "images",
+          "settings": {
+            "image": "shopify://shop_images/relax.png",
+            "image_text": "Relax and Enjoy",
+            "title_color": "#1773b0",
+            "img_description": "",
+            "description_color": "#000000",
+            "card_bg_color": "#85d0d7"
+          }
+        },
+        "images_aVznfc": {
+          "type": "images",
+          "settings": {
+            "image": "shopify://shop_images/local.png",
+            "image_text": "Try Local Foods",
+            "title_color": "#8c4d22",
+            "img_description": "",
+            "description_color": "#f12222",
+            "card_bg_color": "#eabdae"
+          }
+        },
+        "images_6HW4pD": {
+          "type": "images",
+          "settings": {
+            "image": "shopify://shop_images/discover.png",
+            "image_text": "Discover New Places",
+            "title_color": "#1773b0",
+            "img_description": "",
+            "description_color": "#000000",
+            "card_bg_color": "#ddf5f5"
+          }
+        },
+        "images_nmcBYn": {
+          "type": "images",
+          "settings": {
+            "image": "shopify://shop_images/price.png",
+            "image_text": "At Low Prices",
+            "title_color": "#7e2f7e",
+            "img_description": "",
+            "description_color": "#000000",
+            "card_bg_color": "#f3d5fd"
+          }
+        }
+      },
+      "block_order": [
+        "images_cnrWV6",
+        "images_aVznfc",
+        "images_6HW4pD",
+        "images_nmcBYn"
+      ],
+      "settings": {
+        "bg_color": "#bff5e8",
+        "title_size": 23,
+        "sub_title_size": 16
+      }
+    },
+    "featured_product_QwMRGG": {
+      "type": "featured-product",
+      "blocks": {
+        "title_DNX7yF": {
+          "type": "title",
+          "settings": {}
+        },
+        "price_Whpx8i": {
+          "type": "price",
+          "settings": {}
+        },
+        "variants_KUtaMc": {
+          "type": "variants",
+          "settings": {}
+        },
+        "description_cHXqNC": {
+          "type": "description",
+          "settings": {}
+        },
+        "quantity_XBpa7h": {
+          "type": "quantity",
+          "settings": {}
+        },
+        "add_to_cart_bwcCDG": {
+          "type": "addToCart",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title_DNX7yF",
+        "price_Whpx8i",
+        "variants_KUtaMc",
+        "description_cHXqNC",
+        "quantity_XBpa7h",
+        "add_to_cart_bwcCDG"
+      ],
+      "disabled": true,
+      "settings": {
+        "product": "b"
+      }
+    },
+    "image_with_text_LWfBGm": {
+      "type": "image-with-text",
+      "blocks": {
+        "title_DCrpDM": {
+          "type": "title",
+          "settings": {
+            "title": "Mara kha tora"
+          }
+        },
+        "description_M9VFU6": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Mew biral goblet</p>"
+          }
+        },
+        "action_LpM6hP": {
+          "type": "action",
+          "settings": {
+            "btn_label": "See more",
+            "btn_url": "",
+            "btn_style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "title_DCrpDM",
+        "description_M9VFU6",
+        "action_LpM6hP"
+      ],
+      "disabled": true,
+      "settings": {
+        "position": "left",
+        "background_color": "#effffb",
+        "section_id": "See more"
+      }
+    },
+    "dynamic_destination_zkGe8K": {
+      "type": "dynamic-destination",
+      "blocks": {
+        "destination_rPcB6R": {
+          "type": "destination",
+          "settings": {
+            "image": "shopify://shop_images/dest4.jpg",
+            "image_text": "Deep Sea Adventures",
+            "img_description": "5 remaining",
+            "grid_span": 2,
+            "grid_height_span": 2,
+            "title_color": "#ffffff",
+            "description_color": "#ffffff",
+            "card_bg_color": "rgba(0,0,0,0)"
+          }
+        },
+        "destination_FQjwRT": {
+          "type": "destination",
+          "settings": {
+            "image": "shopify://shop_images/dest1.jpg",
+            "image_text": "Destination Name",
+            "img_description": "Number of Tours",
+            "grid_span": 1,
+            "grid_height_span": 1,
+            "title_color": "#ffffff",
+            "description_color": "#ffffff",
+            "card_bg_color": "rgba(0,0,0,0)"
+          }
+        },
+        "destination_ztVHnE": {
+          "type": "destination",
+          "settings": {
+            "image": "shopify://shop_images/dest5.jpg",
+            "image_text": "Destination Name",
+            "img_description": "Number of Tours",
+            "grid_span": 1,
+            "grid_height_span": 1,
+            "title_color": "#ffffff",
+            "description_color": "#ffffff",
+            "card_bg_color": "rgba(0,0,0,0)"
+          }
+        },
+        "destination_4bC4qN": {
+          "type": "destination",
+          "settings": {
+            "image": "shopify://shop_images/beach2.jpg",
+            "image_text": "Destination Name",
+            "img_description": "Number of Tours",
+            "grid_span": 2,
+            "grid_height_span": 1,
+            "title_color": "#ffffff",
+            "description_color": "#ffffff",
+            "card_bg_color": "rgba(0,0,0,0)"
+          }
+        }
+      },
+      "block_order": [
+        "destination_rPcB6R",
+        "destination_FQjwRT",
+        "destination_ztVHnE",
+        "destination_4bC4qN"
+      ],
+      "settings": {
+        "bg_color": "#ffffff",
+        "section_title": "Best Offers This Month",
+        "title_color": "#000000",
+        "title_size": 36,
+        "section_subtitle": "Find your destinations, you deserve this",
+        "subtitle_color": "#666666",
+        "subtitle_size": 18,
+        "filter_buttons": "",
+        "filter_button_bg_color": "#00cfcf",
+        "filter_button_text_color": "#ffffff"
+      }
+    },
+    "stats_section_JFBK8d": {
+      "type": "stats-section",
+      "settings": {
+        "background_image": "shopify://shop_images/dest6.jpg",
+        "overlay_color": "#000000",
+        "text_color": "rgba(0,0,0,0)",
+        "overlay_opacity": 0.5,
+        "stat_1_number": "12",
+        "stat_1_label": "Amazing Deals",
+        "stat_2_number": "670",
+        "stat_2_label": "Sold Tours",
+        "stat_3_number": "24",
+        "stat_3_label": "New Tours",
+        "stat_4_number": "980",
+        "stat_4_label": "Happy Customers"
+      }
+    },
+    "plans_eq7HhF": {
+      "type": "plans",
+      "blocks": {
+        "tour_card_eJTdqr": {
+          "type": "tour_card",
+          "settings": {
+            "image": "shopify://shop_images/dest6.jpg",
+            "title": "Paradise Island",
+            "event_url": "/",
+            "grid_span": 1,
+            "grid_height_span": 1,
+            "title_color": "#ffffff",
+            "description_color": "#ffffff",
+            "card_bg_color": "#ffffff",
+            "description": "Must Love it",
+            "dest_checker": true,
+            "destination": "Paradise Island",
+            "dest_color": "#007bff",
+            "dest_font_size": 21,
+            "date_checker": true,
+            "date": "30/03/3025",
+            "date_color": "#007bff",
+            "date_font_size": 16,
+            "duration_checker": true,
+            "duration": "8 days",
+            "duration_color": "#007bff",
+            "duration_font_size": 16,
+            "cost_checker": true,
+            "cost": "3500",
+            "cost_color": "#007bff",
+            "cost_bg_color": "#ffffff",
+            "cost_font_size": 16
+          }
+        },
+        "tour_card_nCghwJ": {
+          "type": "tour_card",
+          "settings": {
+            "image": "shopify://shop_images/dest1.jpg",
+            "title": "Chakra City",
+            "event_url": "/",
+            "grid_span": 1,
+            "grid_height_span": 1,
+            "title_color": "#fbf9f3",
+            "description_color": "#caf178",
+            "card_bg_color": "#ffffff",
+            "description": "Unleash your imagination",
+            "dest_checker": true,
+            "destination": "Chakra City",
+            "dest_color": "#75782a",
+            "dest_font_size": 18,
+            "date_checker": true,
+            "date": "02/02/2025",
+            "date_color": "#75782a",
+            "date_font_size": 17,
+            "duration_checker": true,
+            "duration": "10 days",
+            "duration_color": "#75782a",
+            "duration_font_size": 20,
+            "cost_checker": true,
+            "cost": "100",
+            "cost_color": "#75782a",
+            "cost_bg_color": "#ffffff",
+            "cost_font_size": 11
+          }
+        },
+        "tour_card_cwmfia": {
+          "type": "tour_card",
+          "settings": {
+            "image": "shopify://shop_images/dest3.jpg",
+            "title": "Desert",
+            "event_url": "/",
+            "grid_span": 1,
+            "grid_height_span": 1,
+            "title_color": "#ffffff",
+            "description_color": "#ffffff",
+            "card_bg_color": "rgba(0,0,0,0)",
+            "description": "Brief description of the tour.",
+            "dest_checker": true,
+            "destination": "Sahara Desert",
+            "dest_color": "#c53454",
+            "dest_font_size": 16,
+            "date_checker": true,
+            "date": "23/02/2025",
+            "date_color": "#c53454",
+            "date_font_size": 16,
+            "duration_checker": true,
+            "duration": "7 days",
+            "duration_color": "#c53454",
+            "duration_font_size": 16,
+            "cost_checker": true,
+            "cost": "300",
+            "cost_color": "#c53454",
+            "cost_bg_color": "#ffffff",
+            "cost_font_size": 16
+          }
+        },
+        "tour_card_irrECD": {
+          "type": "tour_card",
+          "settings": {
+            "image": "shopify://shop_images/beach2.jpg",
+            "title": "Best Beach",
+            "event_url": "/",
+            "grid_span": 1,
+            "grid_height_span": 1,
+            "title_color": "#ffffff",
+            "description_color": "#ffffff",
+            "card_bg_color": "#ffffff",
+            "description": "Must love it",
+            "dest_checker": true,
+            "destination": "Mariana Trench",
+            "dest_color": "#007bff",
+            "dest_font_size": 16,
+            "date_checker": true,
+            "date": "07/03/2025",
+            "date_color": "#007bff",
+            "date_font_size": 16,
+            "duration_checker": true,
+            "duration": "4 days",
+            "duration_color": "#007eff",
+            "duration_font_size": 16,
+            "cost_checker": true,
+            "cost": "25",
+            "cost_color": "#007bff",
+            "cost_bg_color": "#ffffff",
+            "cost_font_size": 16
+          }
+        }
+      },
+      "block_order": [
+        "tour_card_eJTdqr",
+        "tour_card_nCghwJ",
+        "tour_card_cwmfia",
+        "tour_card_irrECD"
+      ],
+      "settings": {
+        "bg_color": "#effffd",
+        "section_title": "Our Best Tours",
+        "title_color": "#000000",
+        "title_size": 36,
+        "section_subtitle": "Explore our exclusive tours and find the perfect adventure for you.",
+        "subtitle_color": "#666666",
+        "subtitle_size": 18,
+        "filter_buttons": "",
+        "filter_button_bg_color": "#007bff",
+        "filter_button_text_color": "#ffffff",
+        "see_more_color": "#ffffff",
+        "see_more_bg_color": "#449eed",
+        "btn_text": "See more Tours"
+      }
+    },
+    "experience_DajhgX": {
+      "type": "experience",
+      "blocks": {
+        "review_Wt68d6": {
+          "type": "review",
+          "settings": {
+            "name": "Maria Kovenji",
+            "date": "2023-05-15",
+            "rating": 4,
+            "title": "The planning process was excellent",
+            "text": "It was a life changing experience and we couldn’t be happier to have done it..."
+          }
+        }
+      },
+      "block_order": [
+        "review_Wt68d6"
+      ],
+      "settings": {
+        "section_title": "Happy Travelers",
+        "hero_image": "shopify://shop_images/happy3.jpg"
+      }
+    }
+  },
+  "order": [
+    "custom_hero_VL6Rmr",
+    "featured_collection",
+    "intro_section_tH7HDm",
+    "specialty_J9NYdd",
+    "featured_product_QwMRGG",
+    "image_with_text_LWfBGm",
+    "dynamic_destination_zkGe8K",
+    "stats_section_JFBK8d",
+    "plans_eq7HhF",
+    "experience_DajhgX"
+  ]
+}
