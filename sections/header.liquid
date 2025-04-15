@@ -232,10 +232,6 @@
     color: {{ section.settings.search_btn_text_hover_color }} !important;
   }
 
-  /*
-    Example: If you want an underline or line below the nav
-    you could include something like this:
-  */
   .nav-settings .line {
     display: block;
     width: 95%;
@@ -386,6 +382,36 @@
         background-color: transparent !important;
       }
   {% endcase %}
+
+  .nav-settings .btn-outline-success {
+    background-color: transparent !important;
+    border-color: transparent !important;
+  }
+
+  .navbar.nav-settings .btn-outline-success:hover i.bi {
+    color: {{ section.settings.search_btn_text_hover_color }} !important;
+  }
+
+  {% if section.settings.icon_hover_effect == 'background' %}
+    .navbar.nav-settings .btn-outline-success:hover {
+      background-color: {{ section.settings.search_btn_hover_color }} !important;
+      border-color: {{ section.settings.search_btn_hover_color }} !important;
+    }
+  {% endif %}
+
+  /* Fix for pulse animation */
+  {% if section.settings.icon_hover_effect == 'pulse' %}
+    @keyframes pulse-icon {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    
+    .navbar.nav-settings .btn-outline-success:hover i.bi {
+      animation: pulse-icon 0.8s infinite;
+      display: inline-block;
+    }
+  {% endif %}
 </style>
 
 {% if section.settings.is_sticky_header %}
