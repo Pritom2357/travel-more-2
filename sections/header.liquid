@@ -48,7 +48,7 @@
       {% endcapture %}
 
       {% capture search_html %}
-        <div class="d-flex nav-utilities">
+        <div class="d-flex nav-utilities {% if section.settings.enable_search_bar == false %}nav-utilities-empty{% endif %}">
           {% if section.settings.enable_search_bar %}
             <form class="d-flex search-form">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -256,7 +256,7 @@
     }
     
     .nav-utilities {
-      visibility: hidden;
+      visibility: none;
     }
   }
   
@@ -382,6 +382,12 @@
         color: {{ section.settings.search_btn_text_hover_color }} !important;
       }
   {% endcase %}
+
+  .nav-utilities-empty {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+  }
 </style>
 
 {% if section.settings.is_sticky_header %}
