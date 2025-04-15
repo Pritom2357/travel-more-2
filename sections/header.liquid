@@ -412,6 +412,69 @@
       display: inline-block;
     }
   {% endif %}
+
+  /* Base icon styles */
+  .nav-settings .btn-outline-success {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    transition: all 0.3s ease;
+  }
+
+  .nav-settings .btn-outline-success i {
+    color: {{ section.settings.search_btn_text_color }} !important;
+    transition: all 0.3s ease;
+    display: inline-block; /* Required for transforms */
+  }
+
+  /* Override Bootstrap's hover styles with !important */
+  .navbar.nav-settings .btn-outline-success:hover i.bi {
+    color: {{ section.settings.search_btn_text_hover_color }} !important;
+  }
+
+  /* Specific icon hover effects */
+  {% case section.settings.icon_hover_effect %}
+    {% when 'background' %}
+      .navbar.nav-settings .btn-outline-success:hover {
+        background-color: {{ section.settings.search_btn_hover_color }} !important;
+        border-color: {{ section.settings.search_btn_hover_color }} !important;
+      }
+    
+    {% when 'pulse' %}
+      @keyframes pulse-icon {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+      }
+      
+      .navbar.nav-settings .btn-outline-success:hover i.bi {
+        animation: pulse-icon 0.8s infinite;
+      }
+    
+    {% when 'rotate' %}
+      .navbar.nav-settings .btn-outline-success:hover i.bi {
+        transform: rotate(15deg) !important;
+      }
+    
+    {% when 'scale' %}
+      .navbar.nav-settings .btn-outline-success:hover i.bi {
+        transform: scale(1.3) !important;
+      }
+    
+    {% when 'circle-bg' %}
+      .navbar.nav-settings .btn-outline-success {
+        border-radius: 50% !important;
+        width: 36px !important;
+        height: 36px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+      }
+      
+      .navbar.nav-settings .btn-outline-success:hover {
+        background-color: {{ section.settings.search_btn_hover_color }} !important;
+      }
+  {% endcase %}
 </style>
 
 {% if section.settings.is_sticky_header %}
