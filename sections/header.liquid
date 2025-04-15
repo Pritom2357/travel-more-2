@@ -420,6 +420,56 @@
       }
     }
   }
+
+  /* Fixed mobile menu positioning */
+  @media (max-width: 991px) {
+    /* Fix navbar position */
+    .navbar {
+      position: relative;
+    }
+    
+    /* Fixed position for logo and toggle button */
+    .mobile-logo-container {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      transform: none;
+      z-index: 1030;
+    }
+    
+    .navbar-toggler {
+      position: relative;
+      z-index: 1030;
+    }
+    
+    /* Position the dropdown menu below the header */
+    .navbar-collapse {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      width: 100%;
+      background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, 0.95);
+      padding: 15px;
+      z-index: 1020;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    /* Ensure consistent header height */
+    .container-fluid {
+      min-height: 60px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    
+    /* Remove previous mobile layout issues */
+    .navbar-brand {
+      margin-right: 0;
+      margin-left: auto;
+    }
+  }
 </style>
 
 {% if section.settings.is_sticky_header %}
