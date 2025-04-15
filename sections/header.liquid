@@ -349,11 +349,6 @@
 
   /* Clear all existing icon effect case statements and use only this one */
   {% case section.settings.icon_hover_effect %}
-    {% when 'background' %}
-      .nav-settings .btn-outline-success:hover {
-        background-color: {{ section.settings.search_btn_hover_color }} !important;
-        border-color: {{ section.settings.search_btn_hover_color }} !important;
-      }
     
     {% when 'pulse' %}
       @keyframes pulse-icon {
@@ -374,17 +369,6 @@
     {% when 'scale' %}
       .nav-settings .btn-outline-success:hover i {
         transform: scale({{ section.settings.scale_size | default: 1.3 }}) !important;
-      }
-    
-    {% when 'circle-bg' %}
-      .nav-settings .btn-outline-success {
-        border-radius: 50% !important;
-        width: {{ section.settings.circle_size | default: 36 }}px !important;
-        height: {{ section.settings.circle_size | default: 36 }}px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 0 !important;
       }
       
       .nav-settings .btn-outline-success:hover {
@@ -640,11 +624,9 @@
       "label": "Icon hover effect",
       "options": [
         { "value": "color", "label": "Color change only" },
-        { "value": "background", "label": "Background color" },
         { "value": "pulse", "label": "Pulse" },
         { "value": "rotate", "label": "Rotate" },
-        { "value": "scale", "label": "Scale up" },
-        { "value": "circle-bg", "label": "Circle background" }
+        { "value": "scale", "label": "Scale up" }
       ],
       "default": "background",
       "info": "Select hover effect for icons"
