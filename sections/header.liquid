@@ -469,6 +469,54 @@
       margin-left: auto;
     }
   }
+
+  /* Mobile menu hover effect fixes */
+  @media (max-width: 991px) {
+    /* Reset problematic transformations for mobile */
+    .nav-settings .nav-link:hover {
+      transform: none !important; 
+      text-shadow: none !important;
+    }
+    
+    /* Replace with mobile-friendly alternatives */
+    .nav-settings .nav-link {
+      border-left: 0px solid transparent;
+      transition: border-left-width 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+      padding-left: 10px !important;
+    }
+    
+    .nav-settings .nav-link:hover, 
+    .nav-settings .nav-link:active {
+      border-left: 4px solid {{ section.settings.header_text_hover_color }} !important;
+      background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, 0.7) !important;
+    }
+    
+    /* Remove before/after pseudo elements on mobile */
+    .nav-settings .nav-link::before, 
+    .nav-settings .nav-link::after {
+      display: none !important;
+    }
+    
+    /* Fix dropdown and hover behavior */
+    .nav-settings .dropdown-menu {
+      background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, 0.85) !important;
+      border: none;
+      border-radius: 0;
+      margin-top: 0;
+      padding-left: 15px;
+    }
+    
+    .nav-settings .dropdown-item {
+      color: {{ section.settings.header_text_color }} !important;
+      padding: 8px 15px;
+    }
+    
+    .nav-settings .dropdown-item:hover {
+      background-color: rgba(255,255,255,0.1) !important;
+      border-left: 4px solid {{ section.settings.header_text_hover_color }} !important;
+      padding-left: 11px;
+    }
+  }
 </style>
 
 {% if section.settings.is_sticky_header %}
