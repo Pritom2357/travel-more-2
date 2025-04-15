@@ -351,6 +351,56 @@
     {% else %}
       /* Default color change only, already implemented */
   {% endcase %}
+
+  /* Icon hover effects */
+  {% case section.settings.icon_hover_effect %}
+    {% when 'pulse' %}
+      .nav-settings .btn-outline-success:hover i {
+        animation: pulse 0.8s infinite;
+      }
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+      }
+    
+    {% when 'rotate' %}
+      .nav-settings .btn-outline-success:hover i {
+        transform: rotate(15deg);
+      }
+    
+    {% when 'scale' %}
+      .nav-settings .btn-outline-success i {
+        transition: transform 0.3s ease, color 0.3s;
+      }
+      .nav-settings .btn-outline-success:hover i {
+        transform: scale(1.3);
+      }
+    
+    {% when 'circle-bg' %}
+      .nav-settings .btn-outline-success {
+        border-radius: 50%;
+        transition: background-color 0.3s, color 0.3s;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+      }
+      .nav-settings .btn-outline-success:hover {
+        background-color: {{ section.settings.search_btn_hover_color }} !important;
+      }
+    
+    {% when 'background' %}
+      /* Default background color change, already implemented */
+    
+    {% else %}
+      /* Default color change only */
+      .nav-settings .btn-outline-success:hover {
+        background-color: transparent !important;
+      }
+  {% endcase %}
 </style>
 
 {% if section.settings.is_sticky_header %}
