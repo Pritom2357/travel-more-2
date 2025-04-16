@@ -9,6 +9,62 @@
  */
 {
   "sections": {
+    "image_carousel_banner_txbBJC": {
+      "type": "image-carousel-banner",
+      "blocks": {
+        "slide_JLABHb": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/dest4.jpg",
+            "overlay_opacity": 0.5,
+            "text_alignment": "center",
+            "slide_heading": "Special Destination Offer",
+            "heading_size": 48,
+            "heading_color": "#ffffff",
+            "heading_font": "Helvetica, sans-serif",
+            "slide_subheading": "Discover amazing travel deals for your next adventure",
+            "subheading_size": 18,
+            "subheading_color": "#ffffff",
+            "button_label": "Book Now",
+            "button_link": "",
+            "button_bg_color": "#449EED",
+            "button_text_color": "#ffffff"
+          }
+        },
+        "slide_MYtR6G": {
+          "type": "slide",
+          "settings": {
+            "overlay_opacity": 0.4,
+            "text_alignment": "center",
+            "slide_heading": "Special Destination Offer",
+            "heading_size": 48,
+            "heading_color": "#ffffff",
+            "heading_font": "Helvetica, sans-serif",
+            "slide_subheading": "Discover amazing travel deals for your next adventure",
+            "subheading_size": 18,
+            "subheading_color": "#ffffff",
+            "button_label": "Book Now",
+            "button_link": "",
+            "button_bg_color": "#449EED",
+            "button_text_color": "#ffffff"
+          }
+        }
+      },
+      "block_order": [
+        "slide_JLABHb",
+        "slide_MYtR6G"
+      ],
+      "name": "Carousel Banner",
+      "settings": {
+        "banner_height": 300,
+        "mobile_banner_height": 200,
+        "content_width": 1200,
+        "autoplay": true,
+        "autoplay_speed": 5,
+        "pause_on_hover": true,
+        "progress_bar_color": "#449EED"
+      }
+    },
     "custom_hero_VL6Rmr": {
       "type": "custom-hero",
       "blocks": {
@@ -548,6 +604,7 @@
     }
   },
   "order": [
+    "image_carousel_banner_txbBJC",
     "custom_hero_VL6Rmr",
     "featured_collection",
     "intro_section_tH7HDm",
