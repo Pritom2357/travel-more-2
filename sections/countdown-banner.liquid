@@ -4,7 +4,6 @@
   <div class="promo-banner-container {% unless section.settings.fullwidth_banner %}container{% endunless %}">
     <div class="promo-content-wrapper">
       {% if section.settings.display_type == 'text' %}
-        <!-- Text Only Version -->
         <div class="promo-text-content">
           {% if section.settings.promo_subheading != blank %}
             <p class="promo-subheading" style="color: {{ section.settings.secondary_text_color }};">{{ section.settings.promo_subheading }}</p>
@@ -19,11 +18,10 @@
           {% endif %}
         </div>
       {% else %}
-        <!-- Image Version -->
         {% if section.settings.promo_image != blank %}
           <div class="promo-image-wrapper">
             <img 
-              src="{{ section.settings.promo_image | img_url: '600x' }}" 
+              src="{{ section.settings.promo_image | img_url: 'original' }}" 
               alt="{{ section.settings.promo_heading | escape }}" 
               class="promo-image {% if section.settings.image_animation %}animate-image{% endif %}"
               width="auto" height="auto"
@@ -32,7 +30,6 @@
         {% endif %}
       {% endif %}
       
-      <!-- Countdown Timer -->
       <div class="countdown-wrapper">
         <div class="countdown-timer" id="countdown-{{ banner_id }}">
           <div class="countdown-item">
@@ -57,7 +54,6 @@
         </div>
       </div>
       
-      <!-- CTA Button -->
       {% if section.settings.button_text != blank %}
         <div class="promo-button-wrapper">
           <a href="{{ section.settings.button_link }}" class="promo-button animate-button" style="background-color: {{ section.settings.button_bg_color }}; color: {{ section.settings.button_text_color }};">
@@ -67,7 +63,6 @@
       {% endif %}
     </div>
     
-    <!-- Close Button -->
     <button class="promo-close-button" aria-label="Close" id="close-{{ banner_id }}">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
         <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -186,6 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
   align-items: center;
   padding: 10px 15px;
   position: relative;
+  background-image: url('{{ section.settings.promo_image | img_url: 'original' }}');
 }
 
 .promo-content-wrapper {
