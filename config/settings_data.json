@@ -163,7 +163,7 @@
           "search_btn_text_color": "#ffffff",
           "search_btn_hover_color": "rgba(0,0,0,0)",
           "search_btn_text_hover_color": "#1ed4be",
-          "icon_hover_effect": "rotate",
+          "icon_hover_effect": "scale",
           "pulse_intensity": 1.5,
           "pulse_speed": 0.8,
           "rotate_angle": 30,
