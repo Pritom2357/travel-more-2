@@ -9,6 +9,38 @@
  */
 {
   "sections": {
+    "countdown_banner_abNz4P": {
+      "type": "countdown-banner",
+      "name": "Promo Countdown Banner",
+      "settings": {
+        "bg_color": "#ff6b6b",
+        "fullwidth_banner": true,
+        "sticky_banner": true,
+        "display_type": "text",
+        "promo_image": "shopify://shop_images/beach2.jpg",
+        "image_animation": true,
+        "promo_subheading": "Limited Time",
+        "promo_heading": "30% OFF ALL DESTINATIONS",
+        "promo_description": "Use code: TRAVEL30",
+        "heading_font": "Roboto, sans-serif",
+        "primary_font_size": 24,
+        "secondary_font_size": 14,
+        "primary_text_color": "#ffffff",
+        "secondary_text_color": "#eeeeee",
+        "end_date": "2025-06-23",
+        "timer_font_size": 24,
+        "timer_bg_color": "#ffffff33",
+        "timer_text_color": "#ffffff",
+        "hide_on_expire": true,
+        "button_text": "Shop Now",
+        "button_link": "",
+        "button_bg_color": "#ffffff",
+        "button_text_color": "#ff6b6b",
+        "button_pulse_color": "#ffffff",
+        "display_delay": 1,
+        "show_once_per_session": true
+      }
+    },
     "custom_hero_VL6Rmr": {
       "type": "custom-hero",
       "blocks": {
@@ -145,6 +177,23 @@
         "designaton_size": 16
       }
     },
+    "stats_section_JFBK8d": {
+      "type": "stats-section",
+      "settings": {
+        "background_image": "shopify://shop_images/dest6.jpg",
+        "overlay_color": "#000000",
+        "text_color": "rgba(0,0,0,0)",
+        "overlay_opacity": 0.5,
+        "stat_1_number": "12",
+        "stat_1_label": "Amazing Deals",
+        "stat_2_number": "670",
+        "stat_2_label": "Sold Tours",
+        "stat_3_number": "24",
+        "stat_3_label": "New Tours",
+        "stat_4_number": "980",
+        "stat_4_label": "Happy Customers"
+      }
+    },
     "specialty_J9NYdd": {
       "type": "specialty",
       "blocks": {
@@ -223,7 +272,7 @@
             "subheading_color": "#ffffff",
             "button_label": "Book Now",
             "button_link": "",
-            "button_bg_color": "#449EED",
+            "button_bg_color": "#449eed",
             "button_text_color": "#ffffff"
           }
         },
@@ -242,7 +291,7 @@
             "subheading_color": "#ffffff",
             "button_label": "Book Now",
             "button_link": "",
-            "button_bg_color": "#449EED",
+            "button_bg_color": "#449eed",
             "button_text_color": "#ffffff"
           }
         },
@@ -261,7 +310,7 @@
             "subheading_color": "#ffffff",
             "button_label": "Book Now",
             "button_link": "",
-            "button_bg_color": "#449EED",
+            "button_bg_color": "#449eed",
             "button_text_color": "#ffffff"
           }
         },
@@ -280,7 +329,7 @@
             "subheading_color": "#ffffff",
             "button_label": "Book Now",
             "button_link": "",
-            "button_bg_color": "#449EED",
+            "button_bg_color": "#449eed",
             "button_text_color": "#ffffff"
           }
         }
@@ -299,23 +348,6 @@
         "autoplay": true,
         "autoplay_speed": 5,
         "pause_on_hover": true
-      }
-    },
-    "stats_section_JFBK8d": {
-      "type": "stats-section",
-      "settings": {
-        "background_image": "shopify://shop_images/dest6.jpg",
-        "overlay_color": "#000000",
-        "text_color": "rgba(0,0,0,0)",
-        "overlay_opacity": 0.5,
-        "stat_1_number": "12",
-        "stat_1_label": "Amazing Deals",
-        "stat_2_number": "670",
-        "stat_2_label": "Sold Tours",
-        "stat_3_number": "24",
-        "stat_3_label": "New Tours",
-        "stat_4_number": "980",
-        "stat_4_label": "Happy Customers"
       }
     },
     "plans_eq7HhF": {
@@ -492,6 +524,7 @@
     }
   },
   "order": [
+    "countdown_banner_abNz4P",
     "custom_hero_VL6Rmr",
     "featured_collection",
     "intro_section_tH7HDm",
