@@ -1,6 +1,13 @@
 {% assign banner_id = 'promo-countdown-' | append: section.id %}
 
-<div id="{{ banner_id }}" class="promo-countdown-banner {% if section.settings.fullwidth_banner %}w-100{% endif %}" style="background-color: {{ section.settings.bg_color }};">
+<div id="{{ banner_id }}" class="promo-countdown-banner {% if section.settings.fullwidth_banner %}w-100{% endif %}" 
+    style="background-color: {% if section.settings.display_type == 'image' %}transparent{% else %}{{ section.settings.bg_color }}{% endif %};">
+  
+  {% if section.settings.display_type == 'image' and section.settings.promo_image != blank %}
+    <div class="promo-background-image" style="background-image: url('{{ section.settings.promo_image | img_url: '1920x' }}');"></div>
+    <div class="promo-background-overlay" style="background-color: {{ section.settings.bg_color }}; opacity: {{ section.settings.overlay_opacity | default: 0.7 }};"></div>
+  {% endif %}
+  
   <div class="promo-banner-container {% unless section.settings.fullwidth_banner %}container{% endunless %}">
     <div class="promo-content-wrapper">
       {% if section.settings.display_type == 'text' %}
@@ -17,17 +24,6 @@
             <p class="promo-description" style="color: {{ section.settings.secondary_text_color }};">{{ section.settings.promo_description }}</p>
           {% endif %}
         </div>
-      {% else %}
-        {% if section.settings.promo_image != blank %}
-          <div class="promo-image-wrapper">
-            <img 
-              src="{{ section.settings.promo_image | img_url: 'original' }}" 
-              alt="{{ section.settings.promo_heading | escape }}" 
-              class="promo-image {% if section.settings.image_animation %}animate-image{% endif %}"
-              width="auto" height="auto"
-            >
-          </div>
-        {% endif %}
       {% endif %}
       
       <div class="countdown-wrapper">
@@ -161,13 +157,39 @@ document.addEventListener('DOMContentLoaded', function() {
   transform: translateY(-100%);
   transition: transform 0.5s ease-in-out;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  {% if section.settings.display_type === 'image' %}
-    background-image: url('{{ section.settings.promo_image | img_url: 'original' }}');
-  {% endif %}
+  overflow: hidden; 
   {% if section.settings.sticky_banner %}
     position: sticky;
     top: 0;
   {% endif %}
+}
+
+.promo-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -2;
+}
+
+.promo-background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* Make sure all content has appropriate contrast against the background */
+.promo-countdown-banner .promo-subheading,
+.promo-countdown-banner .promo-heading,
+.promo-countdown-banner .promo-description {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .promo-countdown-banner.show-banner {
@@ -468,6 +490,16 @@ document.addEventListener('DOMContentLoaded', function() {
       "id": "image_animation",
       "label": "Animate Image",
       "default": true
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Background Overlay Opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.7,
+      "info": "Controls how dark the overlay on the background image will be"
     },
     {
       "type": "header",
