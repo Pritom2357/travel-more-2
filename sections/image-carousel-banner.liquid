@@ -7,7 +7,7 @@
         {% if block.type == 'slide' %}
           <div class="banner-slide" {{ block.shopify_attributes }} id="banner-slide-{{ forloop.index }}">
             {% if block.settings.image %}
-              {%- assign img_url = block.settings.image | image_url: '1920x' -%}
+              {%- assign img_url = block.settings.image | img_url: '1920x' -%}
               <div class="slide-image-container">
                 <div class="slide-image" style="background-image: url('{{ img_url }}');"></div>
                 <div class="slide-overlay" style="background-color: rgba(0, 0, 0, {{ block.settings.overlay_opacity }});"></div>
