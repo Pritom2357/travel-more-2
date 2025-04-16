@@ -16,7 +16,7 @@
         "bg_color": "#ff6b6b",
         "fullwidth_banner": true,
         "sticky_banner": true,
-        "display_type": "image",
+        "display_type": "text",
         "promo_image": "shopify://shop_images/beach2.jpg",
         "image_animation": true,
         "promo_subheading": "Limited Time",
