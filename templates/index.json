@@ -75,7 +75,7 @@
         "search_btn_color": "#ed4444",
         "search_btn_text_color": "#ffffff",
         "search_btn_hover_color": "rgba(0,0,0,0)",
-        "search_btn_text_hover_color": "#ffffff",
+        "search_btn_text_hover_color": "#fe4d4d",
         "bg_img": "shopify://shop_images/dest6.jpg",
         "bg_overlay": 0.4,
         "title_text": "Dare to Live the Life you’ve wanted",
