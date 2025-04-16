@@ -15,7 +15,6 @@
         "slide_JLABHb": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/dest4.jpg",
             "overlay_opacity": 0.5,
             "text_alignment": "center",
             "slide_heading": "Special Destination Offer",
