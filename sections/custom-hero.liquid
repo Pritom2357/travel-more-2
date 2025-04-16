@@ -305,7 +305,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, {{section.settings.bg_overlay}});
-    z-index: 1;
+    z-index: 0; /* Lower the z-index */
   }
   .hero-section .container {
     position: relative;
@@ -317,6 +317,7 @@
     line-height: 1.2;
     font-weight: 700;
     color: {{section.settings.title_color}};
+    z-index: 1; /* Ensure it's below the mobile menu */
   }
   .hero-subtitle {
     font-size: {{section.settings.sub_title_size}}rem;
@@ -387,6 +388,18 @@
   }
   .hero-section .btn1:focus, .hero-section .btn2:focus {
     box-shadow: none !important;
+  }
+  .navbar-collapse {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95); 
+    z-index: 1050; 
+    padding: 15px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 60px; /* Adjust based on the sticky header's height */
   }
 </style>
 
