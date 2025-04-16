@@ -1,0 +1,648 @@
+{% assign banner_class = 'travel-carousel-banner' %}
+
+<div class="{{ banner_class }} position-relative">
+  {% if section.blocks.size > 0 %}
+    <div class="banner-carousel">
+      {% for block in section.blocks %}
+        {% if block.type == 'slide' %}
+          <div class="banner-slide" {{ block.shopify_attributes }} id="banner-slide-{{ forloop.index }}">
+            {% if block.settings.image %}
+              {%- assign img_url = block.settings.image | image_url: '1920x' -%}
+              <div class="slide-image-container">
+                <div class="slide-image" style="background-image: url('{{ img_url }}');"></div>
+                <div class="slide-overlay" style="background-color: rgba(0, 0, 0, {{ block.settings.overlay_opacity }});"></div>
+              </div>
+            {% endif %}
+            
+            <div class="slide-content-container container">
+              <div class="slide-content position-relative" style="text-align: {{ block.settings.text_alignment }};">
+                {% if block.settings.slide_heading != blank %}
+                  <h2 class="slide-heading" 
+                    style="font-size: {{ block.settings.heading_size }}px; 
+                           color: {{ block.settings.heading_color }}; 
+                           font-family: {{ block.settings.heading_font }};">
+                    {{ block.settings.slide_heading }}
+                  </h2>
+                {% endif %}
+                
+                {% if block.settings.slide_subheading != blank %}
+                  <p class="slide-subtitle" 
+                    style="font-size: {{ block.settings.subheading_size }}px; 
+                           color: {{ block.settings.subheading_color }};">
+                    {{ block.settings.slide_subheading }}
+                  </p>
+                {% endif %}
+                
+                {% if block.settings.button_label != blank %}
+                  <a href="{{ block.settings.button_link }}" class="btn slide-btn" 
+                    style="background-color: {{ block.settings.button_bg_color }}; 
+                           color: {{ block.settings.button_text_color }};">
+                    {{ block.settings.button_label }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+    <!-- Navigation Controls -->
+    <div class="banner-controls">
+      <div class="banner-nav banner-prev">
+        <i class="bi bi-chevron-left"></i>
+      </div>
+      <div class="banner-nav banner-next">
+        <i class="bi bi-chevron-right"></i>
+      </div>
+    </div>
+    
+    <!-- Slide Indicators -->
+    <div class="banner-indicators">
+      {% for block in section.blocks %}
+        {% if block.type == 'slide' %}
+          <div class="banner-indicator{% if forloop.first %} active{% endif %}" 
+               data-slide-index="{{ forloop.index0 }}"></div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+    <!-- Progress Bar -->
+    <div class="banner-progress">
+      <div class="banner-progress-bar"></div>
+    </div>
+  {% else %}
+    <div class="banner-placeholder">
+      <p>Add slides to show your banner</p>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Banner slider functionality
+    const banner = document.querySelector('.{{ banner_class }}');
+    const slides = banner.querySelectorAll('.banner-slide');
+    const indicators = banner.querySelectorAll('.banner-indicator');
+    const prevBtn = banner.querySelector('.banner-prev');
+    const nextBtn = banner.querySelector('.banner-next');
+    const progressBar = banner.querySelector('.banner-progress-bar');
+    
+    if (slides.length === 0) return;
+    
+    let currentSlide = 0;
+    let slideInterval;
+    const intervalDuration = {{ section.settings.autoplay_speed | times: 1000 }};
+    
+    // Initialize the slider
+    function initSlider() {
+      showSlide(0);
+      if ({{ section.settings.autoplay }}) {
+        startSlideTimer();
+      }
+      
+      // Event listeners
+      if (prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+      }
+      
+      if (indicators.length > 0) {
+        indicators.forEach((indicator, index) => {
+          indicator.addEventListener('click', () => {
+            goToSlide(index);
+          });
+        });
+      }
+      
+      // Pause autoplay on hover if enabled
+      if ({{ section.settings.pause_on_hover }}) {
+        banner.addEventListener('mouseenter', () => {
+          clearInterval(slideInterval);
+          resetProgressBar();
+        });
+        
+        banner.addEventListener('mouseleave', () => {
+          if ({{ section.settings.autoplay }}) {
+            startSlideTimer();
+          }
+        });
+      }
+    }
+    
+    // Show the specified slide
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+      
+      if (indicators.length > 0) {
+        indicators.forEach((indicator, i) => {
+          indicator.classList.toggle('active', i === index);
+        });
+      }
+      
+      currentSlide = index;
+    }
+    
+    // Go to next slide
+    function nextSlide() {
+      let newIndex = currentSlide + 1;
+      if (newIndex >= slides.length) newIndex = 0;
+      showSlide(newIndex);
+    }
+    
+    // Go to previous slide
+    function prevSlide() {
+      let newIndex = currentSlide - 1;
+      if (newIndex < 0) newIndex = slides.length - 1;
+      showSlide(newIndex);
+    }
+    
+    // Go to a specific slide
+    function goToSlide(index) {
+      showSlide(index);
+      if ({{ section.settings.autoplay }}) {
+        clearInterval(slideInterval);
+        startSlideTimer();
+      }
+    }
+    
+    // Start the autoplay timer
+    function startSlideTimer() {
+      clearInterval(slideInterval);
+      
+      // Reset and animate progress bar
+      resetProgressBar();
+      animateProgressBar();
+      
+      slideInterval = setInterval(() => {
+        nextSlide();
+        resetProgressBar();
+        animateProgressBar();
+      }, intervalDuration);
+    }
+    
+    // Reset progress bar
+    function resetProgressBar() {
+      if (progressBar) {
+        progressBar.style.width = '0%';
+      }
+    }
+    
+    // Animate progress bar
+    function animateProgressBar() {
+      if (progressBar) {
+        progressBar.style.transition = `width ${intervalDuration}ms linear`;
+        progressBar.style.width = '100%';
+      }
+    }
+    
+    // Initialize the slider
+    initSlider();
+  });
+</script>
+
+<style>
+  .{{ banner_class }} {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: {{ section.settings.banner_height }}px;
+  }
+  
+  .banner-carousel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .banner-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .banner-slide.active {
+    opacity: 1;
+    z-index: 1;
+  }
+  
+  .slide-image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .slide-image {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: transform 8s ease;
+  }
+  
+  .banner-slide.active .slide-image {
+    transform: scale(1.1);
+  }
+  
+  .slide-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .slide-content-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: {{ section.settings.content_width }}px;
+    padding: 0 20px;
+  }
+  
+  .slide-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+  }
+  
+  .banner-slide.active .slide-content {
+    animation-name: fadeInUp;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 50px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  
+  .slide-heading {
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .slide-subtitle {
+    margin-bottom: 30px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  .slide-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .slide-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Banner Controls */
+  .banner-controls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    padding: 0 20px;
+  }
+  
+  .banner-nav {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .banner-nav:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .banner-nav i {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  /* Banner Indicators */
+  .banner-indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .banner-indicator {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .banner-indicator.active {
+    background-color: #fff;
+    transform: scale(1.2);
+  }
+  
+  /* Progress Bar */
+  .banner-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    z-index: 3;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  .banner-progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: {{ section.settings.progress_bar_color }};
+  }
+  
+  /* Placeholder */
+  .banner-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    color: #777;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .{{ banner_class }} {
+      height: {{ section.settings.mobile_banner_height }}px;
+    }
+    
+    .slide-heading {
+      font-size: calc({{ section.settings.heading_size }}px * 0.7) !important;
+    }
+    
+    .slide-subtitle {
+      font-size: calc({{ section.settings.subheading_size }}px * 0.8) !important;
+    }
+    
+    .banner-nav {
+      width: 40px;
+      height: 40px;
+    }
+  }
+</style>
+
+{% schema %}
+    {
+        "name": "Carousel Banner",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Banner Settings"
+            },
+            {
+                "type": "range",
+                "id": "banner_height",
+                "label": "Banner Height for Desktop",
+                "min": 300,
+                "max": 800,
+                "step": 10,
+                "unit": "px",
+                "default": 400
+            },
+            {
+                "type": "range",
+                "id": "mobile_banner_height",
+                "label": "Banner Height for Mobile",
+                "min": 200,
+                "max": 600,
+                "step": 10,
+                "default": 300
+            },
+            {
+                "type": "range",
+                "id": "content_width",
+                "label": "Content Max Width",
+                "min": 600,
+                "max": 1900,
+                "step":100,
+                "unit": "px",
+                "default": 1200
+            },
+            {
+                "type": "header",
+                "content": "Autoplay Settings"
+            },
+            {
+                "type": "checkbox",
+                "id": "autoplay",
+                "label": "Enable Autoplay",
+                "default": true
+            },
+            {
+                "type": "range",
+                "id": "autoplay_speed",
+                "label": "Autoplay Speed",
+                "min": 3,
+                "max": 10,
+                "step": 1,
+                "default": 5,
+                "unit": "sec"
+            },
+            {
+                "type": "checkbox",
+                "id": "pause_on_hover",
+                "label": "Pause on hover",
+                "default": true
+            },
+            {
+                "type": "color",
+                "id": "progress_bar_color",
+                "label": "Progress Bar Color",
+                "default": "#449EED"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "slide",
+                "name": "Slide",
+                "settings": [
+                    {
+                        "type": "header",
+                        "content": "Slide Content"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Slide Image"
+                    },
+                    {
+                        "type": "range",
+                        "id": "overlay_opacity",
+                        "label": "Overlay Opacity",
+                        "min": 0,
+                        "max": 1,
+                        "step": 0.1,
+                        "default": 0.4
+                    },
+                    {
+                        "type": "select",
+                        "id": "text_alignment",
+                        "label": "Text Alignment",
+                        "options": [
+                            {"value": "left", "label": "Left"},
+                            {"value": "center", "label": "Center"},
+                            {"value": "right", "label": "Right"}
+                        ],
+                        "default": "center"
+                    },
+                    {
+                        "type": "header",
+                        "content": "Heading"
+                    },
+                    {
+                        "type": "text",
+                        "id": "slide_heading",
+                        "label": "Heading",
+                        "default": "Special Destination Offer",
+                    },
+                    {
+                        "type": "range",
+                        "id": "heading_size",
+                        "label": "Heading Size",
+                        "min": 24,
+                        "max": 72,
+                        "step": 2,
+                        "default": 48,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "color",
+                        "id": "heading_color",
+                        "label": "Heading Color",
+                        "default": "#ffffff"
+                    },
+                    {
+                        "type": "select",
+                        "id": "heading_font",
+                        "label": "Heading Font",
+                        "options": [
+                          {"value": "Helvetica, sans-serif", "label": "Helvetica"},
+                          {"value": "Montserrat, sans-serif", "label": "Montserrat"},
+                          {"value": "Roboto, sans-serif", "label": "Roboto"},
+                          {"value": "Lato, sans-serif", "label": "Lato"}
+                        ],
+                        "default": "Helvetica, sans-serif"
+                    },
+                    {
+                        "type": "header",
+                        "content": "Sub-Heading",
+                    },
+                    {
+                        "type": "textarea",
+                        "id": "slide_subheading",
+                        "label": "Subheading",
+                        "default": "Discover amazing travel deals for your next adventure"
+                    },
+                    {
+                        "type": "range",
+                        "id": "subheading_size",
+                        "label": "Subheading Size",
+                        "min": 14,
+                        "max": 36,
+                        "step": 1,
+                        "default": 18,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "color",
+                        "id": "subheading_color",
+                        "label": "Subheading Color",
+                        "default": "#ffffff"
+                    },
+                    {
+                        "type": "header",
+                        "content": "Button"
+                    },
+                    {
+                        "type": "text",
+                        "id": "button_label",
+                        "label": "Button Label",
+                        "default": "Book Now"
+                    },
+                    {
+                        "type": "url",
+                        "id": "button_link",
+                        "label": "Button Link"
+                    },
+                    {
+                        "type": "color",
+                        "id": "button_bg_color",
+                        "label": "Button Background Color",
+                        "default": "#449EED"
+                    },
+                    {
+                        "type": "color",
+                        "id": "button_text_color",
+                        "label": "Button Text Color",
+                        "default": "#ffffff"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Carousel Banner",
+                "category": "Banner",
+                "blocks": [
+                    {
+                        "type": "slide"
+                    },
+                    {
+                        "type": "slide"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}
