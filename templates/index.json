@@ -27,13 +27,14 @@
             "subheading_color": "#ffffff",
             "button_label": "Book Now",
             "button_link": "",
-            "button_bg_color": "#449EED",
+            "button_bg_color": "#449eed",
             "button_text_color": "#ffffff"
           }
         },
-        "slide_MYtR6G": {
+        "slide_Ahyhjt": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/dest1.jpg",
             "overlay_opacity": 0.4,
             "text_alignment": "center",
             "slide_heading": "Special Destination Offer",
@@ -52,7 +53,7 @@
       },
       "block_order": [
         "slide_JLABHb",
-        "slide_MYtR6G"
+        "slide_Ahyhjt"
       ],
       "name": "Carousel Banner",
       "settings": {
@@ -62,7 +63,7 @@
         "autoplay": true,
         "autoplay_speed": 5,
         "pause_on_hover": true,
-        "progress_bar_color": "#449EED"
+        "progress_bar_color": "#449eed"
       }
     },
     "custom_hero_VL6Rmr": {
