@@ -27,26 +27,30 @@
   <div class="hero-overlay"></div>
   {% if section.settings.is_header %}
     <nav class="navbar navbar-expand-lg nav-settings">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <img
-            src="{{ section.settings.logo | img_url: '100px' }}"
-            alt="{{ shop.name }}"
-            width="{{ section.settings.logo_size }}"
-            height="auto"
+      <div class="container-fluid d-flex">
+        <div class="justify-content-start">
+          <a class="navbar-brand" href="#">
+            <img
+              src="{{ section.settings.logo | img_url: '100px' }}"
+              alt="{{ shop.name }}"
+              width="{{ section.settings.logo_size }}"
+              height="auto"
+            >
+          </a>
+        </div>
+        <div class="justify-content-end">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <i class="bi bi-list btn-outline-success"></i>
-        </button>
+            <i class="bi bi-list btn-outline-success"></i>
+          </button>
+        </div>
         <div class="collapse navbar-collapse nav-text" id="navbarSupportedContent">
           <ul class="navbar-nav mb-2 mb-lg-0 {{ alignment_class }} flex-grow-1">
             {% for menu in section.settings.menu.links %}
