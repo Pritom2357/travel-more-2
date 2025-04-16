@@ -161,6 +161,9 @@ document.addEventListener('DOMContentLoaded', function() {
   transform: translateY(-100%);
   transition: transform 0.5s ease-in-out;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  {% if section.settings.display_type === 'image' %}
+    background-image: url('{{ section.settings.promo_image | img_url: 'original' }}');
+  {% endif %}
   {% if section.settings.sticky_banner %}
     position: sticky;
     top: 0;
@@ -181,7 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
   align-items: center;
   padding: 10px 15px;
   position: relative;
-  background-image: url('{{ section.settings.promo_image | img_url: 'original' }}');
 }
 
 .promo-content-wrapper {
