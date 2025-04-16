@@ -120,83 +120,6 @@
         "max_product_limit": 7
       }
     },
-    "image_carousel_banner_YR3VBt": {
-      "type": "image-carousel-banner",
-      "blocks": {
-        "slide_xQx9fi": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/dest4.jpg",
-            "overlay_opacity": 0.4,
-            "text_alignment": "center",
-            "slide_heading": "Special Destination Offer",
-            "heading_size": 48,
-            "heading_color": "#ffffff",
-            "heading_font": "Helvetica, sans-serif",
-            "slide_subheading": "Discover amazing travel deals for your next adventure",
-            "subheading_size": 18,
-            "subheading_color": "#ffffff",
-            "button_label": "Book Now",
-            "button_link": "",
-            "button_bg_color": "#449EED",
-            "button_text_color": "#ffffff"
-          }
-        },
-        "slide_hTqEKd": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/dest1.jpg",
-            "overlay_opacity": 0.4,
-            "text_alignment": "center",
-            "slide_heading": "Special Destination Offer",
-            "heading_size": 48,
-            "heading_color": "#ffffff",
-            "heading_font": "Helvetica, sans-serif",
-            "slide_subheading": "Discover amazing travel deals for your next adventure",
-            "subheading_size": 18,
-            "subheading_color": "#ffffff",
-            "button_label": "Book Now",
-            "button_link": "",
-            "button_bg_color": "#449EED",
-            "button_text_color": "#ffffff"
-          }
-        },
-        "slide_iNdP94": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/dest6.jpg",
-            "overlay_opacity": 0.4,
-            "text_alignment": "center",
-            "slide_heading": "Special Destination Offer",
-            "heading_size": 48,
-            "heading_color": "#ffffff",
-            "heading_font": "Helvetica, sans-serif",
-            "slide_subheading": "Discover amazing travel deals for your next adventure",
-            "subheading_size": 18,
-            "subheading_color": "#ffffff",
-            "button_label": "Book Now",
-            "button_link": "",
-            "button_bg_color": "#449EED",
-            "button_text_color": "#ffffff"
-          }
-        }
-      },
-      "block_order": [
-        "slide_xQx9fi",
-        "slide_hTqEKd",
-        "slide_iNdP94"
-      ],
-      "name": "Carousel Banner",
-      "settings": {
-        "banner_height": 400,
-        "mobile_banner_height": 300,
-        "content_width": 1200,
-        "autoplay": true,
-        "autoplay_speed": 5,
-        "pause_on_hover": true,
-        "progress_bar_color": "#449EED"
-      }
-    },
     "intro_section_tH7HDm": {
       "type": "intro-section",
       "settings": {
@@ -359,79 +282,101 @@
         "section_id": "See more"
       }
     },
-    "dynamic_destination_zkGe8K": {
-      "type": "dynamic-destination",
+    "image_carousel_banner_zGzadk": {
+      "type": "image-carousel-banner",
       "blocks": {
-        "destination_rPcB6R": {
-          "type": "destination",
+        "slide_ajDWBE": {
+          "type": "slide",
           "settings": {
             "image": "shopify://shop_images/dest4.jpg",
-            "image_text": "Deep Sea Adventures",
-            "img_description": "5 remaining",
-            "grid_span": 2,
-            "grid_height_span": 2,
-            "title_color": "#ffffff",
-            "description_color": "#ffffff",
-            "card_bg_color": "rgba(0,0,0,0)"
+            "overlay_opacity": 0.4,
+            "text_alignment": "center",
+            "slide_heading": "Special Destination Offer",
+            "heading_size": 48,
+            "heading_color": "#ffffff",
+            "heading_font": "Helvetica, sans-serif",
+            "slide_subheading": "Discover amazing travel deals for your next adventure",
+            "subheading_size": 18,
+            "subheading_color": "#ffffff",
+            "button_label": "Book Now",
+            "button_link": "",
+            "button_bg_color": "#449EED",
+            "button_text_color": "#ffffff"
           }
         },
-        "destination_FQjwRT": {
-          "type": "destination",
+        "slide_9YyVPC": {
+          "type": "slide",
           "settings": {
             "image": "shopify://shop_images/dest1.jpg",
-            "image_text": "Destination Name",
-            "img_description": "Number of Tours",
-            "grid_span": 1,
-            "grid_height_span": 1,
-            "title_color": "#ffffff",
-            "description_color": "#ffffff",
-            "card_bg_color": "rgba(0,0,0,0)"
+            "overlay_opacity": 0.4,
+            "text_alignment": "center",
+            "slide_heading": "Special Destination Offer",
+            "heading_size": 48,
+            "heading_color": "#ffffff",
+            "heading_font": "Helvetica, sans-serif",
+            "slide_subheading": "Discover amazing travel deals for your next adventure",
+            "subheading_size": 18,
+            "subheading_color": "#ffffff",
+            "button_label": "Book Now",
+            "button_link": "",
+            "button_bg_color": "#449EED",
+            "button_text_color": "#ffffff"
           }
         },
-        "destination_ztVHnE": {
-          "type": "destination",
+        "slide_Vg3aQM": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/dest6.jpg",
+            "overlay_opacity": 0.4,
+            "text_alignment": "center",
+            "slide_heading": "Special Destination Offer",
+            "heading_size": 48,
+            "heading_color": "#ffffff",
+            "heading_font": "Helvetica, sans-serif",
+            "slide_subheading": "Discover amazing travel deals for your next adventure",
+            "subheading_size": 18,
+            "subheading_color": "#ffffff",
+            "button_label": "Book Now",
+            "button_link": "",
+            "button_bg_color": "#449EED",
+            "button_text_color": "#ffffff"
+          }
+        },
+        "slide_bNiPf4": {
+          "type": "slide",
           "settings": {
             "image": "shopify://shop_images/dest5.jpg",
-            "image_text": "Destination Name",
-            "img_description": "Number of Tours",
-            "grid_span": 1,
-            "grid_height_span": 1,
-            "title_color": "#ffffff",
-            "description_color": "#ffffff",
-            "card_bg_color": "rgba(0,0,0,0)"
-          }
-        },
-        "destination_4bC4qN": {
-          "type": "destination",
-          "settings": {
-            "image": "shopify://shop_images/beach2.jpg",
-            "image_text": "Destination Name",
-            "img_description": "Number of Tours",
-            "grid_span": 2,
-            "grid_height_span": 1,
-            "title_color": "#ffffff",
-            "description_color": "#ffffff",
-            "card_bg_color": "rgba(0,0,0,0)"
+            "overlay_opacity": 0.4,
+            "text_alignment": "center",
+            "slide_heading": "Special Destination Offer",
+            "heading_size": 48,
+            "heading_color": "#ffffff",
+            "heading_font": "Helvetica, sans-serif",
+            "slide_subheading": "Discover amazing travel deals for your next adventure",
+            "subheading_size": 18,
+            "subheading_color": "#ffffff",
+            "button_label": "Book Now",
+            "button_link": "",
+            "button_bg_color": "#449EED",
+            "button_text_color": "#ffffff"
           }
         }
       },
       "block_order": [
-        "destination_rPcB6R",
-        "destination_FQjwRT",
-        "destination_ztVHnE",
-        "destination_4bC4qN"
+        "slide_ajDWBE",
+        "slide_9YyVPC",
+        "slide_Vg3aQM",
+        "slide_bNiPf4"
       ],
+      "name": "Carousel Banner",
       "settings": {
-        "bg_color": "#ffffff",
-        "section_title": "Best Offers This Month",
-        "title_color": "#000000",
-        "title_size": 36,
-        "section_subtitle": "Find your destinations, you deserve this",
-        "subtitle_color": "#666666",
-        "subtitle_size": 18,
-        "filter_buttons": "",
-        "filter_button_bg_color": "#00cfcf",
-        "filter_button_text_color": "#ffffff"
+        "banner_height": 400,
+        "mobile_banner_height": 300,
+        "content_width": 1200,
+        "autoplay": true,
+        "autoplay_speed": 5,
+        "pause_on_hover": true,
+        "progress_bar_color": "#449EED"
       }
     },
     "stats_section_JFBK8d": {
@@ -627,12 +572,11 @@
   "order": [
     "custom_hero_VL6Rmr",
     "featured_collection",
-    "image_carousel_banner_YR3VBt",
     "intro_section_tH7HDm",
     "specialty_J9NYdd",
     "featured_product_QwMRGG",
     "image_with_text_LWfBGm",
-    "dynamic_destination_zkGe8K",
+    "image_carousel_banner_zGzadk",
     "stats_section_JFBK8d",
     "plans_eq7HhF",
     "experience_DajhgX"
