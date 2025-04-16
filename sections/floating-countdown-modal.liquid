@@ -1,0 +1,816 @@
+{% assign modal_id = 'promo-modal-' | append: section.id %}
+{% assign floating_id = 'floating-timer-' | append: section.id %}
+
+<div id="{{ modal_id }}" class="promo-modal">
+  <div class="promo-modal-overlay"></div>
+  <div class="promo-modal-content">
+    <!-- Optional background image for modal -->
+    {% if section.settings.promo_image != blank %}
+      <div class="modal-background-image" style="background-image: url('{{ section.settings.promo_image | img_url: '1200x' }}');"></div>
+      <div class="modal-background-overlay" style="background-color: {{ section.settings.bg_color }}; opacity: {{ section.settings.overlay_opacity }};"></div>
+    {% endif %}
+    
+    <!-- Modal Content -->
+    <div class="modal-body">
+      {% if section.settings.promo_subheading != blank %}
+        <p class="modal-subheading">{{ section.settings.promo_subheading }}</p>
+      {% endif %}
+      
+      {% if section.settings.promo_heading != blank %}
+        <h2 class="modal-heading animate-text">{{ section.settings.promo_heading }}</h2>
+      {% endif %}
+      
+      {% if section.settings.promo_description != blank %}
+        <p class="modal-description">{{ section.settings.promo_description }}</p>
+      {% endif %}
+      
+      <!-- Countdown Timer -->
+      <div class="modal-countdown" id="modal-countdown-{{ modal_id }}">
+        <div class="countdown-block">
+          <span class="countdown-value days">00</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-block">
+          <span class="countdown-value hours">00</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-block">
+          <span class="countdown-value minutes">00</span>
+          <span class="countdown-label">Mins</span>
+        </div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-block">
+          <span class="countdown-value seconds">00</span>
+          <span class="countdown-label">Secs</span>
+        </div>
+      </div>
+      
+      <!-- CTA Button -->
+      {% if section.settings.button_text != blank %}
+        <a href="{{ section.settings.button_link }}" class="modal-button pulse-button">
+          {{ section.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+    
+    <!-- Close Button (minimizes to floating element) -->
+    <button class="modal-minimize-button" aria-label="Minimize">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- Floating Countdown Element (initially hidden) -->
+<div id="{{ floating_id }}" class="floating-countdown-container">
+  <div class="floating-countdown-icon">
+    {% if section.settings.floating_icon_type == 'percent' %}
+      <div class="percent-off">{{ section.settings.percent_off }}%</div>
+    {% else %}
+      <i class="bi bi-alarm"></i>
+    {% endif %}
+  </div>
+  <div class="floating-countdown-timer">
+    <span class="floating-days">00</span>d
+    <span class="floating-hours">00</span>h
+    <span class="floating-minutes">00</span>m
+  </div>
+  <button class="floating-expand-button" aria-label="Expand">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V1.5zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+    </svg>
+  </button>
+  <button class="floating-close-button" aria-label="Close">
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const storageKeyModal = '{{ modal_id }}_state';
+  const storageKeyFloating = '{{ floating_id }}_dismissed';
+  
+  const modal = document.getElementById('{{ modal_id }}');
+  const floatingEl = document.getElementById('{{ floating_id }}');
+  const minimizeButton = modal.querySelector('.modal-minimize-button');
+  const expandButton = floatingEl.querySelector('.floating-expand-button');
+  const closeButton = floatingEl.querySelector('.floating-close-button');
+  
+  // Get stored states
+  const modalState = localStorage.getItem(storageKeyModal);
+  const floatingDismissed = localStorage.getItem(storageKeyFloating) === 'true';
+  
+  // Handle initial display based on stored states
+  if (modalState === 'minimized') {
+    // Modal was previously minimized, show floating element
+    if (!floatingDismissed) {
+      showFloatingElement();
+    }
+  } else if (modalState === 'shown' || modalState === null) {
+    // First visit or modal was shown previously
+    // Show modal after delay
+    setTimeout(showModal, {{ section.settings.display_delay | times: 1000 }});
+  }
+  
+  // Show the modal
+  function showModal() {
+    modal.classList.add('show');
+    localStorage.setItem(storageKeyModal, 'shown');
+    
+    if (floatingEl.classList.contains('show')) {
+      floatingEl.classList.remove('show');
+    }
+  }
+  
+  // Show the floating element
+  function showFloatingElement() {
+    floatingEl.classList.add('show');
+  }
+  
+  // Minimize modal to floating element
+  minimizeButton.addEventListener('click', function() {
+    modal.classList.remove('show');
+    modal.classList.add('minimizing');
+    
+    // Wait for animation to complete
+    setTimeout(function() {
+      modal.classList.remove('minimizing');
+      showFloatingElement();
+      localStorage.setItem(storageKeyModal, 'minimized');
+    }, 300);
+  });
+  
+  // Expand floating element to modal
+  expandButton.addEventListener('click', function() {
+    floatingEl.classList.add('minimizing');
+    
+    // Wait for animation to complete
+    setTimeout(function() {
+      floatingEl.classList.remove('show');
+      floatingEl.classList.remove('minimizing');
+      showModal();
+    }, 300);
+  });
+  
+  // Completely dismiss floating element
+  closeButton.addEventListener('click', function() {
+    floatingEl.classList.add('closing');
+    
+    // Wait for animation to complete
+    setTimeout(function() {
+      floatingEl.classList.remove('show');
+      floatingEl.classList.remove('closing');
+      localStorage.setItem(storageKeyFloating, 'true');
+    }, 300);
+  });
+  
+  // Countdown Timer functionality
+  function updateCountdown() {
+    const endDate = new Date('{{ section.settings.end_date }}').getTime();
+    const now = new Date().getTime();
+    const timeRemaining = endDate - now;
+    
+    if (timeRemaining <= 0) {
+      // Timer has expired
+      updateCountdownDisplay(0, 0, 0, 0);
+      
+      // Hide elements if timer has expired
+      if ({{ section.settings.hide_on_expire }}) {
+        modal.style.display = 'none';
+        floatingEl.style.display = 'none';
+      }
+      return;
+    }
+    
+    // Calculate days, hours, minutes, seconds
+    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+    
+    updateCountdownDisplay(days, hours, minutes, seconds);
+  }
+  
+  function updateCountdownDisplay(days, hours, minutes, seconds) {
+    // Format with leading zeros
+    const d = days.toString().padStart(2, '0');
+    const h = hours.toString().padStart(2, '0');
+    const m = minutes.toString().padStart(2, '0');
+    const s = seconds.toString().padStart(2, '0');
+    
+    // Update modal countdown
+    document.querySelector('#modal-countdown-{{ modal_id }} .days').textContent = d;
+    document.querySelector('#modal-countdown-{{ modal_id }} .hours').textContent = h;
+    document.querySelector('#modal-countdown-{{ modal_id }} .minutes').textContent = m;
+    document.querySelector('#modal-countdown-{{ modal_id }} .seconds').textContent = s;
+    
+    // Update floating countdown
+    document.querySelector('#{{ floating_id }} .floating-days').textContent = d;
+    document.querySelector('#{{ floating_id }} .floating-hours').textContent = h;
+    document.querySelector('#{{ floating_id }} .floating-minutes').textContent = m;
+    
+    // Add animation class to changing seconds
+    const secondsEl = document.querySelector('#modal-countdown-{{ modal_id }} .seconds');
+    secondsEl.classList.add('pulse');
+    setTimeout(() => { secondsEl.classList.remove('pulse'); }, 500);
+  }
+  
+  // Initial update and set interval
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+});
+</script>
+
+<style>
+/* Modal Styles */
+.promo-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.promo-modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.promo-modal.minimizing .promo-modal-content {
+  transform: scale(0.3);
+  opacity: 0;
+}
+
+.promo-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+}
+
+.promo-modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  background-color: {{ section.settings.bg_color }};
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  padding: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 2;
+}
+
+.modal-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 0;
+}
+
+.modal-background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.modal-body {
+  position: relative;
+  padding: 40px 30px;
+  text-align: center;
+  z-index: 2;
+  color: {{ section.settings.primary_text_color }};
+}
+
+.modal-subheading {
+  font-size: {{ section.settings.secondary_font_size }}px;
+  margin: 0 0 10px;
+  color: {{ section.settings.secondary_text_color }};
+}
+
+.modal-heading {
+  font-size: {{ section.settings.primary_font_size }}px;
+  font-weight: 700;
+  margin: 0 0 15px;
+  color: {{ section.settings.primary_text_color }};
+  font-family: {{ section.settings.heading_font }};
+}
+
+.modal-description {
+  font-size: {{ section.settings.secondary_font_size }}px;
+  margin: 0 0 25px;
+  color: {{ section.settings.secondary_text_color }};
+}
+
+.modal-countdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 25px;
+}
+
+.countdown-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: {{ section.settings.timer_bg_color }};
+  border-radius: 4px;
+  padding: 8px 12px;
+  min-width: 60px;
+}
+
+.countdown-value {
+  font-size: {{ section.settings.timer_font_size }}px;
+  font-weight: 700;
+  color: {{ section.settings.timer_text_color }};
+}
+
+.countdown-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: {{ section.settings.timer_text_color }};
+  opacity: 0.8;
+}
+
+.countdown-separator {
+  font-size: {{ section.settings.timer_font_size }}px;
+  font-weight: 700;
+  color: {{ section.settings.primary_text_color }};
+  align-self: flex-start;
+  margin-top: 8px;
+}
+
+.modal-button {
+  display: inline-block;
+  background-color: {{ section.settings.button_bg_color }};
+  color: {{ section.settings.button_text_color }};
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.modal-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.modal-minimize-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: {{ section.settings.secondary_text_color }};
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal-minimize-button:hover {
+  transform: scale(1.1);
+  color: {{ section.settings.primary_text_color }};
+}
+
+/* Floating Element Styles */
+.floating-countdown-container {
+  position: fixed;
+  {% if section.settings.floating_position == 'bottom-left' %}
+    bottom: 20px;
+    left: 20px;
+  {% elsif section.settings.floating_position == 'bottom-right' %}
+    bottom: 20px;
+    right: 20px;
+  {% elsif section.settings.floating_position == 'top-left' %}
+    top: 20px;
+    left: 20px;
+  {% else %}
+    top: 20px;
+    right: 20px;
+  {% endif %}
+  display: flex;
+  align-items: center;
+  background-color: {{ section.settings.bg_color }};
+  border-radius: 50px;
+  padding: 8px 16px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+}
+
+.floating-countdown-container.show {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.floating-countdown-container.minimizing {
+  transform: scale(0.8);
+  opacity: 0;
+}
+
+.floating-countdown-container.closing {
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+.floating-countdown-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: {{ section.settings.button_bg_color }};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  color: {{ section.settings.button_text_color }};
+}
+
+.percent-off {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.floating-countdown-timer {
+  color: {{ section.settings.primary_text_color }};
+  font-weight: 600;
+  font-size: 14px;
+  margin-right: 12px;
+}
+
+.floating-expand-button, .floating-close-button {
+  background: transparent;
+  border: none;
+  color: {{ section.settings.secondary_text_color }};
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  margin-left: 5px;
+}
+
+.floating-expand-button:hover, .floating-close-button:hover {
+  color: {{ section.settings.primary_text_color }};
+}
+
+/* Animations */
+.animate-text {
+  animation: glowPulse 2s infinite alternate;
+}
+
+@keyframes glowPulse {
+  0% {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.pulse-button {
+  animation: buttonPulse 2s infinite;
+}
+
+@keyframes buttonPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+.pulse {
+  animation: numberPulse 0.5s ease-out;
+}
+
+@keyframes numberPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+  .promo-modal-content {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  .modal-body {
+    padding: 30px 15px;
+  }
+  
+  .modal-heading {
+    font-size: calc({{ section.settings.primary_font_size }}px * 0.8);
+  }
+  
+  .countdown-block {
+    min-width: 50px;
+    padding: 6px;
+  }
+  
+  .countdown-value {
+    font-size: calc({{ section.settings.timer_font_size }}px * 0.8);
+  }
+  
+  .floating-countdown-container {
+    padding: 6px 12px;
+  }
+  
+  .floating-countdown-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+  }
+  
+  .floating-countdown-timer {
+    font-size: 12px;
+    margin-right: 8px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Floating Countdown Modal",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FF6B6B"
+    },
+    {
+      "type": "image_picker",
+      "id": "promo_image",
+      "label": "Background Image",
+      "info": "Optional: Add a background image to the modal"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Background Overlay Opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.7
+    },
+    {
+      "type": "header",
+      "content": "Floating Element Settings"
+    },
+    {
+      "type": "select",
+      "id": "floating_position",
+      "label": "Floating Position",
+      "options": [
+        {
+          "value": "bottom-right",
+          "label": "Bottom Right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "top-right",
+          "label": "Top Right"
+        },
+        {
+          "value": "top-left",
+          "label": "Top Left"
+        }
+      ],
+      "default": "bottom-right"
+    },
+    {
+      "type": "select",
+      "id": "floating_icon_type",
+      "label": "Floating Icon Type",
+      "options": [
+        {
+          "value": "clock",
+          "label": "Clock Icon"
+        },
+        {
+          "value": "percent",
+          "label": "Percentage Off"
+        }
+      ],
+      "default": "percent"
+    },
+    {
+      "type": "text",
+      "id": "percent_off",
+      "label": "Percentage Off Value",
+      "default": "30"
+    },
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "text",
+      "id": "promo_subheading",
+      "label": "Subheading",
+      "default": "Limited Time Offer"
+    },
+    {
+      "type": "text",
+      "id": "promo_heading",
+      "label": "Heading",
+      "default": "30% OFF ALL DESTINATIONS"
+    },
+    {
+      "type": "textarea",
+      "id": "promo_description",
+      "label": "Description",
+      "default": "Use promo code TRAVEL30 at checkout to get an exclusive discount on all our travel packages!"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading Font",
+      "options": [
+        {"value": "Helvetica, sans-serif", "label": "Helvetica"},
+        {"value": "Montserrat, sans-serif", "label": "Montserrat"},
+        {"value": "Roboto, sans-serif", "label": "Roboto"},
+        {"value": "Lato, sans-serif", "label": "Lato"}
+      ],
+      "default": "Helvetica, sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "primary_font_size",
+      "label": "Heading Font Size",
+      "min": 18,
+      "max": 42,
+      "step": 1,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "secondary_font_size",
+      "label": "Subheading & Description Font Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "primary_text_color",
+      "label": "Heading Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "secondary_text_color",
+      "label": "Subheading & Description Text Color",
+      "default": "#EEEEEE"
+    },
+    {
+      "type": "header",
+      "content": "Countdown Timer Settings"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End Date (YYYY-MM-DD format)",
+      "default": "2025-12-31",
+      "info": "The date when the offer expires"
+    },
+    {
+      "type": "range",
+      "id": "timer_font_size",
+      "label": "Timer Font Size",
+      "min": 16,
+      "max": 36,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "timer_bg_color",
+      "label": "Timer Background Color",
+      "default": "rgba(255, 255, 255, 0.2)"
+    },
+    {
+      "type": "color",
+      "id": "timer_text_color",
+      "label": "Timer Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_expire",
+      "label": "Hide When Timer Expires",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Book Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FF6B6B"
+    },
+    {
+      "type": "header",
+      "content": "Display Settings"
+    },
+    {
+      "type": "range",
+      "id": "display_delay",
+      "label": "Display Delay",
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "default": 3,
+      "unit": "sec",
+      "info": "Delay before showing the modal after page load"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating Countdown Modal",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}
