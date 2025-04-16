@@ -17,6 +17,7 @@
         "fullwidth_banner": true,
         "sticky_banner": true,
         "display_type": "text",
+        "promo_image": "shopify://shop_images/dest4.jpg",
         "image_animation": true,
         "overlay_opacity": 0.3,
         "promo_subheading": "Grab The Offer",
