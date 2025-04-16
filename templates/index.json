@@ -205,83 +205,6 @@
         "sub_title_size": 16
       }
     },
-    "featured_product_QwMRGG": {
-      "type": "featured-product",
-      "blocks": {
-        "title_DNX7yF": {
-          "type": "title",
-          "settings": {}
-        },
-        "price_Whpx8i": {
-          "type": "price",
-          "settings": {}
-        },
-        "variants_KUtaMc": {
-          "type": "variants",
-          "settings": {}
-        },
-        "description_cHXqNC": {
-          "type": "description",
-          "settings": {}
-        },
-        "quantity_XBpa7h": {
-          "type": "quantity",
-          "settings": {}
-        },
-        "add_to_cart_bwcCDG": {
-          "type": "addToCart",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "title_DNX7yF",
-        "price_Whpx8i",
-        "variants_KUtaMc",
-        "description_cHXqNC",
-        "quantity_XBpa7h",
-        "add_to_cart_bwcCDG"
-      ],
-      "disabled": true,
-      "settings": {
-        "product": "b"
-      }
-    },
-    "image_with_text_LWfBGm": {
-      "type": "image-with-text",
-      "blocks": {
-        "title_DCrpDM": {
-          "type": "title",
-          "settings": {
-            "title": "Mara kha tora"
-          }
-        },
-        "description_M9VFU6": {
-          "type": "description",
-          "settings": {
-            "description": "<p>Mew biral goblet</p>"
-          }
-        },
-        "action_LpM6hP": {
-          "type": "action",
-          "settings": {
-            "btn_label": "See more",
-            "btn_url": "",
-            "btn_style": "primary"
-          }
-        }
-      },
-      "block_order": [
-        "title_DCrpDM",
-        "description_M9VFU6",
-        "action_LpM6hP"
-      ],
-      "disabled": true,
-      "settings": {
-        "position": "left",
-        "background_color": "#effffb",
-        "section_id": "See more"
-      }
-    },
     "image_carousel_banner_zGzadk": {
       "type": "image-carousel-banner",
       "blocks": {
@@ -375,8 +298,7 @@
         "content_width": 1200,
         "autoplay": true,
         "autoplay_speed": 5,
-        "pause_on_hover": true,
-        "progress_bar_color": "#449EED"
+        "pause_on_hover": true
       }
     },
     "stats_section_JFBK8d": {
@@ -573,11 +495,9 @@
     "custom_hero_VL6Rmr",
     "featured_collection",
     "intro_section_tH7HDm",
-    "specialty_J9NYdd",
-    "featured_product_QwMRGG",
-    "image_with_text_LWfBGm",
-    "image_carousel_banner_zGzadk",
     "stats_section_JFBK8d",
+    "specialty_J9NYdd",
+    "image_carousel_banner_zGzadk",
     "plans_eq7HhF",
     "experience_DajhgX"
   ]
