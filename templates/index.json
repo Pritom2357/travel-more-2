@@ -46,7 +46,7 @@
             "subheading_color": "#ffffff",
             "button_label": "Book Now",
             "button_link": "",
-            "button_bg_color": "#449EED",
+            "button_bg_color": "#449eed",
             "button_text_color": "#ffffff"
           }
         }
@@ -57,9 +57,9 @@
       ],
       "name": "Carousel Banner",
       "settings": {
-        "banner_height": 300,
+        "banner_height": 100,
         "mobile_banner_height": 200,
-        "content_width": 1200,
+        "content_width": 1400,
         "autoplay": true,
         "autoplay_speed": 5,
         "pause_on_hover": true,
