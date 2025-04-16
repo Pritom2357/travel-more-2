@@ -68,9 +68,9 @@
     </div>
     
     <!-- Progress Bar -->
-    <div class="banner-progress">
+    {% comment %} <div class="banner-progress">
       <div class="banner-progress-bar"></div>
-    </div>
+    </div> {% endcomment %}
   {% else %}
     <div class="banner-placeholder">
       <p>Add slides to show your banner</p>
@@ -495,12 +495,7 @@
                 "label": "Pause on hover",
                 "default": true
             },
-            {
-                "type": "color",
-                "id": "progress_bar_color",
-                "label": "Progress Bar Color",
-                "default": "#449EED"
-            }
+            
         ],
         "blocks": [
             {
