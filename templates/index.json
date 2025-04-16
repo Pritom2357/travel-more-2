@@ -16,7 +16,7 @@
         "bg_color": "rgba(0,0,0,0)",
         "fullwidth_banner": true,
         "sticky_banner": true,
-        "display_type": "image",
+        "display_type": "text",
         "promo_image": "shopify://shop_images/beach2.jpg",
         "image_animation": true,
         "overlay_opacity": 0.8,
