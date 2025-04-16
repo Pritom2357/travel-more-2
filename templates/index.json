@@ -9,6 +9,36 @@
  */
 {
   "sections": {
+    "floating_countdown_modal_FwNXKk": {
+      "type": "floating-countdown-modal",
+      "name": "Floating Countdown Modal",
+      "settings": {
+        "bg_color": "#FF6B6B",
+        "promo_image": "shopify://shop_images/dest4.jpg",
+        "overlay_opacity": 0.7,
+        "floating_position": "bottom-right",
+        "floating_icon_type": "percent",
+        "percent_off": "30",
+        "promo_subheading": "Limited Time Offer",
+        "promo_heading": "30% OFF ALL DESTINATIONS",
+        "promo_description": "Use promo code TRAVEL30 at checkout to get an exclusive discount on all our travel packages!",
+        "heading_font": "Helvetica, sans-serif",
+        "primary_font_size": 28,
+        "secondary_font_size": 16,
+        "primary_text_color": "#FFFFFF",
+        "secondary_text_color": "#EEEEEE",
+        "end_date": "2025-12-31",
+        "timer_font_size": 24,
+        "timer_bg_color": "rgba(255, 255, 255, 0.2)",
+        "timer_text_color": "#FFFFFF",
+        "hide_on_expire": true,
+        "button_text": "Book Now",
+        "button_link": "",
+        "button_bg_color": "#FFFFFF",
+        "button_text_color": "#FF6B6B",
+        "display_delay": 3
+      }
+    },
     "countdown_banner_abNz4P": {
       "type": "countdown-banner",
       "name": "Promo Countdown Banner",
@@ -525,6 +555,7 @@
     }
   },
   "order": [
+    "floating_countdown_modal_FwNXKk",
     "countdown_banner_abNz4P",
     "custom_hero_VL6Rmr",
     "featured_collection",
