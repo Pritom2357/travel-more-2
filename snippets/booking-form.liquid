@@ -1,31 +1,817 @@
 <div class="form-container">
-    <div class="transparency-container">
-        <div class="from-title">
-            <h2>{{ form_title }}</h2>
-        </div>
-        <div class="input-div">
-            <div class="tour-search">
-                <label>Search for existing tours</label>
-                <input id="" type="text" class="">
-            </div>
-            <div class="suggestion-bar"></div>
-            <div class="pick-date">
-                <input type="date" class="">
-            </div>
-            <div class="person-count">
-                <input class="number">
-            </div>
-            <div class="price-slider">
-                <input type="slider">
-            </div>
-            <div class="search-results"></div>
-            <div class="d-flex"></div>
-            {% comment %} if search result found {% endcomment %}
-            <h4>Your requested tour found</h4>
-            <button>Proceed?</button>
-            {% comment %} else {% endcomment %}
-            <h4>Cound not find tour</h4>
-            <button>Custom Tour?</button>
-        </div>
+  <div class="transparency-container" style="background-color: rgba({{ form_red }}, {{ form_green }}, {{ form_blue }}, {{ form_bg_opacity }});">
+    <div class="form-title">
+      <h2>{{ form_title }}</h2>
     </div>
+    
+    <div class="input-div">
+      <!-- Tour Search with Autocomplete -->
+      <div class="tour-search mb-3">
+        <label for="tourSearchInput">Search for existing tours</label>
+        <div class="search-input-container position-relative">
+          <span class="search-icon"><i class="bi bi-search"></i></span>
+          <input id="tourSearchInput" type="text" class="form-control pl-4" placeholder="Start typing destination or tour name...">
+        </div>
+      </div>
+      
+      <!-- Live Suggestion Bar -->
+      <div class="suggestion-bar" id="suggestionResults"></div>
+      
+      <!-- Popular Tours -->
+      <div class="popular-tours mb-4">
+        <h6>Popular Tours</h6>
+        <div class="popular-tours-container" id="popularToursContainer">
+          <!-- Will be populated dynamically -->
+          <div class="loading-indicator">
+            <div class="spinner-border spinner-border-sm text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <span>Loading popular tours...</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Travel Details -->
+      <div class="d-flex travel-details mb-3">
+        <div class="pick-date mr-2">
+          <label for="travelDate">Travel Date</label>
+          <input type="date" id="travelDate" class="form-control" min="{{ 'now' | date: '%Y-%m-%d' }}">
+        </div>
+        <div class="days-to-stay">
+          <label for="stayDuration">Days to Stay</label>
+          <div class="number-input-container">
+            <button type="button" class="decrement-btn" aria-label="Decrease">-</button>
+            <input type="number" id="stayDuration" class="form-control" min="1" max="30" value="7">
+            <button type="button" class="increment-btn" aria-label="Increase">+</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Person Count -->
+      <div class="person-count mb-4">
+        <label for="personCount">Number of Travelers</label>
+        <div class="number-input-container">
+          <button type="button" class="decrement-btn" aria-label="Decrease">-</button>
+          <input type="number" id="personCount" class="form-control" min="1" max="20" value="2">
+          <button type="button" class="increment-btn" aria-label="Increase">+</button>
+        </div>
+      </div>
+      
+      <!-- Search Button -->
+      <button type="button" id="searchButton" class="btn btn-primary btn-block mb-4">
+        <i class="bi bi-search"></i> Find My Perfect Tour
+      </button>
+      
+      <!-- Search Results Area -->
+      <div class="search-results mb-4" id="searchResults">
+        <!-- Will be populated with search results -->
+      </div>
+      
+      <!-- Action Buttons (initially hidden) -->
+      <div class="action-buttons">
+        <div id="foundTourAction" style="display: none;">
+          <h4>Your requested tour found!</h4>
+          <p class="matched-tour-name" id="matchedTourName"></p>
+          <button type="button" id="proceedButton" class="btn btn-success btn-block">
+            <i class="bi bi-check-circle"></i> Proceed to Booking
+          </button>
+        </div>
+        
+        <div id="notFoundAction" style="display: none;">
+          <h4>We couldn't find an exact match</h4>
+          <p>Let us create a custom tour just for you</p>
+          <button type="button" id="customTourButton" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#customTourModal">
+            <i class="bi bi-stars"></i> Request Custom Tour
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Custom Tour Request Modal -->
+<div class="modal fade" id="customTourModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Request Custom Tour</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="customTourForm">
+          <div class="form-group">
+            <label for="customDestination">Destination</label>
+            <input type="text" class="form-control" id="customDestination" required>
+          </div>
+          <div class="form-group">
+            <label for="customDescription">Describe your ideal tour</label>
+            <textarea class="form-control" id="customDescription" rows="3" placeholder="Tell us what you'd like to see and do..." required></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="customDate">Preferred travel date</label>
+              <input type="date" class="form-control" id="customDate" min="{{ 'now' | date: '%Y-%m-%d' }}" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="customDuration">Duration (days)</label>
+              <input type="number" class="form-control" id="customDuration" min="1" value="7" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="customTravelers">Number of travelers</label>
+            <select class="form-control" id="customTravelers" required>
+              <option value="1">1 traveler</option>
+              <option value="2" selected>2 travelers</option>
+              <option value="3">3 travelers</option>
+              <option value="4">4 travelers</option>
+              <option value="5">5 travelers</option>
+              <option value="group">6+ travelers</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="customBudget">Budget per person (USD)</label>
+            <select class="form-control" id="customBudget">
+              <option value="economy">Economy ($1000-$2000)</option>
+              <option value="standard" selected>Standard ($2000-$3500)</option>
+              <option value="luxury">Luxury ($3500+)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="customerEmail">Your email</label>
+            <input type="email" class="form-control" id="customerEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="customerPhone">Phone number (optional)</label>
+            <input type="tel" class="form-control" id="customerPhone">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="submitCustomRequest">Submit Request</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success Message Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Request Submitted!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="success-icon mb-4">
+          <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+        </div>
+        <h4>Thank You!</h4>
+        <p>We've received your custom tour request. One of our travel specialists will contact you within 24 hours.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Form Container Styles */
+.form-container {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.transparency-container {
+  padding: 25px;
+  color: {{ form_text_color }};
+}
+
+.form-title h2 {
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+/* Form Controls */
+.input-div label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.input-div .form-control {
+  height: 48px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.9);
+  padding-left: 12px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.input-div .form-control:focus {
+  border-color: #449EED;
+  box-shadow: 0 0 0 0.2rem rgba(68, 158, 237, 0.25);
+  background-color: #fff;
+}
+
+/* Search Input */
+.search-input-container {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  font-size: 1rem;
+}
+
+#tourSearchInput {
+  padding-left: 40px;
+}
+
+/* Suggestions */
+.suggestion-bar {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  display: none;
+}
+
+.suggestion-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover {
+  background-color: #f5f5f5;
+}
+
+.suggestion-item .suggestion-title {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.suggestion-item .suggestion-meta {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+/* Popular Tours */
+.popular-tours h6 {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.popular-tours-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding-bottom: 5px;
+}
+
+.popular-tour-card {
+  min-width: 140px;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.popular-tour-card:hover {
+  transform: translateY(-5px);
+}
+
+.popular-tour-image {
+  height: 90px;
+  background-color: #ddd;
+  background-size: cover;
+  background-position: center;
+}
+
+.popular-tour-info {
+  padding: 8px;
+}
+
+.popular-tour-title {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #333;
+}
+
+.popular-tour-price {
+  font-size: 0.75rem;
+  color: #449EED;
+  font-weight: 700;
+}
+
+/* Number Input Containers */
+.number-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.number-input-container .form-control {
+  text-align: center;
+  width: 60px;
+  padding: 0.375rem 0.5rem;
+  margin: 0 5px;
+}
+
+.number-input-container button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.2);
+  color: {{ form_text_color }};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.number-input-container button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Travel Details */
+.travel-details {
+  gap: 15px;
+}
+
+.pick-date {
+  flex: 1.5;
+}
+
+.days-to-stay {
+  flex: 1;
+}
+
+/* Search Results */
+.search-results {
+  min-height: 100px;
+  display: none;
+}
+
+.result-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.result-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.result-card.selected {
+  border: 2px solid #449EED;
+}
+
+.result-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.result-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* Action Buttons */
+.action-buttons h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.matched-tour-name {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Loading indicator */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Custom Tour Modal */
+#customTourModal .modal-content {
+  border-radius: 8px;
+}
+
+#customTourModal .modal-header {
+  background-color: #f8f9fa;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .transparency-container {
+    padding: 15px;
+  }
+  
+  .travel-details {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .pick-date, .days-to-stay {
+    width: 100%;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // ----------------
+  // DOM Elements
+  // ----------------
+  const tourSearchInput = document.getElementById('tourSearchInput');
+  const suggestionResults = document.getElementById('suggestionResults');
+  const popularToursContainer = document.getElementById('popularToursContainer');
+  const travelDate = document.getElementById('travelDate');
+  const stayDuration = document.getElementById('stayDuration');
+  const personCount = document.getElementById('personCount');
+  const searchButton = document.getElementById('searchButton');
+  const searchResults = document.getElementById('searchResults');
+  const foundTourAction = document.getElementById('foundTourAction');
+  const notFoundAction = document.getElementById('notFoundAction');
+  const matchedTourName = document.getElementById('matchedTourName');
+  const proceedButton = document.getElementById('proceedButton');
+  const customTourButton = document.getElementById('customTourButton');
+  const submitCustomRequest = document.getElementById('submitCustomRequest');
+  
+  // Set minimum date to today
+  const today = new Date().toISOString().split('T')[0];
+  travelDate.min = today;
+  travelDate.value = today;
+  
+  // ----------------
+  // Product Data
+  // ----------------
+  // This will store all product data from Shopify
+  let allProducts = [];
+  
+  // Fetch Shopify products using Ajax
+  function fetchProducts() {
+    fetch('/collections/all/products.json?limit=50')
+      .then(response => response.json())
+      .then(data => {
+        allProducts = data.products.map(product => {
+          return {
+            id: product.id,
+            title: product.title,
+            handle: product.handle,
+            description: product.body_html ? stripHtml(product.body_html).substring(0, 100) + '...' : '',
+            price: product.variants[0].price / 100, // Convert cents to dollars
+            image: product.images.length > 0 ? product.images[0].src : '/assets/no-image.jpg',
+            url: '/products/' + product.handle,
+            tags: product.tags || [],
+            type: product.product_type || 'Tour',
+            available: product.available !== false,
+            minDays: getMetafield(product, 'duration_min') || 1,
+            maxDays: getMetafield(product, 'duration_max') || 14
+          };
+        });
+        
+        // Initialize UI with products
+        loadPopularTours();
+      })
+      .catch(error => {
+        console.error('Error fetching products:', error);
+        popularToursContainer.innerHTML = '<div class="error-message">Unable to load tours. Please try again later.</div>';
+      });
+  }
+  
+  // Helper function to extract metafields (simplified example)
+  function getMetafield(product, key) {
+    // In a real implementation, you'd need to fetch metafields separately
+    // This is just a placeholder
+    return null;
+  }
+  
+  // Helper to strip HTML
+  function stripHtml(html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || '';
+  }
+  
+  // Load popular tours
+  function loadPopularTours() {
+    // In a real implementation, you could filter by a best-selling collection or tag
+    const popularProducts = allProducts.slice(0, 5);
+    
+    if (popularProducts.length === 0) {
+      popularToursContainer.innerHTML = '<div>No tours available</div>';
+      return;
+    }
+    
+    popularToursContainer.innerHTML = popularProducts.map(product => `
+      <div class="popular-tour-card" data-product-id="${product.id}" data-product-handle="${product.handle}">
+        <div class="popular-tour-image" style="background-image: url('${product.image}');"></div>
+        <div class="popular-tour-info">
+          <div class="popular-tour-title">${product.title}</div>
+          <div class="popular-tour-price">From $${product.price.toFixed(2)}</div>
+        </div>
+      </div>
+    `).join('');
+    
+    // Add click event to popular tour cards
+    document.querySelectorAll('.popular-tour-card').forEach(card => {
+      card.addEventListener('click', function() {
+        const productId = this.dataset.productId;
+        const productHandle = this.dataset.productHandle;
+        selectProduct(productId);
+      });
+    });
+  }
+  
+  // ----------------
+  // Search Functionality
+  // ----------------
+  tourSearchInput.addEventListener('input', debounce(function() {
+    const searchTerm = this.value.trim().toLowerCase();
+    
+    if (searchTerm.length < 2) {
+      suggestionResults.style.display = 'none';
+      return;
+    }
+    
+    const filteredProducts = allProducts.filter(product => 
+      product.title.toLowerCase().includes(searchTerm) ||
+      product.description.toLowerCase().includes(searchTerm) ||
+      (product.tags && product.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
+    ).slice(0, 5); // Limit to 5 results
+    
+    if (filteredProducts.length > 0) {
+      suggestionResults.innerHTML = filteredProducts.map(product => `
+        <div class="suggestion-item" data-product-id="${product.id}">
+          <div class="suggestion-title">${product.title}</div>
+          <div class="suggestion-meta">${product.type} • From $${product.price.toFixed(2)}</div>
+        </div>
+      `).join('');
+      
+      // Add click event to suggestions
+      document.querySelectorAll('.suggestion-item').forEach(item => {
+        item.addEventListener('click', function() {
+          const productId = this.dataset.productId;
+          tourSearchInput.value = allProducts.find(p => p.id == productId).title;
+          suggestionResults.style.display = 'none';
+          selectProduct(productId);
+        });
+      });
+      
+      suggestionResults.style.display = 'block';
+    } else {
+      suggestionResults.innerHTML = `
+        <div class="suggestion-item">
+          <div class="suggestion-title">No tours found</div>
+          <div class="suggestion-meta">Try different keywords or request a custom tour</div>
+        </div>
+      `;
+      suggestionResults.style.display = 'block';
+    }
+  }, 300));
+  
+  // Hide suggestions when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!tourSearchInput.contains(e.target) && !suggestionResults.contains(e.target)) {
+      suggestionResults.style.display = 'none';
+    }
+  });
+  
+  // ----------------
+  // Number Input Controls
+  // ----------------
+  // Setup +/- buttons for number inputs
+  document.querySelectorAll('.number-input-container').forEach(container => {
+    const input = container.querySelector('input');
+    const decrementBtn = container.querySelector('.decrement-btn');
+    const incrementBtn = container.querySelector('.increment-btn');
+    
+    decrementBtn.addEventListener('click', () => {
+      const currentValue = parseInt(input.value);
+      if (currentValue > parseInt(input.min)) {
+        input.value = currentValue - 1;
+      }
+    });
+    
+    incrementBtn.addEventListener('click', () => {
+      const currentValue = parseInt(input.value);
+      if (currentValue < parseInt(input.max)) {
+        input.value = currentValue + 1;
+      }
+    });
+  });
+  
+  // ----------------
+  // Search Button 
+  // ----------------
+  searchButton.addEventListener('click', function() {
+    // Get search parameters
+    const searchQuery = tourSearchInput.value.trim();
+    const selectedDate = travelDate.value;
+    const duration = parseInt(stayDuration.value);
+    const travelers = parseInt(personCount.value);
+    
+    if (!searchQuery) {
+      alert("Please enter a destination or tour name");
+      return;
+    }
+    
+    // Find matching products
+    const matchingProducts = allProducts.filter(product => {
+      // Match title or tags
+      const matchesSearchQuery = 
+        product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (product.tags && product.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())));
+      
+      // Check if duration is compatible
+      const matchesDuration = 
+        (!product.minDays || duration >= product.minDays) && 
+        (!product.maxDays || duration <= product.maxDays);
+        
+      return matchesSearchQuery && matchesDuration;
+    });
+    
+    // Show search results
+    displaySearchResults(matchingProducts, searchQuery);
+  });
+  
+  // Display search results
+  function displaySearchResults(products, searchQuery) {
+    if (products.length > 0) {
+      searchResults.innerHTML = products.map(product => `
+        <div class="result-card" data-product-id="${product.id}">
+          <div class="result-title">${product.title}</div>
+          <div class="result-description">${product.description}</div>
+          <div class="result-meta">
+            <span>${product.type}</span>
+            <span>From $${product.price.toFixed(2)}</span>
+          </div>
+        </div>
+      `).join('');
+      
+      // Add click event to result cards
+      document.querySelectorAll('.result-card').forEach(card => {
+        card.addEventListener('click', function() {
+          // Remove selected class from all cards
+          document.querySelectorAll('.result-card').forEach(c => c.classList.remove('selected'));
+          
+          // Add selected class to clicked card
+          this.classList.add('selected');
+          
+          const productId = this.dataset.productId;
+          selectProduct(productId);
+        });
+      });
+      
+      // If only one result, auto-select it
+      if (products.length === 1) {
+        document.querySelector('.result-card').classList.add('selected');
+        selectProduct(products[0].id);
+      }
+      
+      searchResults.style.display = 'block';
+      foundTourAction.style.display = 'block';
+      notFoundAction.style.display = 'none';
+      
+      // Set matched tour name
+      matchedTourName.textContent = products[0].title;
+    } else {
+      searchResults.innerHTML = '<div class="no-results">No tours found matching your criteria.</div>';
+      searchResults.style.display = 'block';
+      foundTourAction.style.display = 'none';
+      notFoundAction.style.display = 'block';
+      
+      // Pre-fill custom tour form with search query
+      document.getElementById('customDestination').value = searchQuery;
+      document.getElementById('customDuration').value = stayDuration.value;
+      document.getElementById('customDate').value = travelDate.value;
+      document.getElementById('customTravelers').value = personCount.value;
+    }
+  }
+  
+  // Select a product
+  function selectProduct(productId) {
+    const product = allProducts.find(p => p.id == productId);
+    
+    if (!product) return;
+    
+    // Update the UI
+    foundTourAction.style.display = 'block';
+    notFoundAction.style.display = 'none';
+    matchedTourName.textContent = product.title;
+    
+    // Set up proceed button
+    proceedButton.onclick = function() {
+      window.location.href = product.url;
+    };
+  }
+  
+  // ----------------
+  // Custom Tour Request
+  // ----------------
+  submitCustomRequest.addEventListener('click', function() {
+    const form = document.getElementById('customTourForm');
+    
+    // Simple validation
+    if (!form.checkValidity()) {
+      // Trigger browser's native validation UI
+      const submitEvent = new Event('submit', { cancelable: true });
+      form.dispatchEvent(submitEvent);
+      return;
+    }
+    
+    // Collect form data
+    const formData = {
+      destination: document.getElementById('customDestination').value,
+      description: document.getElementById('customDescription').value,
+      date: document.getElementById('customDate').value,
+      duration: document.getElementById('customDuration').value,
+      travelers: document.getElementById('customTravelers').value,
+      budget: document.getElementById('customBudget').value,
+      email: document.getElementById('customerEmail').value,
+      phone: document.getElementById('customerPhone').value
+    };
+    
+    // In a real implementation, you'd send this data to your backend
+    // For this example, we'll just show a success message
+    console.log('Custom tour request:', formData);
+    
+    // Close the form modal
+    $('#customTourModal').modal('hide');
+    
+    // Show success modal
+    setTimeout(() => {
+      $('#successModal').modal('show');
+    }, 500);
+    
+    // Reset form
+    form.reset();
+  });
+  
+  // ----------------
+  // Helper Functions
+  // ----------------
+  // Debounce function to limit rate of function calls
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+  
+  // Initialize by fetching products
+  fetchProducts();
+});
+</script>
