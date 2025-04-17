@@ -123,7 +123,7 @@
       </div>
 
       <!-- Right content (booking form) -->
-      {% if section.settings.if_form %}
+      {% comment %} {% if section.settings.if_form %}
         <div class="col-lg-4 col-md-8 offset-lg-1 offset-md-0">
           <div class="booking-form px-4 py-4 rounded justify-content-center">
             <h3 class="mb-4 font-weight-bold">{{ section.settings.form_title }}</h3>
@@ -198,6 +198,21 @@
             <!-- Book Now Button -->
             <button class="btn btn-primary btn-block" id="bookNowBtn">Book Now</button>
           </div>
+        </div>
+      {% endif %} {% endcomment %}
+      {% if section.settings.if_form %}
+        <div class="col-lg-4 col-md-8 offset-lg-1 offset-md-0">
+          {% render 'booking-form', 
+            form_title: section.settings.form_title,
+            min_price: section.settings.min_price,
+            max_price: section.settings.max_price,
+            form_red: form_red,
+            form_green: form_green,
+            form_blue: form_blue,
+            form_bg_opacity: section.settings.form_bg_opacity,
+            form_text_color: section.settings.form_text_color,
+            blocks: section.blocks
+          %}
         </div>
       {% endif %}
     </div>
