@@ -9,12 +9,11 @@
  */
 {
   "sections": {
-    "floating_countdown_modal_FwNXKk": {
+    "floating_countdown_modal_PENWXw": {
       "type": "floating-countdown-modal",
       "name": "Floating Countdown Modal",
       "settings": {
-        "bg_color": "#ff6b6b",
-        "promo_image": "shopify://shop_images/dest4.jpg",
+        "bg_color": "#FF6B6B",
         "overlay_opacity": 0.7,
         "floating_position": "bottom-right",
         "floating_icon_type": "percent",
@@ -25,18 +24,18 @@
         "heading_font": "Helvetica, sans-serif",
         "primary_font_size": 28,
         "secondary_font_size": 16,
-        "primary_text_color": "#ffffff",
-        "secondary_text_color": "#eeeeee",
-        "end_date": "2025-04-17",
+        "primary_text_color": "#FFFFFF",
+        "secondary_text_color": "#EEEEEE",
+        "end_date": "2025-12-31",
         "timer_font_size": 24,
-        "timer_bg_color": "#ffffff33",
-        "timer_text_color": "#ffffff",
+        "timer_bg_color": "rgba(255, 255, 255, 0.2)",
+        "timer_text_color": "#FFFFFF",
         "hide_on_expire": true,
         "button_text": "Book Now",
         "button_link": "",
-        "button_bg_color": "#ffffff",
-        "button_text_color": "#ff6b6b",
-        "display_delay": 1
+        "button_bg_color": "#FFFFFF",
+        "button_text_color": "#FF6B6B",
+        "display_delay": 3
       }
     },
     "custom_hero_VL6Rmr": {
@@ -522,7 +521,7 @@
     }
   },
   "order": [
-    "floating_countdown_modal_FwNXKk",
+    "floating_countdown_modal_PENWXw",
     "custom_hero_VL6Rmr",
     "featured_collection",
     "intro_section_tH7HDm",
