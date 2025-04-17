@@ -1,10 +1,9 @@
-<div class="form-container">
+<div class="form-container py-5">
     <div class="transparency-container" style="background-color: rgba({{ form_red }}, {{ form_green }}, {{ form_blue }}, {{ form_bg_opacity }});">
         <div class="form-title">
             <h2>{{ form_title }}</h2>
         </div>
         <div class="input-div">
-            <!-- Tour Search with Autocomplete -->
             <div class="tour-search">
                 <label for="tourSearchInput">Where would you like to go?</label>
                 <div class="search-input-wrapper">
@@ -13,10 +12,8 @@
                 </div>
             </div>
             
-            <!-- Suggestions appear here -->
             <div class="suggestion-bar" id="suggestionContainer"></div>
 
-            <!-- Travel Details -->
             <div class="d-flex travel-details-row">
                 <div class="pick-date">
                     <label for="travelDate">When to start?</label>
@@ -24,17 +21,15 @@
                 </div>
                 <div class="days-to-stay">
                     <label for="stayDuration">How many days?</label>
-                    <input type="number" id="stayDuration" min="1" max="20" value="7" class="number-input">
+                    <input type="number" id="stayDuration" class="number-input">
                 </div>
             </div>
             
-            <!-- Person Count -->
             <div class="person-count">
                 <label for="personCount">How many persons?</label>
-                <input type="number" id="personCount" class="number-input" min="1" max="30" value="2">
+                <input type="number" id="personCount" class="number-input">
             </div>
             
-            <!-- Search Button -->
             <button id="searchToursBtn" class="search-button">
                 <i class="bi bi-search"></i> Search for tours
             </button>
