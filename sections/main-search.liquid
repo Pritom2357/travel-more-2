@@ -1,3 +1,7 @@
+
+<link rel="preload" href="{{ 'base.css' | asset_url }}" as="style">
+<link rel="stylesheet" href="{{ 'base.css' | asset_url }}">
+
 {% layout 'theme' %}
 
 <div class="search-results-container">
@@ -361,8 +365,8 @@
     });
     
     priceSlider.addEventListener('input', function() {
-      priceMax.textContent = {{ cart.currency.symbol }} + parseInt(this.value).toLocaleString();
-      currentPrice.textContent = {{ cart.currency.symbol }} + parseInt(this.value).toLocaleString();
+      priceMax.textContent = "{{ cart.currency.symbol }}" + parseInt(this.value).toLocaleString();
+      currentPriceRange.textContent = "{{ cart.currency.symbol }}" + parseInt(this.value).toLocaleString();
     });
     
     priceSlider.addEventListener('change', function() {
@@ -531,3 +535,5 @@
     }
   });
 </script>
+
+{% comment %} <script src="{{ 'bootstrap.min.js' | asset_url}}" defer></script> {% endcomment %}
