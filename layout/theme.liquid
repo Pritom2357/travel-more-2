@@ -25,7 +25,7 @@
         href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"
       >
       
-      {{ 'theme.css' | asset_url | stylesheet_tag }}
+      {{ 'base.css' | asset_url | stylesheet_tag }}
       <title>Hello, world!</title>
       {{ content_for_header }}
     </head>
@@ -47,36 +47,6 @@
             left: 0;
         }
   
-      :root {
-        --primary-color: {{ settings.custom_primary_color }};
-        --secondary-color: {{ settings.custom_secondary_color }};
-        --text-color: {{ settings.custom_text_color }};
-        --background-color: {{ settings.custom_background_color }};
-        
-        {% case settings.color_scheme %}
-          {% when 'travel_blue' %}
-            --primary-color: #449EED;
-            --secondary-color: #357ABD;
-            --text-color: #181818;
-            --background-color: #FFFFFF;
-          {% when 'sunset_orange' %}
-            --primary-color: #FF7D45;
-            --secondary-color: #E55A2B;
-            --text-color: #1C1C1C;
-            --background-color: #FFF9F5;
-          {% when 'tropical_green' %}
-            --primary-color: #4CAF50;
-            --secondary-color: #388E3C;
-            --text-color: #212121;
-            --background-color: #F5FFF7;
-          {% when 'desert_tan' %}
-            --primary-color: #D2B48C;
-            --secondary-color: #A89070;
-            --text-color: #3A3A3A;
-            --background-color: #FAF7F2;
-          {% when 'custom' %}
-        {% endcase %}
-      }
     </style>
     <body>
       <div>
@@ -89,21 +59,8 @@
         {{ content_for_layout }}
       </main>
   
-      <!-- footer start -->
       {% section 'footer' %}
-      <!-- footer end -->
-  
-      <!-- Optional JavaScript; choose one of the two! -->
-  
-      <!-- Option 1: Bootstrap Bundle with Popper -->
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-      <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+ZL5RZjH+8abtTE1Pi6jizoUO+N2K" crossorigin="anonymous"></script> -->
-  
-  
-      <!-- Option 2: Separate Popper and Bootstrap JS -->
-      <!--
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-      -->
+      
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" defer></script>
     </body>
   </html>
