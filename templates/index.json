@@ -9,23 +9,22 @@
  */
 {
   "sections": {
-    "countdown_banner_abNz4P": {
-      "type": "countdown-banner",
-      "name": "Promo Countdown Banner",
+    "floating_countdown_modal_FwNXKk": {
+      "type": "floating-countdown-modal",
+      "name": "Floating Countdown Modal",
       "settings": {
-        "bg_color": "#ec521d",
-        "fullwidth_banner": true,
-        "sticky_banner": true,
-        "display_type": "text",
+        "bg_color": "#ff6b6b",
         "promo_image": "shopify://shop_images/dest4.jpg",
-        "image_animation": true,
-        "overlay_opacity": 0.3,
-        "promo_subheading": "Grab The Offer",
+        "overlay_opacity": 0.7,
+        "floating_position": "bottom-right",
+        "floating_icon_type": "percent",
+        "percent_off": "30",
+        "promo_subheading": "Limited Time Offer",
         "promo_heading": "30% OFF ALL DESTINATIONS",
-        "promo_description": "Use code: TRAVEL30",
-        "heading_font": "Roboto, sans-serif",
-        "primary_font_size": 24,
-        "secondary_font_size": 14,
+        "promo_description": "Use promo code TRAVEL30 at checkout to get an exclusive discount on all our travel packages!",
+        "heading_font": "Helvetica, sans-serif",
+        "primary_font_size": 28,
+        "secondary_font_size": 16,
         "primary_text_color": "#ffffff",
         "secondary_text_color": "#eeeeee",
         "end_date": "2025-04-17",
@@ -33,13 +32,11 @@
         "timer_bg_color": "#ffffff33",
         "timer_text_color": "#ffffff",
         "hide_on_expire": true,
-        "button_text": "Shop Now",
+        "button_text": "Book Now",
         "button_link": "",
         "button_bg_color": "#ffffff",
         "button_text_color": "#ff6b6b",
-        "button_pulse_color": "#ffffff",
-        "display_delay": 1,
-        "show_once_per_session": true
+        "display_delay": 1
       }
     },
     "custom_hero_VL6Rmr": {
@@ -525,7 +522,7 @@
     }
   },
   "order": [
-    "countdown_banner_abNz4P",
+    "floating_countdown_modal_FwNXKk",
     "custom_hero_VL6Rmr",
     "featured_collection",
     "intro_section_tH7HDm",
