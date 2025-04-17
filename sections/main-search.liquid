@@ -71,7 +71,8 @@
                 <span id="priceMin">{{ cart.currency.symbol }}0</span>
                 <span id="priceMax">{{ cart.currency.symbol }}10,000</span>
               </div>
-              <input type="range" class="form-range" id="priceSlider" min="0" max="10000" step="100">
+              <input type="range" class="form-range" id="priceSlider" min="1000" max="100000" step="100">
+              <p id="show-current-price-range" class="current-price-range"></p>
             </div>
           </div>
           
@@ -351,6 +352,7 @@
     const activeFilters = document.getElementById('activeFilters');
     const filterTags = activeFilters.querySelector('.filter-tags');
     const resetSearchBtn = document.getElementById('resetSearchBtn');
+    const currentPriceRange = document.getElementById('show-current-price-range');
     
     initializeFiltersFromUrl();
     
@@ -360,6 +362,7 @@
     
     priceSlider.addEventListener('input', function() {
       priceMax.textContent = {{ cart.currency.symbol }} + parseInt(this.value).toLocaleString();
+      currentPrice.textContent = {{ cart.currency.symbol }} + parseInt(this.value).toLocaleString();
     });
     
     priceSlider.addEventListener('change', function() {
