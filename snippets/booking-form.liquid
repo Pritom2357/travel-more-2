@@ -1,5 +1,31 @@
 <div class="form-container">
-    <div class="from-title">
-        <h2>{{ form_title }}</h2>
+    <div class="transparency-container">
+        <div class="from-title">
+            <h2>{{ form_title }}</h2>
+        </div>
+        <div class="input-div">
+            <div class="tour-search">
+                <label>Search for existing tours</label>
+                <input id="" type="text" class="">
+            </div>
+            <div class="suggestion-bar"></div>
+            <div class="pick-date">
+                <input type="date" class="">
+            </div>
+            <div class="person-count">
+                <input class="number">
+            </div>
+            <div class="price-slider">
+                <input type="slider">
+            </div>
+            <div class="search-results"></div>
+            <div class="d-flex"></div>
+            {% comment %} if search result found {% endcomment %}
+            <h4>Your requested tour found</h4>
+            <button>Proceed?</button>
+            {% comment %} else {% endcomment %}
+            <h4>Cound not find tour</h4>
+            <button>Custom Tour?</button>
+        </div>
     </div>
 </div>
