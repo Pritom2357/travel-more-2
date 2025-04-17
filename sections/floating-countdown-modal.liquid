@@ -4,13 +4,11 @@
 <div id="{{ modal_id }}" class="promo-modal">
   <div class="promo-modal-overlay"></div>
   <div class="promo-modal-content">
-    <!-- Optional background image for modal -->
     {% if section.settings.promo_image != blank %}
       <div class="modal-background-image" style="background-image: url('{{ section.settings.promo_image | img_url: '1200x' }}');"></div>
       <div class="modal-background-overlay" style="background-color: {{ section.settings.bg_color }}; opacity: {{ section.settings.overlay_opacity }};"></div>
     {% endif %}
     
-    <!-- Modal Content -->
     <div class="modal-body">
       {% if section.settings.promo_subheading != blank %}
         <p class="modal-subheading">{{ section.settings.promo_subheading }}</p>
@@ -24,7 +22,6 @@
         <p class="modal-description">{{ section.settings.promo_description }}</p>
       {% endif %}
       
-      <!-- Countdown Timer -->
       <div class="modal-countdown" id="modal-countdown-{{ modal_id }}">
         <div class="countdown-block">
           <span class="countdown-value days">00</span>
@@ -102,47 +99,38 @@ document.addEventListener('DOMContentLoaded', function() {
   const expandButton = floatingEl.querySelector('.floating-expand-button');
   const closeButton = floatingEl.querySelector('.floating-close-button');
   
-  // Get stored states
-  const modalState = localStorage.getItem(storageKeyModal);
-  const floatingDismissed = localStorage.getItem(storageKeyFloating) === 'true';
+  const modalState = sessionStorage.getItem(storageKeyModal);
+  const floatingDismissed = sessionStorage.getItem(storageKeyFloating) === 'true';
   
-  // Handle initial display based on stored states
   if (modalState === 'minimized') {
-    // Modal was previously minimized, show floating element
     if (!floatingDismissed) {
       showFloatingElement();
     }
   } else if (modalState === 'shown' || modalState === null) {
-    // First visit or modal was shown previously
-    // Show modal after delay
     setTimeout(showModal, {{ section.settings.display_delay | times: 1000 }});
   }
   
-  // Show the modal
   function showModal() {
     modal.classList.add('show');
-    localStorage.setItem(storageKeyModal, 'shown');
+    sessionStorage.setItem(storageKeyModal, 'shown');
     
     if (floatingEl.classList.contains('show')) {
       floatingEl.classList.remove('show');
     }
   }
   
-  // Show the floating element
   function showFloatingElement() {
     floatingEl.classList.add('show');
   }
   
-  // Minimize modal to floating element
   minimizeButton.addEventListener('click', function() {
     modal.classList.remove('show');
     modal.classList.add('minimizing');
     
-    // Wait for animation to complete
     setTimeout(function() {
       modal.classList.remove('minimizing');
       showFloatingElement();
-      localStorage.setItem(storageKeyModal, 'minimized');
+      sessionStorage.setItem(storageKeyModal, 'minimized');
     }, 300);
   });
   
@@ -150,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function() {
   expandButton.addEventListener('click', function() {
     floatingEl.classList.add('minimizing');
     
-    // Wait for animation to complete
     setTimeout(function() {
       floatingEl.classList.remove('show');
       floatingEl.classList.remove('minimizing');
@@ -158,7 +145,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 300);
   });
   
-  // Completely dismiss floating element
   closeButton.addEventListener('click', function() {
     floatingEl.classList.add('closing');
     
@@ -166,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
       floatingEl.classList.remove('show');
       floatingEl.classList.remove('closing');
-      localStorage.setItem(storageKeyFloating, 'true');
+      sessionStorage.setItem(storageKeyFloating, 'true');
     }, 300);
   });
   
