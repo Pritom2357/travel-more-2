@@ -1,194 +1,107 @@
-<div class="search-container py-5">
-  <div class="search-header mb-4">
-    <div class="search-row">
-      <div class="sidebar-col">
-        <h1 class="search-title">
-          {% if search.terms != blank %}
-            Search Results for "{{ search.terms }}"
-          {% else %}
-            All Tours
-          {% endif %}
-        </h1>
-        <div class="search-meta">
-          <span id="searchResultsCount" class="result-count">{{ search.results_count }} tours found</span>
-          {% if search.filters != empty %}
-            <span class="filters-applied">(Filters applied)</span>
-          {% endif %}
-        </div>
-      </div>
-      <div class="sidebar-col">
-        <div class="search-refinement">
-          <form>
-            <select id="sortOptions">
-              <option value="relevance" {% if search.sort_by == 'relevance' %}selected{% endif %}>Relevance</option>
-              <option value="price-ascending" {% if search.sort_by == 'price-ascending' %}selected{% endif %}>Price: Low to High</option>
-              <option value="price-descending" {% if search.sort_by == 'price-descending' %}selected{% endif %}>Price: High to Low</option>
-              <option value="best-selling" {% if search.sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
-            </select>
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+/>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" async></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="search_section_{{ section.id }}">
+  <div class="search-header py-5 bg-light">
+    <div class="container">
+      <div class="jumbotron jumbotron-fluid text-center">
+        <h2 class="heading mb-4">Search Results for "{{ search.terms }}"</h2>
+        <div class="search-page-form">
+          <form class="d-flex justify-content-center" action="{{ routes.search_url }}" method="get" autocomplete="off">
+            <div class="input-group w-50">
+              <input
+                class="form-control"
+                type="search"
+                name="q"
+                id="search-input"
+                placeholder="Search for products, articles, pages..."
+                aria-label="Search"
+                value="{{ search.terms | escape }}"
+                required
+              >
+              <button class="btn btn-primary" type="submit" aria-label="Search">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+            <!-- Auto-suggestions Dropdown -->
+            <div id="suggestions" class="list-group position-absolute w-50"></div>
           </form>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="search-row">
-    <!-- Filter Sidebar -->
-    <div class="sidebar-col">
-      <div class="filter-sidebar p-3 mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h3 class="filter-heading mb-0">Filters</h3>
-          <button id="clearFilters" class="btn btn-sm btn-link">Clear all</button>
-        </div>
+  <div class="filters-sort py-3 bg-white shadow-sm">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap">
+      <div class="filters d-flex align-items-center mb-2">
         
-        <div class="filter-group mb-4">
-          <h4 class="filter-group-title">Duration</h4>
-          <div class="filter-options">
-            <div class="form-check">
-              <input class="form-check-input duration-filter" type="checkbox" id="duration1" value="1-3">
-              <label class="form-check-label" for="duration1">1-3 days</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input duration-filter" type="checkbox" id="duration2" value="4-7">
-              <label class="form-check-label" for="duration2">4-7 days</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input duration-filter" type="checkbox" id="duration3" value="8-14">
-              <label class="form-check-label" for="duration3">8-14 days</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input duration-filter" type="checkbox" id="duration4" value="15+">
-              <label class="form-check-label" for="duration4">15+ days</label>
-            </div>
-          </div>
-        </div>
-        
-        <div class="filter-group mb-4">
-          <h4 class="filter-group-title">Price Range</h4>
-          <div class="price-slider-container">
-            <div class="price-range">
-              <span id="priceMin">{{ cart.currency.symbol }}0</span>
-              <span id="priceMax">{{ cart.currency.symbol }}10,000</span>
-            </div>
-            <input type="range" class="form-range" id="priceSlider" min="1000" max="100000" step="100">
-            <p id="show-current-price-range" class="current-price-range"></p>
-          </div>
-        </div>
-        
-        <div class="filter-group">
-          <h4 class="filter-group-title">Tour Type</h4>
-          <div class="filter-options">
-            {% for product_type in shop.product_types %}
-              {% if product_type != '' %}
-                <div class="form-check">
-                  <input class="form-check-input type-filter" type="checkbox" id="type-{{ product_type | handle }}" value="{{ product_type | handle }}">
-                  <label class="form-check-label" for="type-{{ product_type | handle }}">{{ product_type }}</label>
-                </div>
-              {% endif %}
+        <div class="me-3">
+          <label for="category-filter" class="form-label mb-0">Category:</label>
+          <select id="category-filter" class="form-select">
+            <option value="all">All</option>
+            {% for collection in collections %}
+              <option value="{{ collection.handle }}">{{ collection.title }}</option>
             {% endfor %}
-          </div>
+          </select>
         </div>
+        <div class="me-3">
+          <label for="price-filter" class="form-label mb-0">Price:</label>
+          <select id="price-filter" class="form-select">
+            <option value="all">All</option>
+            <option value="low">Under $50</option>
+            <option value="mid">$50 - $150</option>
+            <option value="high">Over $150</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sorting d-flex align-items-center mb-2">
+        <label for="sort-by" class="form-label me-2 mb-0">Sort By:</label>
+        <select id="sort-by" class="form-select">
+          <option value="relevance">Relevance</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="newest">Newest Arrivals</option>
+        </select>
       </div>
     </div>
-    
-    <!-- Search Results -->
-    <div class="results-col">
-      <div id="activeFilters" class="active-filters mb-3" style="display: none;">
-        <div class="filter-tags d-flex flex-wrap gap-2"></div>
-      </div>
-      
-      <div id="searchResultsGrid" class="search-results-grid">
+  </div>
+
+  <div class="container my-5">
+    <div class="search-results">
+      {% if search.results.size > 0 %}
         <div class="row g-4">
-          {% if search.results != empty %}
-            {% for product in search.results %}
-              <div class="col-md-6 col-lg-4 tour-item">
-                <div class="tour-card">
-                  <div class="tour-image">
-                    {% if product.featured_image != blank %}
-                      <img 
-                        src="{{ product.featured_image | img_url: 'original', crop: 'center' }}" 
-                        alt="{{ product.title }}"
-                        width="400"
-                        height="300"
-                      >
-                    {% else %}
-                      <div class="placeholder-image">No Image</div>
-                    {% endif %}
-                  </div>
-                  <div class="tour-details p-3">
-                    <h3 class="tour-title">{{ product.title }}</h3>
-                    <div class="tour-meta">
-                      {% if product.metafields.tour.destination %}
-                        <div class="tour-destination">
-                          <i class="bi bi-geo-alt"></i> {{ product.metafields.tour.destination }}
-                        </div>
-                      {% endif %}
-                      {% if product.metafields.tour.maximum_days_allowed %}
-                        <div class="tour-duration">
-                          <i class="bi bi-clock"></i> Up to {{ product.metafields.tour.maximum_days_allowed }} days
-                        </div>
-                      {% endif %}
-                    </div>
-                    <div class="tour-price">
-                      From <span class="price">{{ product.price | money }}</span>
-                    </div>
-                    <a href="{{ product.url }}" class="btn btn-primary mt-2 w-100">View Tour</a>
-                  </div>
-                </div>
-              </div>
-            {% endfor %}
-          {% else %}
-            <div class="no-results text-center py-5">
-              <div class="no-results-icon mb-3">
-                <i class="bi bi-search" style="font-size: 3rem;"></i>
-              </div>
-              <h2>No tours match your criteria</h2>
-              <p class="mb-4">We couldn't find any tours that match your search. Try adjusting your filters or request a custom tour.</p>
-              <div class="d-flex justify-content-center gap-3">
-                <button id="resetSearchBtn" class="btn btn-outline-primary">
-                  <i class="bi bi-arrow-counterclockwise"></i> Reset Search
-                </button>
-                <a href="/pages/custom-tour-request" class="btn btn-primary">
-                  <i class="bi bi-stars"></i> Request Custom Tour
-                </a>
-              </div>
-            </div>
-          {% endif %}
+          {% for item in search.results %}
+            {% case item.object_type %}
+              {% when 'product' %}
+                {% render 'product-card', product: item %}
+              {% when 'article' %}
+                {% render 'article-card', article: item %}
+              {% comment %} {% when 'page' %}
+                {% render 'page-card', page: item %} {% endcomment %}
+            {% endcase %}
+          {% endfor %}
         </div>
-      </div>
-      
-      {% if paginate.pages > 1 %}
-        <div class="pagination-container d-flex justify-content-center mt-5">
-          <nav aria-label="Search results pages">
-            <ul class="pagination">
-              {% if paginate.previous %}
-                <li class="page-item">
-                  <a class="page-link" href="{{ paginate.previous.url }}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </a>
-                </li>
-              {% endif %}
-              
-              {% for part in paginate.parts %}
-                {% if part.is_link %}
-                  <li class="page-item">
-                    <a class="page-link" href="{{ part.url }}">{{ part.title }}</a>
-                  </li>
-                {% else %}
-                  <li class="page-item {% if part.title == paginate.current_page %}active{% endif %}">
-                    <span class="page-link">{{ part.title }}</span>
-                  </li>
-                {% endif %}
-              {% endfor %}
-              
-              {% if paginate.next %}
-                <li class="page-item">
-                  <a class="page-link" href="{{ paginate.next.url }}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                </li>
-              {% endif %}
-            </ul>
-          </nav>
+
+        {% if search.results.size > settings.search_limit %}
+          <div class="d-flex justify-content-center mt-4">
+            <button id="load-more" class="btn btn-secondary">Load More</button>
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="alert alert-warning text-center" role="alert">
+          No results found for "{{ search.terms }}". Please try different keywords.
         </div>
       {% endif %}
     </div>
@@ -196,808 +109,258 @@
 </div>
 
 <style>
-  .search-title {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-  
-  .search-meta {
-    color: #666;
-    font-size: 1rem;
-  }
-  
-  .result-count {
-    font-weight: 500;
-  }
-  
-  .filter-sidebar {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-  }
-  
-  .filter-heading {
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-  
-  .filter-group-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-  
-  .price-range {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 0.875rem;
-  }
-  
-  .active-filters {
-    background-color: #f0f8ff;
-    padding: 10px;
-    border-radius: 6px;
-  }
-  
-  .filter-tag {
-    background-color: #e9f2ff;
-    border: 1px solid #cce0ff;
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 0.875rem;
-    display: inline-flex;
-    align-items: center;
-    margin-right: 8px;
-    margin-bottom: 8px;
-  }
-  
-  .filter-tag .remove-filter {
-    margin-left: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  .tour-card {
-    height: 100%;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .tour-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-  }
-  
-  .tour-image {
-    height: 200px;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  .tour-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-  }
-  
-  .tour-card:hover .tour-image img {
-    transform: scale(1.1);
-  }
-  
-  .placeholder-image {
-    width: 100%;
-    height: 100%;
-    background-color: #e9ecef;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #6c757d;
-  }
-  
-  .tour-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-    line-height: 1.3;
-  }
-  
-  .tour-meta {
-    font-size: 0.875rem;
-    color: #666;
-    margin-bottom: 10px;
-  }
-  
-  .tour-destination, .tour-duration {
-    margin-bottom: 4px;
-  }
-  
-  .tour-price {
-    font-size: 0.95rem;
-    margin-bottom: 12px;
-  }
-  
-  .tour-price .price {
-    font-weight: 700;
-    color: #449EED;
-    font-size: 1.1rem;
-  }
-  
-  .no-results {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 2rem;
-  }
-  
-  .no-results-icon {
-    color: #adb5bd;
+  .search-header .heading {
+    font-size: 2.5rem;
+    color: #333;
   }
 
-  /* Replace Bootstrap grid system */
-  .search-container {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-    max-width: 1200px;
-  }
-  
-  .search-row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-  }
-  
-  .sidebar-col {
-    flex: 0 0 100%;
-    max-width: 100%;
-    padding: 0 15px;
-  }
-  
-  .results-col {
-    flex: 0 0 100%;
-    max-width: 100%;
-    padding: 0 15px;
-  }
-  
-  .results-grid {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 20px;
-  }
-  
-  /* Filter styles */
-  .filter-sidebar {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
-  }
-  
-  .filter-heading {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 0 0 15px 0;
-  }
-  
-  .filter-group {
-    margin-bottom: 20px;
-  }
-  
-  .filter-group-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-  
-  /* Form elements */
-  .form-check {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  
-  .form-check-input {
-    margin-right: 8px;
-  }
-  
-  .form-range {
-    width: 100%;
-    height: 1.4rem;
-    padding: 0;
-    background-color: transparent;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-  
-  .form-range::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #449EED;
-    cursor: pointer;
-  }
-  
-  .form-range::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #449EED;
-    cursor: pointer;
-  }
-  
-  /* Button styles */
-  .custom-btn {
-    display: inline-block;
-    font-weight: 400;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 0.25rem;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-  }
-  
-  .btn-primary {
-    color: #fff;
-    background-color: #449EED;
-    border: 1px solid #449EED;
-  }
-  
-  .btn-primary:hover {
-    background-color: #357ABD;
-    border-color: #357ABD;
-  }
-  
-  .btn-outline {
-    color: #449EED;
-    background-color: transparent;
-    border: 1px solid #449EED;
-  }
-  
-  .btn-outline:hover {
-    color: #fff;
-    background-color: #449EED;
-  }
-  
-  .btn-link {
-    font-weight: 400;
-    color: #449EED;
-    text-decoration: none;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-  }
-  
-  .btn-link:hover {
-    text-decoration: underline;
-    color: #357ABD;
-  }
-  
-  /* Card styles */
-  .tour-card {
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .tour-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Responsive */
-  @media (min-width: 768px) {
-    .sidebar-col {
-      flex: 0 0 30%;
-      max-width: 30%;
-    }
-    
-    .results-col {
-      flex: 0 0 70%;
-      max-width: 70%;
-    }
-    
-    .results-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
-  @media (min-width: 992px) {
-    .results-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  
-  /* Active filters */
-  .active-filters {
-    background-color: #f0f8ff;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-  }
-  
-  .filter-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  
-  .filter-tag {
-    background-color: #e9f2ff;
-    border: 1px solid #cce0ff;
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 0.875rem;
-    display: inline-flex;
-    align-items: center;
-  }
-  
-  .filter-tag .remove-filter {
-    margin-left: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  /* Custom override - keep your existing tour card styles */
-  .tour-card {
-    height: 100%;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .tour-image {
-    height: 200px;
-    overflow: hidden;
+  .search-page-form {
     position: relative;
-  }
-  
-  .tour-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
   }
 
- 
-  .search-container {
+  #suggestions {
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    border-radius: 0 0 5px 5px;
+    top: 100%;
+    left: 25%;
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
+    display: none; /* Initially hidden */
   }
-
-  .search-row {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 -15px;
-    width: calc(100% + 30px); /* Account for margins */
-  }
-  
-  .row.g-4 {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 -12px;
-  }
-  
-  .col-md-6.col-lg-4.tour-item {
-    padding: 0 12px;
-    margin-bottom: 24px;
-    width: 100%;
-  }
-  
-  .tour-price {
-    font-size: 0.95rem;
-    margin-bottom: 12px;
-    white-space: nowrap;
-  }
-  
-  .price {
-    font-weight: 700;
-    color: #449EED;
-    font-size: 1.1rem;
-  }
-  
-  /* Current price range display */
-  .current-price-range {
-    text-align: center;
-    font-weight: 600;
-    color: #449EED;
-    margin-top: 10px;
-    font-size: 0.9rem;
-  }
-  
-  /* Make sure filter sidebar is fully visible */
-  .filter-sidebar {
-    position: relative;
-    z-index: 1;
-  }
-  
-  .search-refinement {
-    position: relative;
-    margin-bottom: 20px;
-  }
-  
-  @media (max-width: 767px) {
-    .search-header .search-row {
-      flex-direction: column;
-    }
-    
-    .search-title {
-      font-size: 1.5rem;
-    }
-    
-    .col-md-6.col-lg-4.tour-item {
-      width: 100%;
-    }
-    
-    .sidebar-col, .results-col {
-      padding: 0 10px;
-    }
-  }
-  
-  @media (min-width: 768px) {
-    .col-md-6.col-lg-4.tour-item {
-      width: 50%;
-    }
-  }
-  
-  @media (min-width: 992px) {
-    .col-md-6.col-lg-4.tour-item {
-      width: 33.333%;
-    }
-  }
-  
-  /* Ensure buttons have proper styling */
-  .btn {
-    display: inline-block;
-    font-weight: 400;
-    line-height: 1.5;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    user-select: none;
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.25rem;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-  }
-  
-  .btn-primary {
-    color: white;
-    background-color: #449EED;
-    border: 1px solid #449EED;
-  }
-  
-  .btn-outline-primary {
-    color: #449EED;
-    border: 1px solid #449EED;
-    background-color: transparent;
-  }
-  
-  .btn-outline-primary:hover {
-    color: white;
-    background-color: #449EED;
-  }
-  
-  /* Ensure form elements have proper styling */
-  select {
+  #suggestions.show {
     display: block;
-    width: 100%;
-    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-    background-color: #fff;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 16px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    appearance: none;
+  }
+
+  .filters-sort .form-select {
+    width: 200px;
+  }
+
+  .product-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  }
+
+  #load-more {
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  #load-more:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
   }
 </style>
 
+<!-- Custom JavaScript -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Get DOM elements
-    const sortOptions = document.getElementById('sortOptions');
-    const priceSlider = document.getElementById('priceSlider');
-    const priceMin = document.getElementById('priceMin');
-    const priceMax = document.getElementById('priceMax');
-    const durationFilters = document.querySelectorAll('.duration-filter');
-    const typeFilters = document.querySelectorAll('.type-filter');
-    const clearFiltersBtn = document.getElementById('clearFilters');
-    const activeFilters = document.getElementById('activeFilters');
-    const filterTags = activeFilters.querySelector('.filter-tags');
-    const resetSearchBtn = document.getElementById('resetSearchBtn');
-    const currentPriceRange = document.getElementById('show-current-price-range');
-    
-    initializeFiltersFromUrl();
-    
-    sortOptions.addEventListener('change', function() {
-      applyFilters();
-    });
-    
-    priceSlider.addEventListener('input', function() {
-      priceMax.textContent = "{{ cart.currency.symbol }}" + parseInt(this.value).toLocaleString();
-      currentPriceRange.textContent = "{{ cart.currency.symbol }}" + parseInt(this.value).toLocaleString();
-    });
-    
-    priceSlider.addEventListener('change', function() {
-      applyFilters();
-    });
-    
-    durationFilters.forEach(filter => {
-      filter.addEventListener('change', function() {
-        applyFilters();
-      });
-    });
-    
-    typeFilters.forEach(filter => {
-      filter.addEventListener('change', function() {
-        applyFilters();
-      });
-    });
-    
-    clearFiltersBtn.addEventListener('click', function() {
-      durationFilters.forEach(filter => filter.checked = false);
-      typeFilters.forEach(filter => filter.checked = false);
-      priceSlider.value = priceSlider.max;
-      
-      priceMax.textContent = "{{ cart.currency.symbol }}" + parseInt(priceSlider.max).toLocaleString();
-      currentPriceRange.textContent = "{{ cart.currency.symbol }}" + parseInt(priceSlider.max).toLocaleString();
-      
-      applyFilters();
-    });
-    
-    if (resetSearchBtn) {
-      resetSearchBtn.addEventListener('click', function() {
-        window.location.href = '/search';
-      });
-    }
-    
-    function applyFilters() {
-      const searchParams = new URLSearchParams(window.location.search);
-      console.log("searchParams: ", searchParams);
-      
-      const searchTerm = searchParams.get('q') || '';
-      
-      const newParams = new URLSearchParams();
-      if (searchTerm) newParams.append('q', searchTerm);
-      
-      if (sortOptions.value !== 'relevance') {
-        newParams.append('sort_by', sortOptions.value);
+  document.addEventListener('DOMContentLoaded', function () {
+    // Auto-suggestions
+    const searchInput = document.getElementById('search-input');
+    const suggestionsBox = document.getElementById('suggestions');
+
+    searchInput.addEventListener('input', function () {
+      const query = this.value.trim();
+      if (query.length < 2) {
+        suggestionsBox.innerHTML = '';
+        suggestionsBox.style.display = 'none';
+        return;
       }
-      
-      const selectedDurations = Array.from(durationFilters)
-        .filter(filter => filter.checked)
-        .map(filter => filter.value);
-        
-      if (selectedDurations.length > 0) {
-        newParams.append('duration', selectedDurations.join(','));
-      }
-      
-      const selectedTypes = Array.from(typeFilters)
-        .filter(filter => filter.checked)
-        .map(filter => filter.value);
-        
-      if (selectedTypes.length > 0) {
-        newParams.append('type', selectedTypes.join(','));
-      }
-      
-      if (parseInt(priceSlider.value) < parseInt(priceSlider.max)) {
-        newParams.append('price_max', priceSlider.value);
-      }
-      
-      const newUrl = window.location.pathname + '?' + newParams.toString();
-      window.location.href = newUrl;
-    }
-    
-    function initializeFiltersFromUrl() {
-      const searchParams = new URLSearchParams(window.location.search);
-      
-      const sortBy = searchParams.get('sort_by');
-      if (sortBy) {
-        sortOptions.value = sortBy;
-      }
-      
-      const priceMaxParam = searchParams.get('price_max');
-      if (priceMaxParam) {
-        priceSlider.value = priceMaxParam;
-        document.getElementById('priceMax').textContent = "{{ cart.currency.symbol }}" + parseInt(priceMaxParam).toLocaleString();
-        currentPriceRange.textContent = "{{ cart.currency.symbol }}" + parseInt(priceMaxParam).toLocaleString();
-      } else {
-        // Set default value with proper quoting
-        currentPriceRange.textContent = "{{ cart.currency.symbol }}" + parseInt(priceSlider.value).toLocaleString();
-      }
-      
-      const durations = searchParams.get('duration');
-      if (durations) {
-        const durationArray = durations.split(',');
-        durationFilters.forEach(filter => {
-          filter.checked = durationArray.includes(filter.value);
+
+      // Fetch auto-suggestions via Shopify's AJAX API or a custom endpoint
+      fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product,article,page&resources[limit]=5`)
+        .then(response => response.json())
+        .then(data => {
+          suggestionsBox.innerHTML = '';
+          if (data.resources.results.products.length > 0 || data.resources.results.articles.length > 0 || data.resources.results.pages.length > 0) {
+            data.resources.results.products.forEach(product => {
+              suggestionsBox.innerHTML += `
+                <a href="${product.url}" class="list-group-item list-group-item-action">
+                  <i class="bi bi-bag-fill me-2"></i>${product.title}
+                </a>
+              `;
+            });
+            data.resources.results.articles.forEach(article => {
+              suggestionsBox.innerHTML += `
+                <a href="${article.url}" class="list-group-item list-group-item-action">
+                  <i class="bi bi-journal-text me-2"></i>${article.title}
+                </a>
+              `;
+            });
+            data.resources.results.pages.forEach(page => {
+              suggestionsBox.innerHTML += `
+                <a href="${page.url}" class="list-group-item list-group-item-action">
+                  <i class="bi bi-file-earmark-text me-2"></i>${page.title}
+                </a>
+              `;
+            });
+            suggestionsBox.style.display = 'block';
+          } else {
+            suggestionsBox.innerHTML = '<div class="list-group-item">No suggestions found.</div>';
+            suggestionsBox.style.display = 'block';
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching suggestions:', error);
+          suggestionsBox.innerHTML = '<div class="list-group-item">Error fetching suggestions.</div>';
+          suggestionsBox.style.display = 'block';
         });
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.search-page-form')) {
+        suggestionsBox.innerHTML = '';
+        suggestionsBox.style.display = 'none';
       }
-      
-      const types = searchParams.get('type');
-      if (types) {
-        const typeArray = types.split(',');
-        typeFilters.forEach(filter => {
-          filter.checked = typeArray.includes(filter.value);
-        });
+    });
+
+    // Advanced Filtering
+    const categoryFilter = document.getElementById('category-filter');
+    const priceFilter = document.getElementById('price-filter');
+    const sortBy = document.getElementById('sort-by');
+    const searchForm = document.querySelector('.search-page-form form');
+
+    function updateSearch() {
+      const query = searchInput.value.trim();
+      const category = categoryFilter.value;
+      const price = priceFilter.value;
+      const sort = sortBy.value;
+
+      let url = `/search?q=${encodeURIComponent(query)}`;
+
+      if (category !== 'all') {
+        url += `+collection:${encodeURIComponent(category)}`;
       }
-      
-      updateActiveFilters();
-    }
-    
-    function updateActiveFilters() {
-      const searchParams = new URLSearchParams(window.location.search);
-      let hasActiveFilters = false;
-      
-      filterTags.innerHTML = '';
-      
-      const priceMax = searchParams.get('price_max');
-      if (priceMax) {
-        addFilterTag('Max $' + parseInt(priceMax).toLocaleString(), 'price_max');
-        hasActiveFilters = true;
-      }
-      
-      const durations = searchParams.get('duration');
-      if (durations) {
-        durations.split(',').forEach(duration => {
-          addFilterTag('Duration: ' + duration + ' days', 'duration', duration);
-        });
-        hasActiveFilters = true;
-      }
-      
-      const types = searchParams.get('type');
-      if (types) {
-        types.split(',').forEach(type => {
-          addFilterTag('Type: ' + type.replace('-', ' '), 'type', type);
-        });
-        hasActiveFilters = true;
-      }
-      
-      activeFilters.style.display = hasActiveFilters ? 'block' : 'none';
-    }
-    
-    function addFilterTag(label, param, value = null) {
-      const tag = document.createElement('span');
-      tag.className = 'filter-tag';
-      tag.innerHTML = label + '<span class="remove-filter">&times;</span>';
-      
-      tag.querySelector('.remove-filter').addEventListener('click', function() {
-        removeFilter(param, value);
-      });
-      
-      filterTags.appendChild(tag);
-    }
-    
-    function removeFilter(param, value) {
-      const searchParams = new URLSearchParams(window.location.search);
-      
-      if (value) {
-        const values = searchParams.get(param).split(',');
-        const newValues = values.filter(v => v !== value);
-        
-        if (newValues.length === 0) {
-          searchParams.delete(param);
-        } else {
-          searchParams.set(param, newValues.join(','));
+
+      if (price !== 'all') {
+        if (price === 'low') {
+          url += `+price:<50`;
+        } else if (price === 'mid') {
+          url += `+price:>=50 price:<150`;
+        } else if (price === 'high') {
+          url += `+price:>=150`;
         }
-      } else {
-        searchParams.delete(param);
       }
-      
-      const newUrl = window.location.pathname + '?' + searchParams.toString();
-      window.location.href = newUrl;
+
+      if (sort !== 'relevance') {
+        url += `&sort_by=${sort}`;
+      }
+
+      window.location.href = url;
     }
 
-    // Add this new function for client-side filtering
-    function applyClientSideFilters() {
-      const searchParams = new URLSearchParams(window.location.search);
-      const maxPrice = searchParams.get('price_max');
-      
-      if (maxPrice) {
-        const maxPriceValue = parseInt(maxPrice);
-        const tourItems = document.querySelectorAll('.tour-item');
-        let visibleCount = 0;
-        
-        tourItems.forEach(item => {
-          const priceElement = item.querySelector('.price');
-          if (priceElement) {
-            // Extract numeric price from the price text (removes currency symbol and formatting)
-            const priceText = priceElement.textContent;
-            const numericPrice = parseInt(priceText.replace(/[^0-9]/g, ''));
-            
-            if (numericPrice > maxPriceValue) {
-              item.style.display = 'none'; // Hide items that exceed max price
-            } else {
-              item.style.display = 'block'; // Show items within price range
-              visibleCount++;
-            }
+    categoryFilter.addEventListener('change', updateSearch);
+    priceFilter.addEventListener('change', updateSearch);
+    sortBy.addEventListener('change', updateSearch);
+
+    // Load More Functionality
+    const loadMoreBtn = document.getElementById('load-more');
+    if (loadMoreBtn) {
+      let currentPage = 1;
+      const searchResults = document.querySelector('.search-results .row');
+
+      loadMoreBtn.addEventListener('click', function () {
+        currentPage += 1;
+        const query = searchInput.value.trim();
+        const category = categoryFilter.value;
+        const price = priceFilter.value;
+        const sort = sortBy.value;
+
+        let url = `/search?q=${encodeURIComponent(query)}&page=${currentPage}`;
+
+        if (category !== 'all') {
+          url += `+collection:${encodeURIComponent(category)}`;
+        }
+
+        if (price !== 'all') {
+          if (price === 'low') {
+            url += `+price:<50`;
+          } else if (price === 'mid') {
+            url += `+price:>=50 price:<150`;
+          } else if (price === 'high') {
+            url += `+price:>=150`;
           }
-        });
-        
-        // Update the result count
-        const resultCountElement = document.getElementById('searchResultsCount');
-        if (resultCountElement) {
-          resultCountElement.textContent = visibleCount + ' tours found';
         }
-        
-        // Show "no results" message if all items are filtered out
-        const noResultsElement = document.querySelector('.no-results');
-        const resultsGrid = document.querySelector('.row.g-4');
-        
-        if (visibleCount === 0 && !noResultsElement) {
-          resultsGrid.innerHTML = `
-            <div class="no-results text-center py-5">
-              <div class="no-results-icon mb-3">
-                <i class="bi bi-search" style="font-size: 3rem;"></i>
-              </div>
-              <h2>No tours match your criteria</h2>
-              <p class="mb-4">We couldn't find any tours within your price range. Try adjusting your filters.</p>
-              <div class="d-flex justify-content-center gap-3">
-                <button id="resetSearchBtn" class="btn btn-outline-primary">
-                  <i class="bi bi-arrow-counterclockwise"></i> Reset Search
-                </button>
-              </div>
-            </div>
-          `;
-          
-          // Add event listener to the new reset button
-          document.getElementById('resetSearchBtn').addEventListener('click', function() {
-            window.location.href = '/search';
+
+        if (sort !== 'relevance') {
+          url += `&sort_by=${sort}`;
+        }
+
+        fetch(url)
+          .then(response => response.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newResults = doc.querySelectorAll('.search-results .row .product-card');
+            newResults.forEach(card => {
+              searchResults.appendChild(card);
+            });
+
+            // If no more results, hide the load more button
+            const newLoadMoreBtn = doc.getElementById('load-more');
+            if (!newLoadMoreBtn) {
+              loadMoreBtn.style.display = 'none';
+            }
+          })
+          .catch(error => {
+            console.error('Error loading more results:', error);
           });
-        }
-      }
-    }
-    
-    // Call this function after page load
-    applyClientSideFilters();
-    
-    // Modify your existing applyFilters function to preserve the search params
-    function applyFilters() {
-      const searchParams = new URLSearchParams(window.location.search);
-      const searchTerm = searchParams.get('q') || '';
-      
-      const newParams = new URLSearchParams();
-      if (searchTerm) newParams.append('q', searchTerm);
-      
-      // Rest of your existing filter code...
-      
-      // Store the price filter in sessionStorage before redirecting
-      if (parseInt(priceSlider.value) < parseInt(priceSlider.max)) {
-        const maxPrice = priceSlider.value;
-        newParams.append('price_max', maxPrice);
-        sessionStorage.setItem('maxPriceFilter', maxPrice);
-      } else {
-        sessionStorage.removeItem('maxPriceFilter');
-      }
-      
-      const newUrl = window.location.pathname + '?' + newParams.toString();
-      window.location.href = newUrl;
+      });
     }
   });
 </script>
 
+<!-- Example Product Card Snippet (product-card.liquid) -->
+{% comment %}
+  Ensure you have a 'product-card.liquid' snippet with the following structure.
+  You can customize it further based on your design preferences.
+{% endcomment %}
+{% comment %}
+<!-- snippets/product-card.liquid -->
+<div class="col-md-4">
+  <div class="card product-card h-100">
+    <a href="{{ product.url }}">
+      {% if product.featured_image %}
+        <img src="{{ product.featured_image | img_url: '480x480' }}" class="card-img-top" alt="{{ product.title }}">
+      {% else %}
+        <img src="{{ 'placeholder-image.png' | asset_url }}" class="card-img-top" alt="Placeholder">
+      {% endif %}
+    </a>
+    <div class="card-body d-flex flex-column">
+      <h5 class="card-title">
+        <a href="{{ product.url }}" class="text-decoration-none text-dark">{{ product.title }}</a>
+      </h5>
+      <p class="card-text mt-auto">
+        <span class="fw-bold">{{ product.price | money }}</span>
+      </p>
+    </div>
+  </div>
+</div>
+{% endcomment %}
+
+<!-- Similarly, create 'article-card.liquid' and 'page-card.liquid' snippets with appropriate designs -->
+
+<!-- Pagination Styles (Optional for better aesthetics) -->
+<style>
+  /* Load More Button Animation */
+  #load-more {
+    position: relative;
+    overflow: hidden;
+  }
+  #load-more::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.2);
+    transform: skewX(-45deg);
+    transition: all 0.5s;
+  }
+  #load-more:hover::after {
+    left: 100%;
+  }
+</style>
