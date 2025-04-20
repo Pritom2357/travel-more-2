@@ -10,12 +10,29 @@
         <h1>All Products</h1>
       {% endif %}
     </div>
-  </div>
-  {% for item in search.results %}
-    <div>
-      <h3>{{ item.title }}</h3>
+    <div class="filter-options">
+        <div class="d-flex">
+          <div class="collection-filter">
+            <select>
+              {% for cols in  collection.all_types %}
+                <option>cols</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="price-slider">
+            <input type="slider" min="1000" max="100000" step="1000">
+          </div>
+          <div class="sorting-options">
+            <select>
+              <option>Newest First</option>
+              <option>Oldest First</option>
+              <option>Most Rated</option>
+              <option>Most Priced</option>
+            </select>
+          </div>
+        </div>
     </div>
-  {% endfor %}
+  </div>
 </div>
 
 <style>
