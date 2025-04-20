@@ -78,8 +78,8 @@
 
   <div class="container my-5">
     <!-- Active Filters Display -->
-    <div id="active-filters" class="mb-3" {% unless request.params.collection or request.params.price_range %}style="display:none"{% endunless %}>
-      <h5>Active Filters:</h5>
+    <div id="active-filters" class="mb-3 p-3 bg-light rounded" {% unless request.params.collection or request.params.price_range %}style="display:none"{% endunless %}>
+      <h5 class="mb-2">Active Filters:</h5>
       <div class="d-flex flex-wrap gap-2" id="filter-tags">
         {% if request.params.collection %}
           <span class="badge bg-primary filter-tag" data-filter-type="collection" data-filter-value="{{ request.params.collection }}">
@@ -111,6 +111,10 @@
                     <a href="{{ item.url }}">
                       {% if item.featured_image %}
                         <img src="{{ item.featured_image | img_url: '480x480' }}" class="card-img-top" alt="{{ item.title }}">
+                      {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 240px;">
+                          <i class="bi bi-image text-secondary" style="font-size: 3rem;"></i>
+                        </div>
                       {% endif %}
                     </a>
                     <div class="card-body d-flex flex-column">
@@ -119,7 +123,7 @@
                       </h5>
                       <div class="mt-auto">
                         <p class="card-text">
-                          <span class="fw-bold price-display" data-price="{{ item.price | times: 0.01 }}">{{ item.price | money }}</span>
+                          <span class="fw-bold price-display" data-price="{{ item.price | times: 0.01 | round: 2 }}">{{ item.price | money }}</span>
                         </p>
                         <a href="{{ item.url }}" class="btn btn-sm btn-outline-primary">View Details</a>
                       </div>
@@ -563,6 +567,164 @@
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
       };
+    }
+  });
+</script>
+
+<script>
+  // Wait for document to be fully loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    // Debugging - check if elements exist
+    console.log('Category filter:', document.getElementById('category-filter'));
+    console.log('Price filter:', document.getElementById('price-filter'));
+    console.log('Sort by:', document.getElementById('sort-by'));
+    
+    const searchInput = document.getElementById('search-input');
+    const categoryFilter = document.getElementById('category-filter');
+    const priceFilter = document.getElementById('price-filter');
+    const sortBy = document.getElementById('sort-by');
+    const noFilteredResults = document.getElementById('no-filtered-results');
+    const loadMoreBtn = document.getElementById('load-more');
+    
+    function updateSearch() {
+      // Get current search parameters
+      const params = new URLSearchParams(window.location.search);
+      const query = params.get('q') || '';
+      
+      // Update the parameters based on filter selections
+      if (categoryFilter && categoryFilter.value !== 'all') {
+        params.set('collection', categoryFilter.value);
+      } else {
+        params.delete('collection');
+      }
+      
+      if (priceFilter && priceFilter.value !== 'all') {
+        params.set('price_range', priceFilter.value);
+      } else {
+        params.delete('price_range');
+      }
+      
+      if (sortBy && sortBy.value !== 'relevance') {
+        params.set('sort_by', sortBy.value);
+      } else {
+        params.delete('sort_by');
+      }
+      
+      // Redirect with updated parameters
+      window.location.href = `/search?${params.toString()}`;
+    }
+    
+    if (categoryFilter) {
+      categoryFilter.addEventListener('change', function() {
+        console.log('Category changed to:', this.value);
+        updateSearch();
+      });
+    }
+    
+    if (priceFilter) {
+      priceFilter.addEventListener('change', function() {
+        console.log('Price changed to:', this.value);
+        updateSearch();
+      });
+    }
+    
+    if (sortBy) {
+      sortBy.addEventListener('change', function() {
+        console.log('Sort changed to:', this.value);
+        updateSearch();
+      });
+    }
+    
+    function applyClientSidePriceFilter() {
+      const params = new URLSearchParams(window.location.search);
+      const priceRange = params.get('price_range');
+      
+      console.log('Applying price filter:', priceRange);
+      
+      if (!priceRange || priceRange === 'all') return;
+      
+      let minPrice = 0;
+      let maxPrice = Infinity;
+      
+      switch (priceRange) {
+        case 'low':
+          maxPrice = 50;
+          break;
+        case 'mid':
+          minPrice = 50;
+          maxPrice = 150;
+          break;
+        case 'high':
+          minPrice = 150;
+          break;
+      }
+      
+      console.log(`Price range: $${minPrice} to $${maxPrice === Infinity ? '∞' : maxPrice}`);
+      
+      let visibleCount = 0;
+      let totalProducts = 0;
+      
+      document.querySelectorAll('.search-result-item').forEach(item => {
+        if (item.dataset.type !== 'product') return;
+        totalProducts++;
+        
+        const priceElement = item.querySelector('.price-display');
+        if (!priceElement || !priceElement.dataset.price) {
+          console.warn('Missing price data for item:', item);
+          return;
+        }
+        
+        const price = parseFloat(priceElement.dataset.price);
+        console.log(`Product price: $${price}, within range: ${price >= minPrice && price <= maxPrice}`);
+        
+        if (isNaN(price) || price < minPrice || price > maxPrice) {
+          item.style.display = 'none';
+        } else {
+          item.style.display = 'block';
+          visibleCount++;
+        }
+      });
+      
+      console.log(`Filtered results: ${visibleCount} of ${totalProducts} products visible`);
+      
+      // Show no results message if needed
+      if (noFilteredResults) {
+        if (visibleCount === 0 && totalProducts > 0) {
+          noFilteredResults.style.display = 'block';
+          if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+        } else {
+          noFilteredResults.style.display = 'none';
+        }
+      }
+    }
+    
+    document.querySelectorAll('.remove-filter').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const filterTag = this.closest('.filter-tag');
+        if (!filterTag) return;
+        
+        const filterType = filterTag.dataset.filterType;
+        console.log('Removing filter:', filterType);
+        
+        const params = new URLSearchParams(window.location.search);
+        
+        if (filterType === 'collection') {
+          params.delete('collection');
+        } else if (filterType === 'price') {
+          params.delete('price_range');
+        }
+        
+        window.location.href = `/search?${params.toString()}`;
+      });
+    });
+    
+    // Apply client-side filtering immediately if price range is set
+    if (new URLSearchParams(window.location.search).get('price_range')) {
+      // Wait a moment to ensure DOM is ready
+      setTimeout(applyClientSidePriceFilter, 100);
     }
   });
 </script>
