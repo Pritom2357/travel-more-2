@@ -1,4 +1,3 @@
-
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -8,9 +7,9 @@
   href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
 />
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" async></script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Load scripts with defer instead of async for proper sequence -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 
 <div class="search_section_{{ section.id }}">
   <div class="search-header py-5 bg-light">
@@ -19,7 +18,7 @@
         <h2 class="heading mb-4">Search Results for "{{ search.terms }}"</h2>
         <div class="search-page-form">
           <form class="d-flex justify-content-center" action="{{ routes.search_url }}" method="get" autocomplete="off">
-            <div class="input-group w-50">
+            <div class="input-group search-input-group">
               <input
                 class="form-control"
                 type="search"
@@ -35,7 +34,7 @@
               </button>
             </div>
             <!-- Auto-suggestions Dropdown -->
-            <div id="suggestions" class="list-group position-absolute w-50"></div>
+            <div id="suggestions" class="list-group position-absolute"></div>
           </form>
         </div>
       </div>
@@ -45,13 +44,12 @@
   <div class="filters-sort py-3 bg-white shadow-sm">
     <div class="container d-flex justify-content-between align-items-center flex-wrap">
       <div class="filters d-flex align-items-center mb-2">
-        
         <div class="me-3">
           <label for="category-filter" class="form-label mb-0">Category:</label>
           <select id="category-filter" class="form-select">
             <option value="all">All</option>
             {% for collection in collections %}
-              <option value="{{ collection.handle }}">{{ collection.title }}</option>
+              <option value="{{ collection.handle }}" {% if request.params.collection contains collection.handle %}selected{% endif %}>{{ collection.title }}</option>
             {% endfor %}
           </select>
         </div>
@@ -59,9 +57,9 @@
           <label for="price-filter" class="form-label mb-0">Price:</label>
           <select id="price-filter" class="form-select">
             <option value="all">All</option>
-            <option value="low">Under $50</option>
-            <option value="mid">$50 - $150</option>
-            <option value="high">Over $150</option>
+            <option value="low" {% if request.params.price_range == 'low' %}selected{% endif %}>Under $50</option>
+            <option value="mid" {% if request.params.price_range == 'mid' %}selected{% endif %}>$50 - $150</option>
+            <option value="high" {% if request.params.price_range == 'high' %}selected{% endif %}>Over $150</option>
           </select>
         </div>
       </div>
@@ -69,29 +67,104 @@
       <div class="sorting d-flex align-items-center mb-2">
         <label for="sort-by" class="form-label me-2 mb-0">Sort By:</label>
         <select id="sort-by" class="form-select">
-          <option value="relevance">Relevance</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="newest">Newest Arrivals</option>
+          <option value="relevance" {% if search.sort_by == 'relevance' %}selected{% endif %}>Relevance</option>
+          <option value="price-ascending" {% if search.sort_by == 'price-ascending' %}selected{% endif %}>Price: Low to High</option>
+          <option value="price-descending" {% if search.sort_by == 'price-descending' %}selected{% endif %}>Price: High to Low</option>
+          <option value="created-descending" {% if search.sort_by == 'created-descending' %}selected{% endif %}>Newest Arrivals</option>
         </select>
       </div>
     </div>
   </div>
 
   <div class="container my-5">
+    <!-- Active Filters Display -->
+    <div id="active-filters" class="mb-3" {% unless request.params.collection or request.params.price_range %}style="display:none"{% endunless %}>
+      <h5>Active Filters:</h5>
+      <div class="d-flex flex-wrap gap-2" id="filter-tags">
+        {% if request.params.collection %}
+          <span class="badge bg-primary filter-tag" data-filter-type="collection" data-filter-value="{{ request.params.collection }}">
+            Category: {% for collection in collections %}{% if collection.handle == request.params.collection %}{{ collection.title }}{% endif %}{% endfor %}
+            <i class="bi bi-x-circle ms-1 remove-filter"></i>
+          </span>
+        {% endif %}
+        {% if request.params.price_range %}
+          <span class="badge bg-primary filter-tag" data-filter-type="price" data-filter-value="{{ request.params.price_range }}">
+            Price: 
+            {% if request.params.price_range == 'low' %}Under $50
+            {% elsif request.params.price_range == 'mid' %}$50 - $150
+            {% elsif request.params.price_range == 'high' %}Over $150
+            {% endif %}
+            <i class="bi bi-x-circle ms-1 remove-filter"></i>
+          </span>
+        {% endif %}
+      </div>
+    </div>
+
     <div class="search-results">
       {% if search.results.size > 0 %}
-        <div class="row g-4">
+        <div class="row g-4" id="search-results-container">
           {% for item in search.results %}
-            {% case item.object_type %}
-              {% when 'product' %}
-                {% render 'product-card', product: item %}
-              {% when 'article' %}
-                {% render 'article-card', article: item %}
-              {% comment %} {% when 'page' %}
-                {% render 'page-card', page: item %} {% endcomment %}
-            {% endcase %}
+            <div class="col-md-4 search-result-item" data-price="{{ item.price | times: 0.01 }}" data-type="{{ item.object_type }}">
+              {% case item.object_type %}
+                {% when 'product' %}
+                  <div class="card product-card h-100">
+                    <a href="{{ item.url }}">
+                      {% if item.featured_image %}
+                        <img src="{{ item.featured_image | img_url: '480x480' }}" class="card-img-top" alt="{{ item.title }}">
+                      {% else %}
+                        <img src="{{ 'placeholder-image.png' | asset_url }}" class="card-img-top" alt="Placeholder">
+                      {% endif %}
+                    </a>
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">
+                        <a href="{{ item.url }}" class="text-decoration-none text-dark">{{ item.title }}</a>
+                      </h5>
+                      <div class="mt-auto">
+                        <p class="card-text">
+                          <span class="fw-bold price-display" data-price="{{ item.price | times: 0.01 }}">{{ item.price | money }}</span>
+                        </p>
+                        <a href="{{ item.url }}" class="btn btn-sm btn-outline-primary">View Details</a>
+                      </div>
+                    </div>
+                  </div>
+                {% when 'article' %}
+                  <div class="card article-card h-100">
+                    <a href="{{ item.url }}">
+                      {% if item.image %}
+                        <img src="{{ item.image | img_url: '480x240', crop: 'center' }}" class="card-img-top" alt="{{ item.title }}">
+                      {% else %}
+                        <img src="{{ 'blog-placeholder.png' | asset_url }}" class="card-img-top" alt="Placeholder">
+                      {% endif %}
+                    </a>
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">
+                        <a href="{{ item.url }}" class="text-decoration-none text-dark">{{ item.title }}</a>
+                      </h5>
+                      <p class="card-text text-muted small">{{ item.published_at | date: '%B %d, %Y' }}</p>
+                      <p class="card-text">{{ item.excerpt | strip_html | truncatewords: 15 }}</p>
+                      <a href="{{ item.url }}" class="btn btn-sm btn-outline-secondary mt-auto">Read Article</a>
+                    </div>
+                  </div>
+                {% when 'page' %}
+                  <div class="card page-card h-100">
+                    <div class="card-body d-flex flex-column">
+                      <div class="page-icon mb-3 text-center">
+                        <i class="bi bi-file-earmark-text" style="font-size: 2rem; color: #6c757d;"></i>
+                      </div>
+                      <h5 class="card-title text-center">
+                        <a href="{{ item.url }}" class="text-decoration-none text-dark">{{ item.title }}</a>
+                      </h5>
+                      <p class="card-text text-center">{{ item.content | strip_html | truncatewords: 20 }}</p>
+                      <a href="{{ item.url }}" class="btn btn-sm btn-outline-secondary mt-auto">View Page</a>
+                    </div>
+                  </div>
+              {% endcase %}
+            </div>
           {% endfor %}
+        </div>
+
+        <div id="no-filtered-results" class="alert alert-warning text-center my-4" style="display: none;" role="alert">
+          No results match your current filters. Please try different filter options.
         </div>
 
         {% if search.results.size > settings.search_limit %}
@@ -101,7 +174,10 @@
         {% endif %}
       {% else %}
         <div class="alert alert-warning text-center" role="alert">
-          No results found for "{{ search.terms }}". Please try different keywords.
+          <i class="bi bi-search mb-3" style="font-size: 2rem;"></i>
+          <h4>No results found for "{{ search.terms }}"</h4>
+          <p>We couldn't find any matches for your search query. Please try different keywords or browse our collections.</p>
+          <a href="/collections/all" class="btn btn-primary mt-2">Browse All Products</a>
         </div>
       {% endif %}
     </div>
@@ -118,14 +194,22 @@
     position: relative;
   }
 
+  .search-input-group {
+    width: 100%;
+    max-width: 600px;
+  }
+
   #suggestions {
     z-index: 1000;
     max-height: 300px;
     overflow-y: auto;
     border-radius: 0 0 5px 5px;
     top: 100%;
-    left: 25%;
+    left: 0;
+    right: 0;
     width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
     display: none; /* Initially hidden */
   }
   #suggestions.show {
@@ -133,222 +217,37 @@
   }
 
   .filters-sort .form-select {
-    width: 200px;
+    width: auto;
+    min-width: 150px;
   }
 
-  .product-card {
+  .product-card, .article-card, .page-card {
     transition: transform 0.3s, box-shadow 0.3s;
   }
-  .product-card:hover {
+  .product-card:hover, .article-card:hover, .page-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   }
 
+  .filter-tag {
+    cursor: pointer;
+  }
+
+  .remove-filter {
+    cursor: pointer;
+  }
+
   #load-more {
     transition: background-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
   }
+  
   #load-more:hover {
     background-color: #0056b3;
     transform: scale(1.05);
   }
-</style>
-
-<!-- Custom JavaScript -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Auto-suggestions
-    const searchInput = document.getElementById('search-input');
-    const suggestionsBox = document.getElementById('suggestions');
-
-    searchInput.addEventListener('input', function () {
-      const query = this.value.trim();
-      if (query.length < 2) {
-        suggestionsBox.innerHTML = '';
-        suggestionsBox.style.display = 'none';
-        return;
-      }
-
-      // Fetch auto-suggestions via Shopify's AJAX API or a custom endpoint
-      fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product,article,page&resources[limit]=5`)
-        .then(response => response.json())
-        .then(data => {
-          suggestionsBox.innerHTML = '';
-          if (data.resources.results.products.length > 0 || data.resources.results.articles.length > 0 || data.resources.results.pages.length > 0) {
-            data.resources.results.products.forEach(product => {
-              suggestionsBox.innerHTML += `
-                <a href="${product.url}" class="list-group-item list-group-item-action">
-                  <i class="bi bi-bag-fill me-2"></i>${product.title}
-                </a>
-              `;
-            });
-            data.resources.results.articles.forEach(article => {
-              suggestionsBox.innerHTML += `
-                <a href="${article.url}" class="list-group-item list-group-item-action">
-                  <i class="bi bi-journal-text me-2"></i>${article.title}
-                </a>
-              `;
-            });
-            data.resources.results.pages.forEach(page => {
-              suggestionsBox.innerHTML += `
-                <a href="${page.url}" class="list-group-item list-group-item-action">
-                  <i class="bi bi-file-earmark-text me-2"></i>${page.title}
-                </a>
-              `;
-            });
-            suggestionsBox.style.display = 'block';
-          } else {
-            suggestionsBox.innerHTML = '<div class="list-group-item">No suggestions found.</div>';
-            suggestionsBox.style.display = 'block';
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching suggestions:', error);
-          suggestionsBox.innerHTML = '<div class="list-group-item">Error fetching suggestions.</div>';
-          suggestionsBox.style.display = 'block';
-        });
-    });
-
-    // Hide suggestions when clicking outside
-    document.addEventListener('click', function (e) {
-      if (!e.target.closest('.search-page-form')) {
-        suggestionsBox.innerHTML = '';
-        suggestionsBox.style.display = 'none';
-      }
-    });
-
-    // Advanced Filtering
-    const categoryFilter = document.getElementById('category-filter');
-    const priceFilter = document.getElementById('price-filter');
-    const sortBy = document.getElementById('sort-by');
-    const searchForm = document.querySelector('.search-page-form form');
-
-    function updateSearch() {
-      const query = searchInput.value.trim();
-      const category = categoryFilter.value;
-      const price = priceFilter.value;
-      const sort = sortBy.value;
-
-      let url = `/search?q=${encodeURIComponent(query)}`;
-
-      if (category !== 'all') {
-        url += `+collection:${encodeURIComponent(category)}`;
-      }
-
-      if (price !== 'all') {
-        if (price === 'low') {
-          url += `+price:<50`;
-        } else if (price === 'mid') {
-          url += `+price:>=50 price:<150`;
-        } else if (price === 'high') {
-          url += `+price:>=150`;
-        }
-      }
-
-      if (sort !== 'relevance') {
-        url += `&sort_by=${sort}`;
-      }
-
-      window.location.href = url;
-    }
-
-    categoryFilter.addEventListener('change', updateSearch);
-    priceFilter.addEventListener('change', updateSearch);
-    sortBy.addEventListener('change', updateSearch);
-
-    // Load More Functionality
-    const loadMoreBtn = document.getElementById('load-more');
-    if (loadMoreBtn) {
-      let currentPage = 1;
-      const searchResults = document.querySelector('.search-results .row');
-
-      loadMoreBtn.addEventListener('click', function () {
-        currentPage += 1;
-        const query = searchInput.value.trim();
-        const category = categoryFilter.value;
-        const price = priceFilter.value;
-        const sort = sortBy.value;
-
-        let url = `/search?q=${encodeURIComponent(query)}&page=${currentPage}`;
-
-        if (category !== 'all') {
-          url += `+collection:${encodeURIComponent(category)}`;
-        }
-
-        if (price !== 'all') {
-          if (price === 'low') {
-            url += `+price:<50`;
-          } else if (price === 'mid') {
-            url += `+price:>=50 price:<150`;
-          } else if (price === 'high') {
-            url += `+price:>=150`;
-          }
-        }
-
-        if (sort !== 'relevance') {
-          url += `&sort_by=${sort}`;
-        }
-
-        fetch(url)
-          .then(response => response.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const newResults = doc.querySelectorAll('.search-results .row .product-card');
-            newResults.forEach(card => {
-              searchResults.appendChild(card);
-            });
-
-            // If no more results, hide the load more button
-            const newLoadMoreBtn = doc.getElementById('load-more');
-            if (!newLoadMoreBtn) {
-              loadMoreBtn.style.display = 'none';
-            }
-          })
-          .catch(error => {
-            console.error('Error loading more results:', error);
-          });
-      });
-    }
-  });
-</script>
-
-<!-- Example Product Card Snippet (product-card.liquid) -->
-{% comment %}
-  Ensure you have a 'product-card.liquid' snippet with the following structure.
-  You can customize it further based on your design preferences.
-{% endcomment %}
-{% comment %}
-<!-- snippets/product-card.liquid -->
-<div class="col-md-4">
-  <div class="card product-card h-100">
-    <a href="{{ product.url }}">
-      {% if product.featured_image %}
-        <img src="{{ product.featured_image | img_url: '480x480' }}" class="card-img-top" alt="{{ product.title }}">
-      {% else %}
-        <img src="{{ 'placeholder-image.png' | asset_url }}" class="card-img-top" alt="Placeholder">
-      {% endif %}
-    </a>
-    <div class="card-body d-flex flex-column">
-      <h5 class="card-title">
-        <a href="{{ product.url }}" class="text-decoration-none text-dark">{{ product.title }}</a>
-      </h5>
-      <p class="card-text mt-auto">
-        <span class="fw-bold">{{ product.price | money }}</span>
-      </p>
-    </div>
-  </div>
-</div>
-{% endcomment %}
-
-<!-- Similarly, create 'article-card.liquid' and 'page-card.liquid' snippets with appropriate designs -->
-
-<!-- Pagination Styles (Optional for better aesthetics) -->
-<style>
-  /* Load More Button Animation */
-  #load-more {
-    position: relative;
-    overflow: hidden;
-  }
+  
   #load-more::after {
     content: '';
     position: absolute;
@@ -360,7 +259,314 @@
     transform: skewX(-45deg);
     transition: all 0.5s;
   }
+  
   #load-more:hover::after {
     left: 100%;
   }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .search-input-group {
+      width: 90%;
+    }
+    
+    .filters-sort {
+      flex-direction: column;
+      align-items: stretch !important;
+    }
+    
+    .filters, .sorting {
+      flex-wrap: wrap;
+      width: 100%;
+    }
+    
+    .filters .me-3 {
+      margin-right: 0 !important;
+      margin-bottom: 1rem;
+      width: 100%;
+    }
+    
+    .sorting {
+      flex-direction: column;
+      align-items: flex-start !important;
+    }
+    
+    .sorting .form-select {
+      width: 100%;
+    }
+  }
 </style>
+
+<!-- Custom JavaScript -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Cache DOM elements
+    const searchInput = document.getElementById('search-input');
+    const suggestionsBox = document.getElementById('suggestions');
+    const categoryFilter = document.getElementById('category-filter');
+    const priceFilter = document.getElementById('price-filter');
+    const sortBy = document.getElementById('sort-by');
+    const searchResultsContainer = document.getElementById('search-results-container');
+    const activeFilters = document.getElementById('active-filters');
+    const filterTags = document.getElementById('filter-tags');
+    const noFilteredResults = document.getElementById('no-filtered-results');
+    const loadMoreBtn = document.getElementById('load-more');
+    
+    // Track if we need to apply client-side filtering
+    let needsClientSideFiltering = false;
+    
+    // Auto-suggestions functionality
+    if (searchInput) {
+      searchInput.addEventListener('input', debounce(function() {
+        const query = this.value.trim();
+        if (query.length < 2) {
+          suggestionsBox.innerHTML = '';
+          suggestionsBox.style.display = 'none';
+          return;
+        }
+
+        // Fetch auto-suggestions
+        fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product,article,page&resources[limit]=5`)
+          .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+          })
+          .then(data => {
+            suggestionsBox.innerHTML = '';
+            let hasResults = false;
+            
+            // Products
+            if (data.resources.results.products && data.resources.results.products.length > 0) {
+              hasResults = true;
+              data.resources.results.products.forEach(product => {
+                suggestionsBox.innerHTML += `
+                  <a href="${product.url}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-bag-fill me-2"></i>${product.title}
+                  </a>
+                `;
+              });
+            }
+            
+            // Articles
+            if (data.resources.results.articles && data.resources.results.articles.length > 0) {
+              hasResults = true;
+              data.resources.results.articles.forEach(article => {
+                suggestionsBox.innerHTML += `
+                  <a href="${article.url}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-journal-text me-2"></i>${article.title}
+                  </a>
+                `;
+              });
+            }
+            
+            // Pages
+            if (data.resources.results.pages && data.resources.results.pages.length > 0) {
+              hasResults = true;
+              data.resources.results.pages.forEach(page => {
+                suggestionsBox.innerHTML += `
+                  <a href="${page.url}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-file-earmark-text me-2"></i>${page.title}
+                  </a>
+                `;
+              });
+            }
+            
+            if (hasResults) {
+              suggestionsBox.style.display = 'block';
+            } else {
+              suggestionsBox.innerHTML = '<div class="list-group-item">No suggestions found.</div>';
+              suggestionsBox.style.display = 'block';
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching suggestions:', error);
+            suggestionsBox.innerHTML = '<div class="list-group-item text-danger">Error fetching suggestions.</div>';
+            suggestionsBox.style.display = 'block';
+          });
+      }, 300));
+
+      // Hide suggestions when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+          suggestionsBox.innerHTML = '';
+          suggestionsBox.style.display = 'none';
+        }
+      });
+    }
+
+    // Filter handling
+    function updateSearch() {
+      const query = searchInput ? searchInput.value.trim() : "{{ search.terms | escape }}";
+      const category = categoryFilter ? categoryFilter.value : 'all';
+      const price = priceFilter ? priceFilter.value : 'all';
+      const sort = sortBy ? sortBy.value : 'relevance';
+
+      let url = `/search?q=${encodeURIComponent(query)}`;
+
+      if (category !== 'all') {
+        url += `&collection=${encodeURIComponent(category)}`;
+      }
+
+      if (price !== 'all') {
+        url += `&price_range=${encodeURIComponent(price)}`;
+        needsClientSideFiltering = true; // Shopify doesn't natively support this, we'll filter client-side
+      }
+
+      if (sort !== 'relevance') {
+        url += `&sort_by=${encodeURIComponent(sort)}`;
+      }
+
+      window.location.href = url;
+    }
+
+    // Add event listeners for filters and sorting
+    if (categoryFilter) categoryFilter.addEventListener('change', updateSearch);
+    if (priceFilter) priceFilter.addEventListener('change', updateSearch);
+    if (sortBy) sortBy.addEventListener('change', updateSearch);
+
+    // Remove filter functionality
+    document.querySelectorAll('.remove-filter').forEach(button => {
+      button.addEventListener('click', function() {
+        const filterTag = this.closest('.filter-tag');
+        const filterType = filterTag.dataset.filterType;
+        const filterValue = filterTag.dataset.filterValue;
+        
+        // Remove this filter and keep other filters
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.delete(filterType);
+        
+        let url = '/search?';
+        for (const [key, value] of searchParams.entries()) {
+          if (key !== filterType) {
+            url += `${key}=${encodeURIComponent(value)}&`;
+          }
+        }
+        
+        url = url.slice(0, -1); // Remove trailing &
+        window.location.href = url;
+      });
+    });
+
+    // Client-side price filtering
+    function applyClientSidePriceFilter() {
+      const priceRange = new URLSearchParams(window.location.search).get('price_range');
+      if (!priceRange || priceRange === 'all') return;
+      
+      let minPrice = 0;
+      let maxPrice = Infinity;
+      
+      switch (priceRange) {
+        case 'low':
+          maxPrice = 50;
+          break;
+        case 'mid':
+          minPrice = 50;
+          maxPrice = 150;
+          break;
+        case 'high':
+          minPrice = 150;
+          break;
+      }
+      
+      let visibleCount = 0;
+      
+      document.querySelectorAll('.search-result-item').forEach(item => {
+        if (item.dataset.type !== 'product') return; // Only filter products
+        
+        const priceElement = item.querySelector('.price-display');
+        if (!priceElement) return;
+        
+        const price = parseFloat(priceElement.dataset.price);
+        if (isNaN(price)) return;
+        
+        if (price < minPrice || price > maxPrice) {
+          item.style.display = 'none';
+        } else {
+          item.style.display = 'block';
+          visibleCount++;
+        }
+      });
+      
+      // Show "no results" message if all items are filtered out
+      if (visibleCount === 0 && document.querySelectorAll('.search-result-item[data-type="product"]').length > 0) {
+        if (noFilteredResults) noFilteredResults.style.display = 'block';
+        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+      } else {
+        if (noFilteredResults) noFilteredResults.style.display = 'none';
+      }
+    }
+
+    // Apply client-side filtering if needed
+    if (new URLSearchParams(window.location.search).get('price_range')) {
+      applyClientSidePriceFilter();
+    }
+
+    // Load More Functionality
+    if (loadMoreBtn) {
+      let currentPage = 1;
+      
+      loadMoreBtn.addEventListener('click', function() {
+        currentPage += 1;
+        loadMoreBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+        loadMoreBtn.disabled = true;
+        
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.set('page', currentPage);
+        
+        fetch(`/search?${searchParams.toString()}`)
+          .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+          })
+          .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newResults = doc.querySelectorAll('.search-result-item');
+            
+            if (newResults.length > 0) {
+              newResults.forEach(item => {
+                searchResultsContainer.appendChild(item.cloneNode(true));
+              });
+              
+              // If we need client-side filtering, apply it to the new results
+              if (new URLSearchParams(window.location.search).get('price_range')) {
+                applyClientSidePriceFilter();
+              }
+              
+              // Check if there's a "load more" button on the fetched page
+              const hasMorePages = doc.getElementById('load-more') !== null;
+              if (!hasMorePages) {
+                loadMoreBtn.style.display = 'none';
+              } else {
+                loadMoreBtn.innerHTML = 'Load More';
+                loadMoreBtn.disabled = false;
+              }
+            } else {
+              loadMoreBtn.style.display = 'none';
+            }
+          })
+          .catch(error => {
+            console.error('Error loading more results:', error);
+            loadMoreBtn.innerHTML = 'Error Loading More';
+            setTimeout(() => {
+              loadMoreBtn.innerHTML = 'Try Again';
+              loadMoreBtn.disabled = false;
+            }, 2000);
+          });
+      });
+    }
+    
+    // Helper function to debounce search input
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+  });
+</script>
