@@ -11,26 +11,59 @@
       {% endif %}
     </div>
     <div class="filter-options">
-        <div class="d-flex">
-          <div class="collection-filter">
-            <select>
-              {% for cols in  collection.all_types %}
-                <option>cols</option>
+      <div class="filter-container">
+        <div class="filter-item collection-filter">
+          <label for="category-filter">Category</label>
+          <div class="select-wrapper">
+            <select id="category-filter">
+              <option value="all">All Categories</option>
+              {% for product_type in shop.product_types %}
+                {% if product_type != '' %}
+                  <option value="{{ product_type | handleize }}" {% if request.params.product_type == product_type %}selected{% endif %}>
+                    {{ product_type }}
+                  </option>
+                {% endif %}
               {% endfor %}
             </select>
-          </div>
-          <div class="price-slider">
-            <input type="slider" min="1000" max="100000" step="1000">
-          </div>
-          <div class="sorting-options">
-            <select>
-              <option>Newest First</option>
-              <option>Oldest First</option>
-              <option>Most Rated</option>
-              <option>Most Priced</option>
-            </select>
+            <span class="arrow-icon">
+              <i class="bi bi-chevron-down"></i>
+            </span>
           </div>
         </div>
+        
+        <div class="filter-item price-filter">
+          <label for="price-range">Price Range</label>
+          <div class="price-slider-container">
+            <div class="price-range">
+              <span id="price-min">${{ section.settings.min_price | default: 0 }}</span>
+              <span id="current-price-display">${{ section.settings.max_price | default: 100000 }}</span>
+            </div>
+            <input type="range" id="price-range" min="{{ section.settings.min_price | default: 0 }}" max="{{ section.settings.max_price | default: 100000 }}" step="{{ section.settings.price_step | default: 1000 }}" value="{{ section.settings.max_price | default: 100000 }}">
+          </div>
+        </div>
+        
+        <div class="filter-item sorting-options">
+          <label for="sort-by">Sort By</label>
+          <div class="select-wrapper">
+            <select id="sort-by">
+              <option value="relevance" {% if search.sort_by == 'relevance' %}selected{% endif %}>Relevance</option>
+              <option value="price-ascending" {% if search.sort_by == 'price-ascending' %}selected{% endif %}>Price: Low to High</option>
+              <option value="price-descending" {% if search.sort_by == 'price-descending' %}selected{% endif %}>Price: High to Low</option>
+              <option value="created-descending" {% if search.sort_by == 'created-descending' %}selected{% endif %}>Newest First</option>
+              <option value="best-selling" {% if search.sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
+            </select>
+            <span class="arrow-icon">
+              <i class="bi bi-chevron-down"></i>
+            </span>
+          </div>
+        </div>
+        
+        <div class="filter-item apply-filters">
+          <button id="apply-filters-btn" class="btn-apply-filters">
+            <i class="bi bi-funnel-fill"></i> Apply Filters
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -106,6 +139,179 @@
   @media (max-width: 480px) {
     .search-results-title h1 {
       font-size: 1.5rem;
+    }
+  }
+
+  /* Filter Options Styling */
+  .filter-options {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  .filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .filter-item {
+    flex: 1;
+    min-width: 180px;
+    max-width: 300px;
+  }
+
+  .filter-item label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Styled Select Dropdown */
+  .select-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .select-wrapper select {
+    appearance: none;
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 1rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #333;
+    transition: all 0.3s ease;
+  }
+
+  .select-wrapper select:hover {
+    border-color: #aaa;
+  }
+
+  .select-wrapper select:focus {
+    border-color: #449EED;
+    box-shadow: 0 0 0 2px rgba(68, 158, 237, 0.2);
+    outline: none;
+  }
+
+  .arrow-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #666;
+  }
+
+  /* Price Slider Styling */
+  .price-slider-container {
+    position: relative;
+    padding: 5px 0;
+  }
+
+  .price-range {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  #current-price-display {
+    font-weight: 600;
+    color: #449EED;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #449EED 0%, #449EED 100%);
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #449EED;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background: #449EED;
+    transform: scale(1.1);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #449EED;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  input[type="range"]::-moz-range-thumb:hover {
+    background: #449EED;
+    transform: scale(1.1);
+  }
+
+  /* Apply Button Styling */
+  .apply-filters button {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #449EED;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .apply-filters button:hover {
+    background-color: #3080c5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .apply-filters button:active {
+    transform: translateY(0);
+  }
+
+  .apply-filters button i {
+    font-size: 0.9rem;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .filter-container {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 15px;
+    }
+    
+    .filter-item {
+      max-width: none;
     }
   }
 </style>
