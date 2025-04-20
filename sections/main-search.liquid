@@ -111,7 +111,7 @@
                     <a href="{{ item.url }}">
                       {% if item.featured_image %}
                         <img 
-                          src="{{ item.featured_image | img_url: 'original' }}" 
+                          src="{{ item.featured_image | img_url: '480x480' }}" 
                           width="480"
                           height="480"
                           class="card-img-top" 
@@ -136,7 +136,7 @@
                     <a href="{{ item.url }}">
                       {% if item.image %}
                         <img 
-                          src="{{ item.image | img_url: 'original', crop: 'center' }}" 
+                          src="{{ item.image | img_url: '480x240', crop: 'center' }}" 
                           width="480"
                           height="240"
                           class="card-img-top" 
