@@ -10,8 +10,12 @@
         <h1>All Products</h1>
       {% endif %}
     </div>
-    <div>{{ search.results }}</div>
   </div>
+  {% for item in search.results %}
+    <div>
+      <h3>{{ item.title }}</h3>
+    </div>
+  {% endfor %}
 </div>
 
 <style>
