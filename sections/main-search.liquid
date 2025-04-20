@@ -315,3 +315,110 @@
     }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get DOM elements
+    const priceRange = document.getElementById('price-range');
+    const currentPriceDisplay = document.getElementById('current-price-display');
+    const applyFiltersBtn = document.getElementById('apply-filters-btn');
+    const categoryFilter = document.getElementById('category-filter');
+    const sortBy = document.getElementById('sort-by');
+    
+    // Initialize price slider from URL parameters if they exist
+    function initializePriceSlider() {
+      if (!priceRange || !currentPriceDisplay) return;
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const priceParam = urlParams.get('price_max');
+      
+      if (priceParam) {
+        priceRange.value = priceParam;
+        currentPriceDisplay.textContent = '$' + parseInt(priceParam).toLocaleString();
+      } else {
+        // Set to default max value
+        currentPriceDisplay.textContent = '$' + parseInt(priceRange.value).toLocaleString();
+      }
+      
+      // Update the slider background
+      updateSliderBackground();
+    }
+    
+    // Update price display when slider moves
+    if (priceRange && currentPriceDisplay) {
+      priceRange.addEventListener('input', function() {
+        currentPriceDisplay.textContent = '$' + parseInt(this.value).toLocaleString();
+        updateSliderBackground();
+      });
+    }
+    
+    // Update slider background based on value
+    function updateSliderBackground() {
+      if (!priceRange) return;
+      
+      const min = parseInt(priceRange.min) || 0;
+      const max = parseInt(priceRange.max) || 100000;
+      const value = parseInt(priceRange.value) || max;
+      
+      // Calculate percentage
+      const percentage = ((value - min) / (max - min)) * 100;
+      
+      // Update background gradient
+      priceRange.style.background = `linear-gradient(to right, #449EED 0%, #449EED ${percentage}%, #ddd ${percentage}%, #ddd 100%)`;
+    }
+    
+    // Apply filters when button is clicked
+    if (applyFiltersBtn) {
+      applyFiltersBtn.addEventListener('click', function() {
+        applyFilters();
+      });
+    }
+    
+    // Apply filters function
+    function applyFilters() {
+      // Get current search query
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchQuery = urlParams.get('q') || '';
+      
+      // Start new URL with search term
+      let newUrl = '/search?q=' + encodeURIComponent(searchQuery);
+      
+      // Add category filter if selected
+      if (categoryFilter && categoryFilter.value !== 'all') {
+        newUrl += '&product_type=' + encodeURIComponent(categoryFilter.value);
+      }
+      
+      // Add price filter if set below max
+      if (priceRange) {
+        const max = parseInt(priceRange.max);
+        const value = parseInt(priceRange.value);
+        
+        // Only add price filter if it's not at the maximum
+        if (value < max) {
+          newUrl += '&price_max=' + encodeURIComponent(value);
+        }
+      }
+      
+      // Add sort option if set
+      if (sortBy && sortBy.value !== 'relevance') {
+        newUrl += '&sort_by=' + encodeURIComponent(sortBy.value);
+      }
+      
+      // Debug info
+      console.log('Applying filters:');
+      console.log('- Price slider value:', priceRange ? priceRange.value : 'not found');
+      console.log('- New URL:', newUrl);
+      
+      // Navigate to filtered URL
+      window.location.href = newUrl;
+    }
+    
+    // Initialize on page load
+    initializePriceSlider();
+    
+    // Log elements for debugging
+    console.log('Price range element:', priceRange);
+    console.log('Current price display:', currentPriceDisplay);
+    console.log('Apply filters button:', applyFiltersBtn);
+  });
+</script>
