@@ -1,23 +1,153 @@
 <style type="text/css">
-  .template-404 .title + * {
-    margin-top: 1rem;
+  .template-404 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 2rem;
+    background-color: #f8f9fa;
+    color: #333;
   }
 
-  @media screen and (min-width: 750px) {
-    .template-404 .title + * {
-      margin-top: 2rem;
-    }
+  .template-404 h1 {
+    font-size: 3rem;
+    color: #007bff;
+    margin-bottom: 1rem;
+  }
+
+  .template-404 p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .template-404 a.button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .template-404 a.button:hover {
+    background-color: #0056b3;
+  }
+
+  .template-404 .suggestions {
+    margin-top: 2rem;
+  }
+
+  .template-404 .suggestions h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .template-404 .suggestions ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .template-404 .suggestions ul li {
+    margin-bottom: 0.5rem;
+  }
+
+  .template-404 .suggestions ul li a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .template-404 .suggestions ul li a:hover {
+    color: #0056b3;
   }
 </style>
 
-<div class="template-404 page-width page-margin center">
-  <p>
-    {{ 'templates.404.subtext' | t }}
-  </p>
-  <h1 class="title">
-    {{ 'templates.404.title' | t }}
-  </h1>
-  <a href="{{ routes.all_products_collection_url }}" class="button">
-    {{ 'general.continue_shopping' | t }}
-  </a>
+<div class="template-404">
+  <h1>Oops! Page Not Found</h1>
+  <p>We couldn't find the page you were looking for. But don't worry, your next adventure awaits!</p>
+  <a href="/" class="button">Return to Home</a>
+  <div class="suggestions">
+    <h2>Explore Popular Destinations:</h2>
+    <ul>
+      <li><a href="/search?q={{ settings.destination_1 }}">{{ settings.destination_1 }}</a></li>
+      <li><a href="/search?q={{ settings.destination_2 }}">{{ settings.destination_2 }}</a></li>
+      <li><a href="/search?q={{ settings.destination_3 }}">{{ settings.destination_3 }}</a></li>
+      <li><a href="/search?q={{ settings.destination_4 }}">{{ settings.destination_4 }}</a></li>
+      <li><a href="/search?q={{ settings.destination_5 }}">{{ settings.destination_5 }}</a></li>
+      {% for block in section.blocks %}
+        <li><a href="{{ block.settings.destination_url }}">{{ block.settings.destination_name }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
 </div>
+
+{% schema %}
+{
+  "name": "404 Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Popular Destinations"
+    },
+    {
+      "type": "text",
+      "id": "destination_1",
+      "label": "Destination 1",
+      "default": "Paris"
+    },
+    {
+      "type": "text",
+      "id": "destination_2",
+      "label": "Destination 2",
+      "default": "Tokyo"
+    },
+    {
+      "type": "text",
+      "id": "destination_3",
+      "label": "Destination 3",
+      "default": "New York"
+    },
+    {
+      "type": "text",
+      "id": "destination_4",
+      "label": "Destination 4",
+      "default": "Bali"
+    },
+    {
+      "type": "text",
+      "id": "destination_5",
+      "label": "Destination 5",
+      "default": "London"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "destination",
+      "name": "Destination",
+      "settings": [
+        {
+          "type": "text",
+          "id": "destination_name",
+          "label": "Destination Name",
+          "default": "Rome"
+        },
+        {
+          "type": "url",
+          "id": "destination_url",
+          "label": "Destination URL",
+          "default": "/search?q=Rome"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "404 Page",
+      "category": "Pages"
+    }
+  ]
+}
+{% endschema %}
