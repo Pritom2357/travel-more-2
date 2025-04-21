@@ -110,7 +110,12 @@
       {% if search.results_count > 0 %}
         <div class="row search-results-grid">
           {% for item in search.results %}
-            <div class="col-12 col-md-6 col-lg-4 mb-4 search-result-item" data-price="{{ item.price | times: 0.01 }}" data-type="{{ item.object_type }}">
+            <div class="col-12 col-md-6 col-lg-4 mb-4 search-result-item" 
+                 data-price="{{ item.price | times: 0.01 }}" 
+                 data-type="{{ item.object_type }}"
+                 {% if item.object_type == 'product' %}
+                   data-collections="{% for c in item.collections %}{{ c.handle }} {% endfor %}"
+                 {% endif %}>
               <div class="search-result-card h-100">
                 {% case item.object_type %}
                   {% when 'product' %}
@@ -1020,12 +1025,16 @@
       const urlParams = new URLSearchParams(window.location.search);
       const searchQuery = urlParams.get('q') || '';
       
-      let newUrl = '/search?q=' + encodeURIComponent(searchQuery);
+      let newUrl = '/search';
       
-      // Collection filter
+      // Collection filter - use collection-specific search URL
       if (categoryFilter && categoryFilter.value !== 'all') {
-        console.log("Adding collection filter:", categoryFilter.value); // Debug log
-        newUrl += '&collection=' + encodeURIComponent(categoryFilter.value);
+        newUrl = `/collections/${encodeURIComponent(categoryFilter.value)}/products`;
+        // Add search term as a constraint
+        newUrl += `?q=${encodeURIComponent(searchQuery)}`;
+      } else {
+        // Regular search
+        newUrl += `?q=${encodeURIComponent(searchQuery)}`;
       }
       
       // Price filter
@@ -1043,7 +1052,7 @@
         newUrl += '&sort_by=' + encodeURIComponent(sortBy.value);
       }
       
-      console.log("Navigating to:", newUrl); // Debug log
+      console.log("Navigating to:", newUrl);
       window.location.href = newUrl;
     }
     
@@ -1205,8 +1214,74 @@
     
     console.log("Filtering by collection:", collectionParam);
     
-    // Your filtering logic here, if needed for client-side filtering
-    // This depends on how you've structured your search results
+    let visibleCount = 0;
+    let productsInCollection = 0;
+    
+    // Filter products by collection
+    document.querySelectorAll('.search-result-item[data-type="product"]').forEach(item => {
+      // Skip items already hidden by price filter
+      if (item.style.display === 'none') return;
+      
+      const collectionsAttr = item.getAttribute('data-collections');
+      if (!collectionsAttr) {
+        // If no collections data, hide the item to be safe
+        item.style.display = 'none';
+        return;
+      }
+      
+      const collections = collectionsAttr.trim().split(' ');
+      console.log("Product collections:", collections, "Looking for:", collectionParam);
+      
+      if (collections.includes(collectionParam)) {
+        item.style.display = '';
+        visibleCount++;
+        productsInCollection++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+    
+    // Update result count
+    const resultCount = document.querySelector('.result-count');
+    if (resultCount) {
+      resultCount.textContent = `${visibleCount} results found`;
+    }
+    
+    // Show no results message if all products filtered out
+    if (visibleCount === 0 && productsInCollection === 0) {
+      const resultsGrid = document.querySelector('.search-results-grid');
+      const noCollectionResults = document.querySelector('.no-collection-results');
+      
+      if (resultsGrid && !noCollectionResults) {
+        const messageEl = document.createElement('div');
+        messageEl.className = 'no-collection-results col-12 text-center py-5';
+        
+        // Get the collection title
+        let collectionTitle = collectionParam;
+        document.querySelectorAll('#category-filter option').forEach(option => {
+          if (option.value === collectionParam) {
+            collectionTitle = option.textContent.trim();
+          }
+        });
+        
+        messageEl.innerHTML = `
+          <div class="alert alert-warning">
+            <i class="bi bi-exclamation-circle mb-3" style="font-size: 2rem;"></i>
+            <h4>No products found in "${collectionTitle}"</h4>
+            <p>We couldn't find any products matching your search in this collection.</p>
+            <button class="btn-reset-collection mt-3">Reset Collection Filter</button>
+          </div>
+        `;
+        
+        resultsGrid.prepend(messageEl);
+        
+        // Add event listener to the reset button
+        document.querySelector('.btn-reset-collection').addEventListener('click', function() {
+          params.delete('collection');
+          window.location.href = `/search?${params.toString()}`;
+        });
+      }
+    }
   }
 
   // Call this when page loads
