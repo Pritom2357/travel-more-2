@@ -1016,31 +1016,34 @@
     function applyFilters() {
       const urlParams = new URLSearchParams(window.location.search);
       const searchQuery = urlParams.get('q') || '';
-      
-      let newUrl = '/search';
-      
+
+      let newUrl = '/search'; // Stay on the search page
+
+      // Add the search query
+      newUrl += `?q=${encodeURIComponent(searchQuery)}`;
+
+      // Add the collection filter
       if (categoryFilter && categoryFilter.value !== 'all') {
-        newUrl = `/collections/${encodeURIComponent(categoryFilter.value)}/products`;
-        newUrl += `?q=${encodeURIComponent(searchQuery)}`;
-      } else {
-        newUrl += `?q=${encodeURIComponent(searchQuery)}`;
+        newUrl += `&collection=${encodeURIComponent(categoryFilter.value)}`;
       }
-      
+
+      // Add the price filter
       if (priceRange) {
         const max = parseInt(priceRange.max);
         const value = parseInt(priceRange.value);
-        
+
         if (value < max) {
-          newUrl += '&price_max=' + encodeURIComponent(value);
+          newUrl += `&price_max=${encodeURIComponent(value)}`;
         }
       }
-      
+
+      // Add the sort filter
       if (sortBy && sortBy.value !== 'relevance') {
-        newUrl += '&sort_by=' + encodeURIComponent(sortBy.value);
+        newUrl += `&sort_by=${encodeURIComponent(sortBy.value)}`;
       }
-      
+
       console.log("Navigating to:", newUrl);
-      window.location.href = newUrl;
+      window.location.href = newUrl; // Redirect to the updated search URL
     }
     
     initializePriceSlider();
