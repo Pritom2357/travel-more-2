@@ -66,6 +66,199 @@
       </div>
     </div>
   </div>
+  <div class="search-results-container">
+    <div class="container">
+      <div id="active-filters" class="active-filters" {% unless request.params.product_type or request.params.price_max or request.params.sort_by %}style="display:none"{% endunless %}>
+        <h5>Active Filters:</h5>
+        <div class="filter-tags">
+          {% if request.params.product_type %}
+            <span class="filter-tag" data-filter-type="product_type">
+              Category: {{ request.params.product_type | capitalize }}
+              <i class="bi bi-x-circle remove-filter" data-filter-type="product_type"></i>
+            </span>
+          {% endif %}
+          
+          {% if request.params.price_max %}
+            <span class="filter-tag" data-filter-type="price_max">
+              Price: Under ${{ request.params.price_max | times: 1 | money_without_currency }}
+              <i class="bi bi-x-circle remove-filter" data-filter-type="price_max"></i>
+            </span>
+          {% endif %}
+          
+          {% if request.params.sort_by and request.params.sort_by != 'relevance' %}
+            <span class="filter-tag" data-filter-type="sort_by">
+              Sorted by: 
+              {% case request.params.sort_by %}
+                {% when 'price-ascending' %}Low to High Price
+                {% when 'price-descending' %}High to Low Price
+                {% when 'created-descending' %}Newest First
+                {% when 'best-selling' %}Best Selling
+              {% endcase %}
+              <i class="bi bi-x-circle remove-filter" data-filter-type="sort_by"></i>
+            </span>
+          {% endif %}
+          
+          <button id="clear-all-filters" class="clear-all">Clear All</button>
+        </div>
+      </div>
+      
+      {% if search.results_count > 0 %}
+        <div class="row search-results-grid">
+          {% for item in search.results %}
+            <div class="col-12 col-md-6 col-lg-4 mb-4 search-result-item" data-price="{{ item.price | times: 0.01 }}" data-type="{{ item.object_type }}">
+              <div class="search-result-card h-100">
+                {% case item.object_type %}
+                  {% when 'product' %}
+                    <a href="{{ item.url }}" class="product-link">
+                      <div class="result-image">
+                        {% if item.featured_image %}
+                          <img src="{{ item.featured_image | img_url: '400x400', crop: 'center' }}" alt="{{ item.title }}">
+                        {% else %}
+                          <div class="placeholder-image">
+                            <i class="bi bi-image"></i>
+                          </div>
+                        {% endif %}
+                        <div class="hover-overlay">
+                          <div class="view-btn">View Details</div>
+                        </div>
+                      </div>
+                    </a>
+                    
+                    <div class="result-info">
+                      <h3 class="result-title">
+                        <a href="{{ item.url }}">{{ item.title }}</a>
+                      </h3>
+                      
+                      <div class="result-price product-price" data-price="{{ item.price | times: 0.01 }}">
+                        {% if item.compare_at_price > item.price %}
+                          <span class="sale-price">{{ item.price | money }}</span>
+                          <span class="compare-price">{{ item.compare_at_price | money }}</span>
+                        {% else %}
+                          <span>{{ item.price | money }}</span>
+                        {% endif %}
+                      </div>
+                      
+                      <div class="product-vendor">
+                        <span>{{ item.vendor }}</span>
+                      </div>
+                    </div>
+                    
+                  {% when 'article' %}
+                    <a href="{{ item.url }}" class="article-link">
+                      <div class="result-image">
+                        {% if item.image %}
+                          <img src="{{ item.image | img_url: '400x300', crop: 'center' }}" alt="{{ item.title }}">
+                        {% else %}
+                          <div class="placeholder-image">
+                            <i class="bi bi-newspaper"></i>
+                          </div>
+                        {% endif %}
+                        <div class="hover-overlay">
+                          <div class="view-btn">Read More</div>
+                        </div>
+                      </div>
+                    </a>
+                    
+                    <div class="result-info">
+                      <div class="article-meta">
+                        <span class="article-date">{{ item.published_at | date: '%B %d, %Y' }}</span>
+                        {% if item.tags.size > 0 %}
+                          <span class="article-tag">{{ item.tags.first }}</span>
+                        {% endif %}
+                      </div>
+                      
+                      <h3 class="result-title">
+                        <a href="{{ item.url }}">{{ item.title }}</a>
+                      </h3>
+                      
+                      <div class="result-excerpt">
+                        <p>{{ item.content | strip_html | truncatewords: 20 }}</p>
+                      </div>
+                    </div>
+                    
+                  {% when 'page' %}
+                    <a href="{{ item.url }}" class="page-link">
+                      <div class="result-image">
+                        <div class="placeholder-image page-image">
+                          <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="hover-overlay">
+                          <div class="view-btn">View Page</div>
+                        </div>
+                      </div>
+                    </a>
+                    
+                    <div class="result-info">
+                      <h3 class="result-title">
+                        <a href="{{ item.url }}">{{ item.title }}</a>
+                      </h3>
+                      
+                      <div class="result-excerpt">
+                        <p>{{ item.content | strip_html | truncatewords: 20 }}</p>
+                      </div>
+                    </div>
+                {% endcase %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        
+        {% if paginate.pages > 1 %}
+          <div class="pagination-container">
+            <ul class="pagination">
+              {% if paginate.previous %}
+                <li><a href="{{ paginate.previous.url }}" class="prev-page"><i class="bi bi-chevron-left"></i> Previous</a></li>
+              {% endif %}
+              
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <li><a href="{{ part.url }}">{{ part.title }}</a></li>
+                {% else %}
+                  <li><span class="current">{{ part.title }}</span></li>
+                {% endif %}
+              {% endfor %}
+              
+              {% if paginate.next %}
+                <li><a href="{{ paginate.next.url }}" class="next-page">Next <i class="bi bi-chevron-right"></i></a></li>
+              {% endif %}
+            </ul>
+          </div>
+        {% endif %}
+        
+        {% if search.results_count > 12 %}
+          <div class="text-center mt-4 mb-5">
+            <button id="load-more-results" class="btn-load-more">
+              <span>Load More</span>
+              <i class="bi bi-arrow-down-circle"></i>
+            </button>
+          </div>
+        {% endif %}
+        
+      {% else %}
+        <div class="no-results">
+          <div class="no-results-icon">
+            <i class="bi bi-search"></i>
+          </div>
+          <h2>No results found for "{{ search.terms }}"</h2>
+          <p>We couldn't find any matches for your search query. Please try different keywords or browse our products.</p>
+          
+          <div class="search-suggestions">
+            <h3>Suggestions:</h3>
+            <ul>
+              <li>Check your spelling</li>
+              <li>Try more general keywords</li>
+              <li>Try different keywords</li>
+            </ul>
+          </div>
+          
+          <div class="search-actions">
+            <a href="/collections/all" class="btn-secondary">Browse All Products</a>
+            <a href="/" class="btn-primary">Go to Homepage</a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
 </div>
 
 <style>
@@ -312,18 +505,467 @@
       max-width: none;
     }
   }
+
+  /* Search Results Container */
+  .search-results-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px 60px;
+  }
+
+  /* Active Filters */
+  .active-filters {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+  }
+
+  .active-filters h5 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .filter-tag {
+    background-color: #e9f2fc;
+    border: 1px solid #d1e4f8;
+    color: #449EED;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s ease;
+  }
+
+  .filter-tag .remove-filter {
+    margin-left: 8px;
+    cursor: pointer;
+    color: #449EED;
+    transition: all 0.2s ease;
+  }
+
+  .filter-tag .remove-filter:hover {
+    color: #cc0000;
+    transform: scale(1.1);
+  }
+
+  .filter-tag:hover {
+    background-color: #d1e4f8;
+  }
+
+  .clear-all {
+    background: none;
+    border: 1px solid #ccc;
+    color: #666;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .clear-all:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+    color: #333;
+  }
+
+  /* Search Result Cards */
+  .search-result-card {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .result-image {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+  }
+
+  .result-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .search-result-card:hover .result-image img {
+    transform: scale(1.05);
+  }
+
+  .placeholder-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    color: #aaa;
+  }
+
+  .placeholder-image i {
+    font-size: 3rem;
+  }
+
+  .placeholder-image.page-image {
+    background-color: #f0f5ff;
+    color: #449EED;
+  }
+
+  .hover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  .search-result-card:hover .hover-overlay {
+    opacity: 1;
+  }
+
+  .view-btn {
+    background-color: #fff;
+    color: #333;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+
+  .view-btn:hover {
+    background-color: #449EED;
+    color: #fff;
+    transform: scale(1.05);
+  }
+
+  .result-info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .result-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .result-title a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .result-title a:hover {
+    color: #449EED;
+  }
+
+  .result-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .sale-price {
+    color: #e4432d;
+    margin-right: 8px;
+  }
+
+  .compare-price {
+    text-decoration: line-through;
+    font-size: 0.9rem;
+    color: #999;
+    font-weight: 400;
+  }
+
+  .product-vendor {
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: auto;
+  }
+
+  /* Article-specific styles */
+  .article-meta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .article-date {
+    font-size: 0.85rem;
+    color: #888;
+  }
+
+  .article-tag {
+    background-color: #f0f5ff;
+    color: #449EED;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+  }
+
+  .result-excerpt {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+  }
+
+  .result-excerpt p {
+    margin: 0;
+  }
+
+  /* Pagination styles */
+  .pagination-container {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a, .pagination li span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 18px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .pagination li a {
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ddd;
+  }
+
+  .pagination li a:hover {
+    background-color: #e9ecef;
+    border-color: #ccc;
+  }
+
+  .pagination li span.current {
+    background-color: #449EED;
+    color: #fff;
+    border: 1px solid #449EED;
+  }
+
+  .prev-page, .next-page {
+    padding: 0 15px !important;
+  }
+
+  /* Load More button */
+  .btn-load-more {
+    background-color: #fff;
+    border: 2px solid #449EED;
+    color: #449EED;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-load-more:hover {
+    background-color: #449EED;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(68, 158, 237, 0.3);
+  }
+
+  .btn-load-more:active {
+    transform: translateY(0);
+  }
+
+  /* No Results styling */
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .no-results-icon {
+    font-size: 3rem;
+    color: #ccc;
+    margin-bottom: 20px;
+  }
+
+  .no-results h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+  .no-results p {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto 30px;
+  }
+
+  .search-suggestions {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto 30px;
+  }
+
+  .search-suggestions h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .search-suggestions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+  }
+
+  .search-suggestions li {
+    padding: 5px 0;
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .search-suggestions li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #449EED;
+  }
+
+  .search-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .btn-secondary, .btn-primary {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-secondary {
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ddd;
+  }
+
+  .btn-secondary:hover {
+    background-color: #e9ecef;
+    border-color: #ccc;
+  }
+
+  .btn-primary {
+    background-color: #449EED;
+    color: #fff;
+    border: 1px solid #449EED;
+  }
+
+  .btn-primary:hover {
+    background-color: #3080c5;
+    border-color: #3080c5;
+  }
+
+  /* Responsive styles for search results */
+  @media (max-width: 991px) {
+    .search-results-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .search-results-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .result-image {
+      height: 200px;
+    }
+    
+    .filter-tags {
+      gap: 8px;
+    }
+    
+    .filter-tag {
+      font-size: 0.85rem;
+    }
+    
+    .search-actions {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .btn-secondary, .btn-primary {
+      width: 100%;
+    }
+  }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Get DOM elements
     const priceRange = document.getElementById('price-range');
     const currentPriceDisplay = document.getElementById('current-price-display');
     const applyFiltersBtn = document.getElementById('apply-filters-btn');
     const categoryFilter = document.getElementById('category-filter');
     const sortBy = document.getElementById('sort-by');
     
-    // Initialize price slider from URL parameters if they exist
     function initializePriceSlider() {
       if (!priceRange || !currentPriceDisplay) return;
       
@@ -334,15 +976,12 @@
         priceRange.value = priceParam;
         currentPriceDisplay.textContent = '$' + parseInt(priceParam).toLocaleString();
       } else {
-        // Set to default max value
         currentPriceDisplay.textContent = '$' + parseInt(priceRange.value).toLocaleString();
       }
       
-      // Update the slider background
       updateSliderBackground();
     }
     
-    // Update price display when slider moves
     if (priceRange && currentPriceDisplay) {
       priceRange.addEventListener('input', function() {
         currentPriceDisplay.textContent = '$' + parseInt(this.value).toLocaleString();
@@ -350,7 +989,6 @@
       });
     }
     
-    // Update slider background based on value
     function updateSliderBackground() {
       if (!priceRange) return;
       
@@ -358,14 +996,11 @@
       const max = parseInt(priceRange.max) || 100000;
       const value = parseInt(priceRange.value) || max;
       
-      // Calculate percentage
       const percentage = ((value - min) / (max - min)) * 100;
       
-      // Update background gradient
       priceRange.style.background = `linear-gradient(to right, #449EED 0%, #449EED ${percentage}%, #ddd ${percentage}%, #ddd 100%)`;
     }
     
-    // Apply filters when button is clicked
     if (applyFiltersBtn) {
       applyFiltersBtn.addEventListener('click', function() {
         applyFilters();
@@ -374,49 +1009,180 @@
     
     // Apply filters function
     function applyFilters() {
-      // Get current search query
       const urlParams = new URLSearchParams(window.location.search);
       const searchQuery = urlParams.get('q') || '';
       
-      // Start new URL with search term
       let newUrl = '/search?q=' + encodeURIComponent(searchQuery);
       
-      // Add category filter if selected
       if (categoryFilter && categoryFilter.value !== 'all') {
         newUrl += '&product_type=' + encodeURIComponent(categoryFilter.value);
       }
       
-      // Add price filter if set below max
       if (priceRange) {
         const max = parseInt(priceRange.max);
         const value = parseInt(priceRange.value);
         
-        // Only add price filter if it's not at the maximum
         if (value < max) {
           newUrl += '&price_max=' + encodeURIComponent(value);
         }
       }
       
-      // Add sort option if set
       if (sortBy && sortBy.value !== 'relevance') {
         newUrl += '&sort_by=' + encodeURIComponent(sortBy.value);
       }
       
-      // Debug info
-      console.log('Applying filters:');
-      console.log('- Price slider value:', priceRange ? priceRange.value : 'not found');
-      console.log('- New URL:', newUrl);
-      
-      // Navigate to filtered URL
       window.location.href = newUrl;
     }
     
-    // Initialize on page load
     initializePriceSlider();
     
-    // Log elements for debugging
     console.log('Price range element:', priceRange);
     console.log('Current price display:', currentPriceDisplay);
     console.log('Apply filters button:', applyFiltersBtn);
+  });
+
+  // Add this to your existing script
+  document.addEventListener('DOMContentLoaded', function() {
+    // Handle filter removal
+    document.querySelectorAll('.remove-filter').forEach(button => {
+      button.addEventListener('click', function() {
+        const filterType = this.getAttribute('data-filter-type');
+        const params = new URLSearchParams(window.location.search);
+        
+        // Remove the specific filter
+        params.delete(filterType);
+        
+        // Navigate to updated URL
+        window.location.href = `/search?${params.toString()}`;
+      });
+    });
+    
+    // Clear all filters
+    const clearAllBtn = document.getElementById('clear-all-filters');
+    if (clearAllBtn) {
+      clearAllBtn.addEventListener('click', function() {
+        const params = new URLSearchParams(window.location.search);
+        const searchQuery = params.get('q') || '';
+        
+        // Preserve only the search term
+        window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
+      });
+    }
+    
+    // Load more functionality
+    const loadMoreBtn = document.getElementById('load-more-results');
+    if (loadMoreBtn) {
+      let currentPage = 1;
+      
+      loadMoreBtn.addEventListener('click', function() {
+        currentPage++;
+        this.innerHTML = '<span>Loading...</span><div class="loader"></div>';
+        this.disabled = true;
+        
+        const params = new URLSearchParams(window.location.search);
+        params.set('page', currentPage);
+        
+        // Fetch next page
+        fetch(`/search?${params.toString()}`)
+          .then(response => response.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newItems = doc.querySelectorAll('.search-result-item');
+            
+            if (newItems.length > 0) {
+              const resultsContainer = document.querySelector('.search-results-grid');
+              
+              newItems.forEach(item => {
+                resultsContainer.appendChild(item.cloneNode(true));
+              });
+              
+              // Check if there are more pages
+              const morePages = doc.querySelector('.pagination .next-page') !== null;
+              
+              if (!morePages) {
+                loadMoreBtn.style.display = 'none';
+              } else {
+                loadMoreBtn.innerHTML = '<span>Load More</span><i class="bi bi-arrow-down-circle"></i>';
+                loadMoreBtn.disabled = false;
+              }
+              
+              // Apply client-side price filtering to new results
+              applyClientSidePriceFilter();
+            } else {
+              loadMoreBtn.style.display = 'none';
+            }
+          })
+          .catch(error => {
+            console.error('Error loading more results:', error);
+            loadMoreBtn.innerHTML = '<span>Try Again</span><i class="bi bi-arrow-counterclockwise"></i>';
+            loadMoreBtn.disabled = false;
+          });
+      });
+    }
+  });
+
+  // Add to your existing script
+  function applyClientSidePriceFilter() {
+    const params = new URLSearchParams(window.location.search);
+    const maxPrice = params.get('price_max');
+    
+    if (!maxPrice) return;
+    
+    const maxPriceValue = parseInt(maxPrice);
+    let visibleCount = 0;
+    
+    document.querySelectorAll('.search-result-item[data-type="product"]').forEach(item => {
+      const priceEl = item.querySelector('.result-price');
+      if (!priceEl || !priceEl.dataset.price) return;
+      
+      const price = parseFloat(priceEl.dataset.price);
+      if (isNaN(price)) return;
+      
+      if (price > maxPriceValue) {
+        item.style.display = 'none';
+      } else {
+        item.style.display = '';
+        visibleCount++;
+      }
+    });
+    
+    // Update result count
+    const resultCount = document.querySelector('.result-count');
+    if (resultCount && visibleCount > 0) {
+      resultCount.textContent = `${visibleCount} results found`;
+    }
+    
+    // Show no results message if all products filtered out
+    if (visibleCount === 0) {
+      const resultsGrid = document.querySelector('.search-results-grid');
+      const noPriceResults = document.querySelector('.no-price-results');
+      
+      if (resultsGrid && !noPriceResults) {
+        const messageEl = document.createElement('div');
+        messageEl.className = 'no-price-results col-12 text-center py-5';
+        messageEl.innerHTML = `
+          <div class="alert alert-warning">
+            <i class="bi bi-exclamation-circle mb-3" style="font-size: 2rem;"></i>
+            <h4>No products match your price filter</h4>
+            <p>We couldn't find any products under $${maxPriceValue.toLocaleString()}.</p>
+            <button class="btn-reset-price mt-3">Reset Price Filter</button>
+          </div>
+        `;
+        
+        resultsGrid.prepend(messageEl);
+        
+        // Add event listener to the reset button
+        document.querySelector('.btn-reset-price').addEventListener('click', function() {
+          params.delete('price_max');
+          window.location.href = `/search?${params.toString()}`;
+        });
+      }
+    }
+  }
+
+  // Call this function when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(applyClientSidePriceFilter, 100);
   });
 </script>
