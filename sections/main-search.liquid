@@ -19,7 +19,7 @@
               <option value="all">All Categories</option>
               {% for collection in collections %}
                 {% if collection != '' %}
-                  <option value="{{ collection.handle }}" {% if request.params.collection == collection.handle %}selected{% endif %}>
+                  <option value="{{ collection.handle }}" {% if request.params.collection == collection.title %}selected% endif %}>
                     {{ collection.title }}
                   </option>
                 {% endif %}
