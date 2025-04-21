@@ -150,7 +150,7 @@
           "logo_size": 70,
           "menu": "main-menu",
           "menu_text_size": 23,
-          "menu_hover_effect": "glow",
+          "menu_hover_effect": "underline",
           "underline_thickness": 1,
           "glow_intensity": 14,
           "grow_scale": 1.2,
