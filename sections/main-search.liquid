@@ -68,13 +68,18 @@
   </div>
   <div class="search-results-container">
     <div class="container">
-      <div id="active-filters" class="active-filters" {% unless request.params.product_type or request.params.price_max or request.params.sort_by %}style="display:none"{% endunless %}>
+      <div id="active-filters" class="active-filters" {% unless request.params.collection or request.params.price_max or request.params.sort_by %}style="display:none"{% endunless %}>
         <h5>Active Filters:</h5>
         <div class="filter-tags">
-          {% if request.params.product_type %}
-            <span class="filter-tag" data-filter-type="product_type">
-              Category: {{ request.params.product_type | capitalize }}
-              <i class="bi bi-x-circle remove-filter" data-filter-type="product_type"></i>
+          {% if request.params.collection %}
+            <span class="filter-tag" data-filter-type="collection">
+              Category: 
+              {% for collection in collections %}
+                {% if collection.handle == request.params.collection %}
+                  {{ collection.title }}
+                {% endif %}
+              {% endfor %}
+              <i class="bi bi-x-circle remove-filter" data-filter-type="collection"></i>
             </span>
           {% endif %}
           
@@ -1017,10 +1022,13 @@
       
       let newUrl = '/search?q=' + encodeURIComponent(searchQuery);
       
+      // Collection filter
       if (categoryFilter && categoryFilter.value !== 'all') {
+        console.log("Adding collection filter:", categoryFilter.value); // Debug log
         newUrl += '&collection=' + encodeURIComponent(categoryFilter.value);
       }
       
+      // Price filter
       if (priceRange) {
         const max = parseInt(priceRange.max);
         const value = parseInt(priceRange.value);
@@ -1030,10 +1038,12 @@
         }
       }
       
+      // Sort options
       if (sortBy && sortBy.value !== 'relevance') {
         newUrl += '&sort_by=' + encodeURIComponent(sortBy.value);
       }
       
+      console.log("Navigating to:", newUrl); // Debug log
       window.location.href = newUrl;
     }
     
@@ -1051,6 +1061,8 @@
       button.addEventListener('click', function() {
         const filterType = this.getAttribute('data-filter-type');
         const params = new URLSearchParams(window.location.search);
+        
+        console.log("Removing filter:", filterType); // Debug log
         
         // Remove the specific filter
         params.delete(filterType);
@@ -1184,8 +1196,24 @@
     }
   }
 
-  // Call this function when page loads
+  // Add this function to filter by collection
+  function applyClientSideCollectionFilter() {
+    const params = new URLSearchParams(window.location.search);
+    const collectionParam = params.get('collection');
+    
+    if (!collectionParam || collectionParam === 'all') return;
+    
+    console.log("Filtering by collection:", collectionParam);
+    
+    // Your filtering logic here, if needed for client-side filtering
+    // This depends on how you've structured your search results
+  }
+
+  // Call this when page loads
   document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(applyClientSidePriceFilter, 100);
+    setTimeout(function() {
+      applyClientSidePriceFilter();
+      applyClientSideCollectionFilter();
+    }, 100);
   });
 </script>
