@@ -268,6 +268,29 @@
             <a href="/" class="btn-primary">Go to Homepage</a>
           </div>
         </div>
+        {% if search.results_count == 0 %}
+          <div class="no-results">
+            <div class="no-results-icon">
+              <i class="bi bi-search"></i>
+            </div>
+            <h2>No results found for "{{ search.terms }}"</h2>
+            <p>We couldn't find any tours matching your criteria.</p>
+            
+            <div class="search-suggestions">
+              <h3>Suggestions:</h3>
+              <ul>
+                <li>Check your spelling</li>
+                <li>Try more general keywords</li>
+                <li>Try different dates or group size</li>
+              </ul>
+            </div>
+            
+            <div class="search-actions mt-4">
+              <a href="/collections/all" class="btn-secondary">Browse All Tours</a>
+              <a href="/pages/custom-tour-request?{% if request.params.q %}destination={{ request.params.q | url_encode }}{% endif %}{% if request.params.date %}&date={{ request.params.date | url_encode }}{% endif %}{% if request.params.duration %}&duration={{ request.params.duration | url_encode }}{% endif %}{% if request.params.travelers %}&travelers={{ request.params.travelers | url_encode }}{% endif %}" class="btn-primary">Request Custom Tour</a>
+            </div>
+          </div>
+        {% endif %}
       {% endif %}
     </div>
   </div>

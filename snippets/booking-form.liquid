@@ -504,37 +504,29 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Search button click handler
     searchToursBtn.addEventListener('click', function() {
-        // Apply filters and check if we have matching results
-        const hasResults = filterResults();
+        // Create search parameters
+        const searchParams = new URLSearchParams();
         
-        if (hasResults) {
-            // Create search parameters
-            const searchParams = new URLSearchParams();
-            
-            // Add search term as 'q' parameter for search page
-            if (tourSearchInput.value) {
-                searchParams.append('q', tourSearchInput.value);
-            }
-            
-            // Add additional filter parameters
-            if (travelDate.value) {
-                searchParams.append('date', travelDate.value);
-            }
-            
-            if (stayDuration.value) {
-                searchParams.append('duration', stayDuration.value);
-            }
-            
-            if (personCount.value) {
-                searchParams.append('travelers', personCount.value);
-            }
-            
-            // Redirect to search page instead of collections
-            window.location.href = `/search?${searchParams.toString()}`;
-        } else {
-            // Show "not found" modal
-            notFoundModal.style.display = 'flex';
+        // Add search term as 'q' parameter for search page
+        if (tourSearchInput.value) {
+            searchParams.append('q', tourSearchInput.value);
         }
+        
+        // Add additional filter parameters
+        if (travelDate.value) {
+            searchParams.append('date', travelDate.value);
+        }
+        
+        if (stayDuration.value) {
+            searchParams.append('duration', stayDuration.value);
+        }
+        
+        if (personCount.value) {
+            searchParams.append('travelers', personCount.value);
+        }
+        
+        // Always redirect to search page - skip the modal
+        window.location.href = `/search?${searchParams.toString()}`;
     });
     
     // Modal close button handler
