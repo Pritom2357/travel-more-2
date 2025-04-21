@@ -35,8 +35,8 @@
           <label for="price-range">Price Range</label>
           <div class="price-slider-container">
             <div class="price-range">
-              <span id="price-min">${{ section.settings.min_price | default: 0 }}</span>
-              <span id="current-price-display">${{ section.settings.max_price | default: 100000 }}</span>
+              <span id="price-min">{{ shop.currency }}{{ section.settings.min_price | default: 0 }}</span>
+              <span id="current-price-display">{{ shop.currency }}{{ section.settings.max_price | default: 100000 }}</span>
             </div>
             <input type="range" id="price-range" min="{{ section.settings.min_price | default: 0 }}" max="{{ section.settings.max_price | default: 100000 }}" step="{{ section.settings.price_step | default: 1000 }}" value="{{ section.settings.max_price | default: 100000 }}">
           </div>
@@ -80,7 +80,7 @@
           
           {% if request.params.price_max %}
             <span class="filter-tag" data-filter-type="price_max">
-              Price: Under ${{ request.params.price_max | times: 1 | money_without_currency }}
+              Price: Under {{ shop.currency }}{{ request.params.price_max | times: 1 | money_without_currency }}
               <i class="bi bi-x-circle remove-filter" data-filter-type="price_max"></i>
             </span>
           {% endif %}
