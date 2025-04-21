@@ -72,82 +72,11 @@
   <div class="suggestions">
     <h2>Explore Popular Destinations:</h2>
     <ul>
-      <li><a href="/search?q={{ settings.destination_1 }}">{{ settings.destination_1 }}</a></li>
-      <li><a href="/search?q={{ settings.destination_2 }}">{{ settings.destination_2 }}</a></li>
-      <li><a href="/search?q={{ settings.destination_3 }}">{{ settings.destination_3 }}</a></li>
-      <li><a href="/search?q={{ settings.destination_4 }}">{{ settings.destination_4 }}</a></li>
-      <li><a href="/search?q={{ settings.destination_5 }}">{{ settings.destination_5 }}</a></li>
-      {% for block in section.blocks %}
-        <li><a href="{{ block.settings.destination_url }}">{{ block.settings.destination_name }}</a></li>
-      {% endfor %}
+      <li><a href="/search?q=Paris">Paris</a></li>
+      <li><a href="/search?q=Tokyo">Tokyo</a></li>
+      <li><a href="/search?q=New York">New York</a></li>
+      <li><a href="/search?q=Bali">Bali</a></li>
+      <li><a href="/search?q=London">London</a></li>
     </ul>
   </div>
 </div>
-
-{% schema %}
-{
-  "name": "404 Page",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Popular Destinations"
-    },
-    {
-      "type": "text",
-      "id": "destination_1",
-      "label": "Destination 1",
-      "default": "Paris"
-    },
-    {
-      "type": "text",
-      "id": "destination_2",
-      "label": "Destination 2",
-      "default": "Tokyo"
-    },
-    {
-      "type": "text",
-      "id": "destination_3",
-      "label": "Destination 3",
-      "default": "New York"
-    },
-    {
-      "type": "text",
-      "id": "destination_4",
-      "label": "Destination 4",
-      "default": "Bali"
-    },
-    {
-      "type": "text",
-      "id": "destination_5",
-      "label": "Destination 5",
-      "default": "London"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "destination",
-      "name": "Destination",
-      "settings": [
-        {
-          "type": "text",
-          "id": "destination_name",
-          "label": "Destination Name",
-          "default": "Rome"
-        },
-        {
-          "type": "url",
-          "id": "destination_url",
-          "label": "Destination URL",
-          "default": "/search?q=Rome"
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "404 Page",
-      "category": "Pages"
-    }
-  ]
-}
-{% endschema %}
