@@ -11,7 +11,6 @@
   "sections": {
     "floating_countdown_modal_PENWXw": {
       "type": "floating-countdown-modal",
-      "name": "Floating Countdown Modal",
       "settings": {
         "bg_color": "#ff6b6b",
         "overlay_opacity": 0.7,
@@ -40,55 +39,6 @@
     },
     "custom_hero_VL6Rmr": {
       "type": "custom-hero",
-      "blocks": {
-        "destination_block_MF3rtH": {
-          "type": "destination_block",
-          "settings": {
-            "destination_title": "Australlia",
-            "destination_description": "Lorem ipsum...",
-            "unit_price": 20000
-          }
-        },
-        "destination_block_xdCeMQ": {
-          "type": "destination_block",
-          "settings": {
-            "destination_title": "Maldives",
-            "destination_description": "Lorem ipsum...",
-            "unit_price": 2000
-          }
-        },
-        "destination_block_iUNqXE": {
-          "type": "destination_block",
-          "settings": {
-            "destination_title": "bangladesh",
-            "destination_description": "Lorem ipsum...",
-            "unit_price": 200
-          }
-        },
-        "destination_block_hdKfi8": {
-          "type": "destination_block",
-          "settings": {
-            "destination_title": "Japan",
-            "destination_description": "Lorem ipsum...",
-            "unit_price": 200
-          }
-        },
-        "destination_block_6bhj7K": {
-          "type": "destination_block",
-          "settings": {
-            "destination_title": "Korea",
-            "destination_description": "Lorem ipsum...",
-            "unit_price": 200
-          }
-        }
-      },
-      "block_order": [
-        "destination_block_MF3rtH",
-        "destination_block_xdCeMQ",
-        "destination_block_iUNqXE",
-        "destination_block_hdKfi8",
-        "destination_block_6bhj7K"
-      ],
       "settings": {
         "is_header": true,
         "bg_header": "#449eed",
@@ -128,7 +78,7 @@
         "btn2_url": "/",
         "if_form": true,
         "form_bg_color": "#74c6c8",
-        "form_bg_opacity": 0.3,
+        "form_bg_opacity": 0.6,
         "form_text_color": "#e2fafa",
         "form_title": "Book Perfect Tour",
         "input1": "Destination",
@@ -337,7 +287,6 @@
         "slide_Vg3aQM",
         "slide_bNiPf4"
       ],
-      "name": "Carousel Banner",
       "settings": {
         "banner_height": 400,
         "mobile_banner_height": 300,
