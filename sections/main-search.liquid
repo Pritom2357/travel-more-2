@@ -966,6 +966,9 @@
     const categoryFilter = document.getElementById('category-filter');
     const sortBy = document.getElementById('sort-by');
     
+    // Store currency symbol in a JavaScript variable
+    const currencySymbol = {{ shop.currency | json }}; // This properly escapes the currency symbol
+    
     function initializePriceSlider() {
       if (!priceRange || !currentPriceDisplay) return;
       
@@ -974,9 +977,9 @@
       
       if (priceParam) {
         priceRange.value = priceParam;
-        currentPriceDisplay.textContent = "{{ shop.currency }}" + parseInt(priceParam).toLocaleString();
+        currentPriceDisplay.textContent = currencySymbol + parseInt(priceParam).toLocaleString();
       } else {
-        currentPriceDisplay.textContent = "{{ shop.currency }}" + parseInt(priceRange.value).toLocaleString();
+        currentPriceDisplay.textContent = currencySymbol + parseInt(priceRange.value).toLocaleString();
       }
       
       updateSliderBackground();
@@ -984,7 +987,7 @@
     
     if (priceRange && currentPriceDisplay) {
       priceRange.addEventListener('input', function() {
-        currentPriceDisplay.textContent = "{{ shop.currency }}" + parseInt(this.value).toLocaleString();
+        currentPriceDisplay.textContent = currencySymbol + parseInt(this.value).toLocaleString();
         updateSliderBackground();
       });
     }
