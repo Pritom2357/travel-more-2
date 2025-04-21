@@ -974,9 +974,9 @@
       
       if (priceParam) {
         priceRange.value = priceParam;
-        currentPriceDisplay.textContent = {{ shop.currency }} + parseInt(priceParam).toLocaleString();
+        currentPriceDisplay.textContent = "{{ shop.currency }}" + parseInt(priceParam).toLocaleString();
       } else {
-        currentPriceDisplay.textContent = {{ shop.currency }} + parseInt(priceRange.value).toLocaleString();
+        currentPriceDisplay.textContent = "{{ shop.currency }}" + parseInt(priceRange.value).toLocaleString();
       }
       
       updateSliderBackground();
@@ -984,7 +984,7 @@
     
     if (priceRange && currentPriceDisplay) {
       priceRange.addEventListener('input', function() {
-        currentPriceDisplay.textContent = {{ shop.currency }} + parseInt(this.value).toLocaleString();
+        currentPriceDisplay.textContent = "{{ shop.currency }}" + parseInt(this.value).toLocaleString();
         updateSliderBackground();
       });
     }
