@@ -34,7 +34,6 @@
                 <i class="bi bi-search"></i> Search for tours
             </button>
             
-            <!-- Search Results Summary (initially hidden) -->
             <div id="searchSummary" class="search-summary" style="display: none;">
                 <div class="result-count">
                     <span id="resultCount">0</span> tours match your criteria
@@ -44,7 +43,6 @@
     </div>
 </div>
 
-<!-- Tour Not Found Modal -->
 <div class="custom-modal" id="notFoundModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -62,7 +60,6 @@
 </div>
 
 <style>
-/* Form Container Styles */
 .form-container {
     width: 100%;
     border-radius: 8px;
@@ -81,7 +78,6 @@
     text-align: center;
 }
 
-/* Form Elements */
 .input-div label {
     display: block;
     margin-bottom: 8px;
@@ -118,7 +114,6 @@
     background-color: white;
 }
 
-/* Suggestion Bar */
 .suggestion-bar {
     max-height: 200px;
     overflow-y: auto;
@@ -126,7 +121,7 @@
     border-radius: 4px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
-    display: none; /* Initially hidden */
+    display: none; 
 }
 
 .suggestion-item {
@@ -157,7 +152,6 @@
     justify-content: space-between;
 }
 
-/* Travel Details Row */
 .travel-details-row {
     margin-bottom: 15px;
     gap: 10px;
@@ -187,12 +181,10 @@ input.date-input:focus, input.number-input:focus {
     background-color: white;
 }
 
-/* Person Count */
 .person-count {
     margin-bottom: 20px;
 }
 
-/* Search Button */
 .search-button {
     width: 100%;
     padding: 12px;
@@ -210,7 +202,6 @@ input.date-input:focus, input.number-input:focus {
     background-color: #357ABD;
 }
 
-/* Search Summary */
 .search-summary {
     margin-top: 15px;
     padding: 10px;
@@ -228,7 +219,6 @@ input.date-input:focus, input.number-input:focus {
     color: #449EED;
 }
 
-/* Modal Styles */
 .custom-modal {
     display: none;
     position: fixed;
@@ -327,7 +317,6 @@ input.date-input:focus, input.number-input:focus {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // DOM Elements
     const tourSearchInput = document.getElementById('tourSearchInput');
     const suggestionContainer = document.getElementById('suggestionContainer');
     const travelDate = document.getElementById('travelDate');
@@ -341,21 +330,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const viewSimilarBtn = document.getElementById('viewSimilarBtn');
     const requestCustomBtn = document.getElementById('requestCustomBtn');
     
-    // Set today as default date
     travelDate.valueAsDate = new Date();
     
-    // Store all products (will be populated via Ajax)
     let allProducts = [];
     let filteredProducts = [];
     
-    // Fetch products from Shopify
     function fetchProducts() {
-        // In a real implementation, we'd fetch products with their metafields
-        // For demo purposes, I'm creating a sample product database
         
-        // Simulation of Ajax request
         setTimeout(() => {
-            // Sample product data (in a real implementation, this would come from the server)
             allProducts = [
                 {
                     id: 1,
@@ -416,7 +398,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // In a real implementation, we would use AJAX to fetch products with metafields
             // Something like this:
-            /*
             fetch('/collections/all/products.json?limit=50')
               .then(response => response.json())
               .then(data => {
@@ -432,11 +413,9 @@ document.addEventListener('DOMContentLoaded', function() {
                   };
                 });
               });
-            */
         }, 300);
     }
     
-    // Tour search input handler
     tourSearchInput.addEventListener('input', function() {
         const searchTerm = this.value.trim().toLowerCase();
         
@@ -445,7 +424,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Filter products by destination matching search term
         const matchingProducts = allProducts.filter(product => {
             return product.destination.toLowerCase().includes(searchTerm) || 
                    product.title.toLowerCase().includes(searchTerm);
@@ -464,9 +442,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Render destination suggestions
     function renderSuggestions(products) {
-        // Limit to top 5 suggestions
         const topSuggestions = products.slice(0, 5);
         
         suggestionContainer.innerHTML = topSuggestions.map(product => `
@@ -479,20 +455,16 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `).join('');
         
-        // Add click handlers to suggestions
         document.querySelectorAll('.suggestion-item').forEach(item => {
             if (!item.classList.contains('no-results')) {
                 item.addEventListener('click', function() {
                     const productId = this.dataset.productId;
                     const destination = this.dataset.destination;
                     
-                    // Update search input with selected destination
                     tourSearchInput.value = destination;
                     
-                    // Hide suggestions
                     suggestionContainer.style.display = 'none';
                     
-                    // Pre-filter results
                     filterResults();
                 });
             }
@@ -501,14 +473,12 @@ document.addEventListener('DOMContentLoaded', function() {
         suggestionContainer.style.display = 'block';
     }
     
-    // Hide suggestions when clicking outside
     document.addEventListener('click', function(e) {
         if (!tourSearchInput.contains(e.target) && !suggestionContainer.contains(e.target)) {
             suggestionContainer.style.display = 'none';
         }
     });
     
-    // Filter results based on all inputs
     function filterResults() {
         const searchTerm = tourSearchInput.value.trim().toLowerCase();
         const duration = parseInt(stayDuration.value);
@@ -518,7 +488,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Filter products by metafields
         filteredProducts = allProducts.filter(product => {
             const matchesDestination = product.destination.toLowerCase().includes(searchTerm) || 
                                        product.title.toLowerCase().includes(searchTerm);
@@ -528,17 +497,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return matchesDestination && matchesDuration && matchesTravelers;
         });
         
-        // Update the result count
         resultCount.textContent = filteredProducts.length;
         searchSummary.style.display = 'block';
     }
     
-    // Search button click handler
     searchToursBtn.addEventListener('click', function() {
         filterResults();
         
         if (filteredProducts.length > 0) {
-            // If we have matches, redirect to search results page
             const searchParams = new URLSearchParams();
             searchParams.append('q', tourSearchInput.value);
             searchParams.append('duration', stayDuration.value);
@@ -546,28 +512,22 @@ document.addEventListener('DOMContentLoaded', function() {
             
             window.location.href = `/collections/all?${searchParams.toString()}`;
         } else {
-            // If no matches, show the modal
             notFoundModal.style.display = 'flex';
         }
     });
     
-    // Modal close button
     closeModal.addEventListener('click', function() {
         notFoundModal.style.display = 'none';
     });
     
-    // View similar tours button
     viewSimilarBtn.addEventListener('click', function() {
-        // Redirect to collection page with looser search criteria
         const searchParams = new URLSearchParams();
         searchParams.append('q', tourSearchInput.value);
         
         window.location.href = `/collections/all?${searchParams.toString()}`;
     });
     
-    // Request custom tour button
     requestCustomBtn.addEventListener('click', function() {
-        // Redirect to contact page with prefilled information
         const searchParams = new URLSearchParams();
         searchParams.append('destination', tourSearchInput.value);
         searchParams.append('date', travelDate.value);
@@ -577,14 +537,12 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = `/pages/custom-tour-request?${searchParams.toString()}`;
     });
     
-    // Click outside modal to close
     window.addEventListener('click', function(event) {
         if (event.target === notFoundModal) {
             notFoundModal.style.display = 'none';
         }
     });
     
-    // Initialize by fetching products
     fetchProducts();
 });
 </script>

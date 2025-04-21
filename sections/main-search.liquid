@@ -373,7 +373,6 @@
     letter-spacing: 0.5px;
   }
 
-  /* Styled Select Dropdown */
   .select-wrapper {
     position: relative;
     width: 100%;
@@ -411,7 +410,6 @@
     color: #666;
   }
 
-  /* Price Slider Styling */
   .price-slider-container {
     position: relative;
     padding: 5px 0;
@@ -503,7 +501,6 @@
     font-size: 0.9rem;
   }
 
-  /* Responsive Adjustments */
   @media (max-width: 768px) {
     .filter-container {
       flex-direction: column;
@@ -516,14 +513,12 @@
     }
   }
 
-  /* Search Results Container */
   .search-results-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 15px 60px;
   }
 
-  /* Active Filters */
   .active-filters {
     background-color: #f8f9fa;
     padding: 15px;
@@ -590,7 +585,6 @@
     color: #333;
   }
 
-  /* Search Result Cards */
   .search-result-card {
     background-color: #fff;
     border-radius: 8px;
@@ -726,7 +720,6 @@
     margin-top: auto;
   }
 
-  /* Article-specific styles */
   .article-meta {
     display: flex;
     align-items: center;
@@ -758,7 +751,6 @@
     margin: 0;
   }
 
-  /* Pagination styles */
   .pagination-container {
     margin-top: 40px;
     display: flex;
@@ -811,7 +803,6 @@
     padding: 0 15px !important;
   }
 
-  /* Load More button */
   .btn-load-more {
     background-color: #fff;
     border: 2px solid #449EED;
@@ -838,7 +829,6 @@
     transform: translateY(0);
   }
 
-  /* No Results styling */
   .no-results {
     text-align: center;
     padding: 60px 20px;
@@ -976,8 +966,7 @@
     const categoryFilter = document.getElementById('category-filter');
     const sortBy = document.getElementById('sort-by');
     
-    // Store currency symbol in a JavaScript variable
-    const currencySymbol = {{ shop.currency | json }}; // This properly escapes the currency symbol
+    const currencySymbol = {{ shop.currency | json }};
     
     function initializePriceSlider() {
       if (!priceRange || !currentPriceDisplay) return;
@@ -1020,24 +1009,19 @@
       });
     }
     
-    // Apply filters function
     function applyFilters() {
       const urlParams = new URLSearchParams(window.location.search);
       const searchQuery = urlParams.get('q') || '';
       
       let newUrl = '/search';
       
-      // Collection filter - use collection-specific search URL
       if (categoryFilter && categoryFilter.value !== 'all') {
         newUrl = `/collections/${encodeURIComponent(categoryFilter.value)}/products`;
-        // Add search term as a constraint
         newUrl += `?q=${encodeURIComponent(searchQuery)}`;
       } else {
-        // Regular search
         newUrl += `?q=${encodeURIComponent(searchQuery)}`;
       }
       
-      // Price filter
       if (priceRange) {
         const max = parseInt(priceRange.max);
         const value = parseInt(priceRange.value);
@@ -1047,7 +1031,6 @@
         }
       }
       
-      // Sort options
       if (sortBy && sortBy.value !== 'relevance') {
         newUrl += '&sort_by=' + encodeURIComponent(sortBy.value);
       }
@@ -1063,37 +1046,30 @@
     console.log('Apply filters button:', applyFiltersBtn);
   });
 
-  // Add this to your existing script
   document.addEventListener('DOMContentLoaded', function() {
-    // Handle filter removal
     document.querySelectorAll('.remove-filter').forEach(button => {
       button.addEventListener('click', function() {
         const filterType = this.getAttribute('data-filter-type');
         const params = new URLSearchParams(window.location.search);
         
-        console.log("Removing filter:", filterType); // Debug log
+        console.log("Removing filter:", filterType); 
         
-        // Remove the specific filter
         params.delete(filterType);
         
-        // Navigate to updated URL
         window.location.href = `/search?${params.toString()}`;
       });
     });
     
-    // Clear all filters
     const clearAllBtn = document.getElementById('clear-all-filters');
     if (clearAllBtn) {
       clearAllBtn.addEventListener('click', function() {
         const params = new URLSearchParams(window.location.search);
         const searchQuery = params.get('q') || '';
         
-        // Preserve only the search term
         window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
       });
     }
     
-    // Load more functionality
     const loadMoreBtn = document.getElementById('load-more-results');
     if (loadMoreBtn) {
       let currentPage = 1;
@@ -1106,7 +1082,6 @@
         const params = new URLSearchParams(window.location.search);
         params.set('page', currentPage);
         
-        // Fetch next page
         fetch(`/search?${params.toString()}`)
           .then(response => response.text())
           .then(html => {
@@ -1121,7 +1096,6 @@
                 resultsContainer.appendChild(item.cloneNode(true));
               });
               
-              // Check if there are more pages
               const morePages = doc.querySelector('.pagination .next-page') !== null;
               
               if (!morePages) {
@@ -1131,7 +1105,6 @@
                 loadMoreBtn.disabled = false;
               }
               
-              // Apply client-side price filtering to new results
               applyClientSidePriceFilter();
             } else {
               loadMoreBtn.style.display = 'none';
@@ -1146,7 +1119,6 @@
     }
   });
 
-  // Add to your existing script
   function applyClientSidePriceFilter() {
     const params = new URLSearchParams(window.location.search);
     const maxPrice = params.get('price_max');
@@ -1171,13 +1143,11 @@
       }
     });
     
-    // Update result count
     const resultCount = document.querySelector('.result-count');
     if (resultCount && visibleCount > 0) {
       resultCount.textContent = `${visibleCount} results found`;
     }
     
-    // Show no results message if all products filtered out
     if (visibleCount === 0) {
       const resultsGrid = document.querySelector('.search-results-grid');
       const noPriceResults = document.querySelector('.no-price-results');
@@ -1196,7 +1166,6 @@
         
         resultsGrid.prepend(messageEl);
         
-        // Add event listener to the reset button
         document.querySelector('.btn-reset-price').addEventListener('click', function() {
           params.delete('price_max');
           window.location.href = `/search?${params.toString()}`;
@@ -1205,7 +1174,6 @@
     }
   }
 
-  // Add this function to filter by collection
   function applyClientSideCollectionFilter() {
     const params = new URLSearchParams(window.location.search);
     const collectionParam = params.get('collection');
@@ -1217,14 +1185,11 @@
     let visibleCount = 0;
     let productsInCollection = 0;
     
-    // Filter products by collection
     document.querySelectorAll('.search-result-item[data-type="product"]').forEach(item => {
-      // Skip items already hidden by price filter
       if (item.style.display === 'none') return;
       
       const collectionsAttr = item.getAttribute('data-collections');
       if (!collectionsAttr) {
-        // If no collections data, hide the item to be safe
         item.style.display = 'none';
         return;
       }
@@ -1241,13 +1206,11 @@
       }
     });
     
-    // Update result count
     const resultCount = document.querySelector('.result-count');
     if (resultCount) {
       resultCount.textContent = `${visibleCount} results found`;
     }
     
-    // Show no results message if all products filtered out
     if (visibleCount === 0 && productsInCollection === 0) {
       const resultsGrid = document.querySelector('.search-results-grid');
       const noCollectionResults = document.querySelector('.no-collection-results');
@@ -1256,7 +1219,6 @@
         const messageEl = document.createElement('div');
         messageEl.className = 'no-collection-results col-12 text-center py-5';
         
-        // Get the collection title
         let collectionTitle = collectionParam;
         document.querySelectorAll('#category-filter option').forEach(option => {
           if (option.value === collectionParam) {
@@ -1275,7 +1237,6 @@
         
         resultsGrid.prepend(messageEl);
         
-        // Add event listener to the reset button
         document.querySelector('.btn-reset-collection').addEventListener('click', function() {
           params.delete('collection');
           window.location.href = `/search?${params.toString()}`;
@@ -1284,7 +1245,6 @@
     }
   }
 
-  // Call this when page loads
   document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
       applyClientSidePriceFilter();
