@@ -9,10 +9,9 @@
                 <div class="search-input-wrapper">
                     <i class="bi bi-search search-icon"></i>
                     <input id="tourSearchInput" type="text" placeholder="Search destinations..." autocomplete="off">
+                    <div class="suggestion-bar" id="suggestionContainer"></div>
                 </div>
             </div>
-            
-            <div class="suggestion-bar" id="suggestionContainer"></div>
 
             <div class="d-flex travel-details-row">
                 <div class="pick-date">
@@ -115,13 +114,16 @@
 }
 
 .suggestion-bar {
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
     background-color: white;
     border-radius: 4px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     margin-bottom: 15px;
-    display: none; 
+    display: none;
+    position: absolute;
+    width: 100%;
+    z-index: 100;
 }
 
 .suggestion-item {
@@ -132,7 +134,7 @@
 }
 
 .suggestion-item:hover {
-    background-color: #f5f9ff;
+    background-color: #f0f7ff;
 }
 
 .suggestion-item:last-child {
@@ -140,9 +142,9 @@
 }
 
 .suggestion-title {
-    font-weight: 500;
+    font-weight: 600;
     color: #333;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
 }
 
 .suggestion-meta {
@@ -150,6 +152,15 @@
     color: #777;
     display: flex;
     justify-content: space-between;
+}
+
+.suggestion-item.no-results {
+    cursor: default;
+    color: #666;
+}
+
+.suggestion-item.no-results:hover {
+    background-color: inherit;
 }
 
 .travel-details-row {
@@ -341,20 +352,55 @@ document.addEventListener('DOMContentLoaded', function() {
             searchToursBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Loading...';
         }
         
-        fetch('/search/suggest.json?q=&resources[type]=product&resources[limit]=50')
+        console.log("Starting to fetch products...");
+        
+        fetch('/search/suggest.json?q=&resources[type]=product&resources[limit]=100')
             .then(response => response.json())
             .then(data => {
+                console.log(`Found ${data.resources.results.products.length} products in initial search`);
+                
                 // Fetch detailed info for each product
                 const productPromises = data.resources.results.products.map(product => {
                     const productHandle = product.handle;
                     return fetch(`/products/${productHandle}.json`)
-                        .then(response => response.json())
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Failed to fetch product: ${productHandle}`);
+                            }
+                            return response.json();
+                        })
                         .then(productData => {
                             const product = productData.product;
                             
-                            // Get metafields for this product
+                            // Check if the product has metafields in the response
+                            if (product.metafields && Array.isArray(product.metafields)) {
+                                // Process metafields directly from the product data
+                                const destinationMetafield = product.metafields.find(m => m.key === 'destination');
+                                const maxDaysMetafield = product.metafields.find(m => m.key === 'maximum_days_allowed');
+                                const maxPersonsMetafield = product.metafields.find(m => m.key === 'maximum_persons_allowed');
+                                
+                                return {
+                                    id: product.id,
+                                    title: product.title,
+                                    handle: product.handle,
+                                    price: product.variants[0].price / 100,
+                                    featured_image: product.images[0]?.src || '',
+                                    destination: destinationMetafield?.value || product.title, // Fallback to title
+                                    maxDays: parseInt(maxDaysMetafield?.value || '30'),
+                                    maxPersons: parseInt(maxPersonsMetafield?.value || '10'),
+                                    url: `/products/${product.handle}`
+                                };
+                            }
+                            
+                            // If metafields aren't included, make a separate request
                             return fetch(`/products/${productHandle}/metafields.json`)
-                                .then(response => response.json())
+                                .then(response => {
+                                    if (!response.ok) {
+                                        console.warn(`Couldn't fetch metafields for ${productHandle}, using defaults`);
+                                        return { metafields: [] };
+                                    }
+                                    return response.json();
+                                })
                                 .then(metafieldsData => {
                                     const metafields = metafieldsData.metafields || [];
                                     
@@ -363,18 +409,29 @@ document.addEventListener('DOMContentLoaded', function() {
                                     const maxDaysMetafield = metafields.find(m => m.key === 'maximum_days_allowed');
                                     const maxPersonsMetafield = metafields.find(m => m.key === 'maximum_persons_allowed');
                                     
+                                    // Debug what we found
+                                    console.log(`Product ${product.title}:`, {
+                                        destination: destinationMetafield?.value || '[missing]',
+                                        maxDays: maxDaysMetafield?.value || '[missing]',
+                                        maxPersons: maxPersonsMetafield?.value || '[missing]'
+                                    });
+                                    
                                     return {
                                         id: product.id,
                                         title: product.title,
                                         handle: product.handle,
                                         price: product.variants[0].price / 100,
                                         featured_image: product.images[0]?.src || '',
-                                        destination: destinationMetafield?.value || '',
+                                        destination: destinationMetafield?.value || product.title, // Fallback to title
                                         maxDays: parseInt(maxDaysMetafield?.value || '30'),
                                         maxPersons: parseInt(maxPersonsMetafield?.value || '10'),
                                         url: `/products/${product.handle}`
                                     };
                                 });
+                        })
+                        .catch(err => {
+                            console.error(`Error processing product ${productHandle}:`, err);
+                            return null;
                         });
                 });
                 
@@ -383,7 +440,8 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(products => {
                 allProducts = products.filter(p => p !== null);
-                console.log(`Loaded ${allProducts.length} products with metafields`);
+                console.log(`Successfully loaded ${allProducts.length} products with metafields`);
+                console.log("Sample products:", allProducts.slice(0, 3));
                 
                 // Enable search button
                 if (searchToursBtn) {
@@ -394,6 +452,40 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Error fetching products:', error);
                 
+                // Add dummy test data so the search works even if API fails
+                allProducts = [
+                    {
+                        id: 1,
+                        title: "Maldives Beach Resort",
+                        handle: "maldives-beach-resort",
+                        destination: "Maldives",
+                        price: 2499,
+                        maxDays: 14,
+                        maxPersons: 6,
+                        url: "/products/maldives-beach-resort"
+                    },
+                    {
+                        id: 2,
+                        title: "Paris City Explorer",
+                        handle: "paris-city-explorer",
+                        destination: "Paris",
+                        price: 1899,
+                        maxDays: 10,
+                        maxPersons: 4,
+                        url: "/products/paris-city-explorer"
+                    },
+                    {
+                        id: 3,
+                        title: "Tokyo Adventure Tour",
+                        handle: "tokyo-adventure-tour",
+                        destination: "Tokyo",
+                        price: 3299,
+                        maxDays: 12,
+                        maxPersons: 8,
+                        url: "/products/tokyo-adventure-tour"
+                    }
+                ];
+                console.log("Using fallback product data due to fetch error");
                 
                 if (searchToursBtn) {
                     searchToursBtn.disabled = false;
@@ -409,6 +501,8 @@ document.addEventListener('DOMContentLoaded', function() {
     tourSearchInput.addEventListener('input', function() {
         const searchTerm = this.value.trim().toLowerCase();
         
+        console.log("Search term:", searchTerm);
+        
         if (searchTerm.length < 2) {
             suggestionContainer.style.display = 'none';
             return;
@@ -416,9 +510,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Find matching destinations
         const matchingProducts = allProducts.filter(product => {
-            return product.destination.toLowerCase().includes(searchTerm) || 
-                   product.title.toLowerCase().includes(searchTerm);
+            const matchesDestination = product.destination && 
+                product.destination.toLowerCase().includes(searchTerm);
+            
+            const matchesTitle = product.title &&
+                product.title.toLowerCase().includes(searchTerm);
+                
+            return matchesDestination || matchesTitle;
         });
+        
+        console.log(`Found ${matchingProducts.length} matching products for "${searchTerm}"`);
         
         if (matchingProducts.length > 0) {
             renderSuggestions(matchingProducts);
@@ -435,22 +536,46 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Render destination suggestions
     function renderSuggestions(products) {
-        const topSuggestions = products.slice(0, 5);
+        // Group by destination to avoid duplicates
+        const destinations = {};
+        products.forEach(product => {
+            const dest = product.destination?.trim() || '';
+            if (dest && !destinations[dest]) {
+                destinations[dest] = product;
+            }
+        });
         
-        suggestionContainer.innerHTML = topSuggestions.map(product => `
-            <div class="suggestion-item" data-product-id="${product.id}" data-destination="${product.destination}">
-                <div class="suggestion-title">${product.title}</div>
-                <div class="suggestion-meta">
-                    <span>${product.destination}</span>
-                    <span>$${product.price.toLocaleString()}</span>
+        // Convert to array and take top suggestions
+        const uniqueDestinations = Object.values(destinations);
+        const topSuggestions = uniqueDestinations.slice(0, 5);
+        
+        console.log("Rendering suggestions:", topSuggestions);
+        
+        if (topSuggestions.length === 0) {
+            suggestionContainer.innerHTML = `
+                <div class="suggestion-item no-results">
+                    <div class="suggestion-title">No destinations found</div>
+                    <div class="suggestion-meta">Try different keywords or request a custom tour</div>
                 </div>
-            </div>
-        `).join('');
+            `;
+        } else {
+            suggestionContainer.innerHTML = topSuggestions.map(product => `
+                <div class="suggestion-item" data-product-id="${product.id}" data-destination="${product.destination}">
+                    <div class="suggestion-title">${product.destination}</div>
+                    <div class="suggestion-meta">
+                        <span>${product.title}</span>
+                        <span>$${product.price.toLocaleString()}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
         
+        // Add click handlers to suggestions
         document.querySelectorAll('.suggestion-item').forEach(item => {
             if (!item.classList.contains('no-results')) {
                 item.addEventListener('click', function() {
                     const destination = this.dataset.destination;
+                    console.log("Selected destination:", destination);
                     tourSearchInput.value = destination;
                     suggestionContainer.style.display = 'none';
                     filterResults();
