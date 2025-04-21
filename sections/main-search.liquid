@@ -19,7 +19,7 @@
               <option value="all">All Categories</option>
               {% for collection in collections %}
                 {% if collection != '' %}
-                  <option value="{{ collection.title | handleize }}" {% if request.params.collection == collection.title %}selected{% endif %}>
+                  <option value="{{ collection.handle  }}" {% if request.params.collection == collection.handle %}selected{% endif %}>
                     {{ collection.title }}
                   </option>
                 {% endif %}
@@ -80,7 +80,7 @@
           
           {% if request.params.price_max %}
             <span class="filter-tag" data-filter-type="price_max">
-              Price: Under {{ shop.currency }}{{ request.params.price_max | times: 1 | money_without_currency }}
+              Price: Under {{ shop.currency }} {{ request.params.price_max | times: 1 | money_without_currency }}
               <i class="bi bi-x-circle remove-filter" data-filter-type="price_max"></i>
             </span>
           {% endif %}
@@ -977,9 +977,9 @@
       
       if (priceParam) {
         priceRange.value = priceParam;
-        currentPriceDisplay.textContent = currencySymbol + parseInt(priceParam).toLocaleString();
+        currentPriceDisplay.textContent = currencySymbol+ " " + parseInt(priceParam).toLocaleString();
       } else {
-        currentPriceDisplay.textContent = currencySymbol + parseInt(priceRange.value).toLocaleString();
+        currentPriceDisplay.textContent = currencySymbol + " " + parseInt(priceRange.value).toLocaleString();
       }
       
       updateSliderBackground();
@@ -987,7 +987,7 @@
     
     if (priceRange && currentPriceDisplay) {
       priceRange.addEventListener('input', function() {
-        currentPriceDisplay.textContent = currencySymbol + parseInt(this.value).toLocaleString();
+        currentPriceDisplay.textContent = currencySymbol + " " + parseInt(this.value).toLocaleString();
         updateSliderBackground();
       });
     }
@@ -1018,7 +1018,7 @@
       let newUrl = '/search?q=' + encodeURIComponent(searchQuery);
       
       if (categoryFilter && categoryFilter.value !== 'all') {
-        newUrl += '&product_type=' + encodeURIComponent(categoryFilter.value);
+        newUrl += '&collection=' + encodeURIComponent(categoryFilter.value);
       }
       
       if (priceRange) {
