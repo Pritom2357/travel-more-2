@@ -317,7 +317,6 @@ input.date-input:focus, input.number-input:focus {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Get DOM elements
     const tourSearchInput = document.getElementById('tourSearchInput');
     const suggestionContainer = document.getElementById('suggestionContainer');
     const travelDate = document.getElementById('travelDate');
@@ -331,21 +330,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const viewSimilarBtn = document.getElementById('viewSimilarBtn');
     const requestCustomBtn = document.getElementById('requestCustomBtn');
     
-    // Set default date to today
     travelDate.valueAsDate = new Date();
     
     let allProducts = [];
     let filteredProducts = [];
     
-    // Function to fetch products with metafields
     function fetchProducts() {
-        // Show loading indicator
         if (searchToursBtn) {
             searchToursBtn.disabled = true;
             searchToursBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Loading...';
         }
         
-        // Fetch products with metafields
         fetch('/search/suggest.json?q=&resources[type]=product&resources[limit]=50')
             .then(response => response.json())
             .then(data => {
@@ -399,39 +394,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Error fetching products:', error);
                 
-                // Fallback to dummy data for testing
-                allProducts = [
-                    {
-                        id: 1,
-                        title: "Maldives Beach Resort",
-                        handle: "maldives-beach-resort",
-                        destination: "Maldives",
-                        price: 2499,
-                        maxDays: 14,
-                        maxPersons: 6,
-                        url: "/products/maldives-beach-resort"
-                    },
-                    {
-                        id: 2,
-                        title: "Paris City Explorer",
-                        handle: "paris-city-explorer",
-                        destination: "Paris",
-                        price: 1899,
-                        maxDays: 10,
-                        maxPersons: 4,
-                        url: "/products/paris-city-explorer"
-                    },
-                    {
-                        id: 3,
-                        title: "Tokyo Adventure Tour",
-                        handle: "tokyo-adventure-tour",
-                        destination: "Tokyo",
-                        price: 3299,
-                        maxDays: 12,
-                        maxPersons: 8,
-                        url: "/products/tokyo-adventure-tour"
-                    }
-                ];
                 
                 if (searchToursBtn) {
                     searchToursBtn.disabled = false;
@@ -549,11 +511,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Create search parameters
             const searchParams = new URLSearchParams();
             
-            // Add search criteria to URL
+            // Add search term as 'q' parameter for search page
             if (tourSearchInput.value) {
-                searchParams.append('destination', tourSearchInput.value);
+                searchParams.append('q', tourSearchInput.value);
             }
             
+            // Add additional filter parameters
             if (travelDate.value) {
                 searchParams.append('date', travelDate.value);
             }
@@ -566,12 +529,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 searchParams.append('travelers', personCount.value);
             }
             
-            // Use an array of product handles for exact matches
-            const productHandles = filteredProducts.map(p => p.handle).join(',');
-            searchParams.append('products', productHandles);
-            
-            // Redirect to search results page
-            window.location.href = `/collections/all?${searchParams.toString()}`;
+            // Redirect to search page instead of collections
+            window.location.href = `/search?${searchParams.toString()}`;
         } else {
             // Show "not found" modal
             notFoundModal.style.display = 'flex';

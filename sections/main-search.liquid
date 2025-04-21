@@ -115,6 +115,9 @@
                  data-type="{{ item.object_type }}"
                  {% if item.object_type == 'product' %}
                    data-collections="{% for c in item.collections %}{{ c.handle }} {% endfor %}"
+                   data-max-days="{{ item.metafields.custom.maximum_days_allowed | default: 30 }}"
+                   data-max-persons="{{ item.metafields.custom.maximum_persons_allowed | default: 10 }}"
+                   data-destination="{{ item.metafields.custom.destination | escape }}"
                  {% endif %}>
               <div class="search-result-card h-100">
                 {% case item.object_type %}
@@ -206,7 +209,6 @@
                       <div class="result-excerpt">
                         <p>{{ item.content | strip_html | truncatewords: 20 }}</p>
                       </div>
-                    </div>
                 {% endcase %}
               </div>
             </div>
@@ -1245,10 +1247,57 @@
     }
   }
 
+  function applyTourFilters() {
+    const params = new URLSearchParams(window.location.search);
+    const duration = params.get('duration');
+    const travelers = params.get('travelers');
+    
+    if (!duration && !travelers) return;
+    
+    let visibleCount = 0;
+    
+    document.querySelectorAll('.search-result-item[data-type="product"]').forEach(item => {
+      // Skip already hidden items
+      if (item.style.display === 'none') return;
+      
+      let shouldShow = true;
+      
+      // Check product metafields with data attributes
+      // You'll need to add these data attributes in the liquid template
+      if (duration) {
+        const maxDays = parseInt(item.getAttribute('data-max-days') || '0');
+        if (maxDays < parseInt(duration)) {
+          shouldShow = false;
+        }
+      }
+      
+      if (travelers && shouldShow) {
+        const maxPersons = parseInt(item.getAttribute('data-max-persons') || '0');
+        if (maxPersons < parseInt(travelers)) {
+          shouldShow = false;
+        }
+      }
+      
+      if (shouldShow) {
+        item.style.display = '';
+        visibleCount++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+    
+    // Update result count
+    const resultCount = document.querySelector('.result-count');
+    if (resultCount) {
+      resultCount.textContent = `${visibleCount} results found`;
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
       applyClientSidePriceFilter();
       applyClientSideCollectionFilter();
+      applyTourFilters(); // Add this line
     }, 100);
   });
 </script>
