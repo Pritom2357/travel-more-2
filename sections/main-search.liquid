@@ -17,10 +17,10 @@
           <div class="select-wrapper">
             <select id="category-filter">
               <option value="all">All Categories</option>
-              {% for product_type in shop.product_types %}
-                {% if product_type != '' %}
-                  <option value="{{ product_type | handleize }}" {% if request.params.product_type == product_type %}selected{% endif %}>
-                    {{ product_type }}
+              {% for collection in collections %}
+                {% if collection != '' %}
+                  <option value="{{ collection.title | handleize }}" {% if request.params.collection == collection.title %}selected{% endif %}>
+                    {{ collection.title }}
                   </option>
                 {% endif %}
               {% endfor %}
@@ -121,7 +121,6 @@
     font-weight: 500;
   }
 
-  /* Responsive styles */
   @media (max-width: 768px) {
     .search-header-container {
       padding: 40px 0 30px;
@@ -142,7 +141,6 @@
     }
   }
 
-  /* Filter Options Styling */
   .filter-options {
     margin-top: 30px;
     margin-bottom: 30px;
