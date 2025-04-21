@@ -21,13 +21,13 @@
                 </div>
                 <div class="days-to-stay">
                     <label for="stayDuration">How many days?</label>
-                    <input type="number" id="stayDuration" class="number-input">
+                    <input type="number" id="stayDuration" class="number-input" min="1" value="7">
                 </div>
             </div>
             
             <div class="person-count">
                 <label for="personCount">How many persons?</label>
-                <input type="number" id="personCount" class="number-input">
+                <input type="number" id="personCount" class="number-input" min="1" value="2">
             </div>
             
             <button id="searchToursBtn" class="search-button">
@@ -317,6 +317,7 @@ input.date-input:focus, input.number-input:focus {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Get DOM elements
     const tourSearchInput = document.getElementById('tourSearchInput');
     const suggestionContainer = document.getElementById('suggestionContainer');
     const travelDate = document.getElementById('travelDate');
@@ -330,92 +331,119 @@ document.addEventListener('DOMContentLoaded', function() {
     const viewSimilarBtn = document.getElementById('viewSimilarBtn');
     const requestCustomBtn = document.getElementById('requestCustomBtn');
     
+    // Set default date to today
     travelDate.valueAsDate = new Date();
     
     let allProducts = [];
     let filteredProducts = [];
     
+    // Function to fetch products with metafields
     function fetchProducts() {
+        // Show loading indicator
+        if (searchToursBtn) {
+            searchToursBtn.disabled = true;
+            searchToursBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Loading...';
+        }
         
-        setTimeout(() => {
-            allProducts = [
-                {
-                    id: 1,
-                    title: "Mariana Trench Diving Expedition",
-                    handle: "mariana-trench-diving",
-                    destination: "Mariana Trench",
-                    price: 4999,
-                    maxDays: 14,
-                    maxPersons: 8,
-                    image: "https://example.com/mariana.jpg",
-                    type: "Diving Adventure"
-                },
-                {
-                    id: 2,
-                    title: "Mariana Islands Cultural Tour",
-                    handle: "mariana-islands-cultural",
-                    destination: "Mariana Islands",
-                    price: 2499,
-                    maxDays: 10,
-                    maxPersons: 16,
-                    image: "https://example.com/marianas.jpg",
-                    type: "Cultural"
-                },
-                {
-                    id: 3,
-                    title: "Underwater Photography in Mariana",
-                    handle: "underwater-photography-mariana",
-                    destination: "Mariana Trench",
-                    price: 3999,
-                    maxDays: 12,
-                    maxPersons: 6,
-                    image: "https://example.com/underwater.jpg",
-                    type: "Photography"
-                },
-                {
-                    id: 4,
-                    title: "Guam and Mariana Islands Explorer",
-                    handle: "guam-mariana-explorer",
-                    destination: "Guam, Mariana Islands",
-                    price: 1899,
-                    maxDays: 15,
-                    maxPersons: 20,
-                    image: "https://example.com/guam.jpg",
-                    type: "Island Hopping"
-                },
-                {
-                    id: 5,
-                    title: "Deep Sea Research Expedition",
-                    handle: "deep-sea-research",
-                    destination: "Mariana Trench",
-                    price: 6499,
-                    maxDays: 20,
-                    maxPersons: 4,
-                    image: "https://example.com/research.jpg",
-                    type: "Scientific"
-                }
-            ];
-            
-            // In a real implementation, we would use AJAX to fetch products with metafields
-            // Something like this:
-            fetch('/collections/all/products.json?limit=50')
-              .then(response => response.json())
-              .then(data => {
-                allProducts = data.products.map(product => {
-                  return {
-                    id: product.id,
-                    title: product.title,
-                    handle: product.handle,
-                    price: product.variants[0].price / 100,
-                    destination: product.metafields.find(m => m.key === 'destination')?.value || '',
-                    maxDays: parseInt(product.metafields.find(m => m.key === 'maximum_days_allowed')?.value || '20'),
-                    maxPersons: parseInt(product.metafields.find(m => m.key === 'maximum_persons_allowed')?.value || '30')
-                  };
+        // Fetch products with metafields
+        fetch('/search/suggest.json?q=&resources[type]=product&resources[limit]=50')
+            .then(response => response.json())
+            .then(data => {
+                // Fetch detailed info for each product
+                const productPromises = data.resources.results.products.map(product => {
+                    const productHandle = product.handle;
+                    return fetch(`/products/${productHandle}.json`)
+                        .then(response => response.json())
+                        .then(productData => {
+                            const product = productData.product;
+                            
+                            // Get metafields for this product
+                            return fetch(`/products/${productHandle}/metafields.json`)
+                                .then(response => response.json())
+                                .then(metafieldsData => {
+                                    const metafields = metafieldsData.metafields || [];
+                                    
+                                    // Extract metafield values
+                                    const destinationMetafield = metafields.find(m => m.key === 'destination');
+                                    const maxDaysMetafield = metafields.find(m => m.key === 'maximum_days_allowed');
+                                    const maxPersonsMetafield = metafields.find(m => m.key === 'maximum_persons_allowed');
+                                    
+                                    return {
+                                        id: product.id,
+                                        title: product.title,
+                                        handle: product.handle,
+                                        price: product.variants[0].price / 100,
+                                        featured_image: product.images[0]?.src || '',
+                                        destination: destinationMetafield?.value || '',
+                                        maxDays: parseInt(maxDaysMetafield?.value || '30'),
+                                        maxPersons: parseInt(maxPersonsMetafield?.value || '10'),
+                                        url: `/products/${product.handle}`
+                                    };
+                                });
+                        });
                 });
-              });
-        }, 300);
+                
+                // Process all products
+                return Promise.all(productPromises);
+            })
+            .then(products => {
+                allProducts = products.filter(p => p !== null);
+                console.log(`Loaded ${allProducts.length} products with metafields`);
+                
+                // Enable search button
+                if (searchToursBtn) {
+                    searchToursBtn.disabled = false;
+                    searchToursBtn.innerHTML = '<i class="bi bi-search"></i> Search for tours';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error);
+                
+                // Fallback to dummy data for testing
+                allProducts = [
+                    {
+                        id: 1,
+                        title: "Maldives Beach Resort",
+                        handle: "maldives-beach-resort",
+                        destination: "Maldives",
+                        price: 2499,
+                        maxDays: 14,
+                        maxPersons: 6,
+                        url: "/products/maldives-beach-resort"
+                    },
+                    {
+                        id: 2,
+                        title: "Paris City Explorer",
+                        handle: "paris-city-explorer",
+                        destination: "Paris",
+                        price: 1899,
+                        maxDays: 10,
+                        maxPersons: 4,
+                        url: "/products/paris-city-explorer"
+                    },
+                    {
+                        id: 3,
+                        title: "Tokyo Adventure Tour",
+                        handle: "tokyo-adventure-tour",
+                        destination: "Tokyo",
+                        price: 3299,
+                        maxDays: 12,
+                        maxPersons: 8,
+                        url: "/products/tokyo-adventure-tour"
+                    }
+                ];
+                
+                if (searchToursBtn) {
+                    searchToursBtn.disabled = false;
+                    searchToursBtn.innerHTML = '<i class="bi bi-search"></i> Search for tours';
+                }
+            });
     }
     
+    // Initialize by fetching products
+    fetchProducts();
+    
+    // Handle search input for destination suggestions
     tourSearchInput.addEventListener('input', function() {
         const searchTerm = this.value.trim().toLowerCase();
         
@@ -424,6 +452,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        // Find matching destinations
         const matchingProducts = allProducts.filter(product => {
             return product.destination.toLowerCase().includes(searchTerm) || 
                    product.title.toLowerCase().includes(searchTerm);
@@ -442,6 +471,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Render destination suggestions
     function renderSuggestions(products) {
         const topSuggestions = products.slice(0, 5);
         
@@ -450,7 +480,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="suggestion-title">${product.title}</div>
                 <div class="suggestion-meta">
                     <span>${product.destination}</span>
-                    <span>$${product.price}</span>
+                    <span>$${product.price.toLocaleString()}</span>
                 </div>
             </div>
         `).join('');
@@ -458,13 +488,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.suggestion-item').forEach(item => {
             if (!item.classList.contains('no-results')) {
                 item.addEventListener('click', function() {
-                    const productId = this.dataset.productId;
                     const destination = this.dataset.destination;
-                    
                     tourSearchInput.value = destination;
-                    
                     suggestionContainer.style.display = 'none';
-                    
                     filterResults();
                 });
             }
@@ -473,76 +499,131 @@ document.addEventListener('DOMContentLoaded', function() {
         suggestionContainer.style.display = 'block';
     }
     
+    // Close suggestions when clicking outside
     document.addEventListener('click', function(e) {
         if (!tourSearchInput.contains(e.target) && !suggestionContainer.contains(e.target)) {
             suggestionContainer.style.display = 'none';
         }
     });
     
+    // Filter products based on search criteria
     function filterResults() {
         const searchTerm = tourSearchInput.value.trim().toLowerCase();
-        const duration = parseInt(stayDuration.value);
-        const travelers = parseInt(personCount.value);
+        const duration = parseInt(stayDuration.value) || 0;
+        const travelers = parseInt(personCount.value) || 0;
         
-        if (!searchTerm) {
+        if (!searchTerm && duration <= 0 && travelers <= 0) {
+            searchSummary.style.display = 'none';
             return;
         }
         
+        // Filter products matching all criteria
         filteredProducts = allProducts.filter(product => {
-            const matchesDestination = product.destination.toLowerCase().includes(searchTerm) || 
-                                       product.title.toLowerCase().includes(searchTerm);
-            const matchesDuration = duration <= product.maxDays;
-            const matchesTravelers = travelers <= product.maxPersons;
+            // Match destination if provided
+            const matchesDestination = !searchTerm || 
+                product.destination.toLowerCase().includes(searchTerm) || 
+                product.title.toLowerCase().includes(searchTerm);
+            
+            // Match duration if provided
+            const matchesDuration = duration <= 0 || duration <= product.maxDays;
+            
+            // Match travelers if provided
+            const matchesTravelers = travelers <= 0 || travelers <= product.maxPersons;
             
             return matchesDestination && matchesDuration && matchesTravelers;
         });
         
+        // Update result count display
         resultCount.textContent = filteredProducts.length;
         searchSummary.style.display = 'block';
+        
+        return filteredProducts.length > 0;
     }
     
+    // Search button click handler
     searchToursBtn.addEventListener('click', function() {
-        filterResults();
+        // Apply filters and check if we have matching results
+        const hasResults = filterResults();
         
-        if (filteredProducts.length > 0) {
+        if (hasResults) {
+            // Create search parameters
             const searchParams = new URLSearchParams();
-            searchParams.append('q', tourSearchInput.value);
-            searchParams.append('duration', stayDuration.value);
-            searchParams.append('travelers', personCount.value);
             
+            // Add search criteria to URL
+            if (tourSearchInput.value) {
+                searchParams.append('destination', tourSearchInput.value);
+            }
+            
+            if (travelDate.value) {
+                searchParams.append('date', travelDate.value);
+            }
+            
+            if (stayDuration.value) {
+                searchParams.append('duration', stayDuration.value);
+            }
+            
+            if (personCount.value) {
+                searchParams.append('travelers', personCount.value);
+            }
+            
+            // Use an array of product handles for exact matches
+            const productHandles = filteredProducts.map(p => p.handle).join(',');
+            searchParams.append('products', productHandles);
+            
+            // Redirect to search results page
             window.location.href = `/collections/all?${searchParams.toString()}`;
         } else {
+            // Show "not found" modal
             notFoundModal.style.display = 'flex';
         }
     });
     
+    // Modal close button handler
     closeModal.addEventListener('click', function() {
         notFoundModal.style.display = 'none';
     });
     
+    // View similar tours button handler
     viewSimilarBtn.addEventListener('click', function() {
         const searchParams = new URLSearchParams();
-        searchParams.append('q', tourSearchInput.value);
         
-        window.location.href = `/collections/all?${searchParams.toString()}`;
+        // Just use destination for similar results
+        if (tourSearchInput.value) {
+            searchParams.append('q', tourSearchInput.value);
+        }
+        
+        window.location.href = `/search?${searchParams.toString()}`;
     });
     
+    // Request custom tour button handler
     requestCustomBtn.addEventListener('click', function() {
         const searchParams = new URLSearchParams();
-        searchParams.append('destination', tourSearchInput.value);
-        searchParams.append('date', travelDate.value);
-        searchParams.append('duration', stayDuration.value);
-        searchParams.append('travelers', personCount.value);
+        
+        // Add all search criteria to URL
+        if (tourSearchInput.value) {
+            searchParams.append('destination', tourSearchInput.value);
+        }
+        
+        if (travelDate.value) {
+            searchParams.append('date', travelDate.value);
+        }
+        
+        if (stayDuration.value) {
+            searchParams.append('duration', stayDuration.value);
+        }
+        
+        if (personCount.value) {
+            searchParams.append('travelers', personCount.value);
+        }
         
         window.location.href = `/pages/custom-tour-request?${searchParams.toString()}`;
     });
     
+    // Close modal when clicking outside
     window.addEventListener('click', function(event) {
         if (event.target === notFoundModal) {
             notFoundModal.style.display = 'none';
         }
     });
-    
-    fetchProducts();
 });
 </script>
