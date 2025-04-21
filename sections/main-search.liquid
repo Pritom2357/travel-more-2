@@ -247,27 +247,6 @@
         {% endif %}
         
       {% else %}
-        <div class="no-results">
-          <div class="no-results-icon">
-            <i class="bi bi-search"></i>
-          </div>
-          <h2>No results found for "{{ search.terms }}"</h2>
-          <p>We couldn't find any matches for your search query. Please try different keywords or browse our products.</p>
-          
-          <div class="search-suggestions">
-            <h3>Suggestions:</h3>
-            <ul>
-              <li>Check your spelling</li>
-              <li>Try more general keywords</li>
-              <li>Try different keywords</li>
-            </ul>
-          </div>
-          
-          <div class="search-actions">
-            <a href="/collections/all" class="btn-secondary">Browse All Products</a>
-            <a href="/" class="btn-primary">Go to Homepage</a>
-          </div>
-        </div>
         {% if search.results_count == 0 %}
           <div class="no-results">
             <div class="no-results-icon">
