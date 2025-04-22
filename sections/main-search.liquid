@@ -1001,6 +1001,9 @@
 
       // Add the search query
       newUrl += `?q=${encodeURIComponent(searchQuery)}`;
+      
+      // Specify types to include (products and articles only)
+      newUrl += '&type=product,article';
 
       // Add the collection filter
       if (categoryFilter && categoryFilter.value !== 'all') {
@@ -1043,6 +1046,11 @@
         
         params.delete(filterType);
         
+        // Ensure type parameter is always included
+        if (!params.has('type')) {
+          params.set('type', 'product,article');
+        }
+        
         window.location.href = `/search?${params.toString()}`;
       });
     });
@@ -1053,7 +1061,7 @@
         const params = new URLSearchParams(window.location.search);
         const searchQuery = params.get('q') || '';
         
-        window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
+        window.location.href = `/search?q=${encodeURIComponent(searchQuery)}&type=product,article`;
       });
     }
     
