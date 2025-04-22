@@ -246,7 +246,7 @@
             
             <div class="search-actions mt-4">
               <a href="/collections/all" class="btn-secondary">Browse All Tours</a>
-              <a href="/pages/custom-tour-request?{% if request.params.q %}destination={{ request.params.q | url_encode }}{% endif %}{% if request.params.date %}&date={{ request.params.date | url_encode }}{% endif %}{% if request.params.duration %}&duration={{ request.params.duration | url_encode }}{% endif %}{% if request.params.travelers %}&travelers={{ request.params.travelers | url_encode }}{% endif %}" class="btn-primary">Request Custom Tour</a>
+              <a href="/pages/tour-request" class="btn-primary">Request Custom Tour</a>
             </div>
           </div>
         {% endif %}
