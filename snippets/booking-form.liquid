@@ -470,7 +470,7 @@ input.date-input:focus, input.number-input:focus {
         if (product.metafields && product.metafields.custom && product.metafields.custom.maximum_days) {
           maxDays = parseInt(product.metafields.custom.maximum_days);
         } else if (product.tags) {
-          const daysTag = product.tags.find(tag => startsWith('max-days:'));
+          const daysTag = product.tags.find(tag => tag.startsWith('max-days:'));
           if (daysTag) {
             maxDays = parseInt(daysTag.replace('max-days:', '')) || 30;
           }
