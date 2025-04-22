@@ -7,10 +7,13 @@
         {% if block.type == 'slide' %}
           <div class="banner-slide" {{ block.shopify_attributes }} id="banner-slide-{{ forloop.index }}">
             {% if block.settings.image %}
-              {%- assign img_url = block.settings.image | img_url: '1920x' -%}
               <div class="slide-image-container">
-                <div class="slide-image" style="background-image: url('{{ img_url }}');"></div>
+                <img src="{{ block.settings.image | img_url: 'master' }}" class="slide-full-image" alt="{{ block.settings.slide_heading | escape }}">
                 <div class="slide-overlay" style="background-color: rgba(0, 0, 0, {{ block.settings.overlay_opacity }});"></div>
+              </div>
+            {% else %}
+              <div class="slide-placeholder">
+                <p>Please select an image for this slide</p>
               </div>
             {% endif %}
             
@@ -411,6 +414,28 @@
     color: #777;
   }
   
+  .slide-full-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .slide-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+  }
+
   /* Responsive Styles */
   @media (max-width: 768px) {
     .{{ banner_class }} {
