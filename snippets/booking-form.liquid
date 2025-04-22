@@ -385,15 +385,28 @@ input.date-input:focus, input.number-input:focus {
         suggestionContainer.innerHTML = '';
         
         matches.forEach(product => {
-          let destination = 'Various destinations';
-          
+          let destination = '';
+
           if (product.metafields && product.metafields.custom && product.metafields.custom.destination) {
             destination = product.metafields.custom.destination;
-          } else if (product.tags) {
+          } 
+          else if (product.metafields && product.metafields.travel && product.metafields.travel.destination) {
+            destination = product.metafields.travel.destination;
+          } 
+          else if (product.tags) {
             const destTag = product.tags.find(tag => tag.startsWith('destination:'));
             if (destTag) {
               destination = destTag.replace('destination:', '');
             }
+          } 
+          else if (product.title.includes(' - ')) {
+            destination = product.title.split(' - ')[1];
+          } else if (product.title.includes(' | ')) {
+            destination = product.title.split(' | ')[1];
+          }
+
+          if (!destination) {
+            destination = 'Various destinations';
           }
           
           const item = document.createElement('div');
@@ -406,7 +419,12 @@ input.date-input:focus, input.number-input:focus {
           `;
           
           item.addEventListener('click', function() {
-            searchInput.value = destination;
+            if(destination === "Various destinations"){
+                searchInput.value = product.title;
+            }else{
+                searchInput.value = destination;
+            }
+            searchInput.dataset.productId = product.id;
             suggestionContainer.style.display = 'none';
           });
           
