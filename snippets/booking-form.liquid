@@ -331,7 +331,8 @@ input.date-input:focus, input.number-input:focus {
     const submitButton = document.getElementById('searchToursBtn');
 
     submitButton.addEventListener('click', ()=>{
-        const destinationList = 
+        const destinationList = "{{ product.metafields.details.destination }}";
+        console.log(destinationList);
     })
     
 </script>
