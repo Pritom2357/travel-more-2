@@ -328,11 +328,236 @@ input.date-input:focus, input.number-input:focus {
 
 
 <script>
-    const submitButton = document.getElementById('searchToursBtn');
-
-    submitButton.addEventListener('click', ()=>{
-        const destinationList = "{{ product.metafields.custom.destination }}";
-        console.log(destinationList);
-    })
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('tourSearchInput');
+    const dateInput = document.getElementById('travelDate');
+    const durationInput = document.getElementById('stayDuration');
+    const personsInput = document.getElementById('personCount');
+    const searchButton = document.getElementById('searchToursBtn');
+    const suggestionContainer = document.getElementById('suggestionContainer');
+    const searchSummary = document.getElementById('searchSummary');
+    const resultCount = document.getElementById('resultCount');
+    const notFoundModal = document.getElementById('notFoundModal');
+    const viewSimilarBtn = document.getElementById('viewSimilarBtn');
+    const requestCustomBtn = document.getElementById('requestCustomBtn');
+    const closeModal = document.querySelector('.close-modal');
     
+    let allProducts = [];
+    
+    fetch('/products.json')
+      .then(response => response.json())
+      .then(data => {
+        allProducts = data.products;
+        console.log('Products loaded:', allProducts.length);
+      })
+      .catch(error => console.error('Error fetching products:', error));
+    
+    searchInput.addEventListener('input', function() {
+      const query = this.value.trim().toLowerCase();
+      if (query.length < 2) {
+        suggestionContainer.style.display = 'none';
+        return;
+      }
+      
+      const matches = allProducts.filter(product => {
+        if (product.title.toLowerCase().includes(query)) return true;
+        
+        if (product.metafields && product.metafields.custom && 
+            product.metafields.custom.destination && 
+            product.metafields.custom.destination.toLowerCase().includes(query)) {
+          return true;
+        }
+        
+        if (product.tags && product.tags.some(tag => 
+            tag.startsWith('destination:') && 
+            tag.toLowerCase().includes(query))) {
+          return true;
+        }
+        
+        if (product.body_html && product.body_html.toLowerCase().includes(query)) {
+          return true;
+        }
+        
+        return false;
+      }).slice(0, 5); 
+      
+      if (matches.length > 0) {
+        suggestionContainer.innerHTML = '';
+        
+        matches.forEach(product => {
+          let destination = 'Various destinations';
+          
+          if (product.metafields && product.metafields.custom && product.metafields.custom.destination) {
+            destination = product.metafields.custom.destination;
+          } else if (product.tags) {
+            const destTag = product.tags.find(tag => tag.startsWith('destination:'));
+            if (destTag) {
+              destination = destTag.replace('destination:', '');
+            }
+          }
+          
+          const item = document.createElement('div');
+          item.className = 'suggestion-item';
+          item.innerHTML = `
+            <div class="suggestion-title">${product.title}</div>
+            <div class="suggestion-meta">
+              <span>${destination}</span>
+            </div>
+          `;
+          
+          item.addEventListener('click', function() {
+            searchInput.value = destination;
+            suggestionContainer.style.display = 'none';
+          });
+          
+          suggestionContainer.appendChild(item);
+        });
+        
+        suggestionContainer.style.display = 'block';
+      } else {
+        suggestionContainer.innerHTML = `
+          <div class="suggestion-item no-results">
+            No destinations found matching "${query}"
+          </div>
+        `;
+        suggestionContainer.style.display = 'block';
+      }
+    });
+    
+    document.addEventListener('click', function(e) {
+      if (!searchInput.contains(e.target) && !suggestionContainer.contains(e.target)) {
+        suggestionContainer.style.display = 'none';
+      }
+    });
+    
+    searchButton.addEventListener('click', function() {
+      const destination = searchInput.value.trim().toLowerCase();
+      const travelDate = dateInput.value;
+      const duration = parseInt(durationInput.value) || 7;
+      const persons = parseInt(personsInput.value) || 2;
+      
+      const matches = allProducts.filter(product => {
+        let isMatch = false;
+        let score = 0;
+        
+        if (destination) {
+          if (product.title.toLowerCase().includes(destination)) {
+            isMatch = true;
+            score += 3;
+          }
+          
+          if (product.metafields && product.metafields.custom && 
+              product.metafields.custom.destination && 
+              product.metafields.custom.destination.toLowerCase().includes(destination)) {
+            isMatch = true;
+            score += 5; 
+          }
+          
+          if (product.tags && product.tags.some(tag => 
+              tag.startsWith('destination:') && 
+              tag.toLowerCase().includes(destination))) {
+            isMatch = true;
+            score += 4;
+          }
+          
+          if (product.body_html && product.body_html.toLowerCase().includes(destination)) {
+            isMatch = true;
+            score += 2;
+          }
+        }
+        
+        let maxDays = 30; 
+        if (product.metafields && product.metafields.custom && product.metafields.custom.maximum_days) {
+          maxDays = parseInt(product.metafields.custom.maximum_days);
+        } else if (product.tags) {
+          const daysTag = product.tags.find(tag => startsWith('max-days:'));
+          if (daysTag) {
+            maxDays = parseInt(daysTag.replace('max-days:', '')) || 30;
+          }
+        }
+        
+        if (duration <= maxDays) {
+          score += 1;
+        } else {
+          return false; 
+        }
+        
+        let maxPersons = 10;
+        if (product.metafields && product.metafields.custom && product.metafields.custom.maximum_persons) {
+          maxPersons = parseInt(product.metafields.custom.maximum_persons);
+        } else if (product.tags) {
+          const personsTag = product.tags.find(tag => tag.startsWith('max-persons:'));
+          if (personsTag) {
+            maxPersons = parseInt(personsTag.replace('max-persons:', '')) || 10;
+          }
+        }
+        
+        if (persons <= maxPersons) {
+          score += 1;
+        } else {
+          return false; 
+        }
+        
+        product.matchScore = score;
+        
+        return isMatch || score > 0;
+      });
+      
+      matches.sort((a, b) => b.matchScore - a.matchScore);
+      
+      console.log('Search matches:', matches);
+      
+      if (matches.length > 0) {
+        resultCount.textContent = matches.length;
+        searchSummary.style.display = 'block';
+        
+        let searchParams = new URLSearchParams();
+        
+        if (destination) {
+          searchParams.append('q', destination);
+        }
+        
+        if (travelDate) searchParams.append('date', travelDate);
+        if (duration) searchParams.append('duration', duration);
+        if (persons) searchParams.append('travelers', persons);
+        
+        
+        window.location.href = `/search?${searchParams.toString()}`;
+      } else {
+        notFoundModal.style.display = 'flex';
+      }
+    });
+    
+    // Modal actions
+    if (closeModal) {
+      closeModal.addEventListener('click', function() {
+        notFoundModal.style.display = 'none';
+      });
+    }
+    
+    if (viewSimilarBtn) {
+      viewSimilarBtn.addEventListener('click', function() {
+        const destination = searchInput.value.trim();
+        
+        window.location.href = `/collections/all?q=${encodeURIComponent(destination || '')}`;
+      });
+    }
+    
+    if (requestCustomBtn) {
+      requestCustomBtn.addEventListener('click', function() {
+        const destination = searchInput.value.trim();
+        const travelDate = dateInput.value;
+        const duration = durationInput.value;
+        const persons = personsInput.value;
+        
+        const params = new URLSearchParams();
+        if (destination) params.append('destination', destination);
+        if (travelDate) params.append('date', travelDate);
+        if (duration) params.append('duration', duration);
+        if (persons) params.append('travelers', persons);
+        
+        window.location.href = `/pages/custom-tour-request?${params.toString()}`;
+      });
+    }
+  });
 </script>
