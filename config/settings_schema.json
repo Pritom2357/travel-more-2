@@ -102,68 +102,6 @@
     ]
   },
   {
-    "name": "Color schemes",
-    "settings": [
-      {
-        "type": "select",
-        "id": "color_scheme",
-        "options": [
-          {
-            "value": "travel_blue",
-            "label": "Travel Blue"
-          },
-          {
-            "value": "sunset_orange",
-            "label": "Sunset Orange"
-          },
-          {
-            "value": "tropical_green",
-            "label": "Tropical Green"
-          },
-          {
-            "value": "desert_tan",
-            "label": "Desert Tan"
-          },
-          {
-            "value": "custom",
-            "label": "Custom Colors"
-          }
-        ],
-        "default": "travel_blue",
-        "label": "Color scheme"
-      },
-      {
-        "type": "header",
-        "content": "Custom color scheme",
-        "info": "Set your own colors when 'Custom Colors' is selected"
-      },
-      {
-        "type": "color",
-        "id": "custom_primary_color",
-        "label": "Primary color",
-        "default": "#449EED"
-      },
-      {
-        "type": "color",
-        "id": "custom_secondary_color",
-        "label": "Secondary color",
-        "default": "#357ABD"
-      },
-      {
-        "type": "color",
-        "id": "custom_text_color",
-        "label": "Text color",
-        "default": "#121212"
-      },
-      {
-        "type": "color",
-        "id": "custom_background_color",
-        "label": "Background color",
-        "default": "#FFFFFF"
-      }
-    ]
-  },
-  {
     "name": "t:settings_schema.typography.name",
     "settings": [
       {

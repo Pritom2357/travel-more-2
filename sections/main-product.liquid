@@ -662,6 +662,11 @@
                 {% render 'icon-with-text', block: block %}
             {%- endcase -%}
           {%- endfor -%}
+          <!-- Add this code inside your product details section, before the add to cart button -->
+          {% if product.type contains 'Tour' or product.tags contains 'tour' or product.tags contains 'destination:' %}
+            {% include 'extract-tour-data' with product %}
+            {% include 'tour-info-display' %}
+          {% endif %}
           <a href="{{ product.url }}" class="link product__view-details animate-arrow">
             {{ 'products.product.view_full_details' | t }}
             {{- 'icon-arrow.svg' | inline_asset_content -}}

@@ -1,0 +1,44 @@
+{% comment %}
+  Display compact tour details on product cards
+  Usage: Include after 'extract-tour-data'
+{% endcomment %}
+
+<div class="tour-card-details">
+  {% if destination != '' %}
+    <div class="tour-tag">
+      <i class="bi bi-geo-alt"></i> {{ destination }}
+    </div>
+  {% endif %}
+  
+  <div class="tour-tag">
+    <i class="bi bi-people"></i> {{ maximum_persons }}
+  </div>
+  
+  <div class="tour-tag">
+    <i class="bi bi-calendar"></i> {{ maximum_days }}d
+  </div>
+</div>
+
+<style>
+  .tour-card-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  
+  .tour-tag {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background-color: rgba(68, 158, 237, 0.1);
+    color: #555;
+    display: flex;
+    align-items: center;
+  }
+  
+  .tour-tag i {
+    margin-right: 4px;
+    color: #449EED;
+  }
+</style>

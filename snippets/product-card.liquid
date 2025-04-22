@@ -52,5 +52,11 @@
     <div class="card-footer bg-transparent border-0">
       <a href="{{ product.url }}" class="btn btn-primary w-100 view-details-btn">View Details</a>
     </div>
+
+    <!-- Add this at the bottom of your product card content -->
+    {% if product.type contains 'Tour' or product.tags contains 'tour' or product.tags contains 'destination:' %}
+      {% include 'extract-tour-data' with product %}
+      {% include 'tour-card-details' %}
+    {% endif %}
   </div>
 </div>

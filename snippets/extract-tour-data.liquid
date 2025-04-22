@@ -1,0 +1,24 @@
+{% comment %}
+  Extract travel product data from tags
+  
+  Usage: 
+  {% include 'extract-tour-data' with product %}
+{% endcomment %}
+
+{% assign destination = '' %}
+{% assign maximum_days = '30' %}
+{% assign maximum_persons = '10' %}
+
+{% for tag in product.tags %}
+  {% if tag contains 'destination:' %}
+    {% assign destination = tag | remove: 'destination:' | strip %}
+  {% endif %}
+  
+  {% if tag contains 'max-days:' %}
+    {% assign maximum_days = tag | remove: 'max-days:' | strip %}
+  {% endif %}
+  
+  {% if tag contains 'max-persons:' %}
+    {% assign maximum_persons = tag | remove: 'max-persons:' | strip %}
+  {% endif %}
+{% endfor %}
