@@ -189,27 +189,7 @@
                       </div>
                     </div>
                     
-                  {% when 'page' %}
-                    <a href="{{ item.url }}" class="page-link">
-                      <div class="result-image">
-                        <div class="placeholder-image page-image">
-                          <i class="bi bi-file-earmark-text"></i>
-                        </div>
-                        <div class="hover-overlay">
-                          <div class="view-btn">View Page</div>
-                        </div>
-                      </div>
-                    </a>
-                    
-                    <div class="result-info">
-                      <h3 class="result-title">
-                        <a href="{{ item.url }}">{{ item.title }}</a>
-                      </h3>
-                      
-                      <div class="result-excerpt">
-                        <p>{{ item.content | strip_html | truncatewords: 20 }}</p>
-                      </div>
-                {% endcase %}
+                 {% endcase %}
               </div>
             </div>
           {% endfor %}
