@@ -41,9 +41,9 @@
       "type": "custom-hero",
       "settings": {
         "is_header": true,
-        "bg_header": "#449eed",
-        "header_bg_opacity": 0.1,
-        "header_text_color": "#ffffff",
+        "bg_header": "#ccfdf5",
+        "header_bg_opacity": 0.3,
+        "header_text_color": "#121b48",
         "header_text_hover_color": "#e8298d",
         "logo": "shopify://shop_images/logo.png",
         "logo_size": 60,
@@ -208,7 +208,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/dest4.jpg",
-            "overlay_opacity": 0.4,
+            "overlay_opacity": 0.6,
             "text_alignment": "center",
             "slide_heading": "Special Destination Offer",
             "heading_size": 48,
@@ -219,7 +219,7 @@
             "subheading_color": "#ffffff",
             "button_label": "Book Now",
             "button_link": "",
-            "button_bg_color": "#449EED",
+            "button_bg_color": "#449eed",
             "button_text_color": "#ffffff"
           }
         },
@@ -238,7 +238,7 @@
             "subheading_color": "#ffffff",
             "button_label": "Book Now",
             "button_link": "",
-            "button_bg_color": "#449EED",
+            "button_bg_color": "#449eed",
             "button_text_color": "#ffffff"
           }
         }
