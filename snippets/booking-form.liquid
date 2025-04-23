@@ -29,15 +29,14 @@
                 <input type="number" id="personCount" class="number-input" min="1" value="2">
             </div>
             
-            <div class="d-flex space-x-4">
-              <button id="searchToursBtn" class="search-button">
+            <div class="button-group">
+              <button id="searchToursBtn" class="search-button primary-search-btn">
                 <i class="bi bi-search"></i> Search for tours
               </button>
-              <button id="searchToursBtn" class="search-button">
-                <a href="/pages/tour-request">
-                  <i class="bi bi-search"></i> Search for tours
-                </a>
-              </button>
+              
+              <a href="/pages/custom-tour-request" id="requestCustomTourBtn" class="search-button custom-tour-btn">
+                <i class="bi bi-pencil-square"></i> Request Custom Tour
+              </a>
             </div>
             
             <div id="searchSummary" class="search-summary" style="display: none;">
@@ -319,6 +318,47 @@ input.date-input:focus, input.number-input:focus {
 
 .secondary-button:hover {
     background-color: #e5e5e5;
+}
+
+/* Button group styling */
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.primary-search-btn {
+  background-color: #449EED;
+}
+
+.primary-search-btn:hover {
+  background-color: #357ABD;
+}
+
+.custom-tour-btn {
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-tour-btn:hover {
+  background-color: #218838;
+  color: white;
+  text-decoration: none;
+}
+
+.search-button i {
+  margin-right: 6px;
+}
+
+/* Responsive button group */
+@media (max-width: 576px) {
+  .button-group {
+    flex-direction: column;
+  }
 }
 
 /* Responsive Adjustments */
