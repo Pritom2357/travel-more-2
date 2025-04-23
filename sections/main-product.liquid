@@ -108,22 +108,24 @@
 
         <div class="variants-container">
           {% unless product.has_only_default_variant %}
-            {% for option in product.options_with_values %}
-              <div class="variant-option-group">
-                <label class="option-label">{{ option.name }}:</label>
-                
-                <div class="option-selector">
-                  <select name="{{ option.name | handleize }}" class="single-option-selector" data-option-index="{{ forloop.index0 }}">
-                    {% for value in option.values %}
-                      <option value="{{ value | escape }}" 
-                        {% if option.selected_value == value %}selected="selected"{% endif %}>
-                        {{ value }}
-                      </option>
-                    {% endfor %}
-                  </select>
+            <div class="variant-options-row">
+              {% for option in product.options_with_values %}
+                <div class="variant-option-group">
+                  <label class="option-label">{{ option.name }}:</label>
+                  
+                  <div class="option-selector">
+                    <select name="{{ option.name | handleize }}" class="single-option-selector" data-option-index="{{ forloop.index0 }}">
+                      {% for value in option.values %}
+                        <option value="{{ value | escape }}" 
+                          {% if option.selected_value == value %}selected="selected"{% endif %}>
+                          {{ value }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
                 </div>
-              </div>
-            {% endfor %}
+              {% endfor %}
+            </div>
           {% endunless %}
           
           <!-- Hidden select for the actual variant ID -->
@@ -780,6 +782,48 @@
   .add-to-cart-button.disabled {
     background-color: #cccccc;
     cursor: not-allowed;
+  }
+
+  /* Updated variant styling for side-by-side display */
+  .variants-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  /* Adjust this to display variants in a row */
+  .variants-container > div:first-child {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .variant-option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 120px;
+    flex: 1;
+    margin-bottom: 15px;
+  }
+
+  /* Make selectors responsive but not too wide */
+  .option-selector {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    .variants-container > div:first-child {
+      flex-direction: column;
+    }
+    
+    .option-selector {
+      max-width: 100%;
+    }
   }
 </style>
 
