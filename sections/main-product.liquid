@@ -77,8 +77,8 @@
         </div>
         {% if product.collections %}
           <div class="product-collections">
-            <span class="info-label">Collections:</span>
             <div class="collection-buttons">
+              <span class="info-label">Collections:</span>
               {% for collection in product.collections %}
                 <button class="collection-btn">
                   <a href="{{ collection.url }}">{{ collection.title }}</a>
@@ -89,8 +89,8 @@
         {% endif %}
         {% if product.tags %}
           <div class="product-tags">
-            <span class="info-label">Tags:</span>
             <div class="tag-buttons">
+             <span class="info-label">Tags:</span>
               {% for tag in product.tags %}
                 <button class="tag-btn" data-tag="{{ tag.name | handle }}">
                   {{ tag }}
@@ -476,7 +476,8 @@
 
   .info-label {
     font-size: 14px;
-    color: #a0a0a0;
+    color: #d0d0d0;
+    font-weight: 600;
     margin-right: 10px;
   }
 
@@ -503,36 +504,48 @@
   }
 
   .collection-btn {
-    background-color: rgba(74, 144, 226, 0.2);
+    background-color: rgba(74, 144, 226, 0.4);
+    border: 1px solid rgba(74, 144, 226, 0.6);
   }
 
   .collection-btn:hover {
-    background-color: rgba(74, 144, 226, 0.3);
+    background-color: rgba(74, 144, 226, 0.5);
     transform: translateY(-2px);
-  }
-
-  .tag-btn:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
-  }
-
-  .collection-btn a {
-    color: #4a90e2;
-    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   .tag-btn {
-    color: #e0e0e0;
+    background-color: rgba(255, 192, 203, 0.3);
+    border: 1px solid rgba(255, 192, 203, 0.5);
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  .tag-btn:hover {
+    background-color: rgba(255, 192, 203, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .collection-btn a {
+    color: #88bbff;
+    font-weight: 500;
+    text-decoration: none;
   }
 
   .product-vendor {
     margin-top: 5px;
     font-size: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border-left: 3px solid #4CAF50;
   }
 
   .vendor-name {
     font-weight: 600;
-    color: #ffffff;
+    color: #4CAF50;
   }
 
   /* Price section styling */
@@ -590,9 +603,10 @@
 
   /* Add this to your style section */
   .tag-btn.active {
-    background-color: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 192, 203, 0.7);
+    border-color: rgba(255, 255, 255, 0.7);
     transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
 </style>
 
