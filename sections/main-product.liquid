@@ -9,6 +9,20 @@
             alt="{{ product.featured_image.alt | escape }}"
             class="main-product-image"
           >
+          
+          {% if product.images.size > 1 %}
+            <div class="gallery-navigation">
+              <button id="prevSlide" class="nav-button prev" aria-label="Previous image">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+              <button id="toggleAutoSlide" class="nav-button toggle" aria-label="Toggle slideshow" title="Pause Auto Slide">
+                <i class="bi bi-pause-fill"></i>
+              </button>
+              <button id="nextSlide" class="nav-button next" aria-label="Next image">
+                <i class="bi bi-chevron-right"></i>
+              </button>
+            </div>
+          {% endif %}
         {% else %}
           <div class="no-image-placeholder">
             <span>No image available</span>
@@ -247,7 +261,11 @@
 </style>
 
 <script>
-  function changeMainImage(thumbnail) {
+  let slideInterval;
+  let currentSlideIndex = 0;
+  const slideDuration = 3000; 
+  
+  function changeMainImage(thumbnail, manualChange = true) {
     const mainImage = document.getElementById('mainProductImage');
     const fullImageUrl = thumbnail.getAttribute('data-full-image');
     const thumbnailItems = document.querySelectorAll('.thumbnail-item');
@@ -260,6 +278,88 @@
     });
     
     thumbnail.parentElement.classList.add('active');
+    currentSlideIndex = parseInt(thumbnail.parentElement.getAttribute('data-index'));
+    
+    if (manualChange && slideInterval) {
+      clearInterval(slideInterval);
+      startAutoSlide();
+    }
+  }
+  
+  function nextSlide() {
+    const thumbnails = document.querySelectorAll('.thumbnail-item');
+    if (thumbnails.length === 0) return;
+    
+    currentSlideIndex = (currentSlideIndex + 1) % thumbnails.length;
+    const nextThumbnail = thumbnails[currentSlideIndex].querySelector('img');
+    changeMainImage(nextThumbnail, false);
+    
+    scrollToThumbnail(thumbnails[currentSlideIndex]);
+  }
+  
+  function prevSlide() {
+    const thumbnails = document.querySelectorAll('.thumbnail-item');
+    if (thumbnails.length === 0) return;
+    
+    currentSlideIndex = (currentSlideIndex - 1 + thumbnails.length) % thumbnails.length;
+    const prevThumbnail = thumbnails[currentSlideIndex].querySelector('img');
+    changeMainImage(prevThumbnail, false);
+    
+    scrollToThumbnail(thumbnails[currentSlideIndex]);
+  }
+  
+  function scrollToThumbnail(thumbnailElement) {
+    const scrollContainer = document.querySelector('.thumbnails-scroll-container');
+    if (!scrollContainer) return;
+    
+    const isVertical = window.innerWidth > 768;
+    
+    if (isVertical) {
+      const containerTop = scrollContainer.scrollTop;
+      const containerBottom = containerTop + scrollContainer.clientHeight;
+      const elemTop = thumbnailElement.offsetTop;
+      const elemBottom = elemTop + thumbnailElement.offsetHeight;
+      
+      if (elemTop < containerTop) {
+        scrollContainer.scrollTop = elemTop;
+      } else if (elemBottom > containerBottom) {
+        scrollContainer.scrollTop = elemBottom - scrollContainer.clientHeight;
+      }
+    } else {
+      const containerLeft = scrollContainer.scrollLeft;
+      const containerRight = containerLeft + scrollContainer.clientWidth;
+      const elemLeft = thumbnailElement.offsetLeft;
+      const elemRight = elemLeft + thumbnailElement.offsetWidth;
+      
+      if (elemLeft < containerLeft) {
+        scrollContainer.scrollLeft = elemLeft;
+      } else if (elemRight > containerRight) {
+        scrollContainer.scrollLeft = elemRight - scrollContainer.clientWidth;
+      }
+    }
+  }
+  
+  function startAutoSlide() {
+    if (document.querySelectorAll('.thumbnail-item').length <= 1) return;
+    
+    slideInterval = setInterval(() => {
+      nextSlide();
+    }, slideDuration);
+  }
+  
+  function toggleAutoSlide() {
+    const toggleButton = document.getElementById('toggleAutoSlide');
+    
+    if (slideInterval) {
+      clearInterval(slideInterval);
+      slideInterval = null;
+      toggleButton.innerHTML = '<i class="bi bi-play-fill"></i>';
+      toggleButton.setAttribute('title', 'Start Auto Slide');
+    } else {
+      startAutoSlide();
+      toggleButton.innerHTML = '<i class="bi bi-pause-fill"></i>';
+      toggleButton.setAttribute('title', 'Pause Auto Slide');
+    }
   }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -277,9 +377,27 @@
       });
     }
     
-    const mainImage = document.getElementById('mainProductImage');
-    if (mainImage) {
-      mainImage.addEventListener('click', function() {
+    startAutoSlide();
+    
+    const prevButton = document.getElementById('prevSlide');
+    const nextButton = document.getElementById('nextSlide');
+    const toggleButton = document.getElementById('toggleAutoSlide');
+    
+    if (prevButton) {
+      prevButton.addEventListener('click', function() {
+        prevSlide();
+      });
+    }
+    
+    if (nextButton) {
+      nextButton.addEventListener('click', function() {
+        nextSlide();
+      });
+    }
+    
+    if (toggleButton) {
+      toggleButton.addEventListener('click', function() {
+        toggleAutoSlide();
       });
     }
   });
