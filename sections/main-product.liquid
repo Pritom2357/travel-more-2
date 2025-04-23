@@ -1,10 +1,21 @@
 <div class="product-container">
   <div class="image-plus-info">
     <div class="image-container d-flex md:w-6">
-      
+      <div class="images md:w-10">
+        <div class="current-image">
+          {% if product.images %}
+            {% for image in product.images %}
+              <img src="{{ image.src | asset_url }}" width="auto" height="auto">
+            {% endfor %}
+          {% endif %}  
+        </div>
+        <div class="remaining-images">
+
+        </div>
+      </div>
     </div>
     <div class="map-plus-other">
-
+      
     </div>
   </div>
 </div>
