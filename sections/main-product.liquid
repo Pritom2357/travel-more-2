@@ -105,6 +105,14 @@
             <span class="vendor-name">{{ product.vendor }}</span>
           </div>
         {% endif %}
+
+        <div class="variants">
+          <select class="variant-select">
+            {% for variant in product.variants %}
+              <option class="variant-option">{{ variant.title }}</option>
+            {% endfor %}
+          </select>
+        </div>
         
         <div class="price-section">
           <div class="current-price">
