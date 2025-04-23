@@ -71,7 +71,34 @@
 
     
     <div class="product-info-container">
-      <!-- Your product information goes here -->
+      <div class="essential-info">
+        <div class="product-name">
+          {{ product.title }}
+        </div>
+        {% if product.collections %}
+          <div class="product-collections d-flex">
+            {% for collection in product.collections %}
+              <button class="bg-outline">
+                <a class="" href="{{ collection.url }}">{{ collection.title }}</a>
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+        {% if product.tags %}
+          <div class="product-tags d-flex">
+            {% for tag in product.tags %}
+              <button class="">
+                {{ tag.name }}
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+        {% if product.vendor %}
+          <div class="product-vendor">
+            From: <span class="vendor-name">{{ product.vendor }}</span>
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>
