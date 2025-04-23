@@ -58,6 +58,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    color: #D3D3D3;
   }
   
   .image-plus-info {
@@ -267,12 +268,10 @@
     const scrollDownButton = document.querySelector('.scroll-down');
     
     if (scrollUpButton && scrollDownButton && scrollContainer) {
-      // Scroll up button
       scrollUpButton.addEventListener('click', function() {
         scrollContainer.scrollTop -= 100;
       });
       
-      // Scroll down button
       scrollDownButton.addEventListener('click', function() {
         scrollContainer.scrollTop += 100;
       });
