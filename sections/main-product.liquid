@@ -76,28 +76,58 @@
           {{ product.title }}
         </div>
         {% if product.collections %}
-          <div class="product-collections d-flex">
-            {% for collection in product.collections %}
-              <button class="bg-outline">
-                <a class="" href="{{ collection.url }}">{{ collection.title }}</a>
-              </button>
-            {% endfor %}
+          <div class="product-collections">
+            <span class="info-label">Collections:</span>
+            <div class="collection-buttons">
+              {% for collection in product.collections %}
+                <button class="collection-btn">
+                  <a href="{{ collection.url }}">{{ collection.title }}</a>
+                </button>
+              {% endfor %}
+            </div>
           </div>
         {% endif %}
         {% if product.tags %}
-          <div class="product-tags d-flex">
-            {% for tag in product.tags %}
-              <button class="">
-                {{ tag.name }}
-              </button>
-            {% endfor %}
+          <div class="product-tags">
+            <span class="info-label">Tags:</span>
+            <div class="tag-buttons">
+              {% for tag in product.tags %}
+                <button class="tag-btn" data-tag="{{ tag.name | handle }}">
+                  {{ tag }}
+                </button>
+              {% endfor %}
+            </div>
           </div>
         {% endif %}
         {% if product.vendor %}
           <div class="product-vendor">
-            From: <span class="vendor-name">{{ product.vendor }}</span>
+            <span class="info-label">From:</span> 
+            <span class="vendor-name">{{ product.vendor }}</span>
           </div>
         {% endif %}
+        
+        <div class="price-section">
+          <div class="current-price">
+            {% if product.compare_at_price_max > product.price %}
+              <span class="sale-price">{{ product.price | money }}</span>
+              <span class="compare-at-price">{{ product.compare_at_price | money }}</span>
+              <span class="discount-badge">
+                {% assign savings = product.compare_at_price_max | minus: product.price | times: 100 | divided_by: product.compare_at_price_max %}
+                Save {{ savings }}%
+              </span>
+            {% else %}
+              <span>{{ product.price | money }}</span>
+            {% endif %}
+          </div>
+          
+          <div class="availability">
+            {% if product.available %}
+              <span class="in-stock">In Stock</span>
+            {% else %}
+              <span class="out-of-stock">Out of Stock</span>
+            {% endif %}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -293,6 +323,7 @@
   .product-info-container {
     flex: 1;
     min-width: 300px;
+    padding: 0 10px;
   }
   
   /* Responsive Design */
@@ -343,6 +374,20 @@
     
     .scroll-down {
       transform: rotate(-90deg);
+    }
+
+    .product-info-container {
+      padding: 0;
+    }
+    
+    .price-section {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    
+    .current-price {
+      margin-bottom: 10px;
     }
   }
 
@@ -411,6 +456,143 @@
     align-self: stretch;
     opacity: 0.7;
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Product Info Styles */
+  .essential-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .product-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+
+  .info-label {
+    font-size: 14px;
+    color: #a0a0a0;
+    margin-right: 10px;
+  }
+
+  /* Collection buttons styling */
+  .product-collections, .product-tags {
+    margin-bottom: 10px;
+  }
+
+  .collection-buttons, .tag-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .collection-btn, .tag-btn {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .collection-btn {
+    background-color: rgba(74, 144, 226, 0.2);
+  }
+
+  .collection-btn:hover {
+    background-color: rgba(74, 144, 226, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .tag-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .collection-btn a {
+    color: #4a90e2;
+    text-decoration: none;
+  }
+
+  .tag-btn {
+    color: #e0e0e0;
+  }
+
+  .product-vendor {
+    margin-top: 5px;
+    font-size: 15px;
+  }
+
+  .vendor-name {
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  /* Price section styling */
+  .price-section {
+    margin-top: 15px;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .current-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .sale-price {
+    color: #4CAF50;
+  }
+
+  .compare-at-price {
+    text-decoration: line-through;
+    color: #a0a0a0;
+    font-size: 18px;
+  }
+
+  .discount-badge {
+    background-color: #4CAF50;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .availability {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .in-stock {
+    color: #4CAF50;
+  }
+
+  .out-of-stock {
+    color: #F44336;
+  }
+
+  /* Add this to your style section */
+  .tag-btn.active {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
   }
 </style>
 
@@ -598,5 +780,25 @@
         toggleAutoSlide();
       });
     }
+  });
+
+  // Add this to your existing script section
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Tag button click handler
+    const tagButtons = document.querySelectorAll('.tag-btn');
+    
+    tagButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const tagName = this.getAttribute('data-tag');
+        
+        // Toggle active state for visual feedback
+        this.classList.toggle('active');
+      
+        
+        console.log(`Tag clicked: ${tagName}`);
+        
+      });
+    });
   });
 </script>
