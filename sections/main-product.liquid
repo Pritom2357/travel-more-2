@@ -1,26 +1,287 @@
 <div class="product-container">
   <div class="image-plus-info">
-    <div class="image-container d-flex md:w-6">
-      <div class="images md:w-10">
-        <div class="current-image">
-          {% if product.images %}
-            {% for image in product.images %}
-              <img src="{{ image.src | imag_url: 'original' }}" width="auto" height="auto">
-            {% endfor %}
-          {% endif %}  
-        </div>
-        <div class="remaining-images">
-
-        </div>
+    <div class="product-gallery-container">
+      <div class="main-image-container">
+        {% if product.featured_image %}
+          <img 
+            id="mainProductImage" 
+            src="{{ product.featured_image | img_url: '800x' }}" 
+            alt="{{ product.featured_image.alt | escape }}"
+            class="main-product-image"
+          >
+        {% else %}
+          <div class="no-image-placeholder">
+            <span>No image available</span>
+          </div>
+        {% endif %}
       </div>
-    </div>
-    <div class="map-plus-other">
       
+      {% if product.images.size > 1 %}
+        <div class="thumbnails-container">
+          <div class="thumbnails-scroll-container">
+            {% for image in product.images %}
+              <div class="thumbnail-item {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}">
+                <img 
+                  src="{{ image | img_url: '150x' }}" 
+                  alt="{{ image.alt | escape }}"
+                  data-full-image="{{ image | img_url: '800x' }}"
+                  class="thumbnail-image"
+                  onclick="changeMainImage(this)"
+                >
+              </div>
+            {% endfor %}
+          </div>
+          
+          {% if product.images.size > 4 %}
+            <div class="thumbnail-controls">
+              <button class="thumbnail-scroll-btn scroll-up" aria-label="Scroll up">
+                <i class="bi bi-chevron-up"></i>
+              </button>
+              <button class="thumbnail-scroll-btn scroll-down" aria-label="Scroll down">
+                <i class="bi bi-chevron-down"></i>
+              </button>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+    
+    <div class="product-info-container">
+      <!-- Your product information goes here -->
     </div>
   </div>
 </div>
 
+<style>
+  .product-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .image-plus-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  
+  /* Product Gallery */
+  .product-gallery-container {
+    flex: 1;
+    min-width: 300px;
+    max-width: 50%;
+    display: flex;
+    gap: 15px;
+    position: relative;
+  }
+  
+  /* Main Image */
+  .main-image-container {
+    flex-grow: 1;
+    width: calc(100% - 95px);
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+  }
+  
+  .main-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .main-product-image:hover {
+    transform: scale(1.05);
+  }
+  
+  .no-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    color: #888;
+    font-size: 16px;
+  }
+  
+  /* Thumbnails */
+  .thumbnails-container {
+    width: 80px;
+    position: relative;
+  }
+  
+  .thumbnails-scroll-container {
+    height: 500px;
+    overflow-y: auto;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+    padding-right: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .thumbnails-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .thumbnail-item {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, border 0.2s ease;
+    border: 2px solid transparent;
+  }
+  
+  .thumbnail-item:hover {
+    opacity: 0.9;
+  }
+  
+  .thumbnail-item.active {
+    opacity: 1;
+    border: 2px solid #4a90e2;
+  }
+  
+  .thumbnail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .thumbnail-controls {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+  
+  .thumbnail-scroll-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .thumbnail-scroll-btn:hover {
+    background-color: rgba(255, 255, 255, 1);
+  }
+  
+  /* Product Info */
+  .product-info-container {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .image-plus-info {
+      flex-direction: column;
+    }
+    
+    .product-gallery-container {
+      max-width: 100%;
+      flex-direction: column-reverse;
+      margin-bottom: 20px;
+    }
+    
+    .main-image-container {
+      width: 100%;
+      height: 350px;
+    }
+    
+    .thumbnails-container {
+      width: 100%;
+      height: auto;
+      margin-bottom: 15px;
+    }
+    
+    .thumbnails-scroll-container {
+      height: auto;
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      height: 80px;
+      padding-bottom: 5px;
+    }
+    
+    .thumbnail-controls {
+      height: auto;
+      width: 100%;
+      flex-direction: row;
+      top: auto;
+      bottom: 50%;
+      transform: translateY(50%);
+      padding: 0 10px;
+    }
+    
+    .scroll-up {
+      transform: rotate(-90deg);
+    }
+    
+    .scroll-down {
+      transform: rotate(-90deg);
+    }
+  }
+</style>
+
 <script>
-  const product = "{{ product.featured_image }}";
-  console.log(product);;
+  function changeMainImage(thumbnail) {
+    const mainImage = document.getElementById('mainProductImage');
+    const fullImageUrl = thumbnail.getAttribute('data-full-image');
+    const thumbnailItems = document.querySelectorAll('.thumbnail-item');
+    
+    mainImage.src = fullImageUrl;
+    mainImage.alt = thumbnail.alt;
+    
+    thumbnailItems.forEach(item => {
+      item.classList.remove('active');
+    });
+    
+    thumbnail.parentElement.classList.add('active');
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const scrollContainer = document.querySelector('.thumbnails-scroll-container');
+    const scrollUpButton = document.querySelector('.scroll-up');
+    const scrollDownButton = document.querySelector('.scroll-down');
+    
+    if (scrollUpButton && scrollDownButton && scrollContainer) {
+      // Scroll up button
+      scrollUpButton.addEventListener('click', function() {
+        scrollContainer.scrollTop -= 100;
+      });
+      
+      // Scroll down button
+      scrollDownButton.addEventListener('click', function() {
+        scrollContainer.scrollTop += 100;
+      });
+    }
+    
+    const mainImage = document.getElementById('mainProductImage');
+    if (mainImage) {
+      mainImage.addEventListener('click', function() {
+      });
+    }
+  });
 </script>
