@@ -3,12 +3,20 @@
     <div class="product-gallery-container">
       <div class="main-image-container">
         {% if product.featured_image %}
-          <img 
-            id="mainProductImage" 
-            src="{{ product.featured_image | img_url: '800x' }}" 
-            alt="{{ product.featured_image.alt | escape }}"
-            class="main-product-image"
-          >
+          <div class="image-wrapper">
+            <img 
+              id="mainProductImage" 
+              src="{{ product.featured_image | img_url: '800x' }}" 
+              alt="{{ product.featured_image.alt | escape }}"
+              class="main-product-image current"
+            >
+            <img 
+              id="secondaryProductImage" 
+              src="{{ product.featured_image | img_url: '800x' }}" 
+              alt="{{ product.featured_image.alt | escape }}"
+              class="main-product-image next"
+            >
+          </div>
           
           {% if product.images.size > 1 %}
             <div class="gallery-navigation">
@@ -109,7 +117,17 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .main-product-image.fade-out {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  
+  .main-product-image.fade-in {
+    opacity: 1;
+    transform: scale(1);
   }
   
   .main-product-image:hover {
@@ -298,6 +316,64 @@
       transform: rotate(-90deg);
     }
   }
+
+  /* Add these styles for the crossfade effect */
+  .image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .main-product-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .main-product-image.current {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .main-product-image.next {
+    opacity: 0;
+    z-index: 1;
+  }
+
+  /* Animation for slide transitions */
+  @keyframes slideInFromRight {
+    0% {
+      transform: translateX(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInFromLeft {
+    0% {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .slide-from-right {
+    animation: slideInFromRight 0.5s forwards;
+  }
+
+  .slide-from-left {
+    animation: slideInFromLeft 0.5s forwards;
+  }
 </style>
 
 <script>
@@ -305,14 +381,55 @@
   let currentSlideIndex = 0;
   const slideDuration = 3000; 
   
-  function changeMainImage(thumbnail, manualChange = true) {
+  // Replace your changeMainImage function with this enhanced version
+  function changeMainImage(thumbnail, manualChange = true, direction = 'next') {
     const mainImage = document.getElementById('mainProductImage');
+    const secondaryImage = document.getElementById('secondaryProductImage');
     const fullImageUrl = thumbnail.getAttribute('data-full-image');
     const thumbnailItems = document.querySelectorAll('.thumbnail-item');
     
-    mainImage.src = fullImageUrl;
-    mainImage.alt = thumbnail.alt;
+    // Switch images for crossfade
+    secondaryImage.src = fullImageUrl;
+    secondaryImage.alt = thumbnail.alt;
     
+    // Remove any existing animation classes
+    mainImage.classList.remove('slide-from-left', 'slide-from-right');
+    secondaryImage.classList.remove('slide-from-left', 'slide-from-right');
+    
+    // Add directional slide animation
+    if (direction === 'next') {
+      secondaryImage.classList.add('slide-from-right');
+    } else if (direction === 'prev') {
+      secondaryImage.classList.add('slide-from-left');
+    }
+    
+    // Swap z-indices to bring secondary image to front
+    mainImage.classList.remove('current');
+    mainImage.classList.add('next');
+    secondaryImage.classList.remove('next');
+    secondaryImage.classList.add('current');
+    
+    // Swap the image references after animation completes
+    setTimeout(() => {
+      // Swap image sources
+      const tempSrc = mainImage.src;
+      const tempAlt = mainImage.alt;
+      mainImage.src = secondaryImage.src;
+      mainImage.alt = secondaryImage.alt;
+      secondaryImage.src = tempSrc;
+      secondaryImage.alt = tempAlt;
+      
+      // Swap classes back
+      mainImage.classList.remove('next');
+      mainImage.classList.add('current');
+      secondaryImage.classList.remove('current');
+      secondaryImage.classList.add('next');
+      
+      // Remove animation classes
+      secondaryImage.classList.remove('slide-from-left', 'slide-from-right');
+    }, 800);
+    
+    // Update active thumbnail
     thumbnailItems.forEach(item => {
       item.classList.remove('active');
     });
@@ -320,30 +437,33 @@
     thumbnail.parentElement.classList.add('active');
     currentSlideIndex = parseInt(thumbnail.parentElement.getAttribute('data-index'));
     
+    // If manually changed, reset the auto slide timer
     if (manualChange && slideInterval) {
       clearInterval(slideInterval);
       startAutoSlide();
     }
   }
   
+  // Update nextSlide function to indicate direction
   function nextSlide() {
     const thumbnails = document.querySelectorAll('.thumbnail-item');
     if (thumbnails.length === 0) return;
     
     currentSlideIndex = (currentSlideIndex + 1) % thumbnails.length;
     const nextThumbnail = thumbnails[currentSlideIndex].querySelector('img');
-    changeMainImage(nextThumbnail, false);
+    changeMainImage(nextThumbnail, false, 'next');
     
     scrollToThumbnail(thumbnails[currentSlideIndex]);
   }
   
+  // Update prevSlide function to indicate direction
   function prevSlide() {
     const thumbnails = document.querySelectorAll('.thumbnail-item');
     if (thumbnails.length === 0) return;
     
     currentSlideIndex = (currentSlideIndex - 1 + thumbnails.length) % thumbnails.length;
     const prevThumbnail = thumbnails[currentSlideIndex].querySelector('img');
-    changeMainImage(prevThumbnail, false);
+    changeMainImage(prevThumbnail, false, 'prev');
     
     scrollToThumbnail(thumbnails[currentSlideIndex]);
   }
