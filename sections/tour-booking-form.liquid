@@ -26,19 +26,19 @@
         
         <div class="form-field-group">
           <div class="form-field">
-            <label for="fullName">Full Name *</label>
+            <label for="fullName">Full Name <span class="required">*</span></label>
             <input type="text" id="fullName" name="fullName" required>
           </div>
           
           <div class="form-field">
-            <label for="email">Email Address *</label>
+            <label for="email">Email Address <span class="required">*</span></label>
             <input type="email" id="email" name="email" required>
           </div>
         </div>
         
         <div class="form-field-group">
           <div class="form-field">
-            <label for="phone">Phone Number *</label>
+            <label for="phone">Phone Number <span class="required">*</span></label>
             <input type="tel" id="phone" name="phone" required>
           </div>
           
@@ -48,34 +48,67 @@
           </div>
         </div>
         
-        <div class="form-field full-width">
-          <label for="preferredDate">Preferred Travel Date *</label>
-          <input type="date" id="preferredDate" name="preferredDate" required>
+        <h3>Trip Details</h3>
+        
+        <div class="form-field-group">
+          <div class="form-field">
+            <label for="startDate">Start Date <span class="required">*</span></label>
+            <input type="date" id="startDate" name="startDate" required min="">
+          </div>
+          
+          <div class="form-field">
+            <label for="stayDays">Number of Days <span class="required">*</span></label>
+            <input type="number" id="stayDays" name="stayDays" required min="1" value="1">
+          </div>
         </div>
         
-        <div class="form-field full-width">
-          <label for="specialRequirements">Special Requirements or Notes</label>
-          <textarea id="specialRequirements" name="specialRequirements" rows="3"></textarea>
+        <div class="form-field-group">
+          <div class="form-field">
+            <label for="totalTravelers">Total Travelers <span class="required">*</span></label>
+            <div class="travelers-counter">
+              <button type="button" class="counter-btn decrease" id="decreaseTravelers">-</button>
+              <input type="number" id="totalTravelers" name="totalTravelers" required min="1" value="1" readonly>
+              <button type="button" class="counter-btn increase" id="increaseTravelers">+</button>
+            </div>
+            <div class="max-travelers-info">
+              Maximum allowed: <span id="maxAllowedTravelers">1</span> travelers
+            </div>
+          </div>
+          
+          <div class="form-field">
+            <label for="specialRequirements">Special Requirements</label>
+            <textarea id="specialRequirements" name="specialRequirements" rows="3"></textarea>
+          </div>
         </div>
         
         <div class="form-field-group additional-travelers" id="additionalTravelersSection">
           <div class="form-field full-width">
-            <label>Additional Travelers</label>
-            <div id="additionalTravelers"></div>
-            <button type="button" id="addTraveler" class="add-traveler-button">+ Add Another Traveler</button>
+            <div class="section-header">
+              <h3>Additional Travelers</h3>
+              <div class="section-actions">
+                <button type="button" id="addTraveler" class="add-traveler-button">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" fill="currentColor"/>
+                  </svg>
+                  Add Traveler
+                </button>
+              </div>
+            </div>
+            <div id="additionalTravelers" class="travelers-container"></div>
           </div>
         </div>
         
         <div class="form-field full-width">
           <div class="checkbox-container">
             <input type="checkbox" id="termsAgreement" name="termsAgreement" required>
-            <label for="termsAgreement">I agree to the <a href="/policies/terms-of-service" target="_blank">Terms and Conditions</a> *</label>
+            <label for="termsAgreement">I agree to the <a href="/policies/terms-of-service" target="_blank">Terms and Conditions</a> <span class="required">*</span></label>
           </div>
         </div>
         
         <div class="form-actions">
           <input type="hidden" id="variantId" name="variantId">
           <input type="hidden" id="productQuantity" name="quantity">
+          <input type="hidden" id="maxPeople" name="maxPeople">
           <button type="submit" id="completeBooking" class="complete-booking-button">Complete Booking</button>
         </div>
       </form>
@@ -97,32 +130,37 @@
     max-width: 800px;
     margin: 0 auto;
     background-color: {{ section.settings.form_bg_color }};
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    padding: 36px;
   }
   
   .booking-title {
-    font-size: 24px;
+    font-size: 28px;
     margin-bottom: 30px;
     text-align: center;
     color: {{ section.settings.heading_color }};
+    font-weight: 700;
+    letter-spacing: -0.5px;
   }
   
   .product-summary {
     display: flex;
-    gap: 20px;
+    gap: 24px;
     margin-bottom: 30px;
-    padding: 15px;
+    padding: 20px;
     background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 6px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
   
   .product-image {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   
   .product-image img {
@@ -133,38 +171,63 @@
   
   .product-info {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   
   .product-info h3 {
     margin-top: 0;
     margin-bottom: 5px;
-    font-size: 18px;
+    font-size: 22px;
+    font-weight: 600;
+    color: {{ section.settings.heading_color }};
   }
   
   .booking-price {
-    margin-top: 10px;
+    margin-top: 12px;
     font-weight: bold;
+    font-size: 18px;
     color: {{ section.settings.price_color }};
+  }
+  
+  .booking-quantity {
+    margin-top: 8px;
+    font-size: 15px;
   }
   
   .divider {
     height: 1px;
     background-color: rgba(255, 255, 255, 0.1);
-    margin: 30px 0;
+    margin: 36px 0;
   }
   
   /* Form styling */
   .booking-form h3 {
     margin-bottom: 20px;
-    font-size: 18px;
+    font-size: 20px;
     color: {{ section.settings.heading_color }};
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .booking-form h3:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    bottom: -6px;
+    left: 0;
+    background-color: {{ section.settings.accent_color }};
+    border-radius: 2px;
   }
   
   .form-field-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    margin-bottom: 20px;
+    gap: 24px;
+    margin-bottom: 32px;
   }
   
   .form-field {
@@ -178,8 +241,9 @@
   
   .form-field label {
     display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 500;
     color: {{ section.settings.label_color }};
   }
   
@@ -187,13 +251,14 @@
   .form-field textarea,
   .form-field select {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 6px;
+    border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.05);
     color: {{ section.settings.input_text_color }};
     font-size: 16px;
-    transition: border-color 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   }
   
   .form-field input:focus,
@@ -201,26 +266,119 @@
   .form-field select:focus {
     border-color: {{ section.settings.accent_color }};
     outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+  }
+  
+  .required {
+    color: #ff5252;
+    margin-left: 3px;
   }
   
   .checkbox-container {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 12px;
     margin-top: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.02);
   }
   
   .checkbox-container input[type="checkbox"] {
-    width: auto;
-    margin-top: 4px;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: {{ section.settings.accent_color }};
   }
   
   .checkbox-container label {
-    font-size: 14px;
+    font-size: 15px;
+    line-height: 1.4;
   }
   
   .checkbox-container a {
     color: {{ section.settings.accent_color }};
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .checkbox-container a:hover {
+    text-decoration: underline;
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .section-header h3 {
+    margin: 0;
+  }
+  
+  .section-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .travelers-counter {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    height: 50px;
+  }
+  
+  .counter-btn {
+    width: 50px;
+    height: 48px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: {{ section.settings.accent_color }};
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .counter-btn.decrease {
+    border-radius: 8px 0 0 8px;
+  }
+  
+  .counter-btn.increase {
+    border-radius: 0 8px 8px 0;
+  }
+  
+  .counter-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .counter-btn:disabled {
+    color: rgba(255, 255, 255, 0.3);
+    cursor: not-allowed;
+  }
+  
+  #totalTravelers {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    height: 100%;
+    box-shadow: none;
+    font-size: 18px;
+    font-weight: 600;
+    color: {{ section.settings.input_text_color }};
+  }
+  
+  .max-travelers-info {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #888;
   }
   
   .additional-travelers {
@@ -229,18 +387,34 @@
     border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
   
+  .travelers-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
   .traveler-entry {
     margin-bottom: 20px;
-    padding: 15px;
+    padding: 20px;
     background-color: rgba(255, 255, 255, 0.03);
-    border-radius: 6px;
+    border-radius: 10px;
     position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    animation: fadeIn 0.3s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
   .traveler-entry h4 {
     margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 16px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: {{ section.settings.heading_color }};
+    font-weight: 500;
   }
   
   .remove-traveler {
@@ -251,28 +425,48 @@
     border: none;
     color: #ff6b6b;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 22px;
     line-height: 1;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+  }
+  
+  .remove-traveler:hover {
+    background-color: rgba(255, 107, 107, 0.1);
   }
   
   .add-traveler-button {
     background-color: transparent;
-    border: 1px dashed rgba(255, 255, 255, 0.3);
+    border: 2px dashed rgba(255, 255, 255, 0.2);
     color: {{ section.settings.accent_color }};
     padding: 12px 20px;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 500;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    gap: 10px;
+  }
+  
+  .add-traveler-button svg {
+    transition: transform 0.2s ease;
   }
   
   .add-traveler-button:hover {
     background-color: rgba(255, 255, 255, 0.05);
+    border-color: {{ section.settings.accent_color }};
+  }
+  
+  .add-traveler-button:hover svg {
+    transform: rotate(90deg);
   }
   
   .form-actions {
@@ -284,28 +478,37 @@
     background-color: {{ section.settings.button_bg_color }};
     color: {{ section.settings.button_text_color }};
     border: none;
-    border-radius: 6px;
-    padding: 14px 30px;
-    font-size: 16px;
+    border-radius: 10px;
+    padding: 16px 36px;
+    font-size: 18px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    min-width: 200px;
+    transition: all 0.3s ease;
+    min-width: 250px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
   }
   
   .complete-booking-button:hover {
     background-color: {{ section.settings.button_hover_color }};
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
   }
   
   .complete-booking-button:active {
     transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
   /* Responsive adjustments */
   @media (max-width: 768px) {
     .booking-form-wrapper {
-      padding: 20px;
+      padding: 24px;
+    }
+    
+    .booking-title {
+      font-size: 24px;
     }
     
     .product-summary {
@@ -320,7 +523,16 @@
     
     .form-field-group {
       flex-direction: column;
-      gap: 15px;
+      gap: 16px;
+    }
+    
+    .booking-form h3 {
+      font-size: 18px;
+    }
+    
+    .complete-booking-button {
+      width: 100%;
+      padding: 14px;
     }
   }
 </style>
@@ -353,6 +565,7 @@
     const quantityDisplay = document.getElementById('bookingQuantity');
     const variantIdInput = document.getElementById('variantId');
     const quantityInput = document.getElementById('productQuantity');
+    const maxPeopleInput = document.getElementById('maxPeople');
     
     if (bookingProduct.image) {
       productImage.src = bookingProduct.image;
@@ -378,30 +591,149 @@
     variantIdInput.value = bookingProduct.variant_id;
     quantityInput.value = bookingProduct.quantity;
     
+    // Extract max people from variant title or set a default
+    let maxPeople = 4; // Default maximum
+    
+    // Try to extract max people from variant title
+    if (bookingProduct.variant_title) {
+      const peopleMatch = bookingProduct.variant_title.match(/(\d+)\s*people/i);
+      if (peopleMatch && peopleMatch[1]) {
+        maxPeople = parseInt(peopleMatch[1]);
+      }
+    }
+    
+    // Set max people in the form
+    maxPeopleInput.value = maxPeople;
+    document.getElementById('maxAllowedTravelers').textContent = maxPeople;
+    
+    // Set minimum date to today
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const todayStr = `${yyyy}-${mm}-${dd}`;
+    document.getElementById('startDate').min = todayStr;
+    
+    // Set up travelers counter
+    const totalTravelersInput = document.getElementById('totalTravelers');
+    const decreaseTravelersBtn = document.getElementById('decreaseTravelers');
+    const increaseTravelersBtn = document.getElementById('increaseTravelers');
+    let currentTravelers = 1;
+    
+    // Function to update travelers count
+    function updateTravelersCount() {
+      totalTravelersInput.value = currentTravelers;
+      
+      // Enable/disable buttons based on count
+      decreaseTravelersBtn.disabled = currentTravelers <= 1;
+      increaseTravelersBtn.disabled = currentTravelers >= maxPeople;
+      
+      // Show/hide add traveler button
+      const addTravelerBtn = document.getElementById('addTraveler');
+      if (currentTravelers <= 1) {
+        // No additional travelers, hide the section
+        document.getElementById('additionalTravelersSection').style.display = 'none';
+      } else {
+        // Show the section and update the button state
+        document.getElementById('additionalTravelersSection').style.display = 'block';
+        addTravelerBtn.disabled = document.querySelectorAll('.traveler-entry').length >= currentTravelers - 1;
+      }
+    }
+    
+    // Set up add/remove traveler functionality
+    decreaseTravelersBtn.addEventListener('click', function() {
+      if (currentTravelers > 1) {
+        currentTravelers--;
+        updateTravelersCount();
+        
+        // Remove excess traveler entries if needed
+        const travelerEntries = document.querySelectorAll('.traveler-entry');
+        if (travelerEntries.length > currentTravelers - 1) {
+          // Remove the last traveler entry
+          travelerEntries[travelerEntries.length - 1].remove();
+        }
+        
+        // Renumber remaining travelers
+        renumberTravelers();
+      }
+    });
+    
+    increaseTravelersBtn.addEventListener('click', function() {
+      if (currentTravelers < maxPeople) {
+        currentTravelers++;
+        updateTravelersCount();
+      }
+    });
+    
+    // Initialize travelers count
+    updateTravelersCount();
+    
     // Set up the form to handle additional travelers
     const addTravelerBtn = document.getElementById('addTraveler');
     const additionalTravelersContainer = document.getElementById('additionalTravelers');
-    let travelerCount = 0;
+    
+    // Function to renumber all traveler entries
+    function renumberTravelers() {
+      const travelerEntries = document.querySelectorAll('.traveler-entry');
+      travelerEntries.forEach((entry, index) => {
+        const travelerNumber = index + 2; // +2 because main traveler is #1
+        entry.querySelector('h4').textContent = `Traveler #${travelerNumber}`;
+        
+        // Update the data attributes and input IDs if needed
+        entry.dataset.traveler = index;
+        
+        // Update input names and IDs
+        const nameInput = entry.querySelector('input[name^="additional_travelers"][name$="[name]"]');
+        const ageInput = entry.querySelector('input[name^="additional_travelers"][name$="[age]"]');
+        
+        if (nameInput) {
+          nameInput.name = `additional_travelers[${index}][name]`;
+          nameInput.id = `traveler_name_${index}`;
+        }
+        
+        if (ageInput) {
+          ageInput.name = `additional_travelers[${index}][age]`;
+          ageInput.id = `traveler_age_${index}`;
+        }
+        
+        // Update remove button data attribute
+        const removeBtn = entry.querySelector('.remove-traveler');
+        if (removeBtn) {
+          removeBtn.dataset.traveler = index;
+        }
+      });
+      
+      // Enable/disable add button based on current travelers count
+      addTravelerBtn.disabled = travelerEntries.length >= currentTravelers - 1;
+    }
     
     // Function to add a new traveler form
     function addTravelerForm() {
-      travelerCount++;
+      const travelerEntries = document.querySelectorAll('.traveler-entry');
+      
+      // Don't add more travelers than allowed
+      if (travelerEntries.length >= currentTravelers - 1) {
+        return;
+      }
+      
+      const travelerIndex = travelerEntries.length;
+      const travelerNumber = travelerIndex + 2; // +2 because main traveler is #1
       
       const travelerDiv = document.createElement('div');
       travelerDiv.className = 'traveler-entry';
-      travelerDiv.dataset.traveler = travelerCount;
+      travelerDiv.dataset.traveler = travelerIndex;
       
       travelerDiv.innerHTML = `
-        <h4>Traveler #${travelerCount + 1}</h4>
-        <button type="button" class="remove-traveler" data-traveler="${travelerCount}">×</button>
+        <h4>Traveler #${travelerNumber}</h4>
+        <button type="button" class="remove-traveler" data-traveler="${travelerIndex}">×</button>
         <div class="form-field-group">
           <div class="form-field">
-            <label for="traveler_name_${travelerCount}">Full Name</label>
-            <input type="text" id="traveler_name_${travelerCount}" name="additional_travelers[${travelerCount}][name]">
+            <label for="traveler_name_${travelerIndex}">Full Name</label>
+            <input type="text" id="traveler_name_${travelerIndex}" name="additional_travelers[${travelerIndex}][name]">
           </div>
           <div class="form-field">
-            <label for="traveler_age_${travelerCount}">Age</label>
-            <input type="number" id="traveler_age_${travelerCount}" name="additional_travelers[${travelerCount}][age]" min="0">
+            <label for="traveler_age_${travelerIndex}">Age</label>
+            <input type="number" id="traveler_age_${travelerIndex}" name="additional_travelers[${travelerIndex}][age]" min="0">
           </div>
         </div>
       `;
@@ -410,12 +742,12 @@
       
       // Add event listener for the remove button
       travelerDiv.querySelector('.remove-traveler').addEventListener('click', function() {
-        const travelerIndex = this.getAttribute('data-traveler');
-        const travelerToRemove = document.querySelector(`.traveler-entry[data-traveler="${travelerIndex}"]`);
-        if (travelerToRemove) {
-          travelerToRemove.remove();
-        }
+        travelerDiv.remove();
+        renumberTravelers(); // Renumber after removal
       });
+      
+      // Update button state
+      renumberTravelers();
     }
     
     // Add event listener to the "Add Another Traveler" button
@@ -425,6 +757,15 @@
     const bookingForm = document.getElementById('tourBookingForm');
     bookingForm.addEventListener('submit', function(e) {
       e.preventDefault();
+      
+      // Validate that additional travelers match the count
+      const travelerEntries = document.querySelectorAll('.traveler-entry');
+      const totalTravelersCount = parseInt(document.getElementById('totalTravelers').value);
+      
+      if (travelerEntries.length !== totalTravelersCount - 1) {
+        alert(`Please add details for all ${totalTravelersCount - 1} additional travelers.`);
+        return;
+      }
       
       // Collect form data
       const formData = new FormData(this);
@@ -436,15 +777,16 @@
           email: formData.get('email'),
           phone: formData.get('phone'),
           nationality: formData.get('nationality'),
-          preferredDate: formData.get('preferredDate'),
+          totalTravelers: formData.get('totalTravelers'),
+          startDate: formData.get('startDate'),
+          stayDays: formData.get('stayDays'),
           specialRequirements: formData.get('specialRequirements')
         },
         additionalTravelers: []
       };
       
       // Collect additional travelers data
-      const travelerEntries = document.querySelectorAll('.traveler-entry');
-      travelerEntries.forEach(entry => {
+      travelerEntries.forEach((entry, index) => {
         const travelerIndex = entry.dataset.traveler;
         bookingData.additionalTravelers.push({
           name: formData.get(`additional_travelers[${travelerIndex}][name]`),
@@ -452,9 +794,7 @@
         });
       });
       
-      // Submit the booking (you can customize this part based on your requirements)
-      
-      // First, add the product to the cart
+      // Submit the booking via cart
       fetch('/cart/add.js', {
         method: 'POST',
         headers: {
@@ -464,16 +804,15 @@
           id: bookingData.variantId,
           quantity: bookingData.quantity,
           properties: {
-            'Booking Information': JSON.stringify({
-              traveler_name: bookingData.customerInfo.name,
-              traveler_email: bookingData.customerInfo.email,
-              traveler_phone: bookingData.customerInfo.phone,
-              traveler_nationality: bookingData.customerInfo.nationality,
-              preferred_date: bookingData.customerInfo.preferredDate,
-              special_requirements: bookingData.customerInfo.specialRequirements,
-              additional_travelers: bookingData.additionalTravelers.length > 0 ? 
-                bookingData.additionalTravelers : 'None'
-            })
+            'Lead Traveler': bookingData.customerInfo.name,
+            'Email': bookingData.customerInfo.email,
+            'Phone': bookingData.customerInfo.phone,
+            'Nationality': bookingData.customerInfo.nationality || 'Not specified',
+            'Start Date': bookingData.customerInfo.startDate,
+            'Duration (Days)': bookingData.customerInfo.stayDays,
+            'Total Travelers': bookingData.customerInfo.totalTravelers,
+            'Special Requirements': bookingData.customerInfo.specialRequirements || 'None',
+            'Additional Travelers': JSON.stringify(bookingData.additionalTravelers)
           }
         })
       })
