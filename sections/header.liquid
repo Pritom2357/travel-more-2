@@ -41,8 +41,9 @@
           <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
             <i class="bi bi-person"></i>
           </a>
-          <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2" aria-label="Cart">
+          <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2 cart-link-container" aria-label="Cart">
             <i class="bi bi-cart"></i>
+            <span class="cart-count-badge">{{ cart.item_count }}</span>
           </a>
         </div>
       {% endcapture %}
@@ -675,6 +676,34 @@
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
   }
+
+  .cart-link-container {
+    position: relative;
+  }
+
+  .cart-count-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: {{ section.settings.accent_color | default: '#ff4242' }};
+    color: white;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    line-height: 1;
+  }
+
+  /* Hide badge when cart is empty */
+  .cart-count-badge:empty,
+  .cart-count-badge[data-count="0"] {
+    display: none;
+  }
 </style>
 
 {% if section.settings.is_sticky_header %}
@@ -717,13 +746,11 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Search modal functionality
     const searchModal = document.getElementById('searchModal');
     const closeSearchModalBtn = document.getElementById('closeSearchModal');
     const searchInputs = document.querySelectorAll('.form-control[type="search"]');
     const searchModalInput = document.getElementById('searchModalInput');
     
-    // Open modal when clicking on any search input
     searchInputs.forEach(input => {
       input.addEventListener('click', function(e) {
         e.preventDefault();
@@ -734,26 +761,22 @@
       });
     });
     
-    // Close modal with close button
     closeSearchModalBtn.addEventListener('click', function() {
       searchModal.classList.remove('show');
     });
     
-    // Close modal when clicking outside
     searchModal.addEventListener('click', function(e) {
       if (e.target === searchModal) {
         searchModal.classList.remove('show');
       }
     });
     
-    // Close modal with ESC key
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && searchModal.classList.contains('show')) {
         searchModal.classList.remove('show');
       }
     });
     
-    // Make current inputs open the modal instead of submitting
     const searchForms = document.querySelectorAll('.search-form');
     searchForms.forEach(form => {
       form.addEventListener('submit', function(e) {
@@ -764,6 +787,23 @@
         searchModalInput.focus();
       });
     });
+  });
+
+  function updateCartCount() {
+    fetch('/cart.js')
+      .then(response => response.json())
+      .then(cart => {
+        const countBadges = document.querySelectorAll('.cart-count-badge');
+        countBadges.forEach(badge => {
+          badge.textContent = cart.item_count;
+          badge.setAttribute('data-count', cart.item_count);
+        });
+      })
+      .catch(error => console.error('Error updating cart count:', error));
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    updateCartCount();
   });
 </script>
 
