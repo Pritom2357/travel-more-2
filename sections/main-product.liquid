@@ -129,7 +129,7 @@
           {% endunless %}
           
           <!-- Hidden select for the actual variant ID -->
-          <select name="id" id="productSelect" class="product-variant-id" style="display: none;">
+          <select name="id" id="productSelect" class="product-variant-id" style="display: block;">
             {% for variant in product.variants %}
               <option value="{{ variant.id }}" 
                 {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
@@ -138,15 +138,6 @@
               </option>
             {% endfor %}
           </select>
-          
-          <div class="quantity-selector">
-            <label for="quantity" style="color: {{ section.settings.label_color }};">Quantity:</label>
-            <div class="quantity-buttons">
-              <button type="button" class="quantity-btn decrease" aria-label="Decrease quantity">-</button>
-              <input type="number" id="quantity" name="quantity" value="1" min="1" class="quantity-input">
-              <button type="button" class="quantity-btn increase" aria-label="Increase quantity">+</button>
-            </div>
-          </div>
           
           <div class="add-to-cart-container">
             <button type="button" 
@@ -694,63 +685,6 @@
   .single-option-selector:hover, .single-option-selector:focus {
     border-color: #4a90e2;
     outline: none;
-  }
-
-  /* Quantity selector styling */
-  .quantity-selector {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-top: 10px;
-  }
-
-  .quantity-selector label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #a0a0a0;
-  }
-
-  .quantity-buttons {
-    display: flex;
-    align-items: center;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    overflow: hidden;
-  }
-
-  .quantity-input {
-    width: 50px;
-    text-align: center;
-    border: none;
-    padding: 10px 0;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #333;
-    font-size: 14px;
-    -moz-appearance: textfield;
-  }
-
-  .quantity-input::-webkit-inner-spin-button, 
-  .quantity-input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  .quantity-btn {
-    width: 36px;
-    height: 36px;
-    border: none;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #333;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .quantity-btn:hover {
-    background-color: rgba(255, 255, 255, 0.2);
   }
 
   /* Add to cart button */
