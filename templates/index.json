@@ -43,7 +43,7 @@
         "is_header": true,
         "bg_header": "#ccfdf5",
         "header_bg_opacity": 0.3,
-        "header_text_color": "#121b48",
+        "header_text_color": "#677ded",
         "header_text_hover_color": "#e8298d",
         "logo": "shopify://shop_images/logo.png",
         "logo_size": 60,
