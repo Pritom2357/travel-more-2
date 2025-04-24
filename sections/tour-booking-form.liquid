@@ -1,0 +1,571 @@
+<div class="booking-form-container" style="background-color: {{ section.settings.background_color }};">
+  <div class="booking-form-wrapper">
+    <div class="booking-details">
+      <h2 class="booking-title">Complete Your Tour Booking</h2>
+      
+      <div class="product-summary">
+        <div class="product-image">
+          <img id="bookingProductImage" src="" alt="Tour Image">
+        </div>
+        <div class="product-info">
+          <h3 id="bookingProductTitle"></h3>
+          <p id="bookingVariantTitle"></p>
+          <div class="booking-price">
+            <span id="bookingProductPrice"></span>
+          </div>
+          <div class="booking-quantity">
+            <span>Quantity: </span><span id="bookingQuantity"></span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="divider"></div>
+      
+      <form id="tourBookingForm" class="booking-form">
+        <h3>Traveler Information</h3>
+        
+        <div class="form-field-group">
+          <div class="form-field">
+            <label for="fullName">Full Name *</label>
+            <input type="text" id="fullName" name="fullName" required>
+          </div>
+          
+          <div class="form-field">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+        </div>
+        
+        <div class="form-field-group">
+          <div class="form-field">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+          
+          <div class="form-field">
+            <label for="nationality">Nationality</label>
+            <input type="text" id="nationality" name="nationality">
+          </div>
+        </div>
+        
+        <div class="form-field full-width">
+          <label for="preferredDate">Preferred Travel Date *</label>
+          <input type="date" id="preferredDate" name="preferredDate" required>
+        </div>
+        
+        <div class="form-field full-width">
+          <label for="specialRequirements">Special Requirements or Notes</label>
+          <textarea id="specialRequirements" name="specialRequirements" rows="3"></textarea>
+        </div>
+        
+        <div class="form-field-group additional-travelers" id="additionalTravelersSection">
+          <div class="form-field full-width">
+            <label>Additional Travelers</label>
+            <div id="additionalTravelers"></div>
+            <button type="button" id="addTraveler" class="add-traveler-button">+ Add Another Traveler</button>
+          </div>
+        </div>
+        
+        <div class="form-field full-width">
+          <div class="checkbox-container">
+            <input type="checkbox" id="termsAgreement" name="termsAgreement" required>
+            <label for="termsAgreement">I agree to the <a href="/policies/terms-of-service" target="_blank">Terms and Conditions</a> *</label>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <input type="hidden" id="variantId" name="variantId">
+          <input type="hidden" id="productQuantity" name="quantity">
+          <button type="submit" id="completeBooking" class="complete-booking-button">Complete Booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  .booking-form-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+  }
+  
+  .booking-form-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: {{ section.settings.form_bg_color }};
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+  }
+  
+  .booking-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: {{ section.settings.heading_color }};
+  }
+  
+  .product-summary {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+  }
+  
+  .product-image {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 6px;
+  }
+  
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .product-info {
+    flex: 1;
+  }
+  
+  .product-info h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 18px;
+  }
+  
+  .booking-price {
+    margin-top: 10px;
+    font-weight: bold;
+    color: {{ section.settings.price_color }};
+  }
+  
+  .divider {
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 30px 0;
+  }
+  
+  /* Form styling */
+  .booking-form h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: {{ section.settings.heading_color }};
+  }
+  
+  .form-field-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .form-field {
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  .form-field.full-width {
+    flex: 0 0 100%;
+  }
+  
+  .form-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: {{ section.settings.label_color }};
+  }
+  
+  .form-field input,
+  .form-field textarea,
+  .form-field select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: {{ section.settings.input_text_color }};
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+  }
+  
+  .form-field input:focus,
+  .form-field textarea:focus,
+  .form-field select:focus {
+    border-color: {{ section.settings.accent_color }};
+    outline: none;
+  }
+  
+  .checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .checkbox-container input[type="checkbox"] {
+    width: auto;
+    margin-top: 4px;
+  }
+  
+  .checkbox-container label {
+    font-size: 14px;
+  }
+  
+  .checkbox-container a {
+    color: {{ section.settings.accent_color }};
+  }
+  
+  .additional-travelers {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .traveler-entry {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    position: relative;
+  }
+  
+  .traveler-entry h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+  
+  .remove-traveler {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+  }
+  
+  .add-traveler-button {
+    background-color: transparent;
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    color: {{ section.settings.accent_color }};
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .add-traveler-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .form-actions {
+    margin-top: 40px;
+    text-align: center;
+  }
+  
+  .complete-booking-button {
+    background-color: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    border: none;
+    border-radius: 6px;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    min-width: 200px;
+  }
+  
+  .complete-booking-button:hover {
+    background-color: {{ section.settings.button_hover_color }};
+    transform: translateY(-2px);
+  }
+  
+  .complete-booking-button:active {
+    transform: translateY(0);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .booking-form-wrapper {
+      padding: 20px;
+    }
+    
+    .product-summary {
+      flex-direction: column;
+    }
+    
+    .product-image {
+      width: 100%;
+      height: auto;
+      max-height: 200px;
+    }
+    
+    .form-field-group {
+      flex-direction: column;
+      gap: 15px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the product data from sessionStorage
+    let bookingProduct;
+    try {
+      bookingProduct = JSON.parse(sessionStorage.getItem('booking_product'));
+    } catch (e) {
+      console.error('Error retrieving product data', e);
+      bookingProduct = null;
+    }
+    
+    // If there's no product data, redirect back to the products page
+    if (!bookingProduct) {
+      console.warn('No product selected for booking');
+      // Optionally redirect or show a message
+      document.querySelector('.booking-form-container').innerHTML = 
+        '<div class="error-message">No product selected for booking. <a href="/collections/all">Browse tours</a></div>';
+      return;
+    }
+    
+    // Populate the product summary
+    const productImage = document.getElementById('bookingProductImage');
+    const productTitle = document.getElementById('bookingProductTitle');
+    const variantTitle = document.getElementById('bookingVariantTitle');
+    const productPrice = document.getElementById('bookingProductPrice');
+    const quantityDisplay = document.getElementById('bookingQuantity');
+    const variantIdInput = document.getElementById('variantId');
+    const quantityInput = document.getElementById('productQuantity');
+    
+    if (bookingProduct.image) {
+      productImage.src = bookingProduct.image;
+      productImage.alt = bookingProduct.product_title;
+    } else {
+      productImage.src = "{{ 'no-image.jpg' | asset_url }}";
+      productImage.alt = "No image available";
+    }
+    
+    productTitle.textContent = bookingProduct.product_title;
+    variantTitle.textContent = bookingProduct.variant_title !== 'Default Title' ? bookingProduct.variant_title : '';
+    
+    // Format the price
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: '{{ shop.currency }}'
+    });
+    
+    productPrice.textContent = formatter.format(bookingProduct.price / 100);
+    quantityDisplay.textContent = bookingProduct.quantity;
+    
+    // Set the hidden inputs for the form submission
+    variantIdInput.value = bookingProduct.variant_id;
+    quantityInput.value = bookingProduct.quantity;
+    
+    // Set up the form to handle additional travelers
+    const addTravelerBtn = document.getElementById('addTraveler');
+    const additionalTravelersContainer = document.getElementById('additionalTravelers');
+    let travelerCount = 0;
+    
+    // Function to add a new traveler form
+    function addTravelerForm() {
+      travelerCount++;
+      
+      const travelerDiv = document.createElement('div');
+      travelerDiv.className = 'traveler-entry';
+      travelerDiv.dataset.traveler = travelerCount;
+      
+      travelerDiv.innerHTML = `
+        <h4>Traveler #${travelerCount + 1}</h4>
+        <button type="button" class="remove-traveler" data-traveler="${travelerCount}">×</button>
+        <div class="form-field-group">
+          <div class="form-field">
+            <label for="traveler_name_${travelerCount}">Full Name</label>
+            <input type="text" id="traveler_name_${travelerCount}" name="additional_travelers[${travelerCount}][name]">
+          </div>
+          <div class="form-field">
+            <label for="traveler_age_${travelerCount}">Age</label>
+            <input type="number" id="traveler_age_${travelerCount}" name="additional_travelers[${travelerCount}][age]" min="0">
+          </div>
+        </div>
+      `;
+      
+      additionalTravelersContainer.appendChild(travelerDiv);
+      
+      // Add event listener for the remove button
+      travelerDiv.querySelector('.remove-traveler').addEventListener('click', function() {
+        const travelerIndex = this.getAttribute('data-traveler');
+        const travelerToRemove = document.querySelector(`.traveler-entry[data-traveler="${travelerIndex}"]`);
+        if (travelerToRemove) {
+          travelerToRemove.remove();
+        }
+      });
+    }
+    
+    // Add event listener to the "Add Another Traveler" button
+    addTravelerBtn.addEventListener('click', addTravelerForm);
+    
+    // Form submission handler
+    const bookingForm = document.getElementById('tourBookingForm');
+    bookingForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Collect form data
+      const formData = new FormData(this);
+      const bookingData = {
+        variantId: formData.get('variantId'),
+        quantity: formData.get('quantity'),
+        customerInfo: {
+          name: formData.get('fullName'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+          nationality: formData.get('nationality'),
+          preferredDate: formData.get('preferredDate'),
+          specialRequirements: formData.get('specialRequirements')
+        },
+        additionalTravelers: []
+      };
+      
+      // Collect additional travelers data
+      const travelerEntries = document.querySelectorAll('.traveler-entry');
+      travelerEntries.forEach(entry => {
+        const travelerIndex = entry.dataset.traveler;
+        bookingData.additionalTravelers.push({
+          name: formData.get(`additional_travelers[${travelerIndex}][name]`),
+          age: formData.get(`additional_travelers[${travelerIndex}][age]`)
+        });
+      });
+      
+      // Submit the booking (you can customize this part based on your requirements)
+      
+      // First, add the product to the cart
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: bookingData.variantId,
+          quantity: bookingData.quantity,
+          properties: {
+            'Booking Information': JSON.stringify({
+              traveler_name: bookingData.customerInfo.name,
+              traveler_email: bookingData.customerInfo.email,
+              traveler_phone: bookingData.customerInfo.phone,
+              traveler_nationality: bookingData.customerInfo.nationality,
+              preferred_date: bookingData.customerInfo.preferredDate,
+              special_requirements: bookingData.customerInfo.specialRequirements,
+              additional_travelers: bookingData.additionalTravelers.length > 0 ? 
+                bookingData.additionalTravelers : 'None'
+            })
+          }
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // After successfully adding to cart, redirect to checkout
+        window.location.href = '/checkout';
+      })
+      .catch(error => {
+        console.error('Error adding booking to cart:', error);
+        alert('There was an error processing your booking. Please try again.');
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Tour Booking Form",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "form_bg_color",
+      "label": "Form Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#4a90e2"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "Input Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price Color",
+      "default": "#4CAF50"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#4a90e2"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#4a90e2"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button Hover Color",
+      "default": "#3a7bc8"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tour Booking Form",
+      "category": "Forms"
+    }
+  ]
+}
+{% endschema %}

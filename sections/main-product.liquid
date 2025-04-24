@@ -141,10 +141,10 @@
           
           <div class="add-to-cart-container">
             <button type="button" 
-              id="addToCart" 
+              id="continueToBooking" 
               class="add-to-cart-button {% unless product.available %}disabled{% endunless %}"
               {% unless product.available %}disabled{% endunless %}>
-              {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
+              {% if product.available %}Continue to Booking{% else %}Sold Out{% endif %}
             </button>
           </div>
         </div>
@@ -1326,6 +1326,36 @@
         console.error('Error adding to cart:', error);
         alert('Could not add to cart. Please try again.');
       });
+    }
+
+    if (addToCartButton) {
+      addToCartButton.addEventListener('click', function() {
+        if (!currentVariant.available) return;
+        
+        const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+        
+        redirectToBookingForm(currentVariant.id, quantity);
+      });
+    }
+
+    function redirectToBookingForm(variantId, quantity) {
+      const bookingUrl = `/pages/booking?variant_id=${variantId}&quantity=${quantity}`;
+      
+      try {
+        sessionStorage.setItem('booking_product', JSON.stringify({
+          product_title: productJson.title,
+          product_id: productJson.id,
+          variant_id: variantId,
+          variant_title: currentVariant.title,
+          price: currentVariant.price,
+          image: productJson.featured_image,
+          quantity: quantity
+        }));
+      } catch (e) {
+        console.error('Error storing product data', e);
+      }
+      
+      window.location.href = bookingUrl;
     }
   });
 </script>
