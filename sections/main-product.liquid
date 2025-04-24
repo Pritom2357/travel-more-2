@@ -138,6 +138,29 @@
               </option>
             {% endfor %}
           </select>
+
+          <div class="price-section">
+            <div class="current-price" id="productPrice">
+              {% if product.compare_at_price_max > product.price %}
+                <span class="sale-price" data-regular-price="{{ product.price | money_without_currency }}">{{ product.price | money_with_currency }}</span>
+                <span class="compare-at-price" data-compare-price="{{ product.compare_at_price | money_without_currency }}">{{ product.compare_at_price | money_with_currency }}</span>
+                <span class="discount-badge">
+                  {% assign savings = product.compare_at_price_max | minus: product.price | times: 100 | divided_by: product.compare_at_price_max %}
+                  Save {{ savings }}%
+                </span>
+              {% else %}
+                <span data-regular-price="{{ product.price | money_without_currency }}">{{ product.price | money }}</span>
+              {% endif %}
+            </div>
+            
+            <div class="availability" id="productAvailability">
+              {% if product.available %}
+                <span class="in-stock">In Stock</span>
+              {% else %}
+                <span class="out-of-stock">Out of Stock</span>
+              {% endif %}
+            </div>
+          </div>
           
           <div class="add-to-cart-container">
             <button type="button" 
@@ -148,29 +171,13 @@
             </button>
           </div>
         </div>
-        
-        <div class="price-section">
-          <div class="current-price" id="productPrice">
-            {% if product.compare_at_price_max > product.price %}
-              <span class="sale-price" data-regular-price="{{ product.price | money_without_currency }}">{{ product.price | money_with_currency }}</span>
-              <span class="compare-at-price" data-compare-price="{{ product.compare_at_price | money_without_currency }}">{{ product.compare_at_price | money_with_currency }}</span>
-              <span class="discount-badge">
-                {% assign savings = product.compare_at_price_max | minus: product.price | times: 100 | divided_by: product.compare_at_price_max %}
-                Save {{ savings }}%
-              </span>
-            {% else %}
-              <span data-regular-price="{{ product.price | money_without_currency }}">{{ product.price | money }}</span>
-            {% endif %}
-          </div>
-          
-          <div class="availability" id="productAvailability">
-            {% if product.available %}
-              <span class="in-stock">In Stock</span>
-            {% else %}
-              <span class="out-of-stock">Out of Stock</span>
-            {% endif %}
-          </div>
+        <div class="custom-tour-part">
+          <a href="/pages/tour-request" class="custom-tour-button">
+            Request Custom Tour
+          </a>
         </div>
+        
+        
       </div>
     </div>
   </div>
@@ -974,6 +981,40 @@
   .description-box ol,
   .description-box li {
     color: var(--description-text-color);
+  }
+
+  /* Custom Tour Button Styling */
+  .custom-tour-part {
+    margin-top: 15px;
+  }
+
+  .custom-tour-button {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #4a90e2;
+    border-radius: 6px;
+    color: #4a90e2;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.25s ease;
+  }
+
+  .custom-tour-button:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    color: #3a7bc8;
+  }
+
+  .custom-tour-button:active {
+    transform: translateY(0);
   }
 </style>
 
