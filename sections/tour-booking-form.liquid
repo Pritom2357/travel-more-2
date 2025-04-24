@@ -544,7 +544,6 @@
     const productPrice = document.getElementById('bookingProductPrice');
     const variantIdInput = document.getElementById('variantId');
     const quantityInput = document.getElementById('productQuantity');
-    const extractedDetails = document.getElementById('extractedDetails');
     
     if (bookingProduct.image) {
       productImage.src = bookingProduct.image;
@@ -642,7 +641,6 @@
       `;
     }
     
-    extractedDetails.innerHTML = detailsHTML;
     
     // Form submission handler
     const bookingForm = document.getElementById('tourBookingForm');
