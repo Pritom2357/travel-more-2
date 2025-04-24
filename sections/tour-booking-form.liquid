@@ -491,31 +491,6 @@
       padding: 14px;
     }
   }
-
-  .extracted-details {
-    margin-top: 15px;
-    padding: 12px 15px;
-    border-top: 1px dashed rgba(0, 0, 0, 0.1);
-    background-color: rgba(0, 0, 0, 0.02);
-    border-radius: 8px;
-  }
-
-  .detail-item {
-    margin-bottom: 8px;
-    font-size: 15px;
-    display: flex;
-  }
-
-  .detail-item:last-child {
-    margin-bottom: 0;
-  }
-
-  .detail-label {
-    font-weight: 600;
-    margin-right: 10px;
-    min-width: 100px;
-    color: {{ section.settings.label_color }};
-  }
 </style>
 
 <script>
@@ -568,80 +543,6 @@
     variantIdInput.value = bookingProduct.variant_id;
     quantityInput.value = bookingProduct.quantity || 1;
     
-    // Extract tour details from variant title with more flexible pattern matching
-    let variantDetails = {};
-
-    if (bookingProduct.variant_title) {
-      // Split the variant title by slashes or spaces
-      const parts = bookingProduct.variant_title.split(/[\/\s]+/);
-      
-      // Try to identify each component by pattern
-      parts.forEach(part => {
-        // Check for date patterns (DD/MM/YYYY or YYYY-MM-DD)
-        if (part.match(/\d{1,2}\/\d{1,2}\/\d{4}/) || part.match(/\d{4}-\d{2}-\d{2}/)) {
-          variantDetails["Tour Date"] = part;
-        }
-        // Check for duration pattern (contains "day" or "days")
-        else if (part.match(/\d+/) && (parts.indexOf(part) + 1 < parts.length && parts[parts.indexOf(part) + 1].match(/days?/i))) {
-          variantDetails["Duration"] = `${part} ${parts[parts.indexOf(part) + 1]}`;
-        }
-        // Check for standalone numbers (likely person count)
-        else if (part.match(/^\d+$/) && !variantDetails["People"]) {
-          variantDetails["People"] = `${part} people`;
-        }
-      });
-      
-      // If we couldn't extract components individually, try regex patterns
-      if (Object.keys(variantDetails).length === 0) {
-        // Try to match date in format DD/MM/YYYY
-        const dateMatch = bookingProduct.variant_title.match(/(\d{1,2}\/\d{1,2}\/\d{4})/);
-        if (dateMatch) {
-          variantDetails["Tour Date"] = dateMatch[1];
-        }
-        
-        // Try to match duration like "3 days"
-        const durationMatch = bookingProduct.variant_title.match(/(\d+)\s*(days?|nights?)/i);
-        if (durationMatch) {
-          variantDetails["Duration"] = `${durationMatch[1]} ${durationMatch[2]}`;
-        }
-        
-        // Try to find person count (usually a number followed by "person" or at the end)
-        const peopleMatch = bookingProduct.variant_title.match(/(\d+)\s*people/i) || 
-                           bookingProduct.variant_title.match(/(\d+)\s*persons?/i) || 
-                           bookingProduct.variant_title.match(/(\d+)\s*pax/i);
-        if (peopleMatch) {
-          variantDetails["People"] = `${peopleMatch[1]} people`;
-        }
-      }
-      
-      // If still empty, just add the whole variant title
-      if (Object.keys(variantDetails).length === 0) {
-        variantDetails["Variant"] = bookingProduct.variant_title;
-      }
-    }
-    
-    // Display extracted details
-    let detailsHTML = '';
-    for (const [key, value] of Object.entries(variantDetails)) {
-      detailsHTML += `
-        <div class="detail-item">
-          <span class="detail-label">${key}:</span>
-          <span>${value}</span>
-        </div>
-      `;
-    }
-    
-    // If no details were found, show a fallback message
-    if (detailsHTML === '') {
-      detailsHTML = `
-        <div class="detail-item">
-          <span class="detail-label">Variant:</span>
-          <span>${bookingProduct.variant_title || 'Default'}</span>
-        </div>
-      `;
-    }
-    
-    
     // Form submission handler
     const bookingForm = document.getElementById('tourBookingForm');
     bookingForm.addEventListener('submit', function(e) {
@@ -663,11 +564,9 @@
             'Lead Traveler': formData.get('fullName'),
             'Email': formData.get('email'),
             'Phone': formData.get('phone'),
-            'Nationality': formData.get('nationality') || 'Not specified',
-            'Group Size': tripDetails.people,
-            'Tour Date': tripDetails.date,
-            'Duration': tripDetails.duration,
-            'Special Requirements': formData.get('specialRequirements') || 'None'
+            'Nationality': formData.get('nationality') || 'Not specified', 
+            'Special Requirements': formData.get('specialRequirements') || 'None',
+            'Variant': bookingProduct.variant_title || 'Default'
           }
         })
       })
