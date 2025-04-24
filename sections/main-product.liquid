@@ -1294,12 +1294,13 @@
         return Shopify.formatMoney(cents, {{ shop.money_format | json }});
       } else {
         try {
-          const priceElement = document.querySelector('.current-price span');
-          const priceText = priceElement ? priceElement.textContent : '';
+          const formatString = {{ shop.money_with_currency_format | json }};
           
-          return {{ shop.money_with_currency_format | json }};
+          const formattedAmount = (cents / 100).toFixed(2);
+          
+          return formatString.replace(/\{\{\s*amount\s*\}\}/g, formattedAmount);
         } catch (e) {
-          return (cents / 100).toFixed(2);
+          return 'TK ' + (cents / 100).toFixed(2);
         }
       }
     }
