@@ -1,4 +1,4 @@
-<div class="product-container">
+<div class="product-container" style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }};">
   <div class="image-plus-info">
     <div class="product-gallery-container">
       <div class="main-image-container">
@@ -75,7 +75,7 @@
         <div class="product-name">
           {{ product.title }}
         </div>
-        {% if product.collections %}
+        {% if product.collections and section.settings.show_collections %}
           <div class="product-collections">
             <div class="collection-buttons">
               <span class="info-label">Collections:</span>
@@ -87,7 +87,7 @@
             </div>
           </div>
         {% endif %}
-        {% if product.tags %}
+        {% if product.tags and section.settings.show_tags %}
           <div class="product-tags">
             <div class="tag-buttons">
              <span class="info-label">Tags:</span>
@@ -99,7 +99,7 @@
             </div>
           </div>
         {% endif %}
-        {% if product.vendor %}
+        {% if product.vendor and section.settings.show_vendor %}
           <div class="product-vendor">
             <span class="info-label">From:</span> 
             <span class="vendor-name">{{ product.vendor }}</span>
@@ -183,7 +183,7 @@
       </div>
     </div>
   </div>
-  <div class="description-box">
+  <div class="description-box" style="background-color: {{ section.settings.description_bg }};">
     {{ product.description }}
   </div>
 </div>
@@ -346,6 +346,7 @@
     gap: 10px;
     opacity: 0;
     transition: opacity 0.3s ease;
+    z-index: 10; /* Ensure it stays above images */
   }
 
   .main-image-container:hover .gallery-navigation {
@@ -363,10 +364,8 @@
     justify-content: center;
     cursor: pointer;
     transition: background-color 0.2s ease;
-  }
-
-  .nav-button:hover {
-    background-color: rgba(255, 255, 255, 0.9);
+    position: relative; /* Add position */
+    z-index: 15; /* Higher z-index than the gallery navigation */
   }
 
   .nav-button i {
@@ -451,6 +450,7 @@
     position: relative;
     width: 100%;
     height: 100%;
+    z-index: 5;
   }
 
   .main-product-image {
@@ -833,7 +833,7 @@
   .description-box {
     margin-top: 40px;
     padding: 25px 30px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: {{ section.settings.description_bg }};
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
@@ -926,7 +926,7 @@
 
   /* Add a title to the description box */
   .description-box::before {
-    content: "Product Description";
+    content: "{{ section.settings.description_title }}";
     display: block;
     font-size: 20px;
     font-weight: 700;
@@ -953,9 +953,8 @@
 <script>
   let slideInterval;
   let currentSlideIndex = 0;
-  const slideDuration = 3000; 
+  const slideDuration = {{ section.settings.slide_duration | times: 1000 }}; 
   
-  // Replace your changeMainImage function with this enhanced version
   function changeMainImage(thumbnail, manualChange = true, direction = 'next') {
     const mainImage = document.getElementById('mainProductImage');
     const secondaryImage = document.getElementById('secondaryProductImage');
@@ -1018,7 +1017,6 @@
     }
   }
   
-  // Update nextSlide function to indicate direction
   function nextSlide() {
     const thumbnails = document.querySelectorAll('.thumbnail-item');
     if (thumbnails.length === 0) return;
@@ -1030,7 +1028,6 @@
     scrollToThumbnail(thumbnails[currentSlideIndex]);
   }
   
-  // Update prevSlide function to indicate direction
   function prevSlide() {
     const thumbnails = document.querySelectorAll('.thumbnail-item');
     if (thumbnails.length === 0) return;
@@ -1075,10 +1072,11 @@
   
   function startAutoSlide() {
     if (document.querySelectorAll('.thumbnail-item').length <= 1) return;
-    
-    slideInterval = setInterval(() => {
-      nextSlide();
-    }, slideDuration);
+    {% if section.settings.auto_slide %}
+      slideInterval = setInterval(() => {
+        nextSlide();
+      }, slideDuration);
+    {% endif %}
   }
   
   function toggleAutoSlide() {
@@ -1318,3 +1316,90 @@
     }
   });
 </script>
+
+{% schema %}
+{
+  "name": "Product Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#D3D3D3"
+    },
+    {
+      "type": "header",
+      "content": "Image Gallery Settings"
+    },
+    {
+      "type": "range",
+      "id": "slide_duration",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 3,
+      "label": "Slideshow Duration (seconds)"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_slide",
+      "label": "Enable Auto Slideshow",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product Information"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collections",
+      "label": "Show collections",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show product tags",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Description Settings"
+    },
+    {
+      "type": "text",
+      "id": "description_title",
+      "label": "Description Title",
+      "default": "Product Description"
+    },
+    {
+      "type": "color",
+      "id": "description_bg",
+      "label": "Description Background",
+      "default": "rgba(255, 255, 255, 0.05)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Page",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}
