@@ -1186,7 +1186,7 @@
     const productSelect = document.getElementById('productSelect');
     const productPrice = document.getElementById('productPrice');
     const productAvailability = document.getElementById('productAvailability');
-    const addToCartButton = document.getElementById('addToCart');
+    const continueToBooking = document.getElementById('continueToBooking');
     
     optionSelectors.forEach(selector => {
       selector.addEventListener('change', function() {
@@ -1213,8 +1213,8 @@
       });
     }
     
-    if (addToCartButton) {
-      addToCartButton.addEventListener('click', function() {
+    if (continueToBooking) {
+      continueToBooking.addEventListener('click', function() {
         if (!currentVariant.available) return;
         
         const quantity = parseInt(quantityInput.value);
@@ -1278,14 +1278,14 @@
       
       if (variant.available) {
         productAvailability.innerHTML = '<span class="in-stock">In Stock</span>';
-        addToCartButton.classList.remove('disabled');
-        addToCartButton.disabled = false;
-        addToCartButton.textContent = 'Add to Cart';
+        continueToBooking.classList.remove('disabled');
+        continueToBooking.disabled = false;
+        continueToBooking.textContent = 'Add to Cart';
       } else {
         productAvailability.innerHTML = '<span class="out-of-stock">Out of Stock</span>';
-        addToCartButton.classList.add('disabled');
-        addToCartButton.disabled = true;
-        addToCartButton.textContent = 'Sold Out';
+        continueToBooking.classList.add('disabled');
+        continueToBooking.disabled = true;
+        continueToBooking.textContent = 'Sold Out';
       }
     }
     
@@ -1328,8 +1328,8 @@
       });
     }
 
-    if (addToCartButton) {
-      addToCartButton.addEventListener('click', function() {
+    if (continueToBooking) {
+      continueToBooking.addEventListener('click', function() {
         if (!currentVariant.available) return;
         
         const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
