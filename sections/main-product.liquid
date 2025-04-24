@@ -1161,17 +1161,14 @@
     }
   });
 
-  // Add this to your existing script section
 
   document.addEventListener('DOMContentLoaded', function() {
-    // Tag button click handler
     const tagButtons = document.querySelectorAll('.tag-btn');
     
     tagButtons.forEach(button => {
       button.addEventListener('click', function() {
         const tagName = this.getAttribute('data-tag');
         
-        // Toggle active state for visual feedback
         this.classList.toggle('active');
       
         
@@ -1181,27 +1178,22 @@
     });
   });
 
-  // Add this to your script section
   document.addEventListener('DOMContentLoaded', function() {
-    // Initialize product variant selector
     let productJson = {{ product | json }};
     let currentVariant = {{ product.selected_or_first_available_variant | json }};
     
-    // Set up option selectors
     const optionSelectors = document.querySelectorAll('.single-option-selector');
     const productSelect = document.getElementById('productSelect');
     const productPrice = document.getElementById('productPrice');
     const productAvailability = document.getElementById('productAvailability');
     const addToCartButton = document.getElementById('addToCart');
     
-    // Add event listeners to option selectors
     optionSelectors.forEach(selector => {
       selector.addEventListener('change', function() {
         updateVariantSelection();
       });
     });
     
-    // Quantity selector functionality
     const quantityInput = document.querySelector('.quantity-input');
     const increaseBtn = document.querySelector('.quantity-btn.increase');
     const decreaseBtn = document.querySelector('.quantity-btn.decrease');
@@ -1221,7 +1213,6 @@
       });
     }
     
-    // Add to cart functionality
     if (addToCartButton) {
       addToCartButton.addEventListener('click', function() {
         if (!currentVariant.available) return;
@@ -1231,15 +1222,12 @@
       });
     }
     
-    // Find variant by selected options
     function updateVariantSelection() {
-      // Get selected options
       let selectedOptions = [];
       optionSelectors.forEach(selector => {
         selectedOptions.push(selector.value);
       });
       
-      // Find the matching variant
       let selectedVariant = null;
       
       for (let i = 0; i < productJson.variants.length; i++) {
@@ -1260,12 +1248,10 @@
         }
       }
       
-      // Update the UI with the selected variant
       if (selectedVariant) {
         currentVariant = selectedVariant;
         updateProductUI(selectedVariant);
         
-        // Update URL with variant ID
         if (history.replaceState) {
           const newUrl = window.location.pathname + '?variant=' + selectedVariant.id;
           window.history.replaceState({path: newUrl}, '', newUrl);
@@ -1274,10 +1260,8 @@
     }
     
     function updateProductUI(variant) {
-      // Update the hidden variant selector
       productSelect.value = variant.id;
       
-      // Update price display
       if (variant.compare_at_price > variant.price) {
         productPrice.innerHTML = `
           <span class="sale-price" data-regular-price="${variant.price}">${formatMoney(variant.price)}</span>
@@ -1292,7 +1276,6 @@
         `;
       }
       
-      // Update availability
       if (variant.available) {
         productAvailability.innerHTML = '<span class="in-stock">In Stock</span>';
         addToCartButton.classList.remove('disabled');
@@ -1307,17 +1290,31 @@
     }
     
     function formatMoney(cents) {
-      // Simple money formatter
-      const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      });
+      const initialPrice = document.querySelector('[data-regular-price]');
+      const currencyFormat = {{ shop.money_format | json }};
       
-      return formatter.format(cents / 100);
+      if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
+        return Shopify.formatMoney(cents, currencyFormat);
+      } else {
+        try {
+          const priceElement = document.querySelector('.current-price span');
+          const priceText = priceElement ? priceElement.textContent : '';
+          const currencySymbol = priceText.replace(/[\d\s,.]+/g, '').trim();
+          
+          const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: currencySymbol ? 'BDT' : '{{ shop.currency }}',
+            currencyDisplay: 'symbol'
+          });
+          
+          return formatter.format(cents / 100);
+        } catch (e) {
+          return '{{ shop.money_format | replace: "{{amount}}", "" }}' + (cents / 100).toFixed(2);
+        }
+      }
     }
     
     function addToCart(variantId, quantity) {
-      // Add item to cart using fetch API
       fetch('/cart/add.js', {
         method: 'POST',
         headers: {
@@ -1330,10 +1327,8 @@
       })
       .then(response => response.json())
       .then(data => {
-        // Handle successful add to cart
         console.log('Added to cart:', data);
         
-        // You could show a confirmation message or open a cart drawer here
         alert('Product added to cart!');
       })
       .catch(error => {
