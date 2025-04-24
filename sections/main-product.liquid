@@ -129,7 +129,7 @@
           {% endunless %}
           
           <!-- Hidden select for the actual variant ID -->
-          <select name="id" id="productSelect" class="product-variant-id" style="display: none;">
+          <select name="id" id="productSelect" class="product-variant-id" style="display: block;">
             {% for variant in product.variants %}
               <option value="{{ variant.id }}" 
                 {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
