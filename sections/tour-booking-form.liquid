@@ -16,16 +16,6 @@
           <div class="booking-quantity">
             <span>Quantity: </span><span id="bookingQuantity"></span>
           </div>
-          <div class="trip-details">
-            <div class="trip-detail-item">
-              <span class="detail-label">Start Date:</span>
-              <span id="tripStartDateDisplay"></span>
-            </div>
-            <div class="trip-detail-item">
-              <span class="detail-label">Duration:</span>
-              <span id="tripDurationDisplay"></span>
-            </div>
-          </div>
         </div>
       </div>
       
@@ -57,8 +47,6 @@
             <input type="text" id="nationality" name="nationality">
           </div>
         </div>
-        
-        <h3>Trip Details</h3>
         
         <div class="form-field-group">
           <div class="form-field">
@@ -535,23 +523,6 @@
       padding: 14px;
     }
   }
-
-  .trip-details {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .trip-detail-item {
-    margin-bottom: 5px;
-    display: flex;
-    gap: 8px;
-  }
-  
-  .detail-label {
-    font-weight: 600;
-    color: {{ section.settings.label_color }};
-  }
 </style>
 
 <script>
@@ -622,14 +593,6 @@
     // Set max people in the form
     maxPeopleInput.value = maxPeople;
     document.getElementById('maxAllowedTravelers').textContent = maxPeople;
-    
-    // Set minimum date to today
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    const todayStr = `${yyyy}-${mm}-${dd}`;
-    document.getElementById('startDate').min = todayStr;
     
     // Set up travelers counter
     const totalTravelersInput = document.getElementById('totalTravelers');
@@ -795,8 +758,6 @@
           phone: formData.get('phone'),
           nationality: formData.get('nationality'),
           totalTravelers: formData.get('totalTravelers'),
-          startDate: formData.get('startDate'),
-          stayDays: formData.get('stayDays'),
           specialRequirements: formData.get('specialRequirements')
         },
         additionalTravelers: []
@@ -825,8 +786,6 @@
             'Email': bookingData.customerInfo.email,
             'Phone': bookingData.customerInfo.phone,
             'Nationality': bookingData.customerInfo.nationality || 'Not specified',
-            'Trip Start Date': formData.get('tripStartDate'),
-            'Trip Duration': formData.get('tripDuration'),
             'Total Travelers': bookingData.customerInfo.totalTravelers,
             'Special Requirements': bookingData.customerInfo.specialRequirements || 'None',
             'Additional Travelers': JSON.stringify(bookingData.additionalTravelers)
