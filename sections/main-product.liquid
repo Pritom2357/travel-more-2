@@ -1297,7 +1297,7 @@
           const priceElement = document.querySelector('.current-price span');
           const priceText = priceElement ? priceElement.textContent : '';
           
-          return {{ shop.money_with_currency_format | json }}.replace('{{amount}}', (cents / 100).toFixed(2));
+          return {{ shop.money_with_currency_format | json }}.replace(' ', (cents / 100).toFixed(2));
         } catch (e) {
           return (cents / 100).toFixed(2);
         }
