@@ -129,7 +129,7 @@
           {% endunless %}
           
           <!-- Hidden select for the actual variant ID -->
-          <select name="id" id="productSelect" class="product-variant-id" style="display: block;">
+          <select name="id" id="productSelect" class="product-variant-id" style="display: none;">
             {% for variant in product.variants %}
               <option value="{{ variant.id }}" 
                 {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
@@ -1290,26 +1290,16 @@
     }
     
     function formatMoney(cents) {
-      const initialPrice = document.querySelector('[data-regular-price]');
-      const currencyFormat = {{ shop.money_format | json }};
-      
       if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
-        return Shopify.formatMoney(cents, currencyFormat);
+        return Shopify.formatMoney(cents, {{ shop.money_format | json }});
       } else {
         try {
           const priceElement = document.querySelector('.current-price span');
           const priceText = priceElement ? priceElement.textContent : '';
-          const currencySymbol = priceText.replace(/[\d\s,.]+/g, '').trim();
           
-          const formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: currencySymbol ? 'BDT' : '{{ shop.currency }}',
-            currencyDisplay: 'symbol'
-          });
-          
-          return formatter.format(cents / 100);
+          return {{ shop.money_with_currency_format | json }}.replace('{{amount}}', (cents / 100).toFixed(2));
         } catch (e) {
-          return '{{ shop.money_format | replace: "{{amount}}", "" }}' + (cents / 100).toFixed(2);
+          return (cents / 100).toFixed(2);
         }
       }
     }
