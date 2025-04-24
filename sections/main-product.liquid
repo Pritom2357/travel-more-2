@@ -72,16 +72,16 @@
     
     <div class="product-info-container">
       <div class="essential-info">
-        <div class="product-name">
+        <div class="product-name" style="color: {{ section.settings.product_title_color }};">
           {{ product.title }}
         </div>
         {% if product.collections and section.settings.show_collections %}
           <div class="product-collections">
             <div class="collection-buttons">
-              <span class="info-label">Collections:</span>
+              <span class="info-label" style="color: {{ section.settings.label_color }};">Collections:</span>
               {% for collection in product.collections %}
                 <button class="collection-btn">
-                  <a href="{{ collection.url }}">{{ collection.title }}</a>
+                  <a href="{{ collection.url }}" style="color: {{ section.settings.collection_button_color }};">{{ collection.title }}</a>
                 </button>
               {% endfor %}
             </div>
@@ -90,9 +90,9 @@
         {% if product.tags and section.settings.show_tags %}
           <div class="product-tags">
             <div class="tag-buttons">
-             <span class="info-label">Tags:</span>
+             <span class="info-label" style="color: {{ section.settings.label_color }};">Tags:</span>
               {% for tag in product.tags %}
-                <button class="tag-btn" data-tag="{{ tag.name | handle }}">
+                <button class="tag-btn" data-tag="{{ tag.name | handle }}" style="color: {{ section.settings.tag_text_color }};">
                   {{ tag }}
                 </button>
               {% endfor %}
@@ -101,8 +101,8 @@
         {% endif %}
         {% if product.vendor and section.settings.show_vendor %}
           <div class="product-vendor">
-            <span class="info-label">From:</span> 
-            <span class="vendor-name">{{ product.vendor }}</span>
+            <span class="info-label" style="color: {{ section.settings.label_color }};">From:</span> 
+            <span class="vendor-name" style="color: {{ section.settings.vendor_text_color }};">{{ product.vendor }}</span>
           </div>
         {% endif %}
 
@@ -111,7 +111,7 @@
             <div class="variant-options-row">
               {% for option in product.options_with_values %}
                 <div class="variant-option-group">
-                  <label class="option-label">{{ option.name }}:</label>
+                  <label class="option-label" style="color: {{ section.settings.label_color }};">{{ option.name }}:</label>
                   
                   <div class="option-selector">
                     <select name="{{ option.name | handleize }}" class="single-option-selector" data-option-index="{{ forloop.index0 }}">
@@ -140,7 +140,7 @@
           </select>
           
           <div class="quantity-selector">
-            <label for="quantity">Quantity:</label>
+            <label for="quantity" style="color: {{ section.settings.label_color }};">Quantity:</label>
             <div class="quantity-buttons">
               <button type="button" class="quantity-btn decrease" aria-label="Decrease quantity">-</button>
               <input type="number" id="quantity" name="quantity" value="1" min="1" class="quantity-input">
@@ -183,7 +183,7 @@
       </div>
     </div>
   </div>
-  <div class="description-box" style="background-color: {{ section.settings.description_bg }};">
+  <div class="description-box" style="background-color: {{ section.settings.description_bg }}; color: {{ section.settings.description_text_color }};">
     {{ product.description }}
   </div>
 </div>
@@ -948,6 +948,99 @@
       margin-bottom: 15px;
     }
   }
+
+  /* Add this to your existing styles */
+  .product-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    color: {{ section.settings.text_color }};
+    --label-color: {{ section.settings.label_color }};
+    --title-color: {{ section.settings.product_title_color }};
+    --collection-color: {{ section.settings.collection_button_color }};
+    --tag-color: {{ section.settings.tag_text_color }};
+    --vendor-color: {{ section.settings.vendor_text_color }};
+    --price-color: {{ section.settings.price_color }};
+    --sale-price-color: {{ section.settings.sale_price_color }};
+    --compare-price-color: {{ section.settings.compare_price_color }};
+    --in-stock-color: {{ section.settings.in_stock_color }};
+    --out-of-stock-color: {{ section.settings.out_of_stock_color }};
+    --description-title-color: {{ section.settings.description_title_color }};
+    --description-text-color: {{ section.settings.description_text_color }};
+  }
+
+  /* Update color references */
+  .product-name {
+    color: var(--title-color);
+  }
+
+  .info-label {
+    color: var(--label-color);
+  }
+
+  .collection-btn a {
+    color: var(--collection-color);
+  }
+
+  .tag-btn {
+    color: var(--tag-color);
+  }
+
+  .vendor-name {
+    color: var(--vendor-color);
+  }
+
+  .option-label, 
+  .quantity-selector label {
+    color: var(--label-color);
+  }
+
+  .current-price {
+    color: var(--price-color);
+  }
+
+  .sale-price {
+    color: var(--sale-price-color);
+  }
+
+  .compare-at-price {
+    color: var(--compare-price-color);
+  }
+
+  .in-stock {
+    color: var(--in-stock-color);
+  }
+
+  .out-of-stock {
+    color: var(--out-of-stock-color);
+  }
+
+  /* Update description box styles */
+  .description-box {
+    color: var(--description-text-color);
+  }
+
+  .description-box::before {
+    content: "{{ section.settings.description_title }}";
+    color: var(--description-title-color);
+  }
+
+  .description-box h1, 
+  .description-box h2, 
+  .description-box h3, 
+  .description-box h4, 
+  .description-box h5, 
+  .description-box h6 {
+    color: var(--description-title-color);
+  }
+
+  .description-box p,
+  .description-box ul,
+  .description-box ol,
+  .description-box li {
+    color: var(--description-text-color);
+  }
 </style>
 
 <script>
@@ -1334,8 +1427,80 @@
     {
       "type": "color",
       "id": "text_color",
-      "label": "Text Color",
-      "default": "#D3D3D3"
+      "label": "Main Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Product Title"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product Title Color",
+      "default": "#1E1B1B"
+    },
+    {
+      "type": "header",
+      "content": "Collections & Tags"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label Text Color (Collections, Tags, Vendor)",
+      "default": "#a0a0a0"
+    },
+    {
+      "type": "color",
+      "id": "collection_button_color",
+      "label": "Collection Button Color",
+      "default": "#4a90e2"
+    },
+    {
+      "type": "color",
+      "id": "tag_text_color",
+      "label": "Tag Text Color",
+      "default": "#630b0b"
+    },
+    {
+      "type": "color",
+      "id": "vendor_text_color",
+      "label": "Vendor Name Color",
+      "default": "#151414"
+    },
+    {
+      "type": "header",
+      "content": "Price & Availability"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Regular Price Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "sale_price_color",
+      "label": "Sale Price Color",
+      "default": "#4CAF50"
+    },
+    {
+      "type": "color",
+      "id": "compare_price_color",
+      "label": "Compare-at Price Color",
+      "default": "#a0a0a0"
+    },
+    {
+      "type": "color",
+      "id": "in_stock_color",
+      "label": "In Stock Text Color",
+      "default": "#4CAF50"
+    },
+    {
+      "type": "color",
+      "id": "out_of_stock_color",
+      "label": "Out of Stock Text Color",
+      "default": "#F44336"
     },
     {
       "type": "header",
@@ -1393,6 +1558,18 @@
       "id": "description_bg",
       "label": "Description Background",
       "default": "rgba(255, 255, 255, 0.05)"
+    },
+    {
+      "type": "color",
+      "id": "description_title_color",
+      "label": "Description Title Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "description_text_color",
+      "label": "Description Text Color",
+      "default": "#D3D3D3"
     }
   ],
   "presets": [
