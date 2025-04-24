@@ -16,6 +16,16 @@
           <div class="booking-quantity">
             <span>Quantity: </span><span id="bookingQuantity"></span>
           </div>
+          <div class="trip-details">
+            <div class="trip-detail-item">
+              <span class="detail-label">Start Date:</span>
+              <span id="tripStartDateDisplay"></span>
+            </div>
+            <div class="trip-detail-item">
+              <span class="detail-label">Duration:</span>
+              <span id="tripDurationDisplay"></span>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -49,18 +59,6 @@
         </div>
         
         <h3>Trip Details</h3>
-        
-        <div class="form-field-group">
-          <div class="form-field">
-            <label for="startDate">Start Date <span class="required">*</span></label>
-            <input type="date" id="startDate" name="startDate" required min="">
-          </div>
-          
-          <div class="form-field">
-            <label for="stayDays">Number of Days <span class="required">*</span></label>
-            <input type="number" id="stayDays" name="stayDays" required min="1" value="1">
-          </div>
-        </div>
         
         <div class="form-field-group">
           <div class="form-field">
@@ -252,7 +250,7 @@
   .form-field select {
     width: 100%;
     padding: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(0, 0, 0, 0.15); /* Enhanced border */
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.05);
     color: {{ section.settings.input_text_color }};
@@ -265,6 +263,7 @@
   .form-field textarea:focus,
   .form-field select:focus {
     border-color: {{ section.settings.accent_color }};
+    border-width: 2px; /* Keep the border width consistent */
     outline: none;
     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
   }
@@ -326,9 +325,10 @@
   .travelers-counter {
     display: flex;
     align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(0, 0, 0, 0.15);
     border-radius: 8px;
     height: 50px;
+    overflow: hidden; /* Keep the inside buttons flush */
   }
   
   .counter-btn {
@@ -534,6 +534,23 @@
       width: 100%;
       padding: 14px;
     }
+  }
+
+  .trip-details {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .trip-detail-item {
+    margin-bottom: 5px;
+    display: flex;
+    gap: 8px;
+  }
+  
+  .detail-label {
+    font-weight: 600;
+    color: {{ section.settings.label_color }};
   }
 </style>
 
@@ -808,8 +825,8 @@
             'Email': bookingData.customerInfo.email,
             'Phone': bookingData.customerInfo.phone,
             'Nationality': bookingData.customerInfo.nationality || 'Not specified',
-            'Start Date': bookingData.customerInfo.startDate,
-            'Duration (Days)': bookingData.customerInfo.stayDays,
+            'Trip Start Date': formData.get('tripStartDate'),
+            'Trip Duration': formData.get('tripDuration'),
             'Total Travelers': bookingData.customerInfo.totalTravelers,
             'Special Requirements': bookingData.customerInfo.specialRequirements || 'None',
             'Additional Travelers': JSON.stringify(bookingData.additionalTravelers)
@@ -826,6 +843,43 @@
         alert('There was an error processing your booking. Please try again.');
       });
     });
+
+    // Extract trip details from variant title
+    let tripDuration = "Not specified";
+    let tripStartDate = "Not specified";
+
+    if (bookingProduct.variant_title) {
+      // Try to extract duration - looks for patterns like "7 days" or "7-day"
+      const durationMatch = bookingProduct.variant_title.match(/(\d+)[-\s]*(days?|nights?)/i);
+      if (durationMatch && durationMatch[1]) {
+        tripDuration = `${durationMatch[1]} days`;
+      }
+      
+      // Try to extract date - looks for common date formats
+      // This is an example and may need to be adjusted based on your actual variant naming convention
+      const dateMatch = bookingProduct.variant_title.match(/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[\s.-]*(\d{1,2})(?:st|nd|rd|th)?/i);
+      if (dateMatch) {
+        tripStartDate = `${dateMatch[1]} ${dateMatch[2]}`;
+      }
+      
+      // Alternative: Look for YYYY-MM-DD format
+      const isoDateMatch = bookingProduct.variant_title.match(/\d{4}-\d{2}-\d{2}/);
+      if (isoDateMatch) {
+        tripStartDate = isoDateMatch[0];
+      }
+    }
+
+    // Add these as hidden fields in the form to submit with the order
+    const form = document.getElementById('tourBookingForm');
+    const hiddenTripDetails = document.createElement('div');
+    hiddenTripDetails.innerHTML = `
+      <input type="hidden" name="tripDuration" value="${tripDuration}">
+      <input type="hidden" name="tripStartDate" value="${tripStartDate}">
+    `;
+    form.appendChild(hiddenTripDetails);
+
+    document.getElementById('tripStartDateDisplay').textContent = tripStartDate;
+    document.getElementById('tripDurationDisplay').textContent = tripDuration;
   });
 </script>
 
