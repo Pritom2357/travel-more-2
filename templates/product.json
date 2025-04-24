@@ -12,7 +12,7 @@
     "main": {
       "type": "main-product",
       "settings": {
-        "background_color": "#f6f6f6",
+        "background_color": "#fefefe",
         "text_color": "#242323",
         "slide_duration": 6,
         "auto_slide": true,
