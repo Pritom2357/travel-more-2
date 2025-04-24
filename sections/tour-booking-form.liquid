@@ -13,8 +13,8 @@
           <div class="booking-price">
             <span id="bookingProductPrice"></span>
           </div>
-          <div class="booking-quantity">
-            <span>Quantity: </span><span id="bookingQuantity"></span>
+          <div id="extractedDetails" class="extracted-details">
+            <!-- Tour details from variant will appear here -->
           </div>
         </div>
       </div>
@@ -49,8 +49,7 @@
         </div>
         
         <div class="form-field-group">
-          
-          <div class="form-field">
+          <div class="form-field full-width">
             <label for="specialRequirements">Special Requirements</label>
             <textarea id="specialRequirements" name="specialRequirements" rows="3"></textarea>
           </div>
@@ -67,7 +66,7 @@
           <input type="hidden" id="variantId" name="variantId">
           <input type="hidden" id="productQuantity" name="quantity">
           <input type="hidden" id="maxPeople" name="maxPeople">
-          <button type="submit" id="completeBooking" class="complete-booking-button">Complete Booking</button>
+          <button type="submit" id="completeBooking" class="complete-booking-button">Proceed to Checkout</button>
         </div>
       </form>
     </div>
@@ -495,6 +494,24 @@
       padding: 14px;
     }
   }
+
+  .extracted-details {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+  }
+
+  .detail-item {
+    margin-bottom: 5px;
+    font-size: 14px;
+    display: flex;
+  }
+
+  .detail-label {
+    font-weight: 600;
+    margin-right: 8px;
+    color: {{ section.settings.label_color }};
+  }
 </style>
 
 <script>
@@ -508,10 +525,9 @@
       bookingProduct = null;
     }
     
-    // If there's no product data, redirect back to the products page
+    // If there's no product data, show error
     if (!bookingProduct) {
       console.warn('No product selected for booking');
-      // Optionally redirect or show a message
       document.querySelector('.booking-form-container').innerHTML = 
         '<div class="error-message">No product selected for booking. <a href="/collections/all">Browse tours</a></div>';
       return;
@@ -522,10 +538,9 @@
     const productTitle = document.getElementById('bookingProductTitle');
     const variantTitle = document.getElementById('bookingVariantTitle');
     const productPrice = document.getElementById('bookingProductPrice');
-    const quantityDisplay = document.getElementById('bookingQuantity');
     const variantIdInput = document.getElementById('variantId');
     const quantityInput = document.getElementById('productQuantity');
-    const maxPeopleInput = document.getElementById('maxPeople');
+    const extractedDetails = document.getElementById('extractedDetails');
     
     if (bookingProduct.image) {
       productImage.src = bookingProduct.image;
@@ -545,228 +560,97 @@
     });
     
     productPrice.textContent = formatter.format(bookingProduct.price / 100);
-    quantityDisplay.textContent = bookingProduct.quantity;
     
     // Set the hidden inputs for the form submission
     variantIdInput.value = bookingProduct.variant_id;
-    quantityInput.value = bookingProduct.quantity;
+    quantityInput.value = bookingProduct.quantity || 1;
     
-    // Extract max people from variant title or set a default
-    let maxPeople = 4; // Default maximum
+    // Extract tour details from variant title (people, date, duration)
+    let tripDetails = {
+      people: "Not specified",
+      date: "Not specified",
+      duration: "Not specified"
+    };
     
-    // Try to extract max people from variant title
     if (bookingProduct.variant_title) {
+      // Extract people count
       const peopleMatch = bookingProduct.variant_title.match(/(\d+)\s*people/i);
       if (peopleMatch && peopleMatch[1]) {
-        maxPeople = parseInt(peopleMatch[1]);
+        tripDetails.people = `${peopleMatch[1]} people`;
+      }
+      
+      // Extract duration
+      const durationMatch = bookingProduct.variant_title.match(/(\d+)[-\s]*(days?|nights?)/i);
+      if (durationMatch && durationMatch[1]) {
+        tripDetails.duration = `${durationMatch[1]} ${durationMatch[2]}`;
+      }
+      
+      // Extract date - check for month names
+      const dateMatch = bookingProduct.variant_title.match(/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[\s.-]*(\d{1,2})(?:st|nd|rd|th)?/i);
+      if (dateMatch) {
+        tripDetails.date = `${dateMatch[1]} ${dateMatch[2]}`;
+      }
+      
+      // Check for ISO format dates
+      const isoDateMatch = bookingProduct.variant_title.match(/\d{4}-\d{2}-\d{2}/);
+      if (isoDateMatch) {
+        tripDetails.date = isoDateMatch[0];
       }
     }
     
-    // Set max people in the form
-    maxPeopleInput.value = maxPeople;
-    document.getElementById('maxAllowedTravelers').textContent = maxPeople;
-    
-    // Set up travelers counter
-    const totalTravelersInput = document.getElementById('totalTravelers');
-    const decreaseTravelersBtn = document.getElementById('decreaseTravelers');
-    const increaseTravelersBtn = document.getElementById('increaseTravelers');
-    let currentTravelers = 1;
-    
-    // Function to update travelers count
-    function updateTravelersCount() {
-      totalTravelersInput.value = currentTravelers;
-      
-      // Enable/disable buttons based on count
-      decreaseTravelersBtn.disabled = currentTravelers <= 1;
-      increaseTravelersBtn.disabled = currentTravelers >= maxPeople;
-      
-      // Show/hide add traveler button
-      const addTravelerBtn = document.getElementById('addTraveler');
-      if (currentTravelers <= 1) {
-        // No additional travelers, hide the section
-        document.getElementById('additionalTravelersSection').style.display = 'none';
-      } else {
-        // Show the section and update the button state
-        document.getElementById('additionalTravelersSection').style.display = 'block';
-        addTravelerBtn.disabled = document.querySelectorAll('.traveler-entry').length >= currentTravelers - 1;
-      }
-    }
-    
-    // Set up add/remove traveler functionality
-    decreaseTravelersBtn.addEventListener('click', function() {
-      if (currentTravelers > 1) {
-        currentTravelers--;
-        updateTravelersCount();
-        
-        // Remove excess traveler entries if needed
-        const travelerEntries = document.querySelectorAll('.traveler-entry');
-        if (travelerEntries.length > currentTravelers - 1) {
-          // Remove the last traveler entry
-          travelerEntries[travelerEntries.length - 1].remove();
-        }
-        
-        // Renumber remaining travelers
-        renumberTravelers();
-      }
-    });
-    
-    increaseTravelersBtn.addEventListener('click', function() {
-      if (currentTravelers < maxPeople) {
-        currentTravelers++;
-        updateTravelersCount();
-      }
-    });
-    
-    // Initialize travelers count
-    updateTravelersCount();
-    
-    // Set up the form to handle additional travelers
-    const addTravelerBtn = document.getElementById('addTraveler');
-    const additionalTravelersContainer = document.getElementById('additionalTravelers');
-    
-    // Function to renumber all traveler entries
-    function renumberTravelers() {
-      const travelerEntries = document.querySelectorAll('.traveler-entry');
-      travelerEntries.forEach((entry, index) => {
-        const travelerNumber = index + 2; // +2 because main traveler is #1
-        entry.querySelector('h4').textContent = `Traveler #${travelerNumber}`;
-        
-        // Update the data attributes and input IDs if needed
-        entry.dataset.traveler = index;
-        
-        // Update input names and IDs
-        const nameInput = entry.querySelector('input[name^="additional_travelers"][name$="[name]"]');
-        const ageInput = entry.querySelector('input[name^="additional_travelers"][name$="[age]"]');
-        
-        if (nameInput) {
-          nameInput.name = `additional_travelers[${index}][name]`;
-          nameInput.id = `traveler_name_${index}`;
-        }
-        
-        if (ageInput) {
-          ageInput.name = `additional_travelers[${index}][age]`;
-          ageInput.id = `traveler_age_${index}`;
-        }
-        
-        // Update remove button data attribute
-        const removeBtn = entry.querySelector('.remove-traveler');
-        if (removeBtn) {
-          removeBtn.dataset.traveler = index;
-        }
-      });
-      
-      // Enable/disable add button based on current travelers count
-      addTravelerBtn.disabled = travelerEntries.length >= currentTravelers - 1;
-    }
-    
-    // Function to add a new traveler form
-    function addTravelerForm() {
-      const travelerEntries = document.querySelectorAll('.traveler-entry');
-      
-      // Don't add more travelers than allowed
-      if (travelerEntries.length >= currentTravelers - 1) {
-        return;
-      }
-      
-      const travelerIndex = travelerEntries.length;
-      const travelerNumber = travelerIndex + 2; // +2 because main traveler is #1
-      
-      const travelerDiv = document.createElement('div');
-      travelerDiv.className = 'traveler-entry';
-      travelerDiv.dataset.traveler = travelerIndex;
-      
-      travelerDiv.innerHTML = `
-        <h4>Traveler #${travelerNumber}</h4>
-        <button type="button" class="remove-traveler" data-traveler="${travelerIndex}">×</button>
-        <div class="form-field-group">
-          <div class="form-field">
-            <label for="traveler_name_${travelerIndex}">Full Name</label>
-            <input type="text" id="traveler_name_${travelerIndex}" name="additional_travelers[${travelerIndex}][name]">
-          </div>
-          <div class="form-field">
-            <label for="traveler_age_${travelerIndex}">Age</label>
-            <input type="number" id="traveler_age_${travelerIndex}" name="additional_travelers[${travelerIndex}][age]" min="0">
-          </div>
-        </div>
-      `;
-      
-      additionalTravelersContainer.appendChild(travelerDiv);
-      
-      // Add event listener for the remove button
-      travelerDiv.querySelector('.remove-traveler').addEventListener('click', function() {
-        travelerDiv.remove();
-        renumberTravelers(); // Renumber after removal
-      });
-      
-      // Update button state
-      renumberTravelers();
-    }
-    
-    // Add event listener to the "Add Another Traveler" button
-    addTravelerBtn.addEventListener('click', addTravelerForm);
+    // Display extracted details
+    extractedDetails.innerHTML = `
+      <div class="detail-item">
+        <span class="detail-label">Group Size:</span>
+        <span>${tripDetails.people}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Date:</span>
+        <span>${tripDetails.date}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Duration:</span>
+        <span>${tripDetails.duration}</span>
+      </div>
+    `;
     
     // Form submission handler
     const bookingForm = document.getElementById('tourBookingForm');
     bookingForm.addEventListener('submit', function(e) {
       e.preventDefault();
       
-      // Validate that additional travelers match the count
-      const travelerEntries = document.querySelectorAll('.traveler-entry');
-      const totalTravelersCount = parseInt(document.getElementById('totalTravelers').value);
-      
-      if (travelerEntries.length !== totalTravelersCount - 1) {
-        alert(`Please add details for all ${totalTravelersCount - 1} additional travelers.`);
-        return;
-      }
-      
       // Collect form data
       const formData = new FormData(this);
-      const bookingData = {
-        variantId: formData.get('variantId'),
-        quantity: formData.get('quantity'),
-        customerInfo: {
-          name: formData.get('fullName'),
-          email: formData.get('email'),
-          phone: formData.get('phone'),
-          nationality: formData.get('nationality'),
-          totalTravelers: formData.get('totalTravelers'),
-          specialRequirements: formData.get('specialRequirements')
-        },
-        additionalTravelers: []
-      };
       
-      // Collect additional travelers data
-      travelerEntries.forEach((entry, index) => {
-        const travelerIndex = entry.dataset.traveler;
-        bookingData.additionalTravelers.push({
-          name: formData.get(`additional_travelers[${travelerIndex}][name]`),
-          age: formData.get(`additional_travelers[${travelerIndex}][age]`)
-        });
-      });
-      
-      // Submit the booking via cart
+      // Add to cart with all the gathered information
       fetch('/cart/add.js', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: bookingData.variantId,
-          quantity: bookingData.quantity,
+          id: bookingProduct.variant_id,
+          quantity: bookingProduct.quantity || 1,
           properties: {
-            'Lead Traveler': bookingData.customerInfo.name,
-            'Email': bookingData.customerInfo.email,
-            'Phone': bookingData.customerInfo.phone,
-            'Nationality': bookingData.customerInfo.nationality || 'Not specified',
-            'Total Travelers': bookingData.customerInfo.totalTravelers,
-            'Special Requirements': bookingData.customerInfo.specialRequirements || 'None',
-            'Additional Travelers': JSON.stringify(bookingData.additionalTravelers)
+            'Lead Traveler': formData.get('fullName'),
+            'Email': formData.get('email'),
+            'Phone': formData.get('phone'),
+            'Nationality': formData.get('nationality') || 'Not specified',
+            'Group Size': tripDetails.people,
+            'Tour Date': tripDetails.date,
+            'Duration': tripDetails.duration,
+            'Special Requirements': formData.get('specialRequirements') || 'None'
           }
         })
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
-        // After successfully adding to cart, redirect to checkout
+        // Redirect to checkout
         window.location.href = '/checkout';
       })
       .catch(error => {
@@ -774,43 +658,6 @@
         alert('There was an error processing your booking. Please try again.');
       });
     });
-
-    // Extract trip details from variant title
-    let tripDuration = "Not specified";
-    let tripStartDate = "Not specified";
-
-    if (bookingProduct.variant_title) {
-      // Try to extract duration - looks for patterns like "7 days" or "7-day"
-      const durationMatch = bookingProduct.variant_title.match(/(\d+)[-\s]*(days?|nights?)/i);
-      if (durationMatch && durationMatch[1]) {
-        tripDuration = `${durationMatch[1]} days`;
-      }
-      
-      // Try to extract date - looks for common date formats
-      // This is an example and may need to be adjusted based on your actual variant naming convention
-      const dateMatch = bookingProduct.variant_title.match(/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[\s.-]*(\d{1,2})(?:st|nd|rd|th)?/i);
-      if (dateMatch) {
-        tripStartDate = `${dateMatch[1]} ${dateMatch[2]}`;
-      }
-      
-      // Alternative: Look for YYYY-MM-DD format
-      const isoDateMatch = bookingProduct.variant_title.match(/\d{4}-\d{2}-\d{2}/);
-      if (isoDateMatch) {
-        tripStartDate = isoDateMatch[0];
-      }
-    }
-
-    // Add these as hidden fields in the form to submit with the order
-    const form = document.getElementById('tourBookingForm');
-    const hiddenTripDetails = document.createElement('div');
-    hiddenTripDetails.innerHTML = `
-      <input type="hidden" name="tripDuration" value="${tripDuration}">
-      <input type="hidden" name="tripStartDate" value="${tripStartDate}">
-    `;
-    form.appendChild(hiddenTripDetails);
-
-    document.getElementById('tripStartDateDisplay').textContent = tripStartDate;
-    document.getElementById('tripDurationDisplay').textContent = tripDuration;
   });
 </script>
 
