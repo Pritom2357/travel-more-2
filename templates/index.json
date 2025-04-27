@@ -50,7 +50,7 @@
         "store_name": "travel more",
         "store_name_text_size": 17,
         "store_name_color": "#ffffff",
-        "store_name_hover_color": "#2a333d",
+        "store_name_hover_color": "#000000",
         "store_name_transform": "uppercase",
         "store_name_font": "'Playfair Display', serif",
         "menu": "main-menu",
