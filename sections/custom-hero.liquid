@@ -480,10 +480,10 @@
     font-size: {{ section.settings.store_name_text_size }}px;
     font-weight: 700;
     color: {{ section.settings.store_name_color }};
-    letter-spacing: 0.5px;
+    {% comment %} letter-spacing: 0.5px; {% endcomment %}
     transition: all 0.3s ease;
     margin: 0;
-    line-height: 1.2;
+    {% comment %} line-height: 1.2; {% endcomment %}
     font-family: {{ section.settings.store_name_font | default: 'inherit' }};
     text-transform: {{ section.settings.store_name_transform }};
   }
