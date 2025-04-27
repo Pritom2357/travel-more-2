@@ -10,14 +10,21 @@
   <nav class="navbar navbar-expand-lg nav-settings">
     <div class="container-fluid">
       {% capture logo_html %}
-        <a class="navbar-brand" href="#">
-          <img
-            src="{{ section.settings.logo | img_url: '100x' }}"
-            alt="{{ shop.name }}"
-            width= "{{ section.settings.logo_size }}"
-            height= "auto"
-          >
-        </a>
+        <div class="logo-name-cointainer">
+          <a class="navbar-brand" href="#">
+            <img
+              src="{{ section.settings.logo | img_url: '100x' }}"
+              alt="{{ shop.name }}"
+              width= "{{ section.settings.logo_size }}"
+              height= "auto"
+            >
+          </a>
+          {% if section.settings.store_name %}
+            <div class="store-name">
+              {{ section.settings.store_name }}
+            </div>
+          {% endif %}
+        </div>
       {% endcapture %}
 
       {% capture toggle_button %}
@@ -859,7 +866,22 @@
       "max": 250,
       "step": 10
     },
-    
+    {
+      "type": "text",
+      "id": "store_name",
+      "label": "Store Name",
+      "default": "Store Name",
+      "info": "Enter store name in here"
+    },
+    {
+      "type": "range",
+      "id": "menu_text_size",
+      "label": "Text size (px)",
+      "default": 14,
+      "min": 5,
+      "max": 40,
+      "step": 1
+    },
     {
       "type": "header",
       "content": "Navigation"
