@@ -27,14 +27,21 @@
     <nav class="navbar navbar-expand-lg nav-settings">
       <div class="container-fluid d-flex">
         <div class="justify-content-start">
-          <a class="navbar-brand" href="#">
-            <img
-              src="{{ section.settings.logo | img_url: '100px' }}"
-              alt="{{ shop.name }}"
-              width="{{ section.settings.logo_size }}"
-              height="auto"
-            >
-          </a>
+          <div class="logo-name-container">
+            <a class="navbar-brand" href="#">
+              <img
+                src="{{ section.settings.logo | img_url: '100px' }}"
+                alt="{{ shop.name }}"
+                width="{{ section.settings.logo_size }}"
+                height="auto"
+              >
+            </a>
+            {% if section.settings.store_name %}
+              <div class="store-name">
+                {{ section.settings.store_name }}
+              </div>
+            {% endif %}
+          </div>
         </div>
         <div class="justify-content-end">
           <button
@@ -93,7 +100,8 @@
               </a>
             </form>
           {% endif %}
-      </div>
+        </div> <!-- Close navbar-collapse -->
+      </div> <!-- Close container-fluid -->
     </nav>
     <div class="line"></div>
   {% endif %}
@@ -460,6 +468,38 @@
   .cart-count-badge[data-count="0"] {
     display: none;
   }
+
+  .logo-name-container {
+    {% comment %} display: flex; {% endcomment %}
+    align-items: center;
+    gap: 12px;
+  }
+
+  .store-name {
+    font-size: {{ section.settings.store_name_text_size }}px;
+    font-weight: 700;
+    color: {{ section.settings.store_name_color }};
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    margin: 0;
+    line-height: 1.2;
+    font-family: {{ section.settings.store_name_font | default: 'inherit' }};
+    text-transform: {{ section.settings.store_name_transform }};
+  }
+
+  .store-name:hover {
+    color: {{ section.settings.store_name_hover_color | default: section.settings.header_text_hover_color }};
+  }
+
+  @media (max-width: 767px) {
+    .store-name {
+      font-size: calc({{ section.settings.store_name_text_size }}px * 0.85);
+    }
+    
+    .logo-name-container {
+      gap: 8px;
+    }
+  }
 </style>
 
 {% schema %}
@@ -517,6 +557,60 @@
       "min": 50,
       "max": 250,
       "step": 10
+    },
+    {
+      "type": "text",
+      "id": "store_name",
+      "label": "Store Name",
+      "default": "Travel More",
+      "info": "Enter store name to display next to logo"
+    },
+    {
+      "type": "range",
+      "id": "store_name_text_size",
+      "label": "Store Name Text Size (px)",
+      "default": 20,
+      "min": 12,
+      "max": 40,
+      "step": 1
+    },
+    {
+      "type": "color",
+      "id": "store_name_color",
+      "label": "Store Name Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "store_name_hover_color",
+      "label": "Store Name Hover Color",
+      "default": "#f0f0f0"
+    },
+    {
+      "type": "select",
+      "id": "store_name_transform",
+      "label": "Text Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "lowercase", "label": "lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "select",
+      "id": "store_name_font",
+      "label": "Font Style",
+      "options": [
+        { "value": "inherit", "label": "Theme Default" },
+        { "value": "'Montserrat', sans-serif", "label": "Montserrat" },
+        { "value": "'Playfair Display', serif", "label": "Playfair Display" },
+        { "value": "'Roboto', sans-serif", "label": "Roboto" },
+        { "value": "'Lato', sans-serif", "label": "Lato" },
+        { "value": "'Oswald', sans-serif", "label": "Oswald" }
+      ],
+      "default": "inherit"
     },
     {
       "type": "link_list",
