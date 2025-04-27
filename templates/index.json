@@ -48,7 +48,7 @@
         "logo": "shopify://shop_images/logo.png",
         "logo_size": 60,
         "store_name": "Travel More",
-        "store_name_text_size": 12,
+        "store_name_text_size": 17,
         "store_name_color": "#ffffff",
         "store_name_hover_color": "#f0f0f0",
         "store_name_transform": "uppercase",
