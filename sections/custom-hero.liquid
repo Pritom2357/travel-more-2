@@ -294,6 +294,7 @@
     background-color: rgba({{ header_red }}, {{ header_green }}, {{ heaeder_blue }}, {{ section.settings.header_bg_opacity }}) !important;
     color: {{ section.settings.header_text_color }};
     font-size: {{ section.settings.menu_text_size }};
+    box-shadow: none;
   }
   .hero-section .line {
     display: block;
@@ -470,9 +471,9 @@
   }
 
   .logo-name-container {
-    {% comment %} display: flex; {% endcomment %}
+    display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 20px; /* Increased gap for more space */
   }
 
   .store-name {

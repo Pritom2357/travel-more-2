@@ -215,6 +215,7 @@
     color: {{ section.settings.header_text_color }} !important;
     font-size: {{ section.settings.menu_text_size }}px;
     transition: background-color 0.3s ease;
+    box-shadow: none;
   }
 
   {% if section.settings.is_sticky_header %}
@@ -713,9 +714,9 @@
   }
 
   .logo-name-container {
-    {% comment %} display: flex; {% endcomment %}
+    display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 20px; /* Increased gap for more space */
   }
 
   .store-name {
