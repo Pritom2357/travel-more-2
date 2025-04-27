@@ -445,6 +445,16 @@
     transform: translateY(-50%);
   }
 
+  @media (max-width: 767px) {
+    .store-name {
+      font-size: calc({{ section.settings.store_name_text_size }}px * 0.85);
+    }
+    
+    .logo-name-container {
+      gap: 8px;
+    }
+  }
+
   @media (max-width: 991px) {
     .order-1, .order-2, .order-3 {
       .navbar-brand {
@@ -553,7 +563,7 @@
     top: 100%;
     left: 0;
     display: none;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: {{ section.settings.dropdown_bg_color | default: 'rgba(255, 255, 255, 0.95)' }};
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 10px 0;
@@ -575,6 +585,7 @@
     top: 0;
     left: 100%;
     margin-left: 0.1rem;
+    background-color: {{ section.settings.dropdown_bg_color | default: 'rgba(255, 255, 255, 0.95)' }};
     border-radius: 4px;
   }
 
@@ -589,8 +600,22 @@
 
   /* Hover effect for dropdown items */
   .navbar-nav .dropdown-item:hover {
-    background-color: #f8f9fa;
-    color: #333;
+    background-color: {{ section.settings.dropdown_hover_bg_color | default: '#f8f9fa' }};
+    color: {{ section.settings.dropdown_hover_text_color | default: '#333' }};
+  }
+
+  /* Responsive adjustments for nested menus */
+  @media (max-width: 991px) {
+    .navbar-nav .dropdown-menu {
+      position: static;
+      display: block;
+      background-color: {{ section.settings.dropdown_bg_color | default: 'rgba(255, 255, 255, 0.95)' }};
+    }
+
+    .navbar-nav .dropdown-submenu .dropdown-menu {
+      position: static;
+      margin-left: 0;
+    }
   }
 
   /* Search Modal Styles */
@@ -1266,6 +1291,24 @@
       "label": "Popular destinations (comma separated)",
       "default": "Paris, Tokyo, New York, Bali, London, Rome",
       "info": "These will appear as quick search options"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_bg_color",
+      "label": "Dropdown Background Color",
+      "default": "rgba(255, 255, 255, 0.95)"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_hover_bg_color",
+      "label": "Dropdown Hover Background Color",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_hover_text_color",
+      "label": "Dropdown Hover Text Color",
+      "default": "#333"
     }
   ],
   "presets": [
