@@ -471,27 +471,20 @@
   }
 
   .logo-name-container {
-    {% comment %} display: flex; {% endcomment %}
-    align-items: center;
-    gap: 20px; 
-    justify-content: space-between; 
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center align logo and store name */
+    gap: 10px; /* Add spacing between logo and store name */
   }
 
   .store-name {
     font-size: {{ section.settings.store_name_text_size }}px;
     font-weight: 700;
     color: {{ section.settings.store_name_color }};
-    {% comment %} letter-spacing: 0.5px; {% endcomment %}
-    transition: all 0.3s ease;
-    margin: 0;
-    {% comment %} line-height: 1.2; {% endcomment %}
-    font-family: {{ section.settings.store_name_font | default: 'inherit' }};
     text-transform: {{ section.settings.store_name_transform }};
+    font-family: {{ section.settings.store_name_font | default: 'inherit' }};
     white-space: nowrap;
-  }
-
-  .store-name:hover {
-    color: {{ section.settings.store_name_hover_color | default: section.settings.header_text_hover_color }};
+    text-align: center; /* Center align the text */
   }
 
   @media (max-width: 767px) {
