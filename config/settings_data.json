@@ -179,7 +179,10 @@
           "exempt_padding_pages_list": "footer-exemption",
           "enable_search_modal": true,
           "search_modal_title": "Search our destinations",
-          "popular_destinations": "Paris, Tokyo, New York, Bali, London, Rome"
+          "popular_destinations": "Paris, Tokyo, New York, Bali, London, Rome",
+          "dropdown_bg_color": "#242833",
+          "dropdown_hover_bg_color": "#f8f9fa",
+          "dropdown_hover_text_color": "#333"
         }
       },
       "footer": {
