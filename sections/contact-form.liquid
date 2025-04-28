@@ -6,7 +6,6 @@
 {% endcomment %}
 
 <section class="contact-page">
-  <!-- SECTION 1: ABOUT & GOALS -->
   <div class="contact-about-section" style="background-color: {{ section.settings.about_bg_color }};">
     <div class="container">
       <div class="section-header text-center">
@@ -17,7 +16,6 @@
       </div>
 
       <div class="about-content">
-        <!-- Dynamic content blocks from customizer -->
         {% for block in section.blocks %}
           {% if block.type == 'about_paragraph' %}
             <div class="about-paragraph" {{ block.shopify_attributes }}>
@@ -30,7 +28,6 @@
         {% endfor %}
       </div>
 
-      <!-- Social Links Section -->
       {% if section.settings.show_social_links %}
         <div class="social-links-container">
           <h3 class="social-heading" style="color: {{ section.settings.about_heading_color }};">
@@ -79,7 +76,6 @@
     </div>
   </div>
 
-  <!-- SECTION 2: CONTACT FORM -->
   <div class="contact-form-section" style="background-color: {{ section.settings.form_bg_color }};">
     <div class="container">
       <div class="section-header text-center">
@@ -160,7 +156,6 @@
     </div>
   </div>
 
-  <!-- SECTION 3: PHYSICAL ADDRESS & MAP -->
   {% if section.settings.show_address_section %}
     <div class="contact-map-section" style="background-color: {{ section.settings.map_bg_color }};">
       <div class="container">
