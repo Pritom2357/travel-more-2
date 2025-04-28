@@ -22,31 +22,46 @@
         {% for block in section.blocks %}
           {% if block.type == 'review' %}
             <div class="review-slide fade" data-slide-index="{{ forloop.index0 }}">
-              <!-- Rating Stars -->
-              <div class="rating-stars">
-                {% assign rating = block.settings.rating | default: 0 %}
-                {% assign filled_stars = rating | floor %}
-                {% assign empty_stars = 5 | minus: filled_stars %}
+              <div class="review-content">
+                <!-- Traveler Image -->
+                {% if block.settings.traveler_image != blank %}
+                  <div class="traveler-image-container">
+                    <img 
+                      src="{{ block.settings.traveler_image | img_url: '200x200', crop: 'center' }}" 
+                      alt="{{ block.settings.name }}"
+                      class="traveler-image"
+                    >
+                  </div>
+                {% endif %}
+                
+                <div class="review-details">
+                  <!-- Rating Stars -->
+                  <div class="rating-stars">
+                    {% assign rating = block.settings.rating | default: 0 %}
+                    {% assign filled_stars = rating | floor %}
+                    {% assign empty_stars = 5 | minus: filled_stars %}
 
-                {% for star in (1..filled_stars) %}
-                  <i class="bi bi-star-fill"></i>
-                {% endfor %}
-                {% for star in (1..empty_stars) %}
-                  <i class="bi bi-star"></i>
-                {% endfor %}
+                    {% for star in (1..filled_stars) %}
+                      <i class="bi bi-star-fill"></i>
+                    {% endfor %}
+                    {% for star in (1..empty_stars) %}
+                      <i class="bi bi-star"></i>
+                    {% endfor %}
+                  </div>
+
+                  <!-- Review Title -->
+                  <h3 class="review-title">{{ block.settings.title }}</h3>
+
+                  <!-- Author and Date -->
+                  <p class="review-meta">
+                    <strong>{{ block.settings.name }}</strong> &nbsp; | &nbsp;
+                    {{ block.settings.date }}
+                  </p>
+
+                  <!-- Review Text -->
+                  <p class="review-text">{{ block.settings.text }}</p>
+                </div>
               </div>
-
-              <!-- Review Title -->
-              <h3 class="review-title">{{ block.settings.title }}</h3>
-
-              <!-- Author and Date -->
-              <p class="review-meta">
-                <strong>{{ block.settings.name }}</strong> &nbsp; | &nbsp;
-                {{ block.settings.date }}
-              </p>
-
-              <!-- Review Text -->
-              <p class="review-text">{{ block.settings.text }}</p>
             </div>
           {% endif %}
         {% endfor %}
@@ -347,6 +362,12 @@
           "type": "textarea",
           "label": "Review Text",
           "default": "It was a life changing experience and we couldn't be happier to have done it. The accommodations were excellent and the guides were knowledgeable and friendly."
+        },
+        {
+          "id": "traveler_image",
+          "type": "image_picker",
+          "label": "Traveler Image",
+          "info": "Upload or select an image of the traveler."
         }
       ]
     }
