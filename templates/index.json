@@ -153,61 +153,118 @@
     "specialty_J9NYdd": {
       "type": "specialty",
       "blocks": {
-        "images_cnrWV6": {
-          "type": "images",
-          "settings": {
-            "image": "shopify://shop_images/relax.png",
-            "image_text": "Relax and Enjoy",
-            "title_color": "#1773b0",
-            "img_description": "",
-            "description_color": "#000000",
-            "card_bg_color": "#85d0d7"
-          }
-        },
-        "images_aVznfc": {
-          "type": "images",
-          "settings": {
-            "image": "shopify://shop_images/local.png",
-            "image_text": "Try Local Foods",
-            "title_color": "#8c4d22",
-            "img_description": "",
-            "description_color": "#f12222",
-            "card_bg_color": "#eabdae"
-          }
-        },
-        "images_6HW4pD": {
-          "type": "images",
-          "settings": {
-            "image": "shopify://shop_images/discover.png",
-            "image_text": "Discover New Places",
-            "title_color": "#1773b0",
-            "img_description": "",
-            "description_color": "#000000",
-            "card_bg_color": "#ddf5f5"
-          }
-        },
-        "images_nmcBYn": {
-          "type": "images",
+        "specialty_aatDrd": {
+          "type": "specialty",
           "settings": {
             "image": "shopify://shop_images/price.png",
-            "image_text": "At Low Prices",
-            "title_color": "#7e2f7e",
-            "img_description": "",
-            "description_color": "#000000",
-            "card_bg_color": "#f3d5fd"
+            "image_text": "Exclusive Services",
+            "img_description": "<p>We offer unique services tailored to your specific needs and preferences.</p>",
+            "badge_text": "",
+            "badge_color": "#FF5733",
+            "icon_class": "",
+            "icon_color": "#449EED",
+            "title_color": "#222222",
+            "description_color": "#555555",
+            "card_bg_color": "#FFFFFF",
+            "show_button": true,
+            "button_text": "Learn More",
+            "button_link": "",
+            "button_bg_color": "#449EED",
+            "button_text_color": "#FFFFFF"
+          }
+        },
+        "specialty_jhyMxm": {
+          "type": "specialty",
+          "settings": {
+            "image": "shopify://shop_images/discover.png",
+            "image_text": "Exclusive Services",
+            "img_description": "<p>We offer unique services tailored to your specific needs and preferences.</p>",
+            "badge_text": "",
+            "badge_color": "#FF5733",
+            "icon_class": "",
+            "icon_color": "#449EED",
+            "title_color": "#222222",
+            "description_color": "#555555",
+            "card_bg_color": "#FFFFFF",
+            "show_button": true,
+            "button_text": "Learn More",
+            "button_link": "",
+            "button_bg_color": "#449EED",
+            "button_text_color": "#FFFFFF"
+          }
+        },
+        "specialty_t8gTCe": {
+          "type": "specialty",
+          "settings": {
+            "image": "shopify://shop_images/relax.png",
+            "image_text": "Exclusive Services",
+            "img_description": "<p>We offer unique services tailored to your specific needs and preferences.</p>",
+            "badge_text": "",
+            "badge_color": "#FF5733",
+            "icon_class": "",
+            "icon_color": "#449EED",
+            "title_color": "#222222",
+            "description_color": "#555555",
+            "card_bg_color": "#FFFFFF",
+            "show_button": true,
+            "button_text": "Learn More",
+            "button_link": "",
+            "button_bg_color": "#449EED",
+            "button_text_color": "#FFFFFF"
+          }
+        },
+        "specialty_YxwzzY": {
+          "type": "specialty",
+          "settings": {
+            "image": "shopify://shop_images/local.png",
+            "image_text": "Exclusive Services",
+            "img_description": "<p>We offer unique services tailored to your specific needs and preferences.</p>",
+            "badge_text": "",
+            "badge_color": "#FF5733",
+            "icon_class": "",
+            "icon_color": "#449EED",
+            "title_color": "#222222",
+            "description_color": "#555555",
+            "card_bg_color": "#FFFFFF",
+            "show_button": true,
+            "button_text": "Learn More",
+            "button_link": "",
+            "button_bg_color": "#449EED",
+            "button_text_color": "#FFFFFF"
           }
         }
       },
       "block_order": [
-        "images_cnrWV6",
-        "images_aVznfc",
-        "images_6HW4pD",
-        "images_nmcBYn"
+        "specialty_aatDrd",
+        "specialty_jhyMxm",
+        "specialty_t8gTCe",
+        "specialty_YxwzzY"
       ],
       "settings": {
+        "section_title": "Our Specialties",
+        "section_subtitle": "What Makes Us Different",
+        "section_description": "<p>Discover our unique offerings and services that set us apart from the rest.</p>",
         "bg_color": "#bff5e8",
+        "title_color": "#222222",
+        "subtitle_color": "#666666",
+        "description_color": "#555555",
+        "accent_color": "#449EED",
         "title_size": 23,
-        "sub_title_size": 16
+        "card_title_size": 24,
+        "sub_title_size": 16,
+        "use_full_width": false,
+        "enable_hover_effect": true,
+        "enable_image_overlay": true,
+        "show_cta": true,
+        "cta_title": "Ready to Experience Our Services?",
+        "cta_description": "Join thousands of satisfied customers who have trusted our expertise.",
+        "cta_button_text": "Get Started",
+        "cta_button_link": "shopify://collections/all",
+        "cta_bg_color": "#f7f9fc",
+        "cta_title_color": "#222222",
+        "cta_description_color": "#555555",
+        "cta_button_bg_color": "#449EED",
+        "cta_button_text_color": "#ffffff"
       }
     },
     "image_carousel_banner_qC9hK3": {
