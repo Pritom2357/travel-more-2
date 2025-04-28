@@ -71,73 +71,61 @@ document.addEventListener('DOMContentLoaded', function() {
   const bannerElement = document.getElementById('{{ banner_id }}');
   const closeButton = document.getElementById('close-{{ banner_id }}');
   
-  // Check if user has previously dismissed the banner
   const isBannerDismissed = localStorage.getItem(bannerKey) === 'true';
   
   if (isBannerDismissed && {{ section.settings.show_once_per_session }}) {
     bannerElement.style.display = 'none';
   } else {
-    // Wait for specified delay before showing the banner
     setTimeout(function() {
       bannerElement.classList.add('show-banner');
     }, {{ section.settings.display_delay | times: 1000 }});
   }
   
-  // Handle close button click
   closeButton.addEventListener('click', function() {
     bannerElement.classList.remove('show-banner');
     bannerElement.classList.add('hide-banner');
     
-    // After animation completes, hide the banner completely
     setTimeout(function() {
       bannerElement.style.display = 'none';
       
-      // Set flag in localStorage
       if ({{ section.settings.show_once_per_session }}) {
         localStorage.setItem(bannerKey, 'true');
       }
     }, 500);
   });
   
-  // Countdown timer functionality
   function updateCountdown() {
     const endDate = new Date('{{ section.settings.end_date }}').getTime();
     const now = new Date().getTime();
     const timeRemaining = endDate - now;
     
     if (timeRemaining <= 0) {
-      // Timer has expired
       document.querySelector('#countdown-{{ banner_id }} .days').textContent = '00';
       document.querySelector('#countdown-{{ banner_id }} .hours').textContent = '00';
       document.querySelector('#countdown-{{ banner_id }} .minutes').textContent = '00';
       document.querySelector('#countdown-{{ banner_id }} .seconds').textContent = '00';
       
-      // Hide banner if timer has expired
       if ({{ section.settings.hide_on_expire }}) {
         bannerElement.style.display = 'none';
       }
       return;
     }
     
-    // Calculate days, hours, minutes, seconds
     const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
     const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
     
-    // Update the display
     document.querySelector('#countdown-{{ banner_id }} .days').textContent = days.toString().padStart(2, '0');
     document.querySelector('#countdown-{{ banner_id }} .hours').textContent = hours.toString().padStart(2, '0');
     document.querySelector('#countdown-{{ banner_id }} .minutes').textContent = minutes.toString().padStart(2, '0');
     document.querySelector('#countdown-{{ banner_id }} .seconds').textContent = seconds.toString().padStart(2, '0');
     
-    // Add animation class to changing values
     const secondsEl = document.querySelector('#countdown-{{ banner_id }} .seconds');
     secondsEl.classList.add('pulse');
     setTimeout(() => { secondsEl.classList.remove('pulse'); }, 500);
   }
   
-  // Initial update and set interval
   updateCountdown();
   setInterval(updateCountdown, 1000);
 });
@@ -184,7 +172,6 @@ document.addEventListener('DOMContentLoaded', function() {
   z-index: -1;
 }
 
-/* Make sure all content has appropriate contrast against the background */
 .promo-countdown-banner .promo-subheading,
 .promo-countdown-banner .promo-heading,
 .promo-countdown-banner .promo-description {
@@ -407,7 +394,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 }
 
-/* Responsive styles */
 @media (max-width: 767px) {
   .promo-content-wrapper {
     flex-direction: column;
