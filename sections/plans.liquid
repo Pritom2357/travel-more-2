@@ -143,7 +143,7 @@
               
               <div class="tour-actions">
                 <a href="{{ block.settings.event_url }}" class="btn-view-details">
-                  View Details
+                  {{ block.settings.button_text | default: "View Details" }}
                   <i class="bi bi-arrow-right"></i>
                 </a>
                 <button class="btn-quick-view">
@@ -156,7 +156,7 @@
               <h3>{{ block.settings.title }}</h3>
               <p>{{ block.settings.description }}</p>
               <a href="{{ block.settings.event_url }}" class="btn-book-now" style="background-color: {{ section.settings.accent_color }};">
-                Book Now
+                {{ block.settings.book_now_text | default: "Book Now" }}
                 <i class="bi bi-arrow-right"></i>
               </a>
             </div>
@@ -168,7 +168,7 @@
     <!-- See All Tours Button with Animation -->
     <div class="view-all-container" data-aos="fade-up" data-aos-delay="600">
       <a
-        href="/all-events"
+        href="{{ section.settings.see_more_link | default: '/collections/all' }}"
         class="btn-view-all"
         style="
           color: {{ section.settings.see_more_color }};
@@ -845,6 +845,12 @@
       "id": "btn_text",
       "label": "Button Text",
       "default": "View All Tours"
+    },
+    {
+      "type": "url",
+      "id": "see_more_link",
+      "label": "Button Link",
+      "info": "Where should the 'View All Tours' button link to?"
     }
   ],
   "blocks": [
@@ -1000,6 +1006,24 @@
           "id": "cost",
           "label": "Price",
           "default": "599"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "View Details"
+        },
+        {
+          "type": "url",
+          "id": "event_url",
+          "label": "Button Link",
+          "default": "/"
+        },
+        {
+          "type": "text",
+          "id": "book_now_text",
+          "label": "Book Now Button Text",
+          "default": "Book Now"
         }
       ]
     }
