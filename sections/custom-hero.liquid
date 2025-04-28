@@ -117,15 +117,14 @@
               </a>
             </form>
           {% endif %}
-        </div> <!-- Close navbar-collapse -->
-      </div> <!-- Close container-fluid -->
+        </div> 
+      </div> 
     </nav>
     <div class="line"></div>
   {% endif %}
 
   <div class="container position-relative d-flex">
     <div class="row align-items-center">
-      <!-- Left content (headline and buttons) -->
       <div class="col-lg-7 col-md-12">
         <h1 class="hero-title">
           {% if section.settings.title_text %}
@@ -175,16 +174,10 @@
         const destSelect = document.getElementById('destinationSelect');
         const selectedOption = destSelect.options[destSelect.selectedIndex];
 
-        const destinationTitle = selectedOption.value; // e.g. "Maldives"
+        const destinationTitle = selectedOption.value; 
         const destinationDescription = selectedOption.dataset.destDescription; 
         const destinationPrice = selectedOption.dataset.destPrice; 
         const tourType = document.getElementById('tourType').value;
-
-        // Just for example, we won't use 'month' or 'priceRange' here, but you could pass them if desired.
-        
-        // We redirect the user to a custom page, e.g. /pages/tour-booking, with query params
-        // for the selected destination, description, and price. 
-        // We'll parse these on the next page to display the correct info.
 
         const url = `/pages/tour-booking?dest=${encodeURIComponent(destinationTitle)}&desc=${encodeURIComponent(destinationDescription)}&price=${encodeURIComponent(destinationPrice)}&type=${encodeURIComponent(tourType)}`;
 
@@ -211,23 +204,19 @@
   });
 
   document.addEventListener('DOMContentLoaded', function () {
-    // Handle both top-level and nested dropdown toggles
     const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
     
     dropdownToggles.forEach(toggle => {
       toggle.addEventListener('click', function (e) {
-        // Prevent navigation for items with submenus
         if (this.nextElementSibling && this.nextElementSibling.classList.contains('dropdown-menu')) {
           e.preventDefault();
-          e.stopPropagation(); // Stop event from bubbling up
+          e.stopPropagation();
           
           const dropdownMenu = this.nextElementSibling;
           
-          // For mobile: Toggle the clicked submenu
           if (window.innerWidth <= 991) {
             dropdownMenu.classList.toggle('show');
             
-            // Close sibling menus at same level if needed
             const parent = this.closest('li').parentNode;
             if (parent.classList.contains('dropdown-menu')) {
               const siblings = parent.querySelectorAll(':scope > li > .dropdown-menu');
@@ -242,7 +231,6 @@
       });
     });
     
-    // Add touch support for first click opening submenu on mobile/tablet
     if ('ontouchstart' in document.documentElement) {
       document.querySelectorAll('.dropdown-submenu > .dropdown-item').forEach(item => {
         item.addEventListener('click', function(e) {
@@ -324,7 +312,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, {{section.settings.bg_overlay}});
-    z-index: 0; /* Lower the z-index */
+    z-index: 0; 
   }
   .hero-section .container {
     position: relative;
@@ -336,14 +324,13 @@
     line-height: 1.2;
     font-weight: 700;
     color: {{section.settings.title_color}};
-    z-index: 1; /* Ensure it's below the mobile menu */
+    z-index: 1;
   }
   .hero-subtitle {
     font-size: {{section.settings.sub_title_size}}rem;
     margin: 1rem 0 2rem 0;
     color: {{section.settings.sub_title_color}};
   }
-  /* Booking form styling */
   .booking-form {
     background-color: rgba({{ form_red }}, {{ form_green }}, {{ form_blue }}, {{ section.settings.form_bg_opacity }}) !important;
     color: {{ section.settings.form_text_color }};
@@ -447,9 +434,9 @@
 
   .logo-name-container {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center align logo and store name */
-    gap: 10px; /* Add spacing between logo and store name */
+    flex-direction: column; 
+    align-items: center; 
+    gap: 10px; 
   }
 
   .store-name {
@@ -459,7 +446,7 @@
     text-transform: {{ section.settings.store_name_transform }};
     font-family: {{ section.settings.store_name_font | default: 'inherit' }};
     white-space: nowrap;
-    text-align: center; /* Center align the text */
+    text-align: center; 
   }
 
   .store-name:hover, 
@@ -470,7 +457,7 @@
 
   @media (max-width: 767px) {
     .store-name {
-      font-size: calc({{ section.settings.store_name_text_size }}px * 0.75); /* Reduce font size */
+      font-size: calc({{ section.settings.store_name_text_size }}px * 0.75); 
     }
     
     .logo-name-container {
@@ -485,34 +472,30 @@
     flex-wrap: nowrap;
   }
 
-  /* Main dropdown menu */
   .navbar-nav .dropdown-menu {
     position: absolute;
     top: 100%;
     left: 0;
     display: none;
-    background-color: transparent; /* Remove background */
-    border: none; /* Remove border */
+    background-color: transparent; 
+    border: none; 
     border-radius: 4px;
     padding: 10px 0;
     z-index: 1000;
     min-width: 200px;
   }
 
-  /* Dropdown items */
   .navbar-nav .dropdown-item {
     color: {{ section.settings.dropdown_text_color | default: section.settings.header_text_color }}; /* Use text color from settings */
     padding: 8px 15px;
     transition: color 0.3s;
   }
 
-  /* Hover effect for dropdown items - no background */
   .navbar-nav .dropdown-item:hover {
-    background-color: transparent; /* No background on hover */
+    background-color: transparent; 
     color: {{ section.settings.submenu_hover_text_color | default: section.settings.header_text_hover_color }};
   }
 
-  /* Add underline effect instead of background */
   .navbar-nav .dropdown-item::after {
     content: '';
     display: block;
@@ -526,7 +509,6 @@
     width: 100%;
   }
 
-  /* Submenu styles */
   .navbar-nav .dropdown-submenu {
     position: relative;
   }
@@ -538,7 +520,6 @@
     border-radius: 4px;
   }
 
-  /* Add arrow for submenus */
   .navbar-nav .dropdown-submenu > .dropdown-toggle::after {
     content: "▶";
     float: right;
@@ -547,17 +528,15 @@
     color: #666;
   }
 
-  /* Hover effect for dropdown items */
   .navbar-nav .dropdown-item:hover {
     background-color: #f8f9fa;
     color: #333;
   }
 
-  /* Improved submenu styles */
   .navbar-nav .dropdown-submenu > .dropdown-menu {
     top: 0;
     left: 100%;
-    margin-top: -6px; /* Better alignment with parent item */
+    margin-top: -6px; 
     margin-left: 0;
     border-radius: 4px;
   }
@@ -566,7 +545,6 @@
     display: block;
   }
 
-  /* Mobile menu adjustments */
   @media (max-width: 991px) {
     .navbar-nav .dropdown-menu {
       position: static;
@@ -588,7 +566,6 @@
       padding-left: 15px;
     }
     
-    /* Change arrow direction for mobile view */
     .navbar-nav .dropdown-submenu > .dropdown-item.dropdown-toggle::after {
       content: "▼";
       float: right;
@@ -610,21 +587,28 @@
       width: 100%;
     }
   {% when 'fade' %}
-    /* Rest of the CSS stays the same */
+    .navbar-nav .dropdown-item {
+      transition: opacity 0.3s ease;
+    }
+    
+    .navbar-nav .dropdown-item:hover {
+      opacity: 0.7;
+    }
+    
+    .navbar-nav .dropdown-item::after {
+      content: none;
+    }
   {% endcase %}
 
-  /* Make dropdown toggle buttons transparent */
   .navbar-nav .dropdown-toggle,
   .navbar-nav .dropdown-item.dropdown-toggle {
     background-color: transparent !important;
   }
 
-  /* Keep transparency on hover for dropdown buttons */
   .navbar-nav .dropdown-item.dropdown-toggle:hover {
     background-color: transparent !important;
   }
 
-  /* Ensure submenu background is preserved */
   .navbar-nav .dropdown-menu {
     background-color: {{ section.settings.dropdown_bg_color }} !important;
     border: 1px solid rgba(0,0,0,0.15);
