@@ -63,10 +63,10 @@
         "map_title_color": "#333333",
         "map_text_color": "#666666",
         "store_address": "123 Travel Street\nSuite 101\nNew York, NY 10001\nUnited States",
-        "store_phone": "",
-        "store_email": "",
+        "store_phone": "123456789",
+        "store_email": "asdfghjk",
         "store_hours": "Monday-Friday: 9am - 6pm\nSaturday: 10am - 4pm\nSunday: Closed",
-        "map_embed_code": ""
+        "map_embed_code": "<div style=\"position: relative;\">\n<div style=\"position: relative; padding-bottom: 75%; height: 0; overflow: hidden;\"><iframe style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;\" loading=\"lazy\" allowfullscreen=\"\" src=\"https://maps.google.com/maps?q=Ahsanullah+hall+BUET&amp;output=embed\"></iframe></div>\n<a href=\"https://aitohumanizetextconverter.com/\" rel=\"noopener\" target=\"_blank\" style=\"position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;\">aitohumanizetextconverter.com</a>\n</div>"
       }
     }
   },
