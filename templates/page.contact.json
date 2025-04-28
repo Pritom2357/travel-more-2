@@ -1,7 +1,17 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-page",
+      "disabled": true,
       "settings": {
         "padding_top": 36,
         "padding_bottom": 36
@@ -9,12 +19,54 @@
     },
     "form": {
       "type": "contact-form",
+      "blocks": {
+        "about_paragraph_VQF7PC": {
+          "type": "about_paragraph",
+          "settings": {
+            "heading": "Our Mission",
+            "content": "<p>At Travel More, our mission is to inspire and enable travelers to explore the world with confidence and peace of mind. We believe that travel is more than just visiting new places - it's about creating meaningful connections and unforgettable experiences.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "about_paragraph_VQF7PC"
+      ],
       "settings": {
-        "heading": "",
-        "heading_size": "h1",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "accent_color": "#449EED",
+        "about_title": "About Our Store",
+        "about_bg_color": "#ffffff",
+        "about_title_color": "#333333",
+        "about_heading_color": "#444444",
+        "about_text_color": "#666666",
+        "show_social_links": true,
+        "social_heading": "Connect With Us",
+        "social_icon_color": "#449EED",
+        "facebook_url": "https://www.google.com",
+        "twitter_url": "https://www.google.com",
+        "instagram_url": "https://www.google.com",
+        "youtube_url": "https://www.google.com",
+        "pinterest_url": "https://www.google.com",
+        "tiktok_url": "https://www.google.com",
+        "form_title": "Contact Us",
+        "form_subtitle": "Have questions or feedback? We'd love to hear from you.",
+        "form_bg_color": "#f9f9f9",
+        "form_title_color": "#333333",
+        "form_text_color": "#666666",
+        "button_bg_color": "#449EED",
+        "button_text_color": "#ffffff",
+        "submit_button_text": "Send Message",
+        "success_message": "Thanks for contacting us! We'll get back to you as soon as possible.",
+        "error_message": "Sorry, there was a problem submitting your form. Please check the information and try again.",
+        "show_address_section": true,
+        "address_title": "Our Location",
+        "map_bg_color": "#ffffff",
+        "map_title_color": "#333333",
+        "map_text_color": "#666666",
+        "store_address": "123 Travel Street\nSuite 101\nNew York, NY 10001\nUnited States",
+        "store_phone": "123456789",
+        "store_email": "asdfghjk",
+        "store_hours": "Monday-Friday: 9am - 6pm\nSaturday: 10am - 4pm\nSunday: Closed",
+        "map_embed_code": "<div style=\"position: relative;\">\n<div style=\"position: relative; padding-bottom: 75%; height: 0; overflow: hidden;\"><iframe style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;\" loading=\"lazy\" allowfullscreen=\"\" src=\"https://maps.google.com/maps?q=Ahsanullah+hall+BUET&amp;output=embed\"></iframe></div>\n<a href=\"https://aitohumanizetextconverter.com/\" rel=\"noopener\" target=\"_blank\" style=\"position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;\">aitohumanizetextconverter.com</a>\n</div>"
       }
     }
   },
