@@ -1,20 +1,29 @@
-<!-- Featured Tours Section -->
 <section class="featured-tours-section py-5" style="background-color: {{ section.settings.bg_color }};">
-  <div class="container text-center">
-    <!-- Section Title -->
-    <div class="text-center mb-4">
-      <h6 class="text-primary fw-bold">Featured Tour</h6>
-      <h2
-        class="fw-bold mb-4 section-title"
+  <div class="container">
+    <!-- Section Header with Animated Elements -->
+    <div class="section-header text-center mb-5">
+      <div class="section-badge" data-aos="fade-down" data-aos-delay="100">
+        <span style="background-color: {{ section.settings.accent_color }};">Featured Tour</span>
+      </div>
+      
+      <h2 
+        class="section-title" 
+        data-aos="fade-up" 
+        data-aos-delay="200"
         style="
           color: {{ section.settings.title_color }};
           font-size: {{ section.settings.title_size }}px;
         "
       >
-        {{ section.settings.section_title }}
+        <span class="highlight" style="background: {{ section.settings.accent_color }}20;">{{ section.settings.section_title }}</span>
       </h2>
-      <p
-        class="section-subtitle mb-5"
+      
+      <div class="title-separator" style="background-color: {{ section.settings.accent_color }};"></div>
+      
+      <p 
+        class="section-subtitle"
+        data-aos="fade-up" 
+        data-aos-delay="300"
         style="
           color: {{ section.settings.subtitle_color }};
           font-size: {{ section.settings.subtitle_size }}px;
@@ -24,233 +33,774 @@
       </p>
     </div>
 
-    <!-- Filter Buttons -->
-    <div class="filter-buttons text-center mb-4">
-      {% for button in section.settings.filter_buttons.links %}
-        <a
-          href="{{ button.url }}"
-          class="btn btn-filter"
-          style="
-            background-color: {{ section.settings.filter_button_bg_color }};
-            color: {{ section.settings.filter_button_text_color }};
-          "
-        >
-          {{ button.title }}
-        </a>
-      {% endfor %}
+    <!-- Interactive Filter Tabs -->
+    <div class="tour-filter-container" data-aos="fade-up" data-aos-delay="400">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">All Tours</button>
+        {% for button in section.settings.filter_buttons.links %}
+          <button
+            class="filter-tab"
+            data-filter="{{ button.title | handleize }}"
+            style="
+              color: {{ section.settings.filter_button_text_color }};
+            "
+          >
+            {{ button.title }}
+          </button>
+        {% endfor %}
+      </div>
     </div>
 
-    <!-- Responsive Tour Cards Grid -->
-    <div class="tours-grid">
-      {% for block in section.blocks limit: 4 %}
+    <!-- Enhanced Tour Cards Grid with Animation -->
+    <div class="tours-grid" data-aos="fade-up" data-aos-delay="500">
+      {% for block in section.blocks %}
         <div
-          class="tour-item shadow-lg border-0 hover-zoom"
+          class="tour-item tour-card-wrapper filter-{{ block.settings.tour_category | default: 'all' | handleize }}"
+          data-category="{{ block.settings.tour_category | default: 'all' | handleize }}"
+          data-aos="fade-up"
+          data-aos-delay="{{ forloop.index | times: 100 }}"
           style="
             grid-column: span {{ block.settings.grid_span }};
             grid-row: span {{ block.settings.grid_height_span }};
-            background-color: {{ block.settings.card_bg_color }};
           "
         >
-          <a href="{{ block.settings.event_url }}" class="text-decoration-none text-dark">
-            <div
-              class="card h-100 border-0"
-              style="
-                background-color: {{ block.settings.card_bg_color }};
-                border-radius: 12px;
-                overflow: hidden;
-              "
-            >
-              <div
-                class="card-img-wrapper position-relative overflow-hidden"
-                style="border-radius: 12px 12px 0 0;"
+          <div class="tour-card">
+            <!-- Card Media Section -->
+            <div class="tour-card-media">
+              <!-- Tour Image -->
+              <img
+                src="{{ block.settings.image | img_url: '800x600' }}"
+                alt="{{ block.settings.title }}"
+                loading="lazy"
+                class="tour-image"
               >
-                <img
-                  src="{{ block.settings.image | img_url: '800x600' }}"
-                  class="card-img-top img-fluid"
-                  alt="{{ block.settings.title }}"
-                  loading="lazy"
-                  style="height: 250px; object-fit: cover; transition: transform 0.3s ease;"
-                >
-                <!-- Overlay -->
-                <div class="overlay">
-                  <div class="tour-info text-center">
-                    <h5
-                      class="tour-title fw-bold"
-                      style="
-                        color: {{ block.settings.title_color }};
-                        font-size: {{ section.settings.title_size }}px;
-                      "
-                    >
-                      {{ block.settings.title }}
-                    </h5>
-                    <p
-                      class="tour-description"
-                      style="
-                        color: {{ block.settings.description_color }};
-                        font-size: {{ section.settings.subtitle_size }}px;
-                      "
-                    >
-                      {{ block.settings.description }}
-                    </p>
-                  </div>
+              
+              <!-- Overlay with Gradient -->
+              <div class="tour-overlay"></div>
+              
+              <!-- Featured Badge (if enabled) -->
+              {% if block.settings.is_featured %}
+                <div class="featured-badge" style="background-color: {{ section.settings.accent_color }};">
+                  <i class="bi bi-star-fill"></i> Featured
                 </div>
+              {% endif %}
+              
+              <!-- Quick Actions -->
+              <div class="quick-actions">
+                <button class="quick-action-btn wishlist-btn" title="Add to wishlist">
+                  <i class="bi bi-heart"></i>
+                </button>
+                <button class="quick-action-btn share-btn" title="Share this tour">
+                  <i class="bi bi-share"></i>
+                </button>
               </div>
-
-              {% assign has_any_field = false %}
-              {% if block.settings.dest_checker
-                or block.settings.date_checker
-                or block.settings.duration_checker
-                or block.settings.cost_checker
-              %}
-                {% assign has_any_field = true %}
-              {% endif %}
-
-              {% if has_any_field %}
-                <!-- If ANY optional field is ON, show them in the card body -->
-                <div class="card-body d-flex flex-column" style="padding: 1rem 1.25rem;">
-                  {% if block.settings.dest_checker %}
-                    <p
-                      class="mb-2"
-                      style="
-                        color: {{ block.settings.dest_color }};
-                        font-size: {{ block.settings.dest_font_size }}px;
-                      "
-                    >
-                      <i
-                        class="bi bi-geo-alt-fill"
-                        style="color: {{ block.settings.dest_color }};"
-                      ></i>
-                      {{ block.settings.destination }}
-                    </p>
-                  {% endif %}
-
-                  <div class="mt-auto">
-                    <div class="d-flex justify-content-between mb-3">
-                      {% if block.settings.date_checker %}
-                        <div
-                          style="
-                            color: {{ block.settings.date_color }};
-                            font-size: {{ block.settings.date_font_size }}px;
-                          "
-                        >
-                          <i
-                            class="bi bi-calendar-event"
-                            style="color: {{ block.settings.date_color }};"
-                          ></i>
-                          {{ block.settings.date }}
-                        </div>
-                      {% endif %}
-                      {% if block.settings.duration_checker %}
-                        <div
-                          style="
-                            color: {{ block.settings.duration_color }};
-                            font-size: {{ block.settings.duration_font_size }}px;
-                          "
-                        >
-                          <i
-                            class="bi bi-clock"
-                            style="color: {{ block.settings.duration_color }};"
-                          ></i>
-                          {{ block.settings.duration }}
-                        </div>
-                      {% endif %}
-                    </div>
-                    {% if block.settings.cost_checker %}
-                      <div class="text-center">
-                        <div
-                          class="badge p-2"
-                          style="
-                            color: {{ block.settings.cost_color }};
-                            font-size: {{ block.settings.cost_font_size }}px;
-                            background-color: {{ block.settings.cost_bg_color }};
-                          "
-                        >
-                          ${{ block.settings.cost }}/day
-                        </div>
-                      </div>
-                    {% endif %}
-                  </div>
-                </div>
-
-                <!-- "Learn More" Button in Footer -->
-                <div
-                  class="card-footer border-0 text-center"
-                  style="
-                    background-color: {{ block.settings.card_bg_color }};
-                    border-radius: 0 0 12px 12px;
-                    padding: 1rem;
-                  "
-                >
-                  <button class="btn btn-outline-primary btn-sm">
-                    Learn More
-                    <i class="bi bi-arrow-right"></i>
-                  </button>
-                </div>
-
-              {% else %}
-                <!-- If ALL optional fields are OFF, show ONLY a centered Learn More button -->
-                <div
-                  class="card-body d-flex flex-column align-items-center justify-content-center"
-                  style="padding: 1rem 1.25rem;"
-                >
-                  <button class="btn btn-outline-primary btn-sm">
-                    Learn More
-                    <i class="bi bi-arrow-right"></i>
-                  </button>
-                </div>
-              {% endif %}
             </div>
-          </a>
+            
+            <!-- Card Content -->
+            <div class="tour-card-content">
+              <!-- Price Badge -->
+              {% if block.settings.cost_checker %}
+                <div class="price-badge" style="background-color: {{ section.settings.accent_color }};">
+                  <span class="price">${{ block.settings.cost }}</span>
+                  <span class="price-period">/person</span>
+                </div>
+              {% endif %}
+              
+              <!-- Tour Title -->
+              <h3 class="tour-title" style="color: {{ block.settings.title_color }};">
+                {{ block.settings.title }}
+              </h3>
+              
+              <!-- Tour Rating -->
+              <div class="tour-rating">
+                {% assign rating = block.settings.rating | default: 5 %}
+                {% for i in (1..5) %}
+                  {% if i <= rating %}
+                    <i class="bi bi-star-fill" style="color: {{ section.settings.accent_color }};"></i>
+                  {% else %}
+                    <i class="bi bi-star" style="color: {{ section.settings.accent_color }};"></i>
+                  {% endif %}
+                {% endfor %}
+                {% if block.settings.review_count %}
+                  <span class="review-count">({{ block.settings.review_count }})</span>
+                {% endif %}
+              </div>
+              
+              <!-- Tour Details -->
+              <div class="tour-details">
+                {% if block.settings.dest_checker %}
+                <div class="tour-detail">
+                  <i class="bi bi-geo-alt-fill" style="color: {{ section.settings.accent_color }};"></i>
+                  <span>{{ block.settings.destination }}</span>
+                </div>
+                {% endif %}
+                
+                {% if block.settings.duration_checker %}
+                <div class="tour-detail">
+                  <i class="bi bi-clock-fill" style="color: {{ section.settings.accent_color }};"></i>
+                  <span>{{ block.settings.duration }}</span>
+                </div>
+                {% endif %}
+                
+                {% if block.settings.date_checker %}
+                <div class="tour-detail">
+                  <i class="bi bi-calendar-event-fill" style="color: {{ section.settings.accent_color }};"></i>
+                  <span>{{ block.settings.date }}</span>
+                </div>
+                {% endif %}
+              </div>
+              
+              <!-- Tour Description -->
+              <p class="tour-description" style="color: {{ block.settings.description_color }};">
+                {{ block.settings.description }}
+              </p>
+              
+              <!-- Tour Actions -->
+              <div class="tour-actions">
+                <a href="{{ block.settings.event_url }}" class="btn-view-details">
+                  View Details
+                  <i class="bi bi-arrow-right"></i>
+                </a>
+                <button class="btn-quick-view">
+                  Quick View
+                </button>
+              </div>
+            </div>
+            
+            <!-- Hover Content with Full Description -->
+            <div class="tour-hover-content">
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.description }}</p>
+              <a href="{{ block.settings.event_url }}" class="btn-book-now" style="background-color: {{ section.settings.accent_color }};">
+                Book Now
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
         </div>
       {% endfor %}
     </div>
 
-    <!-- See All Tours Button -->
-    <div class="mt-5">
+    <!-- See All Tours Button with Animation -->
+    <div class="view-all-container" data-aos="fade-up" data-aos-delay="600">
       <a
         href="/all-events"
-        class="btn btn-primary px-4 py-2"
+        class="btn-view-all"
         style="
           color: {{ section.settings.see_more_color }};
           background-color: {{ section.settings.see_more_bg_color }};
-          border-radius: 8px;
         "
       >
-        <i class="bi bi-arrow-right" style="color: {{ section.settings.see_more_color }};"></i>
         {{ section.settings.btn_text }}
+        <i class="bi bi-arrow-right"></i>
       </a>
     </div>
   </div>
 </section>
 
+<!-- Add AOS Library for Scroll Animations -->
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS animations
+    AOS.init({
+      duration: 800,
+      once: true
+    });
+    
+    // Filter functionality
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const tourItems = document.querySelectorAll('.tour-item');
+    
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        // Remove active class from all tabs
+        filterTabs.forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        this.classList.add('active');
+        
+        const filterValue = this.getAttribute('data-filter');
+        
+        // Filter tour items
+        tourItems.forEach(item => {
+          if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+    
+    // Wishlist functionality
+    const wishlistBtns = document.querySelectorAll('.wishlist-btn');
+    wishlistBtns.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        this.classList.toggle('active');
+        
+        if (this.classList.contains('active')) {
+          this.querySelector('i').classList.remove('bi-heart');
+          this.querySelector('i').classList.add('bi-heart-fill');
+        } else {
+          this.querySelector('i').classList.remove('bi-heart-fill');
+          this.querySelector('i').classList.add('bi-heart');
+        }
+      });
+    });
+    
+    // Quick view functionality
+    const quickViewBtns = document.querySelectorAll('.btn-quick-view');
+    quickViewBtns.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const card = this.closest('.tour-card');
+        card.classList.toggle('show-hover');
+      });
+    });
+  });
+</script>
+
+<!-- Enhanced CSS for Modern Design -->
+<style>
+  /* Section Styling */
+  .featured-tours-section {
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Decorative Elements */
+  .featured-tours-section::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background-color: {{ section.settings.accent_color }}10;
+    top: -100px;
+    left: -100px;
+    z-index: 0;
+  }
+  
+  .featured-tours-section::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: {{ section.settings.accent_color }}15;
+    bottom: -50px;
+    right: -50px;
+    z-index: 0;
+  }
+  
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Section Header Styling */
+  .section-header {
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  
+  .section-badge {
+    margin-bottom: 1rem;
+  }
+  
+  .section-badge span {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .section-title {
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .highlight {
+    position: relative;
+    z-index: 1;
+    padding: 0 8px;
+  }
+  
+  .title-separator {
+    width: 80px;
+    height: 4px;
+    margin: 1.5rem auto;
+    border-radius: 2px;
+  }
+  
+  .section-subtitle {
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+  
+  /* Filter Tabs Styling */
+  .tour-filter-container {
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+  
+  .filter-tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    background-color: #f5f5f5;
+    padding: 0.5rem;
+    border-radius: 50px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+  }
+  
+  .filter-tab {
+    padding: 0.7rem 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .filter-tab.active {
+    background-color: {{ section.settings.accent_color }};
+    color: white !important;
+    box-shadow: 0 4px 12px {{ section.settings.accent_color }}50;
+  }
+  
+  .filter-tab:hover:not(.active) {
+    background-color: rgba(0,0,0,0.05);
+  }
+  
+  /* Tours Grid Layout */
+  .tours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 3rem;
+  }
+  
+  /* Tour Card Styling */
+  .tour-card-wrapper {
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+  
+  .tour-card {
+    position: relative;
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  
+  .tour-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  }
+  
+  /* Tour Card Media Section */
+  .tour-card-media {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+  }
+  
+  .tour-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+  }
+  
+  .tour-card:hover .tour-image {
+    transform: scale(1.08);
+  }
+  
+  .tour-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
+  
+  .tour-card:hover .tour-overlay {
+    opacity: 0.9;
+  }
+  
+  /* Featured Badge */
+  .featured-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    z-index: 3;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  }
+  
+  /* Quick Actions */
+  .quick-actions {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 3;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.3s ease;
+  }
+  
+  .tour-card:hover .quick-actions {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .quick-action-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    color: #333;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+  }
+  
+  .quick-action-btn:hover {
+    transform: scale(1.1);
+    background-color: {{ section.settings.accent_color }};
+    color: white;
+  }
+  
+  .quick-action-btn.active {
+    background-color: {{ section.settings.accent_color }};
+    color: white;
+  }
+  
+  /* Tour Card Content */
+  .tour-card-content {
+    padding: 25px;
+    position: relative;
+  }
+  
+  /* Price Badge */
+  .price-badge {
+    position: absolute;
+    top: -20px;
+    right: 20px;
+    background-color: {{ section.settings.accent_color }};
+    color: white;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  
+  .price {
+    font-size: 1.2rem;
+  }
+  
+  .price-period {
+    font-size: 0.8rem;
+    font-weight: 400;
+    opacity: 0.8;
+  }
+  
+  /* Tour Title */
+  .tour-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+  }
+  
+  .tour-card:hover .tour-title {
+    color: {{ section.settings.accent_color }} !important;
+  }
+  
+  /* Tour Rating */
+  .tour-rating {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-bottom: 1rem;
+  }
+  
+  .tour-rating i {
+    font-size: 0.9rem;
+  }
+  
+  .review-count {
+    font-size: 0.85rem;
+    color: #777;
+    margin-left: 5px;
+  }
+  
+  /* Tour Details */
+  .tour-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .tour-detail {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  /* Tour Description */
+  .tour-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: #666;
+  }
+  
+  /* Tour Actions */
+  .tour-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .btn-view-details {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0.8rem;
+    background-color: {{ section.settings.accent_color }};
+    color: white !important;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-view-details:hover {
+    box-shadow: 0 5px 15px {{ section.settings.accent_color }}50;
+    transform: translateY(-2px);
+  }
+  
+  .btn-quick-view {
+    padding: 0.8rem;
+    background-color: transparent;
+    color: #555;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-quick-view:hover {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+  }
+  
+  /* Hover Content */
+  .tour-hover-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+  
+  .tour-card.show-hover .tour-hover-content {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .tour-hover-content h3 {
+    margin-bottom: 1rem;
+  }
+  
+  .tour-hover-content p {
+    margin-bottom: 2rem;
+    max-width: 90%;
+  }
+  
+  .btn-book-now {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.8rem 1.5rem;
+    background-color: {{ section.settings.accent_color }};
+    color: white !important;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-book-now:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  }
+  
+  /* View All Container */
+  .view-all-container {
+    text-align: center;
+    margin-top: 3rem;
+  }
+  
+  .btn-view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px {{ section.settings.see_more_bg_color }}40;
+  }
+  
+  .btn-view-all:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px {{ section.settings.see_more_bg_color }}60;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 991px) {
+    .tours-grid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .filter-tabs {
+      padding: 0.3rem;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      justify-content: flex-start;
+      max-width: 100%;
+    }
+    
+    .filter-tab {
+      padding: 0.6rem 1rem;
+      white-space: nowrap;
+    }
+    
+    .tour-card-media {
+      height: 200px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .section-title {
+      font-size: calc({{ section.settings.title_size }}px * 0.7) !important;
+    }
+    
+    .section-subtitle {
+      font-size: calc({{ section.settings.subtitle_size }}px * 0.9) !important;
+    }
+    
+    .tour-actions {
+      flex-direction: column;
+    }
+  }
+</style>
+
 {% schema %}
 {
-  "name": "Featured Tours",
+  "name": "Enhanced Tours",
   "settings": [
+    {
+      "type": "header",
+      "content": "Section Styling"
+    },
     {
       "type": "color",
       "id": "bg_color",
       "label": "Background Color",
-      "default": "#f8f9fa"
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#FF6B6B"
+    },
+    {
+      "type": "header",
+      "content": "Section Header"
     },
     {
       "type": "text",
       "id": "section_title",
       "label": "Section Title",
-      "default": "Our Best Tours"
+      "default": "Discover Amazing Tours"
     },
     {
       "type": "color",
       "id": "title_color",
       "label": "Title Color",
-      "default": "#000000"
+      "default": "#222222"
     },
     {
       "type": "range",
       "id": "title_size",
       "label": "Title Font Size",
-      "default": 36,
-      "min": 16,
+      "default": 42,
+      "min": 24,
       "max": 64,
       "step": 1
     },
@@ -258,7 +808,7 @@
       "type": "text",
       "id": "section_subtitle",
       "label": "Section Subtitle",
-      "default": "Explore our exclusive tours and find the perfect adventure for you."
+      "default": "Experience unforgettable journeys with our carefully curated tours designed for adventure enthusiasts and leisure travelers alike."
     },
     {
       "type": "color",
@@ -271,52 +821,46 @@
       "id": "subtitle_size",
       "label": "Subtitle Font Size",
       "default": 18,
-      "min": 12,
+      "min": 14,
       "max": 32,
       "step": 1
     },
     {
       "type": "header",
-      "content": "Filter Button Settings"
+      "content": "Filter Tabs"
     },
     {
       "type": "link_list",
       "id": "filter_buttons",
-      "label": "Filter Buttons"
-    },
-    {
-      "type": "color",
-      "id": "filter_button_bg_color",
-      "label": "Filter Button Background Color",
-      "default": "#007bff"
+      "label": "Filter Categories"
     },
     {
       "type": "color",
       "id": "filter_button_text_color",
-      "label": "Filter Button Text Color",
-      "default": "#ffffff"
+      "label": "Tab Text Color",
+      "default": "#555555"
     },
     {
       "type": "header",
-      "content": "Button"
+      "content": "Call to Action Button"
     },
     {
       "type": "color",
       "id": "see_more_color",
-      "label": "Color",
-      "default": "#fff"
+      "label": "Button Text Color",
+      "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "see_more_bg_color",
-      "label": "Background Color",
-      "default": "#007bff"
+      "label": "Button Background",
+      "default": "#FF6B6B"
     },
     {
       "type": "text",
       "id": "btn_text",
-      "label": "Text",
-      "default": "See more"
+      "label": "Button Text",
+      "default": "View All Tours"
     }
   ],
   "blocks": [
@@ -325,26 +869,64 @@
       "name": "Tour Card",
       "settings": [
         {
+          "type": "header",
+          "content": "General Information"
+        },
+        {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Tour Image"
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
-          "default": "Enter tour name"
+          "label": "Tour Name",
+          "default": "Amazing Beach Tour"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Short Description",
+          "default": "Experience the beauty of pristine beaches and crystal clear waters on this unforgettable tour."
         },
         {
           "type": "url",
           "id": "event_url",
-          "label": "Event URL",
+          "label": "Tour Details URL",
           "default": "/"
+        },
+        {
+          "type": "text",
+          "id": "tour_category",
+          "label": "Category (for filtering)",
+          "default": "beach",
+          "info": "This should match one of your filter button names"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_featured",
+          "label": "Mark as Featured",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Tour Rating",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "default": 4.5
+        },
+        {
+          "type": "text",
+          "id": "review_count",
+          "label": "Number of Reviews",
+          "default": "24"
         },
         {
           "type": "range",
           "id": "grid_span",
-          "label": "Grid Span (1-4)",
+          "label": "Grid Width Span",
           "default": 1,
           "min": 1,
           "max": 4,
@@ -353,7 +935,7 @@
         {
           "type": "range",
           "id": "grid_height_span",
-          "label": "Height Span (1-4)",
+          "label": "Grid Height Span",
           "default": 1,
           "min": 1,
           "max": 4,
@@ -363,25 +945,13 @@
           "type": "color",
           "id": "title_color",
           "label": "Title Color",
-          "default": "#ffffff"
+          "default": "#222222"
         },
         {
           "type": "color",
           "id": "description_color",
           "label": "Description Color",
-          "default": "#ffffff"
-        },
-        {
-          "type": "color",
-          "id": "card_bg_color",
-          "label": "Card Background Color",
-          "default": "#fff"
-        },
-        {
-          "type": "text",
-          "id": "description",
-          "label": "Description",
-          "default": "Brief description of the tour."
+          "default": "#666666"
         },
         {
           "type": "header",
@@ -390,56 +960,14 @@
         {
           "type": "checkbox",
           "id": "dest_checker",
-          "label": "Show Destination?",
+          "label": "Show Destination",
           "default": true
         },
         {
           "type": "text",
           "id": "destination",
-          "label": "Destination"
-        },
-        {
-          "type": "color",
-          "id": "dest_color",
-          "label": "Color",
-          "default": "#007bff"
-        },
-        {
-          "type": "range",
-          "id": "dest_font_size",
-          "label": "Font Size",
-          "default": 16,
-          "min": 10,
-          "max": 40
-        },
-        {
-          "type": "header",
-          "content": "Date"
-        },
-        {
-          "type": "checkbox",
-          "id": "date_checker",
-          "label": "Show Date?",
-          "default": true
-        },
-        {
-          "type": "text",
-          "id": "date",
-          "label": "date"
-        },
-        {
-          "type": "color",
-          "id": "date_color",
-          "label": "Color",
-          "default": "#007bff"
-        },
-        {
-          "type": "range",
-          "id": "date_font_size",
-          "label": "Date Size",
-          "default": 16,
-          "min": 10,
-          "max": 40
+          "label": "Destination",
+          "default": "Bali, Indonesia"
         },
         {
           "type": "header",
@@ -448,188 +976,69 @@
         {
           "type": "checkbox",
           "id": "duration_checker",
-          "label": "Show Duration?",
+          "label": "Show Duration",
           "default": true
         },
         {
           "type": "text",
           "id": "duration",
-          "label": "Duration"
-        },
-        {
-          "type": "color",
-          "id": "duration_color",
-          "label": "Color",
-          "default": "#007bff"
-        },
-        {
-          "type": "range",
-          "id": "duration_font_size",
-          "label": "Font Size",
-          "default": 16,
-          "min": 10,
-          "max": 40
+          "label": "Duration",
+          "default": "7 Days"
         },
         {
           "type": "header",
-          "content": "Cost"
+          "content": "Date"
+        },
+        {
+          "type": "checkbox",
+          "id": "date_checker",
+          "label": "Show Date",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "Apr - Oct"
+        },
+        {
+          "type": "header",
+          "content": "Pricing"
         },
         {
           "type": "checkbox",
           "id": "cost_checker",
-          "label": "Show Cost?",
+          "label": "Show Price",
           "default": true
         },
         {
           "type": "text",
           "id": "cost",
-          "label": "Cost"
-        },
-        {
-          "type": "color",
-          "id": "cost_color",
-          "label": "Color",
-          "default": "#fff"
-        },
-        {
-          "type": "color",
-          "id": "cost_bg_color",
-          "label": "Background Color",
-          "default": "#fff"
-        },
-        {
-          "type": "range",
-          "id": "cost_font_size",
-          "label": "Font Size",
-          "default": 16,
-          "min": 10,
-          "max": 40
+          "label": "Price",
+          "default": "599"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Featured Tours",
-      "category": "Tours"
+      "name": "Enhanced Tours",
+      "category": "Tours",
+      "blocks": [
+        {
+          "type": "tour_card"
+        },
+        {
+          "type": "tour_card"
+        },
+        {
+          "type": "tour_card"
+        },
+        {
+          "type": "tour_card"
+        }
+      ]
     }
   ]
 }
 {% endschema %}
-
-<!-- Additional CSS for Hover Effects, Grid Layout, and Responsiveness -->
-<style>
-  .featured-tours-section .section-title {
-    margin-bottom: 1rem;
-  }
-
-  .featured-tours-section .section-subtitle {
-    margin-bottom: 2rem;
-  }
-
-  .btn-filter {
-    display: inline-block;
-    margin: 0.25rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px; /* Rounded edges for filter buttons */
-    font-size: 1rem;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  .btn-filter:hover {
-    opacity: 0.8;
-    text-decoration: none;
-  }
-
-  .tours-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .tour-item {
-    position: relative;
-    overflow: hidden;
-    border-radius: 12px; /* Round edges for the tour item container */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12),
-                0 2px 4px rgba(0, 0, 0, 0.08);
-  }
-
-  .tour-item:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14),
-                0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .hover-zoom img {
-    transition: transform 0.3s ease;
-  }
-
-  .hover-zoom:hover img {
-    transform: scale(1.05);
-  }
-
-  .overlay {
-    /* Subtle gradient for the overlay */
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.15),
-      rgba(0, 0, 0, 0.6)
-    );
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border-radius: 12px; /* Match the card radius */
-  }
-
-  .tour-item:hover .overlay {
-    opacity: 1;
-  }
-
-  .tour-info {
-    color: #fff;
-    text-align: center;
-    padding: 1rem;
-  }
-
-  .tour-title {
-    margin-bottom: 0.5rem;
-  }
-
-  .tour-description {
-    margin-bottom: 0;
-  }
-
-  /* Responsive Grid Spanning */
-  @media (min-width: 1200px) {
-    .tours-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    .tours-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  @media (min-width: 768px) and (max-width: 991px) {
-    .tours-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 767px) {
-    .tours-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
