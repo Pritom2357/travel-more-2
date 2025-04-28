@@ -165,7 +165,6 @@
       {% endfor %}
     </div>
 
-    <!-- See All Tours Button with Animation -->
     <div class="view-all-container" data-aos="fade-up" data-aos-delay="600">
       <a
         href="{{ section.settings.see_more_link | default: '/collections/all' }}"
@@ -182,33 +181,27 @@
   </div>
 </section>
 
-<!-- Add AOS Library for Scroll Animations -->
 <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Initialize AOS animations
     AOS.init({
       duration: 800,
       once: true
     });
     
-    // Filter functionality
     const filterTabs = document.querySelectorAll('.filter-tab');
     const tourItems = document.querySelectorAll('.tour-item');
     
     filterTabs.forEach(tab => {
       tab.addEventListener('click', function() {
-        // Remove active class from all tabs
         filterTabs.forEach(t => t.classList.remove('active'));
         
-        // Add active class to clicked tab
         this.classList.add('active');
         
         const filterValue = this.getAttribute('data-filter');
         
-        // Filter tour items
         tourItems.forEach(item => {
           if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
             item.style.display = 'block';
@@ -219,7 +212,6 @@
       });
     });
     
-    // Wishlist functionality
     const wishlistBtns = document.querySelectorAll('.wishlist-btn');
     wishlistBtns.forEach(btn => {
       btn.addEventListener('click', function(e) {
@@ -236,7 +228,6 @@
       });
     });
     
-    // Quick view functionality
     const quickViewBtns = document.querySelectorAll('.btn-quick-view');
     quickViewBtns.forEach(btn => {
       btn.addEventListener('click', function(e) {
@@ -248,9 +239,7 @@
   });
 </script>
 
-<!-- Enhanced CSS for Modern Design -->
 <style>
-  /* Section Styling */
   .featured-tours-section {
     padding: 5rem 0;
     position: relative;
