@@ -49,8 +49,8 @@
         "logo_size": 60,
         "store_name": "travel more",
         "store_name_text_size": 17,
-        "store_name_color": "#ffffff",
-        "store_name_hover_color": "#000000",
+        "store_name_color": "#121212",
+        "store_name_hover_color": "#242833",
         "store_name_transform": "uppercase",
         "store_name_font": "'Playfair Display', serif",
         "menu": "main-menu",
@@ -91,7 +91,13 @@
         "input2": "Tour Type",
         "input3": "Month",
         "min_price": 2340,
-        "max_price": 3920
+        "max_price": 3920,
+        "dropdown_bg_color": "rgba(0, 0, 0, 0.5)",
+        "dropdown_hover_bg_color": "#f8f9fa",
+        "dropdown_hover_text_color": "#333",
+        "dropdown_text_color": "#ffffff",
+        "submenu_hover_text_color": "#cccccc",
+        "dropdown_hover_effect": "underline"
       }
     },
     "featured_collection": {
