@@ -705,6 +705,23 @@
   {% when 'fade' %}
     /* Rest of the CSS stays the same */
   {% endcase %}
+
+  /* Make dropdown toggle buttons transparent */
+  .navbar-nav .dropdown-toggle,
+  .navbar-nav .dropdown-item.dropdown-toggle {
+    background-color: transparent !important;
+  }
+
+  /* Keep transparency on hover for dropdown buttons */
+  .navbar-nav .dropdown-item.dropdown-toggle:hover {
+    background-color: transparent !important;
+  }
+
+  /* Ensure submenu background is preserved */
+  .navbar-nav .dropdown-menu {
+    background-color: {{ section.settings.dropdown_bg_color }} !important;
+    border: 1px solid rgba(0,0,0,0.15);
+  }
 </style>
 
 {% schema %}
