@@ -421,6 +421,7 @@
         "review_Wt68d6": {
           "type": "review",
           "settings": {
+            "traveler_image": "shopify://shop_images/happy3.jpg",
             "name": "Maria Kovenji",
             "date": "2023-05-15",
             "rating": 4,
