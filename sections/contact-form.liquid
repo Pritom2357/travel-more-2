@@ -115,14 +115,14 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="ContactFormName" style="color: {{ section.settings.form_text_color }};">
-                  {{ 'contact.form.name' | t }}
+                  Name
                 </label>
                 <input type="text" id="ContactFormName" name="contact[name]" value="{{ form.name }}" required>
               </div>
 
               <div class="form-group">
                 <label for="ContactFormEmail" style="color: {{ section.settings.form_text_color }};">
-                  {{ 'contact.form.email' | t }} <span class="required">*</span>
+                  Email <span class="required">*</span>
                 </label>
                 <input type="email" id="ContactFormEmail" name="contact[email]" value="{{ form.email }}" required>
               </div>
@@ -130,21 +130,21 @@
 
             <div class="form-group">
               <label for="ContactFormPhone" style="color: {{ section.settings.form_text_color }};">
-                {{ 'contact.form.phone' | t }}
+                Phone Number
               </label>
               <input type="tel" id="ContactFormPhone" name="contact[phone]" value="{{ form.phone }}">
             </div>
 
             <div class="form-group">
               <label for="ContactFormSubject" style="color: {{ section.settings.form_text_color }};">
-                {{ 'contact.form.subject' | t }}
+                Subject
               </label>
               <input type="text" id="ContactFormSubject" name="contact[subject]" value="{{ form.subject }}">
             </div>
 
             <div class="form-group">
               <label for="ContactFormMessage" style="color: {{ section.settings.form_text_color }};">
-                {{ 'contact.form.message' | t }} <span class="required">*</span>
+                Message <span class="required">*</span>
               </label>
               <textarea id="ContactFormMessage" name="contact[body]" rows="8" required>{{ form.body }}</textarea>
             </div>
@@ -792,3 +792,5 @@
   ]
 }
 {% endschema %}
+```
+</copilot-edited-file>
