@@ -495,7 +495,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Get the product data from sessionStorage
     let bookingProduct;
     try {
       bookingProduct = JSON.parse(sessionStorage.getItem('booking_product'));
@@ -504,7 +503,6 @@
       bookingProduct = null;
     }
     
-    // If there's no product data, show error
     if (!bookingProduct) {
       console.warn('No product selected for booking');
       document.querySelector('.booking-form-container').innerHTML = 
@@ -512,7 +510,6 @@
       return;
     }
     
-    // Populate the product summary
     const productImage = document.getElementById('bookingProductImage');
     const productTitle = document.getElementById('bookingProductTitle');
     const variantTitle = document.getElementById('bookingVariantTitle');
@@ -531,7 +528,6 @@
     productTitle.textContent = bookingProduct.product_title;
     variantTitle.textContent = bookingProduct.variant_title !== 'Default Title' ? bookingProduct.variant_title : '';
     
-    // Format the price
     const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: '{{ shop.currency }}'
@@ -539,19 +535,15 @@
     
     productPrice.textContent = formatter.format(bookingProduct.price / 100);
     
-    // Set the hidden inputs for the form submission
     variantIdInput.value = bookingProduct.variant_id;
     quantityInput.value = bookingProduct.quantity || 1;
     
-    // Form submission handler
     const bookingForm = document.getElementById('tourBookingForm');
     bookingForm.addEventListener('submit', function(e) {
       e.preventDefault();
       
-      // Collect form data
       const formData = new FormData(this);
       
-      // Add to cart with all the gathered information
       fetch('/cart/add.js', {
         method: 'POST',
         headers: {
@@ -577,7 +569,6 @@
         return response.json();
       })
       .then(data => {
-        // Redirect to checkout
         window.location.href = '/checkout';
       })
       .catch(error => {

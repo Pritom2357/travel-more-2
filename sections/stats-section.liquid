@@ -73,7 +73,7 @@
     /* Individual stat item */
     .stats-item {
       flex: 1 1 180px;
-      min-width: 180px; /* ensures stats have some minimum width on small screens */
+      min-width: 180px; 
     }
 
     /* Hollow number styling */
@@ -81,11 +81,10 @@
       font-size: 3em;
       margin-bottom: 10px;
       font-weight: bold;
-      color: transparent; /* Make the text itself transparent */
-      -webkit-text-stroke: 2px #ffffff; /* White outline */
-      text-stroke: 2px #ffffff; /* Standard property (not widely supported yet) */
+      color: transparent; 
+      -webkit-text-stroke: 2px #ffffff; 
+      text-stroke: 2px #ffffff; 
 
-      /* Fallback for browsers that don't support text-stroke */
       text-shadow:
         2px 2px 0 {{section.settings.text_color}},
         -2px 2px 0 {{section.settings.text_color}},
@@ -124,7 +123,7 @@
         statsNumbers.forEach(stat => {
           const target = parseInt(stat.textContent, 10);
           stat.textContent = '0';
-          const increment = target / 200; // Adjust for speed
+          const increment = target / 200; 
 
           const updateNumber = () => {
             let current = parseFloat(stat.textContent);
@@ -142,7 +141,6 @@
         });
       }
 
-      // Intersection Observer to trigger animation when in view
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting && !hasAnimated) {

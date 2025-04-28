@@ -1,6 +1,5 @@
 <section class="specialty-section {% if section.settings.use_full_width %}full-width{% endif %}" style="background-color: {{ section.settings.bg_color }};">
   <div class="container">
-    <!-- Section Header -->
     <div class="section-header">
       {% if section.settings.section_subtitle != blank %}
         <span class="section-subtitle" style="color: {{ section.settings.subtitle_color }};">{{ section.settings.section_subtitle }}</span>
@@ -17,7 +16,6 @@
       {% endif %}
     </div>
 
-    <!-- Specialty Cards -->
     <div class="specialty-cards">
       <div class="row justify-content-center g-4">
         {% for block in section.blocks %}
@@ -68,7 +66,6 @@
       </div>
     </div>
 
-    <!-- Optional Call to Action -->
     {% if section.settings.show_cta %}
       <div class="specialty-cta">
         <h3 class="cta-title" style="color: {{ section.settings.cta_title_color }};">{{ section.settings.cta_title | default: "Ready to experience our specialties?" }}</h3>
