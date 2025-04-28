@@ -1,40 +1,39 @@
-<section id="happy-travelers" class="traveler-reviews-section">
+<section id="happy-travelers" class="travelers-slideshow">
   <div class="container">
     <!-- Section Title -->
     {% if section.settings.section_title != blank %}
       <h2 class="section-title">{{ section.settings.section_title }}</h2>
     {% endif %}
 
-    <div class="reviews-container">
-      <!-- Hero Image -->
+    <div class="slideshow-container">
+      <!-- Background Image -->
       {% if section.settings.hero_image != blank %}
-        <div class="hero-image-container">
-          <img
-            src="{{ section.settings.hero_image | img_url: '600x' }}"
-            alt="Traveler experiences"
-            class="hero-image"
-          >
+        <div class="hero-image-wrapper">
+          <img src="{{ section.settings.hero_image | img_url: '1200x' }}" alt="Travel Experiences" class="hero-background">
         </div>
       {% endif %}
 
-      <!-- Slideshow Container -->
-      <div class="slideshow-container">
+      <div class="slideshow-content">
+        <!-- Review Slides -->
         {% for block in section.blocks %}
           {% if block.type == 'review' %}
-            <div class="review-slide fade" data-slide-index="{{ forloop.index0 }}">
-              <div class="review-content">
-                <!-- Traveler Image -->
+            <div class="review-slide" data-slide-index="{{ forloop.index0 }}">
+              <div class="review-card">
+                <!-- Traveler Image (Added) -->
                 {% if block.settings.traveler_image != blank %}
                   <div class="traveler-image-container">
-                    <img 
-                      src="{{ block.settings.traveler_image | img_url: '200x200', crop: 'center' }}" 
-                      alt="{{ block.settings.name }}"
-                      class="traveler-image"
-                    >
+                    <img src="{{ block.settings.traveler_image | img_url: '200x200', crop: 'center' }}" 
+                         alt="{{ block.settings.name }}" class="traveler-image">
+                  </div>
+                {% else %}
+                  <div class="traveler-image-container">
+                    <div class="traveler-placeholder">
+                      <i class="bi bi-person-circle"></i>
+                    </div>
                   </div>
                 {% endif %}
-                
-                <div class="review-details">
+
+                <div class="review-content">
                   <!-- Rating Stars -->
                   <div class="rating-stars">
                     {% assign rating = block.settings.rating | default: 0 %}
@@ -53,239 +52,345 @@
                   <h3 class="review-title">{{ block.settings.title }}</h3>
 
                   <!-- Author and Date -->
-                  <p class="review-meta">
-                    <strong>{{ block.settings.name }}</strong> &nbsp; | &nbsp;
-                    {{ block.settings.date }}
+                  <p class="reviewer-info">
+                    <strong>{{ block.settings.name }}</strong>
+                    <span class="date-divider">|</span>
+                    <span class="review-date">{{ block.settings.date }}</span>
                   </p>
 
                   <!-- Review Text -->
-                  <p class="review-text">{{ block.settings.text }}</p>
+                  <div class="review-text">
+                    <p>{{ block.settings.text }}</p>
+                  </div>
                 </div>
               </div>
             </div>
           {% endif %}
         {% endfor %}
 
-        <!-- Navigation Buttons -->
-        <button class="prev-btn" onclick="changeSlide(-1)">❮</button>
-        <button class="next-btn" onclick="changeSlide(1)">❯</button>
-      </div>
+        <!-- Navigation Controls -->
+        <button class="prev-button" aria-label="Previous review">❮</button>
+        <button class="next-button" aria-label="Next review">❯</button>
 
-      <!-- Dots Navigation -->
-      <div class="dots-container">
-        {% for block in section.blocks %}
-          {% if block.type == 'review' %}
-            <span class="dot" onclick="jumpToSlide({{ forloop.index0 }})"></span>
-          {% endif %}
-        {% endfor %}
+        <!-- Pagination Dots -->
+        <div class="pagination-dots">
+          {% for block in section.blocks %}
+            {% if block.type == 'review' %}
+              <span class="dot" data-index="{{ forloop.index0 }}"></span>
+            {% endif %}
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>
 
   <style>
-    .traveler-reviews-section {
-      padding: 3rem 1rem;
+    .travelers-slideshow {
+      padding: 4rem 1rem;
       background-color: #f9f9f9;
+      position: relative;
+      overflow: hidden;
     }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
+      position: relative;
     }
 
     .section-title {
       text-align: center;
-      font-size: 2rem;
-      margin-bottom: 2rem;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
       color: #333;
+      position: relative;
+      z-index: 2;
     }
 
-    .reviews-container {
+    /* Slideshow container */
+    .slideshow-container {
+      position: relative;
+      margin: 0 auto;
+      overflow: hidden;
+      max-width: 1000px;
+    }
+
+    /* Hero background image */
+    .hero-image-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.15;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .hero-background {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(3px);
+    }
+
+    /* Slideshow content and controls */
+    .slideshow-content {
+      position: relative;
+      z-index: 2;
+      padding: 2rem 0;
+    }
+
+    /* Review slides */
+    .review-slide {
+      display: none;
+      padding: 0 2rem;
+      transition: transform 0.5s ease;
+    }
+
+    .review-slide.active {
+      display: block;
+      animation: fadeIn 0.8s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Review card */
+    .review-card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      padding: 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2rem;
-    }
-
-    .hero-image-container {
-      width: 100%;
-      max-width: 400px;
       text-align: center;
-    }
-
-    .hero-image {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    /* Slideshow Container */
-    .slideshow-container {
-      position: relative;
-      width: 100%;
-      max-width: 700px;
+      max-width: 800px;
       margin: 0 auto;
     }
 
-    /* Hide slides by default */
-    .review-slide {
-      display: none;
-      background-color: white;
-      border-radius: 10px;
-      padding: 2rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      text-align: center;
-      min-height: 250px;
+    /* Traveler image */
+    .traveler-image-container {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 1.5rem;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
-    /* Active slide */
-    .review-slide.active {
-      display: block;
+    .traveler-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    /* Star Rating */
+    .traveler-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #e0e0e0;
+      color: #999;
+      font-size: 3rem;
+    }
+
+    /* Rating stars */
     .rating-stars {
       color: #f39c12;
       font-size: 1.2rem;
       margin-bottom: 1rem;
     }
 
-    /* Review Content */
+    /* Review content */
+    .review-content {
+      width: 100%;
+    }
+
     .review-title {
-      font-size: 1.4rem;
-      margin-bottom: 0.75rem;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
       color: #333;
     }
 
-    .review-meta {
-      font-size: 0.9rem;
+    .reviewer-info {
+      font-size: 1rem;
       color: #777;
       margin-bottom: 1.5rem;
     }
 
+    .date-divider {
+      margin: 0 0.5rem;
+      color: #ccc;
+    }
+
     .review-text {
       font-size: 1.1rem;
-      line-height: 1.6;
+      line-height: 1.7;
       color: #555;
       font-style: italic;
     }
 
-    /* Navigation Buttons */
-    .prev-btn, .next-btn {
+    /* Navigation buttons */
+    .prev-button, .next-button {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background-color: rgba(255, 255, 255, 0.7);
+      background-color: rgba(255,255,255,0.8);
       color: #333;
       border: none;
-      padding: 15px;
       border-radius: 50%;
-      font-size: 18px;
+      width: 50px;
+      height: 50px;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
       transition: all 0.3s ease;
+      z-index: 3;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    .prev-btn {
-      left: -25px;
+    .prev-button {
+      left: 10px;
     }
 
-    .next-btn {
-      right: -25px;
+    .next-button {
+      right: 10px;
     }
 
-    .prev-btn:hover, .next-btn:hover {
-      background-color: rgba(0,0,0,0.1);
+    .prev-button:hover, .next-button:hover {
+      background-color: #f39c12;
+      color: white;
     }
 
-    /* Dots Navigation */
-    .dots-container {
+    /* Pagination dots */
+    .pagination-dots {
       text-align: center;
-      margin-top: 1.5rem;
+      margin-top: 2rem;
     }
 
     .dot {
       display: inline-block;
-      height: 12px;
       width: 12px;
+      height: 12px;
       margin: 0 5px;
       background-color: #bbb;
       border-radius: 50%;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s ease;
     }
 
     .dot.active {
-      background-color: #717171;
+      background-color: #f39c12;
+      transform: scale(1.2);
     }
 
-    /* Animation */
-    .fade {
-      animation-name: fade;
-      animation-duration: 0.5s;
-    }
-
-    @keyframes fade {
-      from {opacity: 0.4}
-      to {opacity: 1}
-    }
-
-    /* Responsive Adjustments */
+    /* Responsive styles */
     @media (max-width: 768px) {
-      .prev-btn, .next-btn {
-        padding: 10px;
-        font-size: 16px;
+      .section-title {
+        font-size: 2rem;
       }
-      
-      .review-slide {
+
+      .review-card {
         padding: 1.5rem;
       }
-      
+
       .review-title {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
       }
-      
-      .review-text {
-        font-size: 1rem;
+
+      .traveler-image-container {
+        width: 100px;
+        height: 100px;
+      }
+
+      .prev-button, .next-button {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
       }
     }
   </style>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Initialize the slideshow
-      let slideIndex = 0;
+      // Get all slides
       const slides = document.querySelectorAll('.review-slide');
+      // Get all dots
       const dots = document.querySelectorAll('.dot');
+      // Get navigation buttons
+      const prevButton = document.querySelector('.prev-button');
+      const nextButton = document.querySelector('.next-button');
       
-      // Show the first slide
+      // Current slide index
+      let currentSlide = 0;
+      
+      // Show initial slide
       if (slides.length > 0) {
-        showSlide(slideIndex);
+        showSlide(currentSlide);
       }
       
-      // Make the functions available globally
-      window.changeSlide = function(n) {
-        showSlide(slideIndex += n);
-      };
+      // Add event listeners for buttons
+      if (prevButton) {
+        prevButton.addEventListener('click', function() {
+          changeSlide(-1);
+        });
+      }
       
-      window.jumpToSlide = function(n) {
-        showSlide(slideIndex = n);
-      };
+      if (nextButton) {
+        nextButton.addEventListener('click', function() {
+          changeSlide(1);
+        });
+      }
       
-      function showSlide(n) {
-        // Reset index if out of bounds
-        if (n >= slides.length) {slideIndex = 0}
-        if (n < 0) {slideIndex = slides.length - 1}
-        
+      // Add event listeners for dots
+      dots.forEach(function(dot, index) {
+        dot.addEventListener('click', function() {
+          currentSlide = index;
+          showSlide(currentSlide);
+        });
+      });
+      
+      // Function to show a specific slide
+      function showSlide(index) {
         // Hide all slides
-        for (let i = 0; i < slides.length; i++) {
-          slides[i].style.display = "none";
-          dots[i].classList.remove('active');
-        }
+        slides.forEach(function(slide) {
+          slide.classList.remove('active');
+        });
+        
+        // Remove active class from all dots
+        dots.forEach(function(dot) {
+          dot.classList.remove('active');
+        });
         
         // Show the current slide
-        slides[slideIndex].style.display = "block";
-        dots[slideIndex].classList.add('active');
+        slides[index].classList.add('active');
+        // Mark the current dot as active
+        dots[index].classList.add('active');
+      }
+      
+      // Function to change slide
+      function changeSlide(direction) {
+        currentSlide += direction;
+        
+        // Loop back to the beginning if at the end
+        if (currentSlide >= slides.length) {
+          currentSlide = 0;
+        }
+        
+        // Loop to the end if at the beginning
+        if (currentSlide < 0) {
+          currentSlide = slides.length - 1;
+        }
+        
+        showSlide(currentSlide);
       }
       
       // Auto-advance slides every 5 seconds
@@ -298,7 +403,7 @@
 
 {% schema %}
 {
-  "name": "Travelers Reviews",
+  "name": "Happy Travelers Reviews",
   "settings": [
     {
       "type": "text",
@@ -309,20 +414,8 @@
     {
       "type": "image_picker",
       "id": "hero_image",
-      "label": "Hero Image",
-      "info": "Upload or select an image to display with the reviews."
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Section Background Color",
-      "default": "#f9f9f9"
-    },
-    {
-      "type": "color",
-      "id": "star_color",
-      "label": "Star Rating Color",
-      "default": "#f39c12"
+      "label": "Background Image",
+      "info": "This image will be shown as a faded background behind reviews"
     }
   ],
   "blocks": [
@@ -330,6 +423,12 @@
       "type": "review",
       "name": "Review",
       "settings": [
+        {
+          "id": "traveler_image",
+          "type": "image_picker",
+          "label": "Traveler Photo",
+          "info": "Recommended: square image"
+        },
         {
           "id": "name",
           "type": "text",
@@ -362,12 +461,6 @@
           "type": "textarea",
           "label": "Review Text",
           "default": "It was a life changing experience and we couldn't be happier to have done it. The accommodations were excellent and the guides were knowledgeable and friendly."
-        },
-        {
-          "id": "traveler_image",
-          "type": "image_picker",
-          "label": "Traveler Image",
-          "info": "Upload or select an image of the traveler."
         }
       ]
     }
@@ -377,9 +470,6 @@
     {
       "name": "Happy Travelers Reviews",
       "blocks": [
-        {
-          "type": "review"
-        },
         {
           "type": "review"
         },
