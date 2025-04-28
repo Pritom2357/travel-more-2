@@ -142,7 +142,7 @@
               </p>
               
               <div class="tour-actions">
-                <a href="{{ block.settings.event_url }}" class="btn-view-details">
+                <a href="{{ block.settings.button_url | default: block.settings.event_url }}" class="btn-view-details">
                   {{ block.settings.button_text | default: "View Details" }}
                   <i class="bi bi-arrow-right"></i>
                 </a>
@@ -155,7 +155,7 @@
             <div class="tour-hover-content">
               <h3>{{ block.settings.title }}</h3>
               <p>{{ block.settings.description }}</p>
-              <a href="{{ block.settings.event_url }}" class="btn-book-now" style="background-color: {{ section.settings.accent_color }};">
+              <a href="{{ block.settings.button_url | default: block.settings.event_url }}" class="btn-book-now" style="background-color: {{ section.settings.accent_color }};">
                 {{ block.settings.book_now_text | default: "Book Now" }}
                 <i class="bi bi-arrow-right"></i>
               </a>
@@ -881,8 +881,8 @@
         },
         {
           "type": "url",
-          "id": "event_url",
-          "label": "Tour Details URL",
+          "id": "button_url",
+          "label": "Button Link",
           "default": "/"
         },
         {
