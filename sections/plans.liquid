@@ -32,6 +32,22 @@
       </p>
     </div>
 
+    <div class="tour-filter-container" data-aos="fade-up" data-aos-delay="400">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">All Tours</button>
+        {% for button in section.settings.filter_buttons.links %}
+          <button
+            class="filter-tab"
+            data-filter="{{ button.title | handleize }}"
+            style="
+              color: {{ section.settings.filter_button_text_color }};
+            "
+          >
+            {{ button.title }}
+          </button>
+        {% endfor %}
+      </div>
+    </div>
 
     <div class="tours-grid" data-aos="fade-up" data-aos-delay="500">
       {% for block in section.blocks %}
@@ -75,12 +91,12 @@
             <div class="tour-card-content">
               {% if block.settings.cost_checker %}
                 <div class="price-badge" style="background-color: {{ section.settings.accent_color }};">
-                  <span class="price">{{shop.currency}} {{ block.settings.cost }}</span>
+                  <span class="price">{{shop.currency}}{{ block.settings.cost }}</span>
                   <span class="price-period">/person</span>
                 </div>
               {% endif %}
               
-              <h3 class="tour-title" style="color: black;">
+              <h3 class="tour-title" style="color: {{ block.settings.title_color }};">
                 {{ block.settings.title }}
               </h3>
               
@@ -758,6 +774,12 @@
       "default": "Discover Amazing Tours"
     },
     {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#222222"
+    },
+    {
       "type": "range",
       "id": "title_size",
       "label": "Title Font Size",
@@ -790,6 +812,11 @@
     {
       "type": "header",
       "content": "Filter Tabs"
+    },
+    {
+      "type": "link_list",
+      "id": "filter_buttons",
+      "label": "Filter Categories"
     },
     {
       "type": "color",
@@ -902,7 +929,7 @@
           "type": "color",
           "id": "title_color",
           "label": "Title Color",
-          "default": "#222222"
+          "default": "#000000"
         },
         {
           "type": "color",
