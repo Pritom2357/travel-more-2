@@ -331,7 +331,7 @@
             "image": "shopify://shop_images/dest6.jpg",
             "title": "Paradise Island",
             "description": "Must Love it",
-            "event_url": "/",
+            "button_url": "/",
             "tour_category": "beach",
             "is_featured": false,
             "rating": 4.5,
@@ -347,7 +347,10 @@
             "date_checker": true,
             "date": "30/03/3025",
             "cost_checker": true,
-            "cost": "3500"
+            "cost": "3500",
+            "button_text": "View Details",
+            "event_url": "/",
+            "book_now_text": "Book Now"
           }
         },
         "tour_card_nCghwJ": {
@@ -356,7 +359,7 @@
             "image": "shopify://shop_images/dest1.jpg",
             "title": "Chakra City",
             "description": "Unleash your imagination",
-            "event_url": "/",
+            "button_url": "/",
             "tour_category": "beach",
             "is_featured": false,
             "rating": 4.5,
@@ -372,7 +375,10 @@
             "date_checker": true,
             "date": "02/02/2025",
             "cost_checker": true,
-            "cost": "100"
+            "cost": "100",
+            "button_text": "View Details",
+            "event_url": "/",
+            "book_now_text": "Book Now"
           }
         },
         "tour_card_cwmfia": {
@@ -381,7 +387,7 @@
             "image": "shopify://shop_images/dest3.jpg",
             "title": "Desert",
             "description": "Brief description of the tour.",
-            "event_url": "/",
+            "button_url": "/",
             "tour_category": "beach",
             "is_featured": false,
             "rating": 4.5,
@@ -397,7 +403,10 @@
             "date_checker": true,
             "date": "23/02/2025",
             "cost_checker": true,
-            "cost": "300"
+            "cost": "300",
+            "button_text": "View Details",
+            "event_url": "/",
+            "book_now_text": "Book Now"
           }
         }
       },
@@ -419,7 +428,8 @@
         "filter_button_text_color": "#000000",
         "see_more_color": "#ffffff",
         "see_more_bg_color": "#449eed",
-        "btn_text": "See more Tours"
+        "btn_text": "See more Tours",
+        "see_more_link": "shopify://collections/all"
       }
     },
     "experience_DajhgX": {
