@@ -59,25 +59,40 @@
         <div class="collapse navbar-collapse nav-text" id="navbarSupportedContent">
           <ul class="navbar-nav mb-2 mb-lg-0 {{ alignment_class }} flex-grow-1">
             {% for menu in section.settings.menu.links %}
-              <li class="nav-item {% if menu.links.size > 1 %} dropdown {% endif %}">
+              <li class="nav-item {% if menu.links.size > 0 %} dropdown {% endif %}">
                 <a
-                  class="nav-link active {% if menu.links.size > 1 %} dropdown-toggle {% endif %}"
-                  aria-current="page"
+                  class="nav-link {% if menu.links.size > 0 %} dropdown-toggle {% endif %}"
                   href="{{ menu.url }}"
-                  {% if menu.links.size > 1 %}
+                  {% if menu.links.size > 0 %}
                     id="navbarDropdown_{{ forloop.index }}"
                     role="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   {% endif %}
                 >
-                  {{- menu.title -}}
+                  {{ menu.title }}
                 </a>
-                {% if menu.links.size > 1 %}
+
+                {% if menu.links.size > 0 %}
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown_{{ forloop.index }}">
                     {% for sub_menu in menu.links %}
-                      <li>
-                        <a class="dropdown-item" href="{{ sub_menu.url }}">{{ sub_menu.title }}</a>
+                      <li class="{% if sub_menu.links.size > 0 %} dropdown-submenu {% endif %}">
+                        <a
+                          class="dropdown-item {% if sub_menu.links.size > 0 %} dropdown-toggle {% endif %}"
+                          href="{{ sub_menu.url }}"
+                        >
+                          {{ sub_menu.title }}
+                        </a>
+
+                        {% if sub_menu.links.size > 0 %}
+                          <ul class="dropdown-menu">
+                            {% for sub_sub_menu in sub_menu.links %}
+                              <li>
+                                <a class="dropdown-item" href="{{ sub_sub_menu.url }}">{{ sub_sub_menu.title }}</a>
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        {% endif %}
                       </li>
                     {% endfor %}
                   </ul>
@@ -281,6 +296,55 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     updateCartCount();
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Handle both top-level and nested dropdown toggles
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    
+    dropdownToggles.forEach(toggle => {
+      toggle.addEventListener('click', function (e) {
+        // Prevent navigation for items with submenus
+        if (this.nextElementSibling && this.nextElementSibling.classList.contains('dropdown-menu')) {
+          e.preventDefault();
+          e.stopPropagation(); // Stop event from bubbling up
+          
+          const dropdownMenu = this.nextElementSibling;
+          
+          // For mobile: Toggle the clicked submenu
+          if (window.innerWidth <= 991) {
+            dropdownMenu.classList.toggle('show');
+            
+            // Close sibling menus at same level if needed
+            const parent = this.closest('li').parentNode;
+            if (parent.classList.contains('dropdown-menu')) {
+              const siblings = parent.querySelectorAll(':scope > li > .dropdown-menu');
+              siblings.forEach(menu => {
+                if (menu !== dropdownMenu && menu.classList.contains('show')) {
+                  menu.classList.remove('show');
+                }
+              });
+            }
+          }
+        }
+      });
+    });
+    
+    // Add touch support for first click opening submenu on mobile/tablet
+    if ('ontouchstart' in document.documentElement) {
+      document.querySelectorAll('.dropdown-submenu > .dropdown-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+          const parent = this.parentElement;
+          if (!parent.classList.contains('show-touch-menu')) {
+            e.preventDefault();
+            document.querySelectorAll('.show-touch-menu').forEach(el => {
+              if (!parent.contains(el)) el.classList.remove('show-touch-menu');
+            });
+            parent.classList.add('show-touch-menu');
+          }
+        });
+      });
+    }
   });
 </script>
 
@@ -512,6 +576,94 @@
   @media (max-width: 767px) {
     .store-name {
       font-size: calc({{ section.settings.store_name_text_size }}px * 0.75);
+    }
+  }
+
+  /* Main dropdown menu */
+  .navbar-nav .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 0;
+    z-index: 1000;
+    min-width: 200px;
+  }
+
+  /* Show dropdown on hover */
+  .navbar-nav .dropdown:hover > .dropdown-menu {
+    display: block;
+  }
+
+  /* Submenu styles */
+  .navbar-nav .dropdown-submenu {
+    position: relative;
+  }
+
+  .navbar-nav .dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-left: 0.1rem;
+    border-radius: 4px;
+  }
+
+  /* Add arrow for submenus */
+  .navbar-nav .dropdown-submenu > .dropdown-toggle::after {
+    content: "▶";
+    float: right;
+    margin-left: 5px;
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  /* Hover effect for dropdown items */
+  .navbar-nav .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #333;
+  }
+
+  /* Improved submenu styles */
+  .navbar-nav .dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px; /* Better alignment with parent item */
+    margin-left: 0;
+    border-radius: 4px;
+  }
+
+  .navbar-nav .dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+  }
+
+  /* Mobile menu adjustments */
+  @media (max-width: 991px) {
+    .navbar-nav .dropdown-menu {
+      position: static;
+      float: none;
+      width: auto;
+      margin-top: 0;
+      background-color: transparent;
+      border: 0;
+      box-shadow: none;
+      padding-left: 15px;
+    }
+    
+    .navbar-nav .dropdown-menu.show {
+      display: block;
+    }
+    
+    .navbar-nav .dropdown-submenu .dropdown-menu {
+      margin-left: 0;
+      padding-left: 15px;
+    }
+    
+    /* Change arrow direction for mobile view */
+    .navbar-nav .dropdown-submenu > .dropdown-item.dropdown-toggle::after {
+      content: "▼";
+      float: right;
     }
   }
 </style>
@@ -921,6 +1073,24 @@
       "id": "max_price",
       "label": "Maximum Price",
       "default": 3920
+    },
+    {
+      "type": "color",
+      "id": "dropdown_bg_color",
+      "label": "Dropdown Background Color",
+      "default": "rgba(255, 255, 255, 0.95)"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_hover_bg_color",
+      "label": "Dropdown Hover Background Color",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_hover_text_color",
+      "label": "Dropdown Hover Text Color",
+      "default": "#333"
     }
   ],
   "blocks": [
