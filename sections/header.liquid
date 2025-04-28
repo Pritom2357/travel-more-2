@@ -199,7 +199,6 @@
       </div>
       
       <div class="search-results" id="searchResults">
-        <!-- Results will appear here -->
       </div>
     </div>
   </div>
@@ -825,7 +824,7 @@
   .logo-name-container {
     {% comment %} display: flex; {% endcomment %}
     align-items: center;
-    gap: 20px; /* Increased gap for more space */
+    gap: 20px; 
   }
 
   .store-name {
@@ -864,7 +863,7 @@
       background-color: transparent;
       border: 0;
       box-shadow: none;
-      padding-left: 15px; /* Indent items */
+      padding-left: 15px; 
     }
     
     .navbar-nav .dropdown-menu.show {
@@ -873,16 +872,14 @@
     
     .navbar-nav .dropdown-submenu .dropdown-menu {
       margin-left: 0;
-      padding-left: 15px; /* Further indent submenus */
+      padding-left: 15px; /
     }
     
-    /* Change arrow direction for mobile view */
     .navbar-nav .dropdown-submenu > .dropdown-item.dropdown-toggle::after {
       content: "▼";
       float: right;
     }
     
-    /* Show dropdown items in mobile */
     .navbar-nav .dropdown-item {
       white-space: normal;
     }
@@ -1005,23 +1002,19 @@
   });
 
   document.addEventListener('DOMContentLoaded', function () {
-  // Handle both top-level and nested dropdown toggles
   const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
   
   dropdownToggles.forEach(toggle => {
     toggle.addEventListener('click', function (e) {
-      // Prevent navigation for items with submenus
       if (this.nextElementSibling && this.nextElementSibling.classList.contains('dropdown-menu')) {
         e.preventDefault();
-        e.stopPropagation(); // Stop event from bubbling up
+        e.stopPropagation(); 
         
         const dropdownMenu = this.nextElementSibling;
         
-        // For mobile: Toggle the clicked submenu
         if (window.innerWidth <= 991) {
           dropdownMenu.classList.toggle('show');
           
-          // Close sibling menus at same level if needed
           const parent = this.closest('li').parentNode;
           if (parent.classList.contains('dropdown-menu')) {
             const siblings = parent.querySelectorAll(':scope > li > .dropdown-menu');
@@ -1036,7 +1029,6 @@
     });
   });
   
-  // Add touch support for first click opening submenu on mobile/tablet
   if ('ontouchstart' in document.documentElement) {
     document.querySelectorAll('.dropdown-submenu > .dropdown-item').forEach(item => {
       item.addEventListener('click', function(e) {
