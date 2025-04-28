@@ -19,6 +19,18 @@
     },
     "form": {
       "type": "contact-form",
+      "blocks": {
+        "about_paragraph_VQF7PC": {
+          "type": "about_paragraph",
+          "settings": {
+            "heading": "Our Mission",
+            "content": "<p>At Travel More, our mission is to inspire and enable travelers to explore the world with confidence and peace of mind. We believe that travel is more than just visiting new places - it's about creating meaningful connections and unforgettable experiences.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "about_paragraph_VQF7PC"
+      ],
       "settings": {
         "accent_color": "#449EED",
         "about_title": "About Our Store",
@@ -29,12 +41,12 @@
         "show_social_links": true,
         "social_heading": "Connect With Us",
         "social_icon_color": "#449EED",
-        "facebook_url": "",
-        "twitter_url": "",
-        "instagram_url": "",
-        "youtube_url": "",
-        "pinterest_url": "",
-        "tiktok_url": "",
+        "facebook_url": "https://www.google.com",
+        "twitter_url": "https://www.google.com",
+        "instagram_url": "https://www.google.com",
+        "youtube_url": "https://www.google.com",
+        "pinterest_url": "https://www.google.com",
+        "tiktok_url": "https://www.google.com",
         "form_title": "Contact Us",
         "form_subtitle": "Have questions or feedback? We'd love to hear from you.",
         "form_bg_color": "#f9f9f9",
