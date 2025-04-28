@@ -37,9 +37,11 @@
               >
             </a>
             {% if section.settings.store_name %}
-              <div class="store-name">
-                {{ section.settings.store_name }}
-              </div>
+              <a href="{{ routes.root_url }}" class="store-name-link">
+                <div class="store-name">
+                  {{ section.settings.store_name }}
+                </div>
+              </a>
             {% endif %}
           </div>
         </div>
@@ -166,19 +168,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Price Range
-    const priceRange = document.getElementById('priceRange');
-    const currentPrice = document.getElementById('currentPrice');
-
-    function updatePrice() {
-      currentPrice.textContent = `$${priceRange.value}`;
-    }
-    updatePrice();
-    if(priceRange) {
-      priceRange.addEventListener('input', updatePrice);
-    }
-
-    // Book Now Button
+    
     const bookNowBtn = document.getElementById('bookNowBtn');
     if(bookNowBtn) {
       bookNowBtn.addEventListener('click', () => {
@@ -472,8 +462,10 @@
     text-align: center; /* Center align the text */
   }
 
-  .store-name:hover{
-    color: {{ section.settings.store_name_hover_color }};
+  .store-name:hover, 
+  .store-name-link:hover .store-name {
+    color: {{ section.settings.store_name_hover_color }} !important;
+    transition: color 0.3s ease;
   }
 
   @media (max-width: 767px) {
@@ -484,11 +476,6 @@
     .logo-name-container {
       gap: 8px;
     }
-  }
-
-  .store-name {
-    white-space: nowrap;
-    font-size: {{ section.settings.store_name_text_size }}px;
   }
 
   .logo-name-container {
@@ -642,6 +629,13 @@
     background-color: {{ section.settings.dropdown_bg_color }} !important;
     border: 1px solid rgba(0,0,0,0.15);
   }
+
+  .store-name-link:hover .store-name {
+    color: {{ section.settings.store_name_hover_color }} !important;
+    text-decoration: underline;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+  }
 </style>
 
 {% schema %}
@@ -650,24 +644,43 @@
   "settings": [
     {
       "type": "header",
+      "content": "Hero Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_img",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "range",
+      "id": "bg_overlay",
+      "label": "Background Overlay Opacity",
+      "default": 0.4,
+      "min": 0,
+      "max": 1,
+      "step": 0.1
+    },
+    
+    {
+      "type": "header",
       "content": "Header Settings"
     },
     {
       "type": "checkbox",
       "id": "is_header",
-      "label": "Do you want header in the Hero Section?",
+      "label": "Enable Header in Hero Section",
       "default": false
     },
     {
       "type": "color",
       "id": "bg_header",
-      "label": "Header BG Color",
+      "label": "Header Background Color",
       "default": "#449EED"
     },
     {
       "type": "range",
       "id": "header_bg_opacity",
-      "label": "Header BG Opacity",
+      "label": "Header Background Opacity",
       "default": 0.4,
       "min": 0,
       "max": 1,
@@ -686,6 +699,10 @@
       "default": "#ccc"
     },
 
+    {
+      "type": "header",
+      "content": "Logo & Store Name"
+    },
     {
       "type": "image_picker",
       "id": "logo",
@@ -754,6 +771,11 @@
       ],
       "default": "inherit"
     },
+    
+    {
+      "type": "header",
+      "content": "Menu Settings"
+    },
     {
       "type": "link_list",
       "id": "menu",
@@ -771,7 +793,7 @@
     {
       "type": "select",
       "id": "header_alignment",
-      "label": "Header Alignment",
+      "label": "Menu Alignment",
       "options": [
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
@@ -779,6 +801,47 @@
       ],
       "default": "left"
     },
+    
+    {
+      "type": "header",
+      "content": "Dropdown Menu Settings"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_bg_color",
+      "label": "Dropdown Background Color",
+      "default": "rgba(0, 0, 0, 0.5)"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_text_color",
+      "label": "Dropdown Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_hover_text_color",
+      "label": "Dropdown Hover Text Color",
+      "default": "#333"
+    },
+    {
+      "type": "color",
+      "id": "submenu_hover_text_color",
+      "label": "Submenu Hover Text Color",
+      "default": "#cccccc"
+    },
+    {
+      "type": "select",
+      "id": "dropdown_hover_effect",
+      "label": "Dropdown Hover Effect",
+      "options": [
+        { "value": "underline", "label": "Underline" },
+        { "value": "fade", "label": "Fade" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "underline"
+    },
+    
     {
       "type": "header",
       "content": "Search Bar"
@@ -786,7 +849,7 @@
     {
       "type": "checkbox",
       "id": "enable_search_bar",
-      "label": "Enable Search Bar?",
+      "label": "Enable Search Bar",
       "default": true
     },
     {
@@ -816,41 +879,18 @@
 
     {
       "type": "header",
-      "content": "Background Settings"
-    },
-    {
-      "type": "image_picker",
-      "id": "bg_img",
-      "label": "Hero Background Image"
-    },
-    {
-      "type": "range",
-      "id": "bg_overlay",
-      "label": "Background Overlay",
-      "default": 0.4,
-      "min": 0,
-      "max": 1,
-      "step": 0.1
-    },
-
-    {
-      "type": "header",
-      "content": "Introduction"
-    },
-    {
-      "type": "header",
-      "content": "Title"
+      "content": "Hero Content"
     },
     {
       "type": "text",
       "id": "title_text",
-      "label": "Title Text",
-      "default": "Dare to Live the Life you’ve wanted"
+      "label": "Heading",
+      "default": "Dare to Live the Life you've wanted"
     },
     {
       "type": "range",
       "id": "title_size",
-      "label": "Title Size (rem)",
+      "label": "Heading Size (rem)",
       "default": 3,
       "min": 1,
       "max": 6,
@@ -859,13 +899,13 @@
     {
       "type": "color",
       "id": "title_color",
-      "label": "Title Color",
+      "label": "Heading Color",
       "default": "#fff"
     },
     {
       "type": "select",
       "id": "title_font",
-      "label": "Title Font",
+      "label": "Heading Font",
       "options": [
         { "value": "Helvetica, sans-serif", "label": "Helvetica" },
         { "value": "Montserrat, sans-serif", "label": "Montserrat" },
@@ -875,19 +915,15 @@
       "default": "Helvetica, sans-serif"
     },
     {
-      "type": "header",
-      "content": "Sub Title"
-    },
-    {
       "type": "text",
       "id": "sub_title_text",
-      "label": "Sub Title Text",
+      "label": "Subheading",
       "default": "We would love to help you realize your travel dreams..."
     },
     {
       "type": "range",
       "id": "sub_title_size",
-      "label": "Sub Title Size (rem)",
+      "label": "Subheading Size (rem)",
       "default": 1,
       "min": 1,
       "max": 6,
@@ -896,102 +932,96 @@
     {
       "type": "color",
       "id": "sub_title_color",
-      "label": "Sub Title Color",
+      "label": "Subheading Color",
       "default": "#fff"
-    },
-    {
-      "type": "select",
-      "id": "sub_title_font",
-      "label": "Sub Title Font",
-      "options": [
-        { "value": "Helvetica, sans-serif", "label": "Helvetica" },
-        { "value": "Montserrat, sans-serif", "label": "Montserrat" },
-        { "value": "Roboto, sans-serif", "label": "Roboto" },
-        { "value": "Lato, sans-serif", "label": "Lato" }
-      ],
-      "default": "Helvetica, sans-serif"
     },
 
     {
       "type": "header",
-      "content": "Button"
+      "content": "Button Settings"
     },
     {
       "type": "text",
       "id": "btn1_text",
-      "label": "Button 1 Text",
+      "label": "Primary Button Text",
       "default": "Discover More"
     },
     {
-      "type": "color",
-      "id": "btn1_text_color",
-      "label": "Button 1 Text Color",
-      "default": "#fff"
+      "type": "url",
+      "id": "btn1_url",
+      "label": "Primary Button URL",
+      "default": "/"
     },
     {
       "type": "color",
       "id": "btn1_color",
-      "label": "Button 1 Color",
+      "label": "Primary Button Color",
       "default": "#449EED"
     },
     {
       "type": "color",
+      "id": "btn1_text_color",
+      "label": "Primary Button Text Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
       "id": "btn1_hover_color",
-      "label": "Button 1 Hover Color",
+      "label": "Primary Button Hover Color",
       "default": "#357ABD"
     },
     {
       "type": "color",
       "id": "btn1_text_hover_color",
-      "label": "Button 1 Text Hover Color",
+      "label": "Primary Button Text Hover Color",
       "default": "#fff"
-    },
-    {
-      "type": "url",
-      "id": "btn1_url",
-      "label": "Button 1 URL",
-      "default": "/"
     },
     {
       "type": "text",
       "id": "btn2_text",
-      "label": "Button 2 Text",
+      "label": "Secondary Button Text",
       "default": "Watch Video"
+    },
+    {
+      "type": "url",
+      "id": "btn2_url",
+      "label": "Secondary Button URL",
+      "default": "/"
     },
     {
       "type": "color",
       "id": "btn2_text_color",
-      "label": "Button 2 Text Color",
+      "label": "Secondary Button Text Color",
       "default": "#fff"
     },
     {
       "type": "color",
       "id": "btn2_hover_color",
-      "label": "Button 2 Hover Color",
+      "label": "Secondary Button Hover Color",
       "default": "#fff"
     },
     {
       "type": "color",
       "id": "btn2_text_hover_color",
-      "label": "Button 2 Text Hover Color",
+      "label": "Secondary Button Text Hover Color",
       "default": "#fff"
-    },
-    {
-      "type": "url",
-      "id": "btn2_url",
-      "label": "Button 2 URL",
-      "default": "/"
     },
 
     {
       "type": "header",
-      "content": "Form Settings"
+      "content": "Booking Form Settings"
     },
     {
       "type": "checkbox",
       "id": "if_form",
-      "label": "Do you want the form?",
+      "label": "Show Booking Form",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Title",
+      "default": "Book Perfect Tour"
     },
     {
       "type": "color",
@@ -1016,26 +1046,20 @@
     },
     {
       "type": "text",
-      "id": "form_title",
-      "label": "Form Title",
-      "default": "Book Perfect Tour"
-    },
-    {
-      "type": "text",
       "id": "input1",
-      "label": "Input Box 1",
+      "label": "Destination Field Label",
       "default": "Destination"
     },
     {
       "type": "text",
       "id": "input2",
-      "label": "Input Box 2",
+      "label": "Tour Type Field Label",
       "default": "Tour Type"
     },
     {
       "type": "text",
       "id": "input3",
-      "label": "Input Box 3 (Month)",
+      "label": "Month Field Label",
       "default": "Month"
     },
     {
@@ -1049,47 +1073,6 @@
       "id": "max_price",
       "label": "Maximum Price",
       "default": 3920
-    },
-    {
-      "type": "color",
-      "id": "dropdown_bg_color",
-      "label": "Dropdown Background Color",
-      "default": "rgba(0, 0, 0, 0.5)"
-    },
-    {
-      "type": "color",
-      "id": "dropdown_hover_bg_color",
-      "label": "Dropdown Hover Background Color",
-      "default": "#f8f9fa"
-    },
-    {
-      "type": "color",
-      "id": "dropdown_hover_text_color",
-      "label": "Dropdown Hover Text Color",
-      "default": "#333"
-    },
-    {
-      "type": "color",
-      "id": "dropdown_text_color",
-      "label": "Dropdown Text Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "submenu_hover_text_color",
-      "label": "Submenu Hover Text Color",
-      "default": "#cccccc"
-    },
-    {
-      "type": "select",
-      "id": "dropdown_hover_effect",
-      "label": "Dropdown Hover Effect",
-      "options": [
-        { "value": "underline", "label": "Underline" },
-        { "value": "fade", "label": "Fade" },
-        { "value": "none", "label": "None" }
-      ],
-      "default": "underline"
     }
   ],
   "blocks": [
@@ -1118,7 +1101,6 @@
       ]
     }
   ],
-
   "presets": [
     {
       "name": "Custom Hero Section",
