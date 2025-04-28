@@ -100,14 +100,14 @@
           {% if form.posted_successfully? %}
             <div class="form-success">
               <i class="bi bi-check-circle-fill"></i>
-              {{ section.settings.success_message | default: 'Thanks for contacting us! We\'ll get back to you as soon as possible.' }}
+              {{ section.settings.success_message | default: "Thanks for contacting us! We'll get back to you as soon as possible." }}
             </div>
           {% endif %}
 
           {% if form.errors %}
             <div class="form-error">
               <i class="bi bi-exclamation-triangle-fill"></i>
-              {{ section.settings.error_message | default: 'Sorry, there was a problem submitting your form. Please check the information and try again.' }}
+              {{ section.settings.error_message | default: "Sorry, there was a problem submitting your form. Please check the information and try again." }}
             </div>
           {% endif %}
 
