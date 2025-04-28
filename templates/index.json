@@ -399,38 +399,12 @@
             "cost_checker": true,
             "cost": "300"
           }
-        },
-        "tour_card_irrECD": {
-          "type": "tour_card",
-          "settings": {
-            "image": "shopify://shop_images/beach2.jpg",
-            "title": "Best Beach",
-            "description": "Must love it",
-            "event_url": "/",
-            "tour_category": "beach",
-            "is_featured": false,
-            "rating": 4.5,
-            "review_count": "24",
-            "grid_span": 1,
-            "grid_height_span": 1,
-            "title_color": "#000000",
-            "description_color": "#ffffff",
-            "dest_checker": true,
-            "destination": "Mariana Trench",
-            "duration_checker": true,
-            "duration": "4 days",
-            "date_checker": true,
-            "date": "07/03/2025",
-            "cost_checker": true,
-            "cost": "25"
-          }
         }
       },
       "block_order": [
         "tour_card_eJTdqr",
         "tour_card_nCghwJ",
-        "tour_card_cwmfia",
-        "tour_card_irrECD"
+        "tour_card_cwmfia"
       ],
       "settings": {
         "bg_color": "#effffd",
