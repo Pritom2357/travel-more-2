@@ -428,10 +428,22 @@
             "title": "The planning process was excellent",
             "text": "It was a life changing experience and we couldn’t be happier to have done it..."
           }
+        },
+        "review_CbJNjf": {
+          "type": "review",
+          "settings": {
+            "traveler_image": "shopify://shop_images/logo.png",
+            "name": "Howard Reed",
+            "date": "2023-05-15",
+            "rating": 5,
+            "title": "The planning process was excellent",
+            "text": "It was a life changing experience and we couldn't be happier to have done it. The accommodations were excellent and the guides were knowledgeable and friendly."
+          }
         }
       },
       "block_order": [
-        "review_Wt68d6"
+        "review_Wt68d6",
+        "review_CbJNjf"
       ],
       "settings": {
         "section_title": "Happy Travelers",
