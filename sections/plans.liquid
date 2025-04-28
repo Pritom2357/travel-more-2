@@ -1,6 +1,5 @@
 <section class="featured-tours-section py-5" style="background-color: {{ section.settings.bg_color }};">
   <div class="container">
-    <!-- Section Header with Animated Elements -->
     <div class="section-header text-center mb-5">
       <div class="section-badge" data-aos="fade-down" data-aos-delay="100">
         <span style="background-color: {{ section.settings.accent_color }};">Featured Tour</span>
@@ -33,25 +32,7 @@
       </p>
     </div>
 
-    <!-- Interactive Filter Tabs -->
-    <div class="tour-filter-container" data-aos="fade-up" data-aos-delay="400">
-      <div class="filter-tabs">
-        <button class="filter-tab active" data-filter="all">All Tours</button>
-        {% for button in section.settings.filter_buttons.links %}
-          <button
-            class="filter-tab"
-            data-filter="{{ button.title | handleize }}"
-            style="
-              color: {{ section.settings.filter_button_text_color }};
-            "
-          >
-            {{ button.title }}
-          </button>
-        {% endfor %}
-      </div>
-    </div>
 
-    <!-- Enhanced Tour Cards Grid with Animation -->
     <div class="tours-grid" data-aos="fade-up" data-aos-delay="500">
       {% for block in section.blocks %}
         <div
@@ -65,9 +46,7 @@
           "
         >
           <div class="tour-card">
-            <!-- Card Media Section -->
             <div class="tour-card-media">
-              <!-- Tour Image -->
               <img
                 src="{{ block.settings.image | img_url: '800x600' }}"
                 alt="{{ block.settings.title }}"
@@ -75,17 +54,14 @@
                 class="tour-image"
               >
               
-              <!-- Overlay with Gradient -->
               <div class="tour-overlay"></div>
               
-              <!-- Featured Badge (if enabled) -->
               {% if block.settings.is_featured %}
                 <div class="featured-badge" style="background-color: {{ section.settings.accent_color }};">
                   <i class="bi bi-star-fill"></i> Featured
                 </div>
               {% endif %}
               
-              <!-- Quick Actions -->
               <div class="quick-actions">
                 <button class="quick-action-btn wishlist-btn" title="Add to wishlist">
                   <i class="bi bi-heart"></i>
@@ -96,9 +72,7 @@
               </div>
             </div>
             
-            <!-- Card Content -->
             <div class="tour-card-content">
-              <!-- Price Badge -->
               {% if block.settings.cost_checker %}
                 <div class="price-badge" style="background-color: {{ section.settings.accent_color }};">
                   <span class="price">${{ block.settings.cost }}</span>
@@ -106,12 +80,10 @@
                 </div>
               {% endif %}
               
-              <!-- Tour Title -->
-              <h3 class="tour-title" style="color: {{ block.settings.title_color }};">
+              <h3 class="tour-title" style="color: {{ block.settings.title_color }} !important;">
                 {{ block.settings.title }}
               </h3>
               
-              <!-- Tour Rating -->
               <div class="tour-rating">
                 {% assign rating = block.settings.rating | default: 5 %}
                 {% for i in (1..5) %}
@@ -126,7 +98,6 @@
                 {% endif %}
               </div>
               
-              <!-- Tour Details -->
               <div class="tour-details">
                 {% if block.settings.dest_checker %}
                 <div class="tour-detail">
@@ -150,12 +121,10 @@
                 {% endif %}
               </div>
               
-              <!-- Tour Description -->
               <p class="tour-description" style="color: {{ block.settings.description_color }};">
                 {{ block.settings.description }}
               </p>
               
-              <!-- Tour Actions -->
               <div class="tour-actions">
                 <a href="{{ block.settings.event_url }}" class="btn-view-details">
                   View Details
@@ -167,7 +136,6 @@
               </div>
             </div>
             
-            <!-- Hover Content with Full Description -->
             <div class="tour-hover-content">
               <h3>{{ block.settings.title }}</h3>
               <p>{{ block.settings.description }}</p>
@@ -549,8 +517,15 @@
     font-weight: 700;
     margin-bottom: 0.5rem;
     transition: color 0.3s ease;
+    color: inherit !important; /* Reset any inherited colors */
   }
-  
+
+  /* Ensure inline styles take precedence */
+  .tour-card-content h3.tour-title[style*="color"] {
+    color: v !important;
+  }
+
+  /* Keep the hover effect */
   .tour-card:hover .tour-title {
     color: {{ section.settings.accent_color }} !important;
   }
@@ -828,11 +803,6 @@
     {
       "type": "header",
       "content": "Filter Tabs"
-    },
-    {
-      "type": "link_list",
-      "id": "filter_buttons",
-      "label": "Filter Categories"
     },
     {
       "type": "color",
