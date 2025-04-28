@@ -75,12 +75,12 @@
             <div class="tour-card-content">
               {% if block.settings.cost_checker %}
                 <div class="price-badge" style="background-color: {{ section.settings.accent_color }};">
-                  <span class="price">${{ block.settings.cost }}</span>
+                  <span class="price">{{cart.currency}} {{ block.settings.cost }}</span>
                   <span class="price-period">/person</span>
                 </div>
               {% endif %}
               
-              <h3 class="tour-title" style="color: {{ block.settings.title_color }} !important;">
+              <h3 class="tour-title" style="color: black;">
                 {{ block.settings.title }}
               </h3>
               
@@ -517,15 +517,8 @@
     font-weight: 700;
     margin-bottom: 0.5rem;
     transition: color 0.3s ease;
-    color: inherit !important; /* Reset any inherited colors */
   }
-
-  /* Ensure inline styles take precedence */
-  .tour-card-content h3.tour-title[style*="color"] {
-    color: v !important;
-  }
-
-  /* Keep the hover effect */
+  
   .tour-card:hover .tour-title {
     color: {{ section.settings.accent_color }} !important;
   }
@@ -763,12 +756,6 @@
       "id": "section_title",
       "label": "Section Title",
       "default": "Discover Amazing Tours"
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Title Color",
-      "default": "#222222"
     },
     {
       "type": "range",
