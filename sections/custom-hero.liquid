@@ -145,84 +145,6 @@
         </div>
       </div>
 
-      <!-- Right content (booking form) -->
-      {% comment %} {% if section.settings.if_form %}
-        <div class="col-lg-4 col-md-8 offset-lg-1 offset-md-0">
-          <div class="booking-form px-4 py-4 rounded justify-content-center">
-            <h3 class="mb-4 font-weight-bold">{{ section.settings.form_title }}</h3>
-
-            <!-- Destination (populated from 'destination_block' schema blocks) -->
-            <div class="form-group">
-              <label for="destinationSelect">{{ section.settings.input1 }}</label>
-              <select class="form-control" id="destinationSelect">
-                {% for block in section.blocks %}
-                  {% if block.type == 'destination_block' %}
-                    <option
-                      value="{{ block.settings.destination_title | escape }}"
-                      data-dest-description="{{ block.settings.destination_description | escape }}"
-                      data-dest-price="{{ block.settings.unit_price }}"
-                    >
-                      {{ block.settings.destination_title }}
-                    </option>
-                  {% endif %}
-                {% endfor %}
-              </select>
-            </div>
-
-            <!-- Tour Type -->
-            <div class="form-group">
-              <label for="tourType">{{ section.settings.input2 }}</label>
-              <select class="form-control" id="tourType">
-                <option value="Adventure">Adventure</option>
-                <option value="Honeymoon">Honeymoon</option>
-                <option value="Family">Family</option>
-                <option value="Luxury">Luxury</option>
-              </select>
-            </div>
-
-            <!-- Month (optional - controlled by schema input3) -->
-            {% if section.settings.input3 != blank %}
-              <div class="form-group">
-                <label for="month">{{ section.settings.input3 }}</label>
-                <select class="form-control" id="month">
-                  <option>January</option>
-                  <option>February</option>
-                  <option>March</option>
-                  <option>April</option>
-                  <option>May</option>
-                  <option>June</option>
-                  <option>July</option>
-                  <option>August</option>
-                  <option>September</option>
-                  <option>October</option>
-                  <option>November</option>
-                  <option>December</option>
-                </select>
-              </div>
-            {% endif %}
-
-            <!-- Price Range (example - optional) -->
-            <div class="form-group">
-              <label for="priceRange">
-                Price Range: <span>${{ section.settings.min_price }} - ${{ section.settings.max_price }}</span>
-              </label>
-              <input
-                type="range"
-                class="custom-range"
-                id="priceRange"
-                min="{{ section.settings.min_price }}"
-                max="{{ section.settings.max_price }}"
-                step="10"
-                value="{{ section.settings.min_price }}"
-              >
-              <span id="currentPrice" class="mr-3">${{ section.settings.min_price }}</span>
-            </div>
-
-            <!-- Book Now Button -->
-            <button class="btn btn-primary btn-block" id="bookNowBtn">Book Now</button>
-          </div>
-        </div>
-      {% endif %} {% endcomment %}
       {% if section.settings.if_form %}
         <div class="col-lg-4 col-md-8 offset-lg-1 offset-md-0">
           {% render 'booking-form', 
@@ -550,6 +472,10 @@
     text-align: center; /* Center align the text */
   }
 
+  .store-name:hover{
+    color: {{ section.settings.store_name_hover_color }}
+  }
+
   @media (max-width: 767px) {
     .store-name {
       font-size: calc({{ section.settings.store_name_text_size }}px * 0.75); /* Reduce font size */
@@ -570,12 +496,6 @@
     align-items: center;
     gap: 10px;
     flex-wrap: nowrap;
-  }
-
-  @media (max-width: 767px) {
-    .store-name {
-      font-size: calc({{ section.settings.store_name_text_size }}px * 0.75);
-    }
   }
 
   /* Main dropdown menu */
