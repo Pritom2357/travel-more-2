@@ -1,7 +1,17 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-page",
+      "disabled": true,
       "settings": {
         "padding_top": 36,
         "padding_bottom": 36
@@ -10,11 +20,41 @@
     "form": {
       "type": "contact-form",
       "settings": {
-        "heading": "",
-        "heading_size": "h1",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "accent_color": "#449EED",
+        "about_title": "About Our Store",
+        "about_bg_color": "#ffffff",
+        "about_title_color": "#333333",
+        "about_heading_color": "#444444",
+        "about_text_color": "#666666",
+        "show_social_links": true,
+        "social_heading": "Connect With Us",
+        "social_icon_color": "#449EED",
+        "facebook_url": "",
+        "twitter_url": "",
+        "instagram_url": "",
+        "youtube_url": "",
+        "pinterest_url": "",
+        "tiktok_url": "",
+        "form_title": "Contact Us",
+        "form_subtitle": "Have questions or feedback? We'd love to hear from you.",
+        "form_bg_color": "#f9f9f9",
+        "form_title_color": "#333333",
+        "form_text_color": "#666666",
+        "button_bg_color": "#449EED",
+        "button_text_color": "#ffffff",
+        "submit_button_text": "Send Message",
+        "success_message": "Thanks for contacting us! We'll get back to you as soon as possible.",
+        "error_message": "Sorry, there was a problem submitting your form. Please check the information and try again.",
+        "show_address_section": true,
+        "address_title": "Our Location",
+        "map_bg_color": "#ffffff",
+        "map_title_color": "#333333",
+        "map_text_color": "#666666",
+        "store_address": "123 Travel Street\nSuite 101\nNew York, NY 10001\nUnited States",
+        "store_phone": "",
+        "store_email": "",
+        "store_hours": "Monday-Friday: 9am - 6pm\nSaturday: 10am - 4pm\nSunday: Closed",
+        "map_embed_code": ""
       }
     }
   },
