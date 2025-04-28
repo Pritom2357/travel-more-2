@@ -1,172 +1,636 @@
-<section class="features-section py-3">
-  <div class="container text-center text-sec"> What do you Get?</div>
-  <div class="container cont">
-    <div class="row justify-content-center text-center g-4">
-      {% for block in section.blocks %}
-        <div class="{% if section.blocks.size == 1 %}col-12{% elsif section.blocks.size == 2 %}col-md-6{% elsif section.blocks.size == 3 %}col-md-4{% else %}col-md-3{% endif %}">
-          <div class="card feature-item shadow" style="background-color: {{ block.settings.card_bg_color }};">
-            <img src="{{ block.settings.image | img_url: 'original' }}" alt="Feature Icon" class="card-img-top">
-            <div class="card-body d-flex flex-column justify-content-between">
-              <h5 class="card-title" style="color:{{ block.settings.title_color }};">
-                {{ block.settings.image_text }}
-              </h5>
-              <div class="card-text feature-description" style="color: {{ block.settings.description_color }};">
-                {{ block.settings.img_description }}
+<section class="specialty-section {% if section.settings.use_full_width %}full-width{% endif %}" style="background-color: {{ section.settings.bg_color }};">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header">
+      {% if section.settings.section_subtitle != blank %}
+        <span class="section-subtitle" style="color: {{ section.settings.subtitle_color }};">{{ section.settings.section_subtitle }}</span>
+      {% endif %}
+      
+      <h2 class="section-title" style="color: {{ section.settings.title_color }};">
+        {{ section.settings.section_title | default: "What do you Get?" }}
+      </h2>
+      
+      {% if section.settings.section_description != blank %}
+        <div class="section-description" style="color: {{ section.settings.description_color }};">
+          {{ section.settings.section_description }}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Specialty Cards -->
+    <div class="specialty-cards">
+      <div class="row justify-content-center g-4">
+        {% for block in section.blocks %}
+          {% if block.type == "specialty" %}
+            <div class="{% if section.blocks.size == 1 %}col-12{% elsif section.blocks.size == 2 %}col-md-6{% elsif section.blocks.size == 3 %}col-md-4{% else %}col-md-3{% endif %}">
+              <div class="specialty-card" 
+                   style="background-color: {{ block.settings.card_bg_color }};"
+                   {% if section.settings.enable_hover_effect %}data-aos="fade-up" data-aos-delay="{{ forloop.index | times: 100 }}"{% endif %}>
+                
+                {% if block.settings.badge_text != blank %}
+                  <div class="specialty-badge" style="background-color: {{ block.settings.badge_color }};">
+                    {{ block.settings.badge_text }}
+                  </div>
+                {% endif %}
+                
+                <div class="specialty-image">
+                  {% if block.settings.image != blank %}
+                    <img src="{{ block.settings.image | img_url: 'medium' }}" alt="{{ block.settings.image_text }}" class="card-img">
+                  {% endif %}
+                </div>
+                
+                <div class="specialty-content">
+                  {% if block.settings.icon_class != blank %}
+                    <div class="specialty-icon">
+                      <i class="{{ block.settings.icon_class }}" style="color: {{ block.settings.icon_color }};"></i>
+                    </div>
+                  {% endif %}
+                  
+                  <h3 class="specialty-title" style="color: {{ block.settings.title_color }};">
+                    {{ block.settings.image_text }}
+                  </h3>
+                  
+                  <div class="specialty-description" style="color: {{ block.settings.description_color }};">
+                    {{ block.settings.img_description }}
+                  </div>
+                  
+                  {% if block.settings.show_button and block.settings.button_text != blank %}
+                    <a href="{{ block.settings.button_link | default: '#' }}" class="specialty-button" 
+                       style="background-color: {{ block.settings.button_bg_color }}; color: {{ block.settings.button_text_color }};">
+                      {{ block.settings.button_text }}
+                    </a>
+                  {% endif %}
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </div>
     </div>
+
+    <!-- Optional Call to Action -->
+    {% if section.settings.show_cta %}
+      <div class="specialty-cta">
+        <h3 class="cta-title" style="color: {{ section.settings.cta_title_color }};">{{ section.settings.cta_title | default: "Ready to experience our specialties?" }}</h3>
+        <p class="cta-description" style="color: {{ section.settings.cta_description_color }};">{{ section.settings.cta_description }}</p>
+        <a href="{{ section.settings.cta_button_link | default: '#' }}" class="cta-button" 
+           style="background-color: {{ section.settings.cta_button_bg_color }}; color: {{ section.settings.cta_button_text_color }};">
+          {{ section.settings.cta_button_text | default: "Learn More" }}
+        </a>
+      </div>
+    {% endif %}
   </div>
 </section>
 
 <style>
-
-  .cont{
-    padding-bottom: 3rem;
+  /* Base Section Styles */
+  .specialty-section {
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
   }
   
-  .features-section {
-    background-color: {{section.settings.bg_color}}; /* Background color */
-    padding: 1rem 1rem;
-    border: 1px solid #e0e0e0;
-    /* border-radius: 8px; */
+  .specialty-section.full-width {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
   }
-
-  .feature-item {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    height: 100%; /* Ensure consistent height */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
-    transition: transform 0.2s, box-shadow 0.2s; /* Smooth hover effect */
+  
+  /* Section Header */
+  .section-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    position: relative;
   }
-
-  .feature-item:hover {
-    transform: translateY(-5px); /* Slight lift on hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
-  }
-
-  .card-img-top {
-    height: 200px; /* Consistent image size */
-    object-fit: cover; /* Ensure the image fills the area without distortion */
-    border-top-left-radius: 8px; /* Match the card's border radius */
-    border-top-right-radius: 8px;
-  }
-
-  .card-title {
-    font-size: {{section.settings.title_size}}px; /* Adjusted for better readability */
+  
+  .section-subtitle {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     font-weight: 500;
-    /* color: #333; */
-    margin-bottom: 0.5rem;
+    display: block;
+    margin-bottom: 1rem;
   }
-
-  .card-text.feature-description {
-    font-size: {{section.settings.sub_title_size}}px;
-    margin-bottom: 0;
+  
+  .section-title {
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
   }
-
-  .row-cols-1 > .col {
-    margin-bottom: 1rem; /* Add spacing after each card in a single row */
+  
+  .section-title:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: {{ section.settings.accent_color }};
   }
-
-  @media (max-width: 768px) {
-    .row-cols-1 > .col {
-      margin-bottom: 2rem; /* Maintain spacing for smaller screens */
+  
+  .section-description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-top: 1.5rem;
+  }
+  
+  /* Card Styles */
+  .specialty-cards {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .specialty-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    height: 100%;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  
+  /* Card Hover Effects */
+  .specialty-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  }
+  
+  /* Badge Styling */
+  .specialty-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    z-index: 3;
+  }
+  
+  /* Image Styling */
+  .specialty-image {
+    height: 240px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .specialty-image:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0));
+    opacity: {{ section.settings.enable_image_overlay | default: 0.7 }};
+  }
+  
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s;
+  }
+  
+  .specialty-card:hover .card-img {
+    transform: scale(1.05);
+  }
+  
+  /* Content Styling */
+  .specialty-content {
+    padding: 25px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 240px);
+  }
+  
+  .specialty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .specialty-title {
+    font-size: {{ section.settings.card_title_size }}px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  
+  .specialty-description {
+    font-size: {{ section.settings.sub_title_size }}px;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+  
+  /* Button Styling */
+  .specialty-button {
+    display: inline-block;
+    padding: 10px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+  
+  .specialty-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    opacity: 0.9;
+  }
+  
+  /* CTA Section */
+  .specialty-cta {
+    margin-top: 5rem;
+    text-align: center;
+    padding: 3rem;
+    border-radius: 12px;
+    background-color: {{ section.settings.cta_bg_color }};
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  
+  .cta-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .cta-description {
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+  
+  .cta-button {
+    display: inline-block;
+    padding: 12px 32px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+  }
+  
+  .cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    opacity: 0.9;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 991px) {
+    .specialty-section {
+      padding: 4rem 0;
+    }
+    
+    .specialty-image {
+      height: 200px;
     }
   }
-
-  .text-sec{
-    padding:20px;
-    font-size: 4rem;
-    color: "#0B1E30"
+  
+  @media (max-width: 767px) {
+    .section-title {
+      font-size: calc({{ section.settings.title_size }}px * 0.8);
+    }
+    
+    .specialty-image {
+      height: 180px;
+    }
+    
+    .specialty-content {
+      padding: 20px;
+    }
+    
+    .specialty-cta {
+      padding: 2rem 1rem;
+    }
   }
 </style>
 
+{% if section.settings.enable_hover_effect %}
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out',
+      once: true
+    });
+  });
+</script>
+{% endif %}
+
 {% schema %}
 {
-  "name": "Signature",
+  "name": "Specialty Features",
   "settings": [
     {
       "type": "header",
-      "content": "Background"
+      "content": "Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Our Specialties"
+    },
+    {
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "default": "What Makes Us Different"
+    },
+    {
+      "type": "richtext",
+      "id": "section_description",
+      "label": "Section Description",
+      "default": "<p>Discover our unique offerings and services that set us apart from the rest.</p>"
     },
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Color",
-      "default":"#fff"
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#449EED"
     },
     {
       "type": "range",
       "id": "title_size",
       "label": "Title Size",
-      "default": 25,
-      "min": 10,
+      "default": 36,
+      "min": 20,
       "max": 70,
       "step": 1
     },
     {
       "type": "range",
-      "id": "sub_title_size",
-      "label": "Sub Title Size",
-      "default": 16,
-      "min": 10,
+      "id": "card_title_size",
+      "label": "Card Title Size",
+      "default": 24,
+      "min": 16,
       "max": 40,
       "step": 1
     },
+    {
+      "type": "range",
+      "id": "sub_title_size",
+      "label": "Description Size",
+      "default": 16,
+      "min": 12,
+      "max": 24,
+      "step": 1
+    },
+    {
+      "type": "header",
+      "content": "Display Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_full_width",
+      "label": "Use Full Width",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_hover_effect",
+      "label": "Enable Hover Animation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_overlay",
+      "label": "Enable Image Overlay",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show Call to Action",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "CTA Title",
+      "default": "Ready to Experience Our Services?"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_description",
+      "label": "CTA Description",
+      "default": "Join thousands of satisfied customers who have trusted our expertise."
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "Button Text",
+      "default": "Get Started"
+    },
+    {
+      "type": "url",
+      "id": "cta_button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_color",
+      "label": "CTA Background",
+      "default": "#f7f9fc"
+    },
+    {
+      "type": "color",
+      "id": "cta_title_color",
+      "label": "CTA Title Color",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "cta_description_color",
+      "label": "CTA Description Color",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "cta_button_bg_color",
+      "label": "CTA Button Color",
+      "default": "#449EED"
+    },
+    {
+      "type": "color",
+      "id": "cta_button_text_color",
+      "label": "CTA Button Text",
+      "default": "#ffffff"
+    }
   ],
   "blocks": [
     {
-      "type": "images",
-      "name": "Signatures",
+      "type": "specialty",
+      "name": "Specialty Feature",
       "settings": [
         {
           "type": "header",
-          "content": "Upload Image"
+          "content": "Content"
         },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Feature Image"
         },
         {
           "type": "text",
           "id": "image_text",
-          "label": "Text",
-          "default": "Write Some Text"
+          "label": "Feature Title",
+          "default": "Exclusive Services"
+        },
+        {
+          "type": "richtext",
+          "id": "img_description",
+          "label": "Feature Description",
+          "default": "<p>We offer unique services tailored to your specific needs and preferences.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Badge (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text",
+          "info": "Leave blank to hide badge"
+        },
+        {
+          "type": "color",
+          "id": "badge_color",
+          "label": "Badge Color",
+          "default": "#FF5733"
+        },
+        {
+          "type": "header",
+          "content": "Icon (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "icon_class",
+          "label": "Icon Class",
+          "info": "Bootstrap Icons class e.g. 'bi bi-star-fill'"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon Color",
+          "default": "#449EED"
+        },
+        {
+          "type": "header",
+          "content": "Colors"
         },
         {
           "type": "color",
           "id": "title_color",
           "label": "Title Color",
-          "default": "#000"
-        },
-        {
-          "type": "richtext",
-          "id": "img_description",
-          "label": "Image Description",
-          "default": "<p></p>"
+          "default": "#222222"
         },
         {
           "type": "color",
           "id": "description_color",
           "label": "Description Color",
-          "default": "#000"
+          "default": "#555555"
         },
         {
           "type": "color",
           "id": "card_bg_color",
-          "label": "Background Color",
-          "default": "#fff"
+          "label": "Card Background",
+          "default": "#FFFFFF"
         },
+        {
+          "type": "header",
+          "content": "Button (Optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_button",
+          "label": "Show Button",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "color",
+          "id": "button_bg_color",
+          "label": "Button Color",
+          "default": "#449EED"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button Text",
+          "default": "#FFFFFF"
+        }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Signature",
-      "category": "signature"
+      "name": "Enhanced Specialties",
+      "category": "Features",
+      "blocks": [
+        {
+          "type": "specialty"
+        },
+        {
+          "type": "specialty"
+        },
+        {
+          "type": "specialty"
+        }
+      ]
     }
   ]
 }

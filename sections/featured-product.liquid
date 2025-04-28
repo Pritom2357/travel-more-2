@@ -212,7 +212,6 @@
     const priceElement = document.querySelector('.featured-product-section .price');
     const featuredImage = document.getElementById('featured-product-image');
 
-    // Parse product variants data
     const productVariants = {{ product.variants | json }};
 
     if (variantSelect) {
@@ -221,10 +220,8 @@
         const selectedVariant = productVariants.find(variant => variant.id == selectedVariantId);
 
         if (selectedVariant) {
-          // Update the price
           priceElement.innerHTML = Shopify.formatMoney(selectedVariant.price, "{{ shop.money_format }}");
 
-          // Update the featured image if a variant-specific image exists
           if (selectedVariant.featured_image) {
             featuredImage.src = selectedVariant.featured_image.src;
           } else {
@@ -234,7 +231,6 @@
       });
     }
 
-    // Handle Add to Cart with AJAX
     productForm.addEventListener('submit', function (e) {
       e.preventDefault();
 
@@ -259,10 +255,8 @@
         return response.json();
       })
       .then(data => {
-        // Display a confirmation message (customize as needed)
         alert(`${data.title} has been added to your cart.`);
 
-        // Optionally, update the cart count if you have a cart counter element
         const cartCountElement = document.getElementById('CartCount');
         if (cartCountElement) {
           fetch('/cart.js')
@@ -271,10 +265,6 @@
               cartCountElement.innerText = cart.item_count;
             });
         }
-
-        // Scroll to cart or a specific confirmation section (customize as needed)
-        // Example:
-        // document.getElementById('cart-section').scrollIntoView({ behavior: 'smooth' });
       })
       .catch(error => {
         console.error('Error adding to cart:', error);
@@ -282,17 +272,6 @@
       });
     });
 
-    // Optional: Initialize Image Zoom (using ElevateZoom or any other library)
-    // Ensure jQuery is loaded if using a jQuery-based plugin
-    /*
-    if (typeof jQuery !== 'undefined') {
-      $("#featured-product-image").elevateZoom({
-        zoomType: "lens",
-        lensShape: "round",
-        lensSize: 200
-      });
-    }
-    */
   });
 </script>
 

@@ -1,12 +1,10 @@
 <section id="happy-travelers" class="travelers-slideshow">
   <div class="container">
-    <!-- Section Title -->
     {% if section.settings.section_title != blank %}
       <h2 class="section-title">{{ section.settings.section_title }}</h2>
     {% endif %}
 
     <div class="slideshow-container">
-      <!-- Background Image -->
       {% if section.settings.hero_image != blank %}
         <div class="hero-image-wrapper">
           <img src="{{ section.settings.hero_image | img_url: '1200x' }}" alt="Travel Experiences" class="hero-background">
@@ -14,12 +12,10 @@
       {% endif %}
 
       <div class="slideshow-content">
-        <!-- Review Slides -->
         {% for block in section.blocks %}
           {% if block.type == 'review' %}
             <div class="review-slide" data-slide-index="{{ forloop.index0 }}">
               <div class="review-card">
-                <!-- Traveler Image (Added) -->
                 {% if block.settings.traveler_image != blank %}
                   <div class="traveler-image-container">
                     <img src="{{ block.settings.traveler_image | img_url: '200x200', crop: 'center' }}" 
@@ -34,7 +30,6 @@
                 {% endif %}
 
                 <div class="review-content">
-                  <!-- Rating Stars -->
                   <div class="rating-stars">
                     {% assign rating = block.settings.rating | default: 0 %}
                     {% assign filled_stars = rating | floor %}
@@ -48,17 +43,14 @@
                     {% endfor %}
                   </div>
 
-                  <!-- Review Title -->
                   <h3 class="review-title">{{ block.settings.title }}</h3>
 
-                  <!-- Author and Date -->
                   <p class="reviewer-info">
                     <strong>{{ block.settings.name }}</strong>
                     <span class="date-divider">|</span>
                     <span class="review-date">{{ block.settings.date }}</span>
                   </p>
 
-                  <!-- Review Text -->
                   <div class="review-text">
                     <p>{{ block.settings.text }}</p>
                   </div>
@@ -68,11 +60,9 @@
           {% endif %}
         {% endfor %}
 
-        <!-- Navigation Controls -->
         <button class="prev-button" aria-label="Previous review">❮</button>
         <button class="next-button" aria-label="Next review">❯</button>
 
-        <!-- Pagination Dots -->
         <div class="pagination-dots">
           {% for block in section.blocks %}
             {% if block.type == 'review' %}
@@ -141,7 +131,6 @@
       padding: 2rem 0;
     }
 
-    /* Review slides */
     .review-slide {
       display: none;
       padding: 0 2rem;
@@ -158,7 +147,6 @@
       to { opacity: 1; }
     }
 
-    /* Review card */
     .review-card {
       background-color: white;
       border-radius: 12px;
@@ -172,7 +160,6 @@
       margin: 0 auto;
     }
 
-    /* Traveler image */
     .traveler-image-container {
       width: 120px;
       height: 120px;
@@ -207,7 +194,6 @@
       margin-bottom: 1rem;
     }
 
-    /* Review content */
     .review-content {
       width: 100%;
     }
@@ -321,23 +307,17 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Get all slides
       const slides = document.querySelectorAll('.review-slide');
-      // Get all dots
       const dots = document.querySelectorAll('.dot');
-      // Get navigation buttons
       const prevButton = document.querySelector('.prev-button');
       const nextButton = document.querySelector('.next-button');
       
-      // Current slide index
       let currentSlide = 0;
       
-      // Show initial slide
       if (slides.length > 0) {
         showSlide(currentSlide);
       }
       
-      // Add event listeners for buttons
       if (prevButton) {
         prevButton.addEventListener('click', function() {
           changeSlide(-1);
@@ -350,7 +330,6 @@
         });
       }
       
-      // Add event listeners for dots
       dots.forEach(function(dot, index) {
         dot.addEventListener('click', function() {
           currentSlide = index;
@@ -358,34 +337,26 @@
         });
       });
       
-      // Function to show a specific slide
       function showSlide(index) {
-        // Hide all slides
         slides.forEach(function(slide) {
           slide.classList.remove('active');
         });
         
-        // Remove active class from all dots
         dots.forEach(function(dot) {
           dot.classList.remove('active');
         });
         
-        // Show the current slide
         slides[index].classList.add('active');
-        // Mark the current dot as active
         dots[index].classList.add('active');
       }
       
-      // Function to change slide
       function changeSlide(direction) {
         currentSlide += direction;
         
-        // Loop back to the beginning if at the end
         if (currentSlide >= slides.length) {
           currentSlide = 0;
         }
         
-        // Loop to the end if at the beginning
         if (currentSlide < 0) {
           currentSlide = slides.length - 1;
         }
@@ -393,7 +364,6 @@
         showSlide(currentSlide);
       }
       
-      // Auto-advance slides every 5 seconds
       setInterval(function() {
         changeSlide(1);
       }, 5000);

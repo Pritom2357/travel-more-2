@@ -997,20 +997,16 @@
       const urlParams = new URLSearchParams(window.location.search);
       const searchQuery = urlParams.get('q') || '';
 
-      let newUrl = '/search'; // Stay on the search page
+      let newUrl = '/search'; 
 
-      // Add the search query
       newUrl += `?q=${encodeURIComponent(searchQuery)}`;
       
-      // Specify types to include (products and articles only)
       newUrl += '&type=product,article';
 
-      // Add the collection filter
       if (categoryFilter && categoryFilter.value !== 'all') {
         newUrl += `&collection=${encodeURIComponent(categoryFilter.value)}`;
       }
 
-      // Add the price filter
       if (priceRange) {
         const max = parseInt(priceRange.max);
         const value = parseInt(priceRange.value);
@@ -1020,13 +1016,12 @@
         }
       }
 
-      // Add the sort filter
       if (sortBy && sortBy.value !== 'relevance') {
         newUrl += `&sort_by=${encodeURIComponent(sortBy.value)}`;
       }
 
       console.log("Navigating to:", newUrl);
-      window.location.href = newUrl; // Redirect to the updated search URL
+      window.location.href = newUrl; 
     }
     
     initializePriceSlider();
@@ -1046,7 +1041,6 @@
         
         params.delete(filterType);
         
-        // Ensure type parameter is always included
         if (!params.has('type')) {
           params.set('type', 'product,article');
         }
@@ -1250,13 +1244,10 @@
     let visibleCount = 0;
     
     document.querySelectorAll('.search-result-item[data-type="product"]').forEach(item => {
-      // Skip already hidden items
       if (item.style.display === 'none') return;
       
       let shouldShow = true;
       
-      // Check product metafields with data attributes
-      // You'll need to add these data attributes in the liquid template
       if (duration) {
         const maxDays = parseInt(item.getAttribute('data-max-days') || '0');
         if (maxDays < parseInt(duration)) {
@@ -1279,7 +1270,6 @@
       }
     });
     
-    // Update result count
     const resultCount = document.querySelector('.result-count');
     if (resultCount) {
       resultCount.textContent = `${visibleCount} results found`;
@@ -1290,7 +1280,7 @@
     setTimeout(function() {
       applyClientSidePriceFilter();
       applyClientSideCollectionFilter();
-      applyTourFilters(); // Add this line
+      applyTourFilters();
     }, 100);
   });
 </script>

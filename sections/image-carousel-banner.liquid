@@ -60,7 +60,6 @@
       </div>
     </div>
     
-    <!-- Slide Indicators -->
     <div class="banner-indicators">
       {% for block in section.blocks %}
         {% if block.type == 'slide' %}
@@ -69,11 +68,7 @@
         {% endif %}
       {% endfor %}
     </div>
-    
-    <!-- Progress Bar -->
-    {% comment %} <div class="banner-progress">
-      <div class="banner-progress-bar"></div>
-    </div> {% endcomment %}
+     
   {% else %}
     <div class="banner-placeholder">
       <p>Add slides to show your banner</p>
@@ -83,7 +78,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Banner slider functionality
     const banner = document.querySelector('.{{ banner_class }}');
     const slides = banner.querySelectorAll('.banner-slide');
     const indicators = banner.querySelectorAll('.banner-indicator');
@@ -97,14 +91,12 @@
     let slideInterval;
     const intervalDuration = {{ section.settings.autoplay_speed | times: 1000 }};
     
-    // Initialize the slider
     function initSlider() {
       showSlide(0);
       if ({{ section.settings.autoplay }}) {
         startSlideTimer();
       }
       
-      // Event listeners
       if (prevBtn && nextBtn) {
         prevBtn.addEventListener('click', prevSlide);
         nextBtn.addEventListener('click', nextSlide);
@@ -118,7 +110,6 @@
         });
       }
       
-      // Pause autoplay on hover if enabled
       if ({{ section.settings.pause_on_hover }}) {
         banner.addEventListener('mouseenter', () => {
           clearInterval(slideInterval);
@@ -133,7 +124,6 @@
       }
     }
     
-    // Show the specified slide
     function showSlide(index) {
       slides.forEach((slide, i) => {
         slide.classList.toggle('active', i === index);
@@ -148,21 +138,18 @@
       currentSlide = index;
     }
     
-    // Go to next slide
     function nextSlide() {
       let newIndex = currentSlide + 1;
       if (newIndex >= slides.length) newIndex = 0;
       showSlide(newIndex);
     }
     
-    // Go to previous slide
     function prevSlide() {
       let newIndex = currentSlide - 1;
       if (newIndex < 0) newIndex = slides.length - 1;
       showSlide(newIndex);
     }
     
-    // Go to a specific slide
     function goToSlide(index) {
       showSlide(index);
       if ({{ section.settings.autoplay }}) {
@@ -171,11 +158,9 @@
       }
     }
     
-    // Start the autoplay timer
     function startSlideTimer() {
       clearInterval(slideInterval);
       
-      // Reset and animate progress bar
       resetProgressBar();
       animateProgressBar();
       
@@ -186,14 +171,12 @@
       }, intervalDuration);
     }
     
-    // Reset progress bar
     function resetProgressBar() {
       if (progressBar) {
         progressBar.style.width = '0%';
       }
     }
     
-    // Animate progress bar
     function animateProgressBar() {
       if (progressBar) {
         progressBar.style.transition = `width ${intervalDuration}ms linear`;
@@ -201,7 +184,6 @@
       }
     }
     
-    // Initialize the slider
     initSlider();
   });
 </script>

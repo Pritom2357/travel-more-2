@@ -52,7 +52,6 @@
       {% endif %}
     </div>
     
-    <!-- Close Button (minimizes to floating element) -->
     <button class="modal-minimize-button" aria-label="Minimize">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
         <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
@@ -61,7 +60,6 @@
   </div>
 </div>
 
-<!-- Floating Countdown Element (initially hidden) -->
 <div id="{{ floating_id }}" class="floating-countdown-container">
   <div class="floating-countdown-icon">
     {% if section.settings.floating_icon_type == 'percent' %}
@@ -134,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 300);
   });
   
-  // Expand floating element to modal
   expandButton.addEventListener('click', function() {
     floatingEl.classList.add('minimizing');
     
@@ -148,7 +145,6 @@ document.addEventListener('DOMContentLoaded', function() {
   closeButton.addEventListener('click', function() {
     floatingEl.classList.add('closing');
     
-    // Wait for animation to complete
     setTimeout(function() {
       floatingEl.classList.remove('show');
       floatingEl.classList.remove('closing');
@@ -156,17 +152,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 300);
   });
   
-  // Countdown Timer functionality
   function updateCountdown() {
     const endDate = new Date('{{ section.settings.end_date }}').getTime();
     const now = new Date().getTime();
     const timeRemaining = endDate - now;
     
     if (timeRemaining <= 0) {
-      // Timer has expired
       updateCountdownDisplay(0, 0, 0, 0);
       
-      // Hide elements if timer has expired
       if ({{ section.settings.hide_on_expire }}) {
         modal.style.display = 'none';
         floatingEl.style.display = 'none';
@@ -174,7 +167,6 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     
-    // Calculate days, hours, minutes, seconds
     const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
     const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
@@ -184,30 +176,25 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   function updateCountdownDisplay(days, hours, minutes, seconds) {
-    // Format with leading zeros
     const d = days.toString().padStart(2, '0');
     const h = hours.toString().padStart(2, '0');
     const m = minutes.toString().padStart(2, '0');
     const s = seconds.toString().padStart(2, '0');
     
-    // Update modal countdown
     document.querySelector('#modal-countdown-{{ modal_id }} .days').textContent = d;
     document.querySelector('#modal-countdown-{{ modal_id }} .hours').textContent = h;
     document.querySelector('#modal-countdown-{{ modal_id }} .minutes').textContent = m;
     document.querySelector('#modal-countdown-{{ modal_id }} .seconds').textContent = s;
     
-    // Update floating countdown
     document.querySelector('#{{ floating_id }} .floating-days').textContent = d;
     document.querySelector('#{{ floating_id }} .floating-hours').textContent = h;
     document.querySelector('#{{ floating_id }} .floating-minutes').textContent = m;
     
-    // Add animation class to changing seconds
     const secondsEl = document.querySelector('#modal-countdown-{{ modal_id }} .seconds');
     secondsEl.classList.add('pulse');
     setTimeout(() => { secondsEl.classList.remove('pulse'); }, 500);
   }
   
-  // Initial update and set interval
   updateCountdown();
   setInterval(updateCountdown, 1000);
 });

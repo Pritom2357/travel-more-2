@@ -266,15 +266,14 @@
   .thumbnails-scroll-container {
     height: 500px;
     overflow-y: auto;
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
-    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
     padding-right: 5px;
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
   
-  /* Hide scrollbar for Chrome, Safari and Opera */
   .thumbnails-scroll-container::-webkit-scrollbar {
     display: none;
   }
@@ -344,7 +343,7 @@
     gap: 10px;
     opacity: 0;
     transition: opacity 0.3s ease;
-    z-index: 10; /* Ensure it stays above images */
+    z-index: 10;
   }
 
   .main-image-container:hover .gallery-navigation {
@@ -362,8 +361,8 @@
     justify-content: center;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    position: relative; /* Add position */
-    z-index: 15; /* Higher z-index than the gallery navigation */
+    position: relative; 
+    z-index: 15; 
   }
 
   .nav-button i {
@@ -753,7 +752,6 @@
     margin-bottom: 15px;
   }
 
-  /* Make selectors responsive but not too wide */
   .option-selector {
     width: 100%;
     max-width: 200px;
@@ -1029,30 +1027,24 @@
     const fullImageUrl = thumbnail.getAttribute('data-full-image');
     const thumbnailItems = document.querySelectorAll('.thumbnail-item');
     
-    // Switch images for crossfade
     secondaryImage.src = fullImageUrl;
     secondaryImage.alt = thumbnail.alt;
     
-    // Remove any existing animation classes
     mainImage.classList.remove('slide-from-left', 'slide-from-right');
     secondaryImage.classList.remove('slide-from-left', 'slide-from-right');
     
-    // Add directional slide animation
     if (direction === 'next') {
       secondaryImage.classList.add('slide-from-right');
     } else if (direction === 'prev') {
       secondaryImage.classList.add('slide-from-left');
     }
     
-    // Swap z-indices to bring secondary image to front
     mainImage.classList.remove('current');
     mainImage.classList.add('next');
     secondaryImage.classList.remove('next');
     secondaryImage.classList.add('current');
     
-    // Swap the image references after animation completes
     setTimeout(() => {
-      // Swap image sources
       const tempSrc = mainImage.src;
       const tempAlt = mainImage.alt;
       mainImage.src = secondaryImage.src;
@@ -1060,17 +1052,14 @@
       secondaryImage.src = tempSrc;
       secondaryImage.alt = tempAlt;
       
-      // Swap classes back
       mainImage.classList.remove('next');
       mainImage.classList.add('current');
       secondaryImage.classList.remove('current');
       secondaryImage.classList.add('next');
       
-      // Remove animation classes
       secondaryImage.classList.remove('slide-from-left', 'slide-from-right');
     }, 800);
     
-    // Update active thumbnail
     thumbnailItems.forEach(item => {
       item.classList.remove('active');
     });
@@ -1078,7 +1067,6 @@
     thumbnail.parentElement.classList.add('active');
     currentSlideIndex = parseInt(thumbnail.parentElement.getAttribute('data-index'));
     
-    // If manually changed, reset the auto slide timer
     if (manualChange && slideInterval) {
       clearInterval(slideInterval);
       startAutoSlide();
