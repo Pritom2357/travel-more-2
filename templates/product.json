@@ -10,30 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "main-product",
-      "settings": {
-        "background_color": "#fefefe",
-        "text_color": "#242323",
-        "product_title_color": "#1E1B1B",
-        "label_color": "#a0a0a0",
-        "collection_button_color": "#4a90e2",
-        "tag_text_color": "#630b0b",
-        "vendor_text_color": "#151414",
-        "price_color": "#333333",
-        "sale_price_color": "#4CAF50",
-        "compare_price_color": "#a0a0a0",
-        "in_stock_color": "#4CAF50",
-        "out_of_stock_color": "#F44336",
-        "slide_duration": 6,
-        "auto_slide": true,
-        "show_vendor": true,
-        "show_collections": true,
-        "show_tags": true,
-        "description_title": "Product Description",
-        "description_bg": "#ffffff0d",
-        "description_title_color": "#191d52",
-        "description_text_color": "#201f1f"
-      }
+      "type": "main-product"
     },
     "related-products": {
       "type": "related-products",
