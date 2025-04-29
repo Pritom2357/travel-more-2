@@ -1,62 +1,651 @@
-<div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-  <div class="card h-100 shadow-sm product-card">
-    <!-- Product Image -->
-    <a href="{{ product.url }}" class="text-decoration-none">
-      {% if product.featured_image != blank %}
-        <div class="image-container position-relative">
-          <img
-            src="{{ product.featured_image | img_url:'medium' }}"
-            class="card-img-top img-fluid rounded-top featured-img"
-            alt="{{ product.title }}"
-            loading="lazy"
-          >
-          {% if product.images.size > 1 and show_second_img %}
+<div class="col-lg-3 col-md-4 col-sm-6 mb-4 product-card-wrapper" 
+     data-product-id="{{ product.id }}"
+     data-card-style="{{ card_style | default: 'standard' }}"
+     data-animation="{{ animation_style | default: 'fade' }}">
+  <div class="card h-100 product-card {{ card_style | default: 'standard' }}-style"
+       style="
+         --card-bg-color: {{ card_bg_color | default: '#ffffff' }};
+         --card-text-color: {{ card_text_color | default: '#333333' }};
+         --card-accent-color: {{ card_accent_color | default: '#4a90e2' }};
+       ">
+    
+    <!-- Card Image Section -->
+    <div class="product-card-media">
+      <a href="{{ product.url }}" class="image-link">
+        {% if product.featured_image != blank %}
+          <div class="image-container">
             <img
-              src="{{ product.images[1] | img_url:'medium' }}"
-              class="card-img-top img-fluid rounded-top second-img"
-              alt="{{ product.title }}"
+              src="{{ product.featured_image | img_url: 'medium' }}"
+              data-srcset="{{ product.featured_image | img_url: '300x300' }} 300w,
+                           {{ product.featured_image | img_url: '400x400' }} 400w,
+                           {{ product.featured_image | img_url: '500x500' }} 500w"
+              sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 991px) 300px, 400px"
+              class="card-img-top primary-img lazyload"
+              alt="{{ product.featured_image.alt | escape | default: product.title }}"
               loading="lazy"
+              width="400"
+              height="400"
             >
-          {% endif %}
-
-          <!-- Badges -->
+            {% if product.images.size > 1 and show_second_img %}
+              <img
+                src="{{ product.images[1] | img_url: 'medium' }}"
+                class="card-img-top secondary-img lazyload"
+                alt="{{ product.images[1].alt | escape | default: product.title }}"
+                loading="lazy"
+                width="400"
+                height="400"
+              >
+            {% endif %}
+          </div>
+          
+          <!-- Image Overlay for Hover Effects -->
+          <div class="image-overlay">
+            <div class="quick-actions">
+              <!-- Quick view button -->
+              <button type="button" class="btn-quick-action btn-quickview" data-product-url="{{ product.url }}?view=quick-view" aria-label="Quick view {{ product.title }}">
+                <span class="icon">
+                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                  </svg>
+                </span>
+              </button>
+              
+              <!-- Wishlist button -->
+              {% if enable_wishlist %}
+                <button type="button" class="btn-quick-action btn-wishlist" data-product-id="{{ product.id }}" aria-label="Add {{ product.title }} to wishlist">
+                  <span class="icon">
+                    <svg class="icon-wishlist" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                    </svg>
+                    <svg class="icon-wishlist-filled" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                    </svg>
+                  </span>
+                </button>
+              {% endif %}
+            </div>
+            
+            {% if show_quick_add %}
+              <div class="quick-add-container">
+                {% if product.variants.size == 1 %}
+                  <!-- Quick add to cart for single variant products -->
+                  <button type="button" 
+                          class="btn btn-quick-add" 
+                          data-product-id="{{ product.id }}"
+                          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                          {% unless product.available %}disabled{% endunless %}>
+                    {% if product.available %}
+                      {{ quick_add_text | default: 'Add to Cart' }}
+                    {% else %}
+                      {{ sold_out_text | default: 'Sold Out' }}
+                    {% endif %}
+                  </button>
+                {% else %}
+                  <!-- View options for multi-variant products -->
+                  <a href="{{ product.url }}" class="btn btn-options">
+                    {{ view_options_text | default: 'View Options' }}
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        {% else %}
+          <!-- Placeholder for products without images -->
+          <div class="product-placeholder">
+            {{ product.title | truncate: 2 }}
+          </div>
+        {% endif %}
+      </a>
+      
+      <!-- Product Badges -->
+      <div class="product-badges">
+        {% if enable_custom_badges and product.metafields.custom.badge != blank %}
+          <span class="badge badge-custom" style="background-color: {{ product.metafields.custom.badge_color | default: card_accent_color }};">
+            {{ product.metafields.custom.badge }}
+          </span>
+        {% else %}
           {% if product.tags contains 'new' %}
-            <span class="badge badge-new">New</span>
+            <span class="badge badge-new">{{ new_badge_text | default: 'New' }}</span>
           {% endif %}
+          
           {% if product.compare_at_price > product.price %}
-            <span class="badge badge-sale">Sale</span>
+            {% assign discount_amount = product.compare_at_price | minus: product.price %}
+            {% assign discount_percentage = discount_amount | times: 100 | divided_by: product.compare_at_price %}
+            <span class="badge badge-sale">{{ sale_badge_text | default: 'Sale' }} {{ discount_percentage }}%</span>
           {% endif %}
-        </div>
-      {% endif %}
-    </a>
-
-    <!-- Card Body -->
-    <div class="card-body d-flex flex-column">
-      <!-- Product Title -->
-      <h5 class="card-title">
-        <a href="{{ product.url }}" class="text-dark text-decoration-none">
-          {{ product.title }}
-        </a>
-      </h5>
-
-      <!-- Product Price -->
-      <div class="mt-auto">
-        {% render 'price', product: product %}
-        {% if show_vendor %}
-          <span class="text-uppercase vendor-name">{{ product.vendor }}</span>
+          
+          {% if product.available == false %}
+            <span class="badge badge-soldout">{{ soldout_badge_text | default: 'Sold Out' }}</span>
+          {% endif %}
+          
+          {% if product.tags contains 'limited' or product.tags contains 'best-seller' %}
+            <span class="badge badge-featured">{{ product.tags | where: "limited, best-seller" | first }}</span>
+          {% endif %}
         {% endif %}
       </div>
     </div>
-
-    <!-- Card Footer -->
-    <div class="card-footer bg-transparent border-0">
-      <a href="{{ product.url }}" class="btn btn-primary w-100 view-details-btn">View Details</a>
+    
+    <!-- Card Body -->
+    <div class="card-body d-flex flex-column">
+      <!-- Product Vendor -->
+      {% if show_vendor and product.vendor %}
+        <div class="product-vendor">
+          <span class="text-uppercase vendor-name">{{ product.vendor }}</span>
+        </div>
+      {% endif %}
+      
+      <!-- Product Title -->
+      <h3 class="card-title">
+        <a href="{{ product.url }}" class="product-title-link">
+          {{ product.title }}
+        </a>
+      </h3>
+      
+      <!-- Product Rating -->
+      {% if show_rating %}
+        <div class="product-rating">
+          {% if product.metafields.reviews.rating %}
+            <div class="stars-outer">
+              <div class="stars-inner" style="width: {{ product.metafields.reviews.rating.value | times: 20 }}%;"></div>
+            </div>
+            <span class="rating-count">({{ product.metafields.reviews.rating_count }})</span>
+          {% endif %}
+        </div>
+      {% endif %}
+      
+      <!-- Product Price -->
+      <div class="product-price mt-auto">
+        {% render 'price', product: product, show_compare_at: true %}
+      </div>
+      
+      <!-- Product Description - Optional Short Summary -->
+      {% if show_description %}
+        <div class="product-description">
+          {{ product.description | strip_html | truncatewords: 15 }}
+        </div>
+      {% endif %}
     </div>
-
-    <!-- Add this at the bottom of your product card content -->
+    
+    <!-- Card Footer -->
+    <div class="card-footer bg-transparent">
+      <div class="d-flex product-actions">
+        <a href="{{ product.url }}" class="btn btn-view-details">
+          {{ view_details_text | default: 'View Details' }}
+        </a>
+        
+        {% if show_add_to_cart and product.available and product.variants.size == 1 %}
+          <button type="button" 
+                  class="btn btn-add-to-cart" 
+                  data-product-id="{{ product.id }}"
+                  data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
+              <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+            </svg>
+          </button>
+        {% endif %}
+      </div>
+    </div>
+    
+    <!-- Tour-specific details -->
     {% if product.type contains 'Tour' or product.tags contains 'tour' or product.tags contains 'destination:' %}
       {% include 'extract-tour-data' with product %}
-      {% include 'tour-card-details' %}
+      <div class="tour-details">
+        {% if tour_destination %}
+          <div class="tour-detail">
+            <span class="icon">📍</span>
+            <span class="text">{{ tour_destination }}</span>
+          </div>
+        {% endif %}
+        
+        {% if tour_duration %}
+          <div class="tour-detail">
+            <span class="icon">⏱</span>
+            <span class="text">{{ tour_duration }}</span>
+          </div>
+        {% endif %}
+        
+        {% if tour_group_size %}
+          <div class="tour-detail">
+            <span class="icon">👥</span>
+            <span class="text">{{ tour_group_size }}</span>
+          </div>
+        {% endif %}
+      </div>
     {% endif %}
   </div>
 </div>
+
+<style>
+  /* Enhanced Product Card Styles */
+  .product-card-wrapper {
+    transition: transform 0.3s ease;
+  }
+  
+  .product-card {
+    position: relative;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    background-color: var(--card-bg-color, #ffffff);
+    color: var(--card-text-color, #333333);
+  }
+  
+  /* Card Hover Effects */
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+  }
+  
+  /* Image Container Styling */
+  .product-card-media {
+    position: relative;
+    overflow: hidden;
+    padding-top: 100%; /* 1:1 Aspect Ratio */
+  }
+  
+  .image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .card-img-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  
+  .secondary-img {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  
+  .product-card:hover .primary-img {
+    transform: scale(1.08);
+  }
+  
+  .product-card:hover .secondary-img {
+    opacity: 1;
+  }
+  
+  /* Product Placeholder */
+  .product-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    color: #adb5bd;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  /* Image Overlay */
+  .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+  }
+  
+  .product-card:hover .image-overlay {
+    opacity: 1;
+  }
+  
+  /* Quick Actions */
+  .quick-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  
+  .btn-quick-action {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  
+  .product-card:hover .btn-quick-action {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  .btn-quick-action:nth-child(2) {
+    transition-delay: 0.05s;
+  }
+  
+  .btn-quick-action:hover {
+    background-color: var(--card-accent-color, #4a90e2);
+    color: white;
+  }
+  
+  .icon-wishlist-filled {
+    display: none;
+  }
+  
+  .btn-wishlist.active .icon-wishlist {
+    display: none;
+  }
+  
+  .btn-wishlist.active .icon-wishlist-filled {
+    display: inline-block;
+    color: #e53935;
+  }
+  
+  /* Quick Add */
+  .quick-add-container {
+    width: 100%;
+    transform: translateY(10px);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+  
+  .product-card:hover .quick-add-container {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  .btn-quick-add, .btn-options {
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    background-color: var(--card-accent-color, #4a90e2);
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .btn-quick-add:hover, .btn-options:hover {
+    background-color: darken(var(--card-accent-color, #4a90e2), 10%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .btn-quick-add:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Badges */
+  .product-badges {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 2;
+  }
+  
+  .badge {
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .badge-new {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .badge-sale {
+    background-color: #ff5252;
+    color: white;
+  }
+  
+  .badge-soldout {
+    background-color: #9e9e9e;
+    color: white;
+  }
+  
+  .badge-featured {
+    background-color: #ff9800;
+    color: white;
+  }
+  
+  .badge-custom {
+    color: white;
+  }
+  
+  /* Card Body */
+  .card-body {
+    padding: 20px;
+  }
+  
+  .product-vendor {
+    margin-bottom: 5px;
+  }
+  
+  .vendor-name {
+    font-size: 0.8rem;
+    color: #6c757d;
+    letter-spacing: 0.5px;
+  }
+  
+  .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  
+  .product-title-link {
+    color: var(--card-text-color, #333333);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  .product-title-link:hover {
+    color: var(--card-accent-color, #4a90e2);
+  }
+  
+  /* Rating Stars */
+  .product-rating {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .stars-outer {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .stars-outer::before {
+    content: "★★★★★";
+    color: #ddd;
+  }
+  
+  .stars-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+  }
+  
+  .stars-inner::before {
+    content: "★★★★★";
+    color: #ffc107;
+  }
+  
+  .rating-count {
+    margin-left: 5px;
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+  
+  /* Product Price */
+  .product-price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--card-text-color, #333333);
+  }
+  
+  .compare-price {
+    color: #9e9e9e;
+    text-decoration: line-through;
+    font-size: 0.9rem;
+    margin-left: 5px;
+  }
+  
+  /* Product Description */
+  .product-description {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #6c757d;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  
+  /* Card Footer */
+  .card-footer {
+    padding: 15px 20px 20px;
+  }
+  
+  .product-actions {
+    gap: 10px;
+  }
+  
+  .btn-view-details {
+    flex: 1;
+    background-color: var(--card-accent-color, #4a90e2);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    text-align: center;
+  }
+  
+  .btn-view-details:hover {
+    background-color: darken(var(--card-accent-color, #4a90e2), 10%);
+  }
+  
+  .btn-add-to-cart {
+    width: 40px;
+    height: 38px;
+    background-color: var(--card-accent-color, #4a90e2);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-add-to-cart:hover {
+    background-color: darken(var(--card-accent-color, #4a90e2), 10%);
+  }
+  
+  /* Tour-specific styles */
+  .tour-details {
+    padding: 0 20px 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .tour-detail {
+    padding: 4px 10px;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .tour-detail .icon {
+    font-size: 0.9rem;
+  }
+  
+  /* Card style variations */
+  .product-card.compact-style {
+    /* Styles for compact card */
+    font-size: 0.9rem;
+  }
+  
+  .product-card.featured-style {
+    /* Styles for featured card */
+    border: 2px solid var(--card-accent-color, #4a90e2);
+  }
+  
+  /* Animation variations - applied to wrapper */
+  .product-card-wrapper[data-animation="fade"] {
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards;
+  }
+  
+  .product-card-wrapper[data-animation="slide-up"] {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.6s ease forwards;
+  }
+  
+  .product-card-wrapper[data-animation="scale"] {
+    opacity: 0;
+    transform: scale(0.9);
+    animation: scaleIn 0.6s ease forwards;
+  }
+  
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes scaleIn {
+    to { opacity: 1; transform: scale(1); }
+  }
+</style>
