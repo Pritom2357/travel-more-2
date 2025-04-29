@@ -7,16 +7,23 @@
       {%- assign product_count = 0 -%}
       {%- assign product_source = section.settings.product_source | default: 'same_collection' -%}
       
+      {% comment %} Debug info - remove in production {% endcomment %}
+      <div style="display: none;">
+        Source: {{ product_source }}<br>
+        Limit: {{ related_limit }}<br>
+        Trending collection: {{ section.settings.trending_collection }}
+      </div>
+      
       {% comment %} Same Collection Products {% endcomment %}
       {% if product_source == 'same_collection' or product_source == 'mixed' %}
-        {%- assign related_collection = product.collections.first -%}
-        
-        {% if related_collection %}
+        {% if product.collections.size > 0 %}
+          {%- assign related_collection = product.collections.first -%}
+          
           {% for related_product in related_collection.products limit: 25 %}
             {% if related_product.id != product.id %}
               {% if product_count < related_limit %}
                 {% assign product_count = product_count | plus: 1 %}
-                <div class="related-product-card">
+                <div class="related-product-card" data-source="collection">
                   <a href="{{ related_product.url }}">
                     <div class="related-product-image">
                       {% if related_product.featured_image %}
@@ -38,38 +45,48 @@
       {% comment %} Trending Products {% endcomment %}
       {% if product_count < related_limit %}
         {% if product_source == 'trending' or product_source == 'mixed' %}
-          {%- assign trending_collection = collections[section.settings.trending_collection] -%}
-          
-          {% if trending_collection %}
-            {% for trending_product in trending_collection.products limit: related_limit %}
-              {% if trending_product.id != product.id %}
-                {% if product_count < related_limit %}
-                  {% assign product_count = product_count | plus: 1 %}
-                  <div class="related-product-card">
-                    <a href="{{ trending_product.url }}">
-                      {% if product_source == 'mixed' %}
-                        <div class="trending-badge">Trending</div>
-                      {% endif %}
-                      <div class="related-product-image">
-                        {% if trending_product.featured_image %}
-                          <img src="{{ trending_product.featured_image | img_url: '300x300', crop: 'center' }}" alt="{{ trending_product.featured_image.alt | escape }}">
-                        {% else %}
-                          <div class="placeholder-image">{{ trending_product.title | truncate: 2 }}</div>
+          {% if section.settings.trending_collection != blank %}
+            {%- assign trending_collection = collections[section.settings.trending_collection] -%}
+            
+            {% if trending_collection.products.size > 0 %}
+              {% for trending_product in trending_collection.products limit: 25 %}
+                {% if trending_product.id != product.id %}
+                  {% if product_count < related_limit %}
+                    {% assign product_count = product_count | plus: 1 %}
+                    <div class="related-product-card" data-source="trending">
+                      <a href="{{ trending_product.url }}">
+                        {% if product_source == 'mixed' %}
+                          <div class="trending-badge">Trending</div>
                         {% endif %}
-                      </div>
-                      <h3>{{ trending_product.title }}</h3>
-                      <p class="price">{{ trending_product.price | money }}</p>
-                    </a>
-                  </div>
+                        <div class="related-product-image">
+                          {% if trending_product.featured_image %}
+                            <img src="{{ trending_product.featured_image | img_url: '300x300', crop: 'center' }}" alt="{{ trending_product.featured_image.alt | escape }}">
+                          {% else %}
+                            <div class="placeholder-image">{{ trending_product.title | truncate: 2 }}</div>
+                          {% endif %}
+                        </div>
+                        <h3>{{ trending_product.title }}</h3>
+                        <p class="price">{{ trending_product.price | money }}</p>
+                      </a>
+                    </div>
+                  {% endif %}
                 {% endif %}
-              {% endif %}
-            {% endfor %}
+              {% endfor %}
+            {% endif %}
           {% endif %}
         {% endif %}
       {% endif %}
       
       {% if product_count == 0 %}
-        <div class="no-products-message">No related products found.</div>
+        <div class="no-products-message">
+          {% if product_source == 'same_collection' %}
+            No related products found in the same collection.
+          {% elsif product_source == 'trending' %}
+            No trending products available.
+          {% else %}
+            No related products found.
+          {% endif %}
+        </div>
       {% endif %}
     </div>
   </div>
