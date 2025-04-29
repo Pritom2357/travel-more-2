@@ -24,8 +24,20 @@
       <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-white">
         {% render 'collection-filter', collection: collection %}
       </div>
+      <div class="collection-backdrop"></div>
     {% endif %}
     <div class="col py-3">
+      <!-- Add this after opening the collection content div -->
+      {% if enable_filtering %}
+        <div class="filter-toggle-container d-block d-lg-none mb-3">
+          <button class="btn btn-outline-secondary filter-toggle">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/>
+            </svg>
+            Show Filters
+          </button>
+        </div>
+      {% endif %}
       <div class="collection-header">
         <div class="d-flex justify-content-between">
           <div class="product-counter">
@@ -93,6 +105,47 @@
     let value = e.currentTarget.value;
     Shopify.queryParams.sort_by = value;
     location.search = new URLSearchParams(Shopify.queryParams).toString();
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const filterToggle = document.querySelector('.filter-toggle');
+    const filterClose = document.querySelector('.btn-close-filters');
+    const collectionFilter = document.querySelector('.collection-filter');
+    const backdrop = document.querySelector('.collection-backdrop');
+    
+    if (filterToggle && collectionFilter && backdrop) {
+      filterToggle.addEventListener('click', function() {
+        collectionFilter.classList.add('active');
+        backdrop.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    }
+    
+    if (filterClose && collectionFilter && backdrop) {
+      filterClose.addEventListener('click', function() {
+        collectionFilter.classList.remove('active');
+        backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    }
+    
+    if (backdrop && collectionFilter) {
+      backdrop.addEventListener('click', function() {
+        collectionFilter.classList.remove('active');
+        backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    }
+    
+    // Initialize Bootstrap collapse if available
+    if (typeof bootstrap !== 'undefined') {
+      const filterGroups = document.querySelectorAll('.filter-group-header[data-bs-toggle="collapse"]');
+      filterGroups.forEach(group => {
+        new bootstrap.Collapse(document.querySelector(group.dataset.bsTarget), {
+          toggle: false
+        });
+      });
+    }
   });
 </script>
 
@@ -162,6 +215,55 @@
 
   .filter-group-display__submit .btn {
     width: 100%;
+  }
+
+  /* Filter toggle styling */
+  .filter-toggle-container {
+    margin-bottom: 15px;
+  }
+  
+  .filter-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+  
+  /* Backdrop and mobile filter styling */
+  .collection-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1040;
+    display: none;
+  }
+  
+  .collection-backdrop.active {
+    display: block;
+  }
+  
+  @media (max-width: 991px) {
+    .collection-filter {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 85%;
+      height: 100%;
+      z-index: 1050;
+      background-color: white;
+      overflow-y: auto;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      padding: 20px;
+    }
+    
+    .collection-filter.active {
+      transform: translateX(0);
+    }
   }
 </style>
 
