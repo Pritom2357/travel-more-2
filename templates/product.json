@@ -10,24 +10,38 @@
 {
   "sections": {
     "main": {
-      "type": "main-product"
+      "type": "main-product",
+      "settings": {
+        "background_color": "#ffffff",
+        "text_color": "#333333",
+        "product_title_color": "#1E1B1B",
+        "label_color": "#a0a0a0",
+        "collection_button_color": "#4a90e2",
+        "tag_text_color": "#630b0b",
+        "vendor_text_color": "#151414",
+        "price_color": "#333333",
+        "sale_price_color": "#4CAF50",
+        "compare_price_color": "#a0a0a0",
+        "in_stock_color": "#4CAF50",
+        "out_of_stock_color": "#F44336",
+        "slide_duration": 3,
+        "auto_slide": true,
+        "show_vendor": true,
+        "show_collections": true,
+        "show_tags": true,
+        "description_title": "Product Description",
+        "description_bg": "rgba(255, 255, 255, 0.05)",
+        "description_title_color": "#ffffff",
+        "description_text_color": "#D3D3D3"
+      }
     },
     "related-products": {
       "type": "related-products",
       "settings": {
         "heading": "You may also like",
-        "heading_size": "h2",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 28
+        "product_source": "mixed",
+        "trending_collection": "beach",
+        "products_to_show": 4
       }
     }
   },
