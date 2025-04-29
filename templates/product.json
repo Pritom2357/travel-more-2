@@ -39,7 +39,7 @@
       "type": "related-products",
       "settings": {
         "heading": "You may also like",
-        "product_source": "mixed",
+        "product_source": "same_collection",
         "trending_collection": "ocean",
         "products_to_show": 4
       }
