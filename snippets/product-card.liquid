@@ -47,7 +47,7 @@
                     sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 991px) 300px, 400px"
                     class="card-img-top lazyload{% if forloop.first %} primary-img{% endif %}"
                     alt="{{ image.alt | escape | default: product.title }}"
-                    loading="{{ forloop.first ? 'eager' : 'lazy' }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
                     width="400"
                     height="400">
                 </div>
