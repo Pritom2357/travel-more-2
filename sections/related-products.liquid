@@ -13,52 +13,58 @@
         
         {% if related_collection %}
           {% for related_product in related_collection.products limit: 25 %}
-            {% if related_product.id != product.id and product_count < related_limit %}
-              {% assign product_count = product_count | plus: 1 %}
-              <div class="related-product-card">
-                <a href="{{ related_product.url }}">
-                  <div class="related-product-image">
-                    {% if related_product.featured_image %}
-                      <img src="{{ related_product.featured_image | img_url: '300x300', crop: 'center' }}" alt="{{ related_product.featured_image.alt | escape }}">
-                    {% else %}
-                      <div class="placeholder-image">{{ related_product.title | truncate: 2 }}</div>
-                    {% endif %}
-                  </div>
-                  <h3>{{ related_product.title }}</h3>
-                  <p class="price">{{ related_product.price | money }}</p>
-                </a>
-              </div>
+            {% if related_product.id != product.id %}
+              {% if product_count < related_limit %}
+                {% assign product_count = product_count | plus: 1 %}
+                <div class="related-product-card">
+                  <a href="{{ related_product.url }}">
+                    <div class="related-product-image">
+                      {% if related_product.featured_image %}
+                        <img src="{{ related_product.featured_image | img_url: '300x300', crop: 'center' }}" alt="{{ related_product.featured_image.alt | escape }}">
+                      {% else %}
+                        <div class="placeholder-image">{{ related_product.title | truncate: 2 }}</div>
+                      {% endif %}
+                    </div>
+                    <h3>{{ related_product.title }}</h3>
+                    <p class="price">{{ related_product.price | money }}</p>
+                  </a>
+                </div>
+              {% endif %}
             {% endif %}
           {% endfor %}
         {% endif %}
       {% endif %}
       
       {% comment %} Trending Products {% endcomment %}
-      {% if product_count < related_limit and (product_source == 'trending' or product_source == 'mixed') %}
-        {%- assign trending_collection = collections[section.settings.trending_collection] -%}
-        
-        {% if trending_collection %}
-          {% for trending_product in trending_collection.products limit: related_limit %}
-            {% if trending_product.id != product.id and product_count < related_limit %}
-              {% assign product_count = product_count | plus: 1 %}
-              <div class="related-product-card">
-                <a href="{{ trending_product.url }}">
-                  {% if product_source == 'mixed' %}
-                    <div class="trending-badge">Trending</div>
-                  {% endif %}
-                  <div class="related-product-image">
-                    {% if trending_product.featured_image %}
-                      <img src="{{ trending_product.featured_image | img_url: '300x300', crop: 'center' }}" alt="{{ trending_product.featured_image.alt | escape }}">
-                    {% else %}
-                      <div class="placeholder-image">{{ trending_product.title | truncate: 2 }}</div>
-                    {% endif %}
+      {% if product_count < related_limit %}
+        {% if product_source == 'trending' or product_source == 'mixed' %}
+          {%- assign trending_collection = collections[section.settings.trending_collection] -%}
+          
+          {% if trending_collection %}
+            {% for trending_product in trending_collection.products limit: related_limit %}
+              {% if trending_product.id != product.id %}
+                {% if product_count < related_limit %}
+                  {% assign product_count = product_count | plus: 1 %}
+                  <div class="related-product-card">
+                    <a href="{{ trending_product.url }}">
+                      {% if product_source == 'mixed' %}
+                        <div class="trending-badge">Trending</div>
+                      {% endif %}
+                      <div class="related-product-image">
+                        {% if trending_product.featured_image %}
+                          <img src="{{ trending_product.featured_image | img_url: '300x300', crop: 'center' }}" alt="{{ trending_product.featured_image.alt | escape }}">
+                        {% else %}
+                          <div class="placeholder-image">{{ trending_product.title | truncate: 2 }}</div>
+                        {% endif %}
+                      </div>
+                      <h3>{{ trending_product.title }}</h3>
+                      <p class="price">{{ trending_product.price | money }}</p>
+                    </a>
                   </div>
-                  <h3>{{ trending_product.title }}</h3>
-                  <p class="price">{{ trending_product.price | money }}</p>
-                </a>
-              </div>
-            {% endif %}
-          {% endfor %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
         {% endif %}
       {% endif %}
       
