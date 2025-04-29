@@ -24,6 +24,18 @@
       <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-white">
         {% render 'collection-filter', collection: collection %}
       </div>
+      <!-- Add this line for the backdrop -->
+      <div class="collection-backdrop"></div>
+      
+      <!-- Add a filter toggle button for mobile -->
+      <div class="filter-toggle-container d-block d-lg-none mb-3">
+        <button class="btn btn-outline-secondary filter-toggle">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/>
+          </svg>
+          Show Filters
+        </button>
+      </div>
     {% endif %}
     <div class="col py-3">
       <div class="collection-header">
@@ -96,6 +108,48 @@
   });
 </script>
 
+<script>
+  // Check if Bootstrap JS is loaded, if not, load it
+  if (typeof bootstrap === 'undefined') {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js';
+    script.integrity = 'sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p';
+    script.crossOrigin = 'anonymous';
+    document.head.appendChild(script);
+  }
+  
+  // Initialize collection filter
+  document.addEventListener('DOMContentLoaded', function() {
+    // Mobile filter initialization
+    const filterToggle = document.querySelector('.filter-toggle');
+    const filterClose = document.querySelector('.btn-close-filters');
+    const collectionFilter = document.querySelector('.collection-filter');
+    const backdrop = document.querySelector('.collection-backdrop');
+    
+    if (filterToggle && collectionFilter && backdrop) {
+      filterToggle.addEventListener('click', function() {
+        collectionFilter.classList.add('active');
+        backdrop.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+      
+      if (filterClose) {
+        filterClose.addEventListener('click', function() {
+          collectionFilter.classList.remove('active');
+          backdrop.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      }
+      
+      backdrop.addEventListener('click', function() {
+        collectionFilter.classList.remove('active');
+        backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    }
+  });
+</script>
+
 <style>
     /* Collection Chooser Styles */
 
@@ -162,6 +216,57 @@
 
   .filter-group-display__submit .btn {
     width: 100%;
+  }
+
+  .filter-toggle-container {
+    margin-bottom: 1rem;
+  }
+
+  .filter-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    border-radius: 4px;
+  }
+
+  .filter-toggle svg {
+    margin-right: 5px;
+  }
+
+  .collection-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1040;
+  }
+
+  .collection-backdrop.active {
+    display: block;
+  }
+
+  @media (max-width: 991px) {
+    .collection-filter {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 80%;
+      height: 100%;
+      z-index: 1050;
+      background-color: white;
+      overflow-y: auto;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      padding: 20px;
+    }
+    
+    .collection-filter.active {
+      transform: translateX(0);
+    }
   }
 </style>
 
