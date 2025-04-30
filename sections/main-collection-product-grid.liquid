@@ -3,6 +3,21 @@
 {%- assign show_vendor = section.settings.show_vendor -%}
 {%- assign enable_filtering = section.settings.enable_filtering -%}
 
+{% liquid
+  case section.settings.number_of_col
+    when 2
+      assign column_desk = 'col-lg-6 col-md-6 col-sm-12'
+    when 3
+      assign column_desk = 'col-lg-4 col-md-4 col-sm-12'
+    when 4
+      assign column_desk = 'col-lg-3 col-md-3 col-sm-12'
+    when 6
+      assign column_desk = 'col-lg-2 col-md-2 col-sm-12'
+    else
+      assign column_desk = 'col-lg-4 col-md-4 col-sm-12'
+  endcase
+%}
+
 <div class="{%- if enable_filtering -%}container-fluid {%- else %} container{%- endif -%}">
   <div class="row d-flex">
     {% if enable_filtering %}
@@ -209,7 +224,41 @@
 {
   "name": "Collection template",
   "settings": [
-    
+    {
+      "type":"header",
+      "content": "Product Settings"
+    },
+    {
+      "type": "range",
+      "id": "product_per_page",
+      "label": "Products per page",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Product Card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_second_img",
+      "label": "Show second image on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable Filtering",
+      "default": true
+    }
   ]
 }
 {% endschema %}
