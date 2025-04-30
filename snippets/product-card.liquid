@@ -337,9 +337,21 @@
   
   /* Pricing */
   .product-price {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
     font-weight: 600;
+  }
+  
+  .product-price span {
+    text-align: center;
+    width: 100%;
+  }
+  
+  .card-side-content .product-price {
+    text-align: center !important;
   }
   
   .price, .price-sale {
@@ -440,6 +452,7 @@
     .product-price {
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
+      text-align: center;
     }
   }
 </style>
