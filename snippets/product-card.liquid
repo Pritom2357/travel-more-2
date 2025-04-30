@@ -14,7 +14,7 @@
               loading="lazy"
             >
 
-            {% if product.images.size > 1 %}
+            {% if product.images.size > 1 and show_slideshow != false %}
               <div class="image-slideshow h-100">
                 {% for image in product.images limit: 5 %}
                   <img
@@ -23,26 +23,28 @@
                     width="600"
                     height="250"
                     class="slide-image h-100 {% if forloop.first %}active{% endif %}"
-                    data-slide-index = "{{ forloop.index0 }}"
+                    data-slide-index="{{ forloop.index0 }}"
                     loading="lazy"
                   >
                 {% endfor %}
                 
                 <div class="slideshow-indicators">
                   {% for image in product.images limit: 5 %}
-                    <span class="indicator-dot {% if forloop.first%}active{% endif %}" data-index = "{{ forloop.index0 }}"></span>
+                    <span class="indicator-dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}"></span>
                   {% endfor %}
                 </div>
               </div>
             {% endif %}
             
             <!-- Product badges -->
-            {% if product.compare_at_price > product.price %}
-              <span class="badge-sale">Sale</span>
-            {% endif %}
-            
-            {% if product.tags contains 'new' %}
-              <span class="badge-new">New</span>
+            {% if show_badges != false %}
+              {% if product.compare_at_price > product.price %}
+                <span class="badge-sale">{{ badge_sale_text | default: 'Sale' }}</span>
+              {% endif %}
+              
+              {% if product.tags contains 'new' %}
+                <span class="badge-new">{{ badge_new_text | default: 'New' }}</span>
+              {% endif %}
             {% endif %}
           </a>
         </div>
@@ -79,8 +81,11 @@
                 </div>
               {% endif %}
             </div>
+          {% endif %}
 
-            {% if product.description %}
+          <!-- Product Description - Moved outside conditional -->
+          {% if show_description != false %}
+            {% if product.description != blank %}
               <div class="product-description text-muted">
                 {{ product.description | strip_html | truncatewords: 20 }}
               </div>
@@ -92,15 +97,17 @@
           {% endif %}
           
           <!-- Card Footer Buttons (moved inside for mobile) -->
-          <div class="d-flex d-md-none mt-3 gap-2">
-            <button class="btn btn-outline-secondary btn-sm btn-wishlist flex-grow-1" title="Add to Wishlist">
-              <i class="bi bi-heart me-1"></i> Save
-            </button>
-            
-            <button class="btn btn-outline-secondary btn-sm btn-quickview flex-grow-1" title="Quick View" data-product-url="{{ product.url }}">
-              <i class="bi bi-eye me-1"></i> Quick View
-            </button>
-          </div>
+          {% if show_buttons_mobile != false %}
+            <div class="d-flex d-md-none mt-3 gap-2">
+              <button class="btn btn-outline-secondary btn-sm btn-wishlist flex-grow-1" title="Add to Wishlist">
+                <i class="bi bi-heart me-1"></i> Save
+              </button>
+              
+              <button class="btn btn-outline-secondary btn-sm btn-quickview flex-grow-1" title="Quick View" data-product-url="{{ product.url }}">
+                <i class="bi bi-eye me-1"></i> Quick View
+              </button>
+            </div>
+          {% endif %}
         </div>
       </div>
       
@@ -122,32 +129,42 @@
           
           <!-- Call To Action -->
           <div class="mt-auto">
-            <a href="{{ product.url }}" class="btn btn-primary w-100 mb-2">View Details</a>
+            {% if show_view_details != false %}
+              <a href="{{ product.url }}" class="btn btn-primary w-100 mb-2">{{ view_details_text | default: 'View Details' }}</a>
+            {% endif %}
             
-            {% unless product.tags contains 'tour' or product.type contains 'Tour' %}
+            {% unless product.tags contains 'tour' or product.type contains 'Tour' or show_cart_button == false %}
               {% if product.available %}
-                <button class="btn btn-outline-primary add-to-cart-btn w-100" data-product-id="{{ product.id }}">
-                  Add to Cart
-                </button>
+                <form class="product-form" data-product-id="{{ product.id }}">
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" class="btn btn-outline-primary add-to-cart-btn w-100">
+                    {{ add_to_cart_text | default: 'Add to Cart' }}
+                  </button>
+                </form>
               {% else %}
-                <button class="btn btn-outline-secondary w-100" disabled>Sold Out</button>
+                <button class="btn btn-outline-secondary w-100" disabled>
+                  {{ sold_out_text | default: 'Sold Out' }}
+                </button>
               {% endif %}
             {% endunless %}
             
             <!-- Card Footer Buttons (desktop only) -->
-            <div class="d-none d-md-flex justify-content-between mt-3">
-              <button class="btn btn-outline-secondary btn-sm btn-wishlist" title="Add to Wishlist">
-                <i class="bi bi-heart"></i>
-              </button>
-              
-              <button class="btn btn-outline-secondary btn-sm btn-quickview" title="Quick View" data-product-url="{{ product.url }}">
-                <i class="bi bi-eye"></i>
-              </button>
-              
-              <button class="btn btn-outline-secondary btn-sm btn-compare" data-product-id="{{ product.id }}" title="Compare">
-                <i class="bi bi-arrow-left-right"></i>
-              </button>
-            </div>
+            {% if show_buttons_desktop != false %}
+              <div class="d-none d-md-flex justify-content-between mt-3">
+                <button class="btn btn-outline-secondary btn-sm btn-wishlist" title="Add to Wishlist">
+                  <i class="bi bi-heart"></i>
+                </button>
+                
+                <button class="btn btn-outline-secondary btn-sm btn-quickview" title="Quick View" data-product-url="{{ product.url }}">
+                  <i class="bi bi-eye"></i>
+                </button>
+                
+                <button class="btn btn-outline-secondary btn-sm btn-compare" data-product-id="{{ product.id }}" title="Compare">
+                  <i class="bi bi-arrow-left-right"></i>
+                </button>
+              </div>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -374,6 +391,35 @@
     margin-bottom: 0.5rem;
   }
   
+  /* Cart animation */
+  .add-to-cart-btn.loading {
+    position: relative;
+    color: transparent;
+  }
+  
+  .add-to-cart-btn.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1rem;
+    height: 1rem;
+    margin: -0.5rem 0 0 -0.5rem;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: button-loading-spinner 0.8s linear infinite;
+  }
+  
+  @keyframes button-loading-spinner {
+    from {
+      transform: rotate(0turn);
+    }
+    to {
+      transform: rotate(1turn);
+    }
+  }
+  
   /* Responsive adjustments */
   @media (max-width: 767.98px) {
     .product-card-horizontal .product-image-container {
@@ -397,6 +443,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function(){
+    // Mark single-image products
     document.querySelectorAll('.product-link').forEach(link => {
       const slideshow = link.querySelector('.image-slideshow');
       if (!slideshow || slideshow.querySelectorAll('.slide-image').length <= 1) {
@@ -404,7 +451,11 @@
       }
     });
     
+    // Initialize product slideshows
     initProductSlideshows();
+    
+    // Initialize add to cart buttons
+    initAddToCart();
   });
 
   function initProductSlideshows(){
@@ -424,9 +475,8 @@
         if(productLink){
           productLink.addEventListener('mouseenter', function(){
             slideshow.style.opacity = '0';
-          })
+          });
         }
-
         return;
       }
 
@@ -441,20 +491,19 @@
 
           const index = parseInt(this.dataset.index);
           activateSlide(index);
-        })
-      })
+        });
+      });
 
       productLink.addEventListener('mouseenter', function(){
         isHovering = true;
         startSlideshow();
-      })
+      });
 
       productLink.addEventListener('mouseleave', function(){
         isHovering = false;
         stopSlideshow();
-
         activateSlide(0);
-      })
+      });
 
       function activateSlide(index){
         currentIndex = index;
@@ -488,5 +537,85 @@
         }
       }
     });
+  }
+  
+  function initAddToCart() {
+    const forms = document.querySelectorAll('.product-form');
+    
+    forms.forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const submitButton = this.querySelector('button[type="submit"]');
+        const formData = new FormData(this);
+        const originalButtonText = submitButton.textContent;
+        
+        // Show loading state
+        submitButton.classList.add('loading');
+        submitButton.disabled = true;
+        
+        fetch('/cart/add.js', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Success state
+          submitButton.classList.remove('loading');
+          submitButton.textContent = 'Added to Cart';
+          submitButton.classList.remove('btn-outline-primary');
+          submitButton.classList.add('btn-success');
+          
+          // Update cart count
+          updateCartCount();
+          
+          // Reset button after delay
+          setTimeout(() => {
+            submitButton.textContent = originalButtonText;
+            submitButton.classList.remove('btn-success');
+            submitButton.classList.add('btn-outline-primary');
+            submitButton.disabled = false;
+          }, 2000);
+        })
+        .catch(error => {
+          // Error state
+          submitButton.classList.remove('loading');
+          submitButton.textContent = 'Error';
+          submitButton.classList.remove('btn-outline-primary');
+          submitButton.classList.add('btn-danger');
+          
+          console.error('Error:', error);
+          
+          // Reset button after delay
+          setTimeout(() => {
+            submitButton.textContent = originalButtonText;
+            submitButton.classList.remove('btn-danger');
+            submitButton.classList.add('btn-outline-primary');
+            submitButton.disabled = false;
+          }, 2000);
+        });
+      });
+    });
+  }
+  
+  function updateCartCount() {
+    fetch('/cart.js')
+      .then(response => response.json())
+      .then(cart => {
+        // Update all cart count elements
+        const cartCountElements = document.querySelectorAll('.cart-count');
+        if (cartCountElements.length > 0) {
+          cartCountElements.forEach(el => {
+            el.textContent = cart.item_count;
+            
+            // Add animation/highlight effect
+            el.classList.add('updated');
+            setTimeout(() => {
+              el.classList.remove('updated');
+            }, 1000);
+          });
+        }
+      })
+      .catch(error => console.error('Error fetching cart:', error));
   }
 </script>
