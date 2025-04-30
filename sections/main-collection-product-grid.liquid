@@ -24,32 +24,20 @@
       <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-white">
         {% render 'collection-filter', collection: collection %}
       </div>
-      <!-- Add mobile backdrop for filter -->
-      <div class="collection-backdrop"></div>
     {% endif %}
-    
-    <div class="{% if enable_filtering %}col-md-9 col-xl-10{% else %}col-12{% endif %} py-3">
-      <!-- Mobile filter toggle button -->
-      {% if enable_filtering %}
-        <div class="d-block d-md-none mb-3">
-          <button class="btn btn-outline-secondary filter-toggle">
-            <i class="bi bi-funnel me-2"></i> Show Filters
-          </button>
-        </div>
-      {% endif %}
-      
+    <div class="col py-3">
       <div class="collection-header">
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
-          <div class="product-counter mb-3 mb-md-0">
-            <h1 class="h2 heading mb-1">{{ collection.title | escape }}</h1>
+        <div class="d-flex justify-content-between">
+          <div class="product-counter">
+            <h3 class="heading">{{ collection.title | escape }}</h3>
             {% if collection.description != blank %}
-              <div class="collection-description text-muted">{{ collection.description }}</div>
+              <div class="collection-description">{{ collection.description }}</div>
             {% endif %}
           </div>
           <div class="sort-by--container">
-            <div class="d-flex align-items-center">
-              <label class="me-2 mb-0">Sort by:</label>
-              <select id="sort-by" class="sort-by form-select">
+            <div class="d-flex">
+              <label>Product Sort</label>
+              <select id="sort-by" class="sort-by form-control from-control-sm">
                 {% for option in collection.sort_options %}
                   <option
                     value="{{ option.value }}"
@@ -65,21 +53,18 @@
           </div>
         </div>
       </div>
-      
-      <div class="filter-heading mb-3 d-flex justify-content-between align-items-center">
-        <p class="mb-0">Total products: <span class="badge bg-secondary">{{ collection.all_products_count }}</span></p>
+      <div class="filter-heading">
+        <p>Total products: ({{ collection.all_products_count }})</p>
       </div>
-      
       <div class="collection-products my-3">
         {% paginate collection.products by product_limit -%}
-          <div class="product-list">
+          <div class="row">
             {% for product in collection.products %}
               {%- render 'product-card',
                 product: product,
-                column: 'col-12',
+                column: column_desk,
                 show_second_img: show_second_img,
-                show_vendor: show_vendor,
-                horizontal_layout: true
+                show_vendor: show_vendor
               -%}
             {% endfor %}
           </div>
@@ -94,111 +79,27 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Sort functionality
-    Shopify.queryParams = {};
-    if(location.search.length){
-      for(let keyValue, i=0, queries = location.search.substr(1).split('&'); i < queries.length; i++){
-        keyValue = queries[i].split('=');
-        if(keyValue.length > 1){
-          Shopify.queryParams[decodeURIComponent(keyValue[0])] = decodeURIComponent(keyValue[1]);
-        }
+  Shopify.queryParams = {};
+  if(location.search.length){
+    for(let keyValue, i=0, queries = location.search.substr(1).split('&'); i < queries.length; i++){
+      keyValue = queries[i].split('=');
+      if(keyValue.length > 1){
+        Shopify.queryParams[decodeURIComponent(keyValue[0])] = decodeURIComponent(keyValue[1]);
       }
     }
+  }
 
-    document.querySelector('.sort-by').addEventListener('change', function(e) {
-      let value = e.currentTarget.value;
-      Shopify.queryParams.sort_by = value;
-      location.search = new URLSearchParams(Shopify.queryParams).toString();
-    });
-    
-    // Mobile filter functionality
-    const filterToggle = document.querySelector('.filter-toggle');
-    const filterSidebar = document.querySelector('.col-auto');
-    const backdrop = document.querySelector('.collection-backdrop');
-    
-    if (filterToggle && filterSidebar && backdrop) {
-      filterToggle.addEventListener('click', function() {
-        filterSidebar.classList.add('filter-active');
-        backdrop.classList.add('active');
-        document.body.classList.add('overflow-hidden');
-      });
-      
-      backdrop.addEventListener('click', function() {
-        filterSidebar.classList.remove('filter-active');
-        backdrop.classList.remove('active');
-        document.body.classList.remove('overflow-hidden');
-      });
-    }
+  document.querySelector('.sort-by').addEventListener('change', function(e) {
+    let value = e.currentTarget.value;
+    Shopify.queryParams.sort_by = value;
+    location.search = new URLSearchParams(Shopify.queryParams).toString();
   });
 </script>
 
 <style>
-  /* Collection Styles */
-  .product-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-  
-  .filter-heading .badge {
-    font-size: 14px;
-    font-weight: normal;
-    padding: 6px 10px;
-  }
-  
-  /* Mobile filter styles */
-  .collection-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 1000;
-    display: none;
-  }
-  
-  .collection-backdrop.active {
-    display: block;
-  }
-  
-  /* Mobile filter toggle button */
-  .filter-toggle {
-    display: flex;
-    align-items: center;
-    padding: 8px 16px;
-  }
-  
-  @media (max-width: 767px) {
-    .col-auto {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 85%;
-      max-width: 320px;
-      z-index: 1100;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      overflow-y: auto;
-      box-shadow: 0 0 20px rgba(0,0,0,0.15);
-    }
-    
-    .filter-active {
-      transform: translateX(0);
-    }
-    
-    .collection-header .product-counter {
-      width: 100%;
-    }
-    
-    .collection-header .sort-by--container {
-      width: 100%;
-    }
-  }
-  
-  /* Collection Chooser Styles */
+    /* Collection Chooser Styles */
+
+  /* Dropdown Selector */
   .collection-chooser select {
     width: 100%;
     padding: 0.375rem 0.75rem;
@@ -208,6 +109,50 @@
 
   .collection-chooser label {
     font-weight: bold;
+  }
+
+  /* Radio Buttons */
+  .collection-chooser .form-check {
+    margin-bottom: 0.5rem;
+  }
+
+  .collection-chooser .form-check-input:checked ~ .form-check-label {
+    font-weight: bold;
+    color: #0d6efd; /* Bootstrap primary color */
+  }
+
+  /* Color Swatches (if using color filter) */
+  .color-swatch {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    cursor: pointer;
+    transition: transform 0.2s, border 0.2s;
+  }
+
+  .color-swatch:hover {
+    transform: scale(1.1);
+    border: 2px solid #000;
+  }
+
+  .form-check-input:checked + .color-swatch {
+    box-shadow: 0 0 0 2px #0d6efd;
+  }
+
+  /* Accordion Styles */
+  .accordion-button:not(.collapsed) {
+    color: #0d6efd;
+    background-color: #e7f1ff;
+  }
+
+  .accordion-button::after {
+    transition: transform 0.2s;
+  }
+
+  .accordion-button.collapsed::after {
+    transform: rotate(-90deg);
   }
 
   /* Apply Button Styling */
@@ -226,16 +171,25 @@
   "settings": [
     {
       "type":"header",
-      "content": "Product Settings"
+      "content": "product settings"
     },
     {
       "type": "range",
       "id": "product_per_page",
-      "label": "Products per page",
+      "label": "Product per page",
       "min": 4,
       "max": 24,
       "step": 2,
       "default": 12
+    },
+    {
+      "type": "range",
+      "id": "number_of_col",
+      "label": "Number of column on Desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3
     },
     {
       "type": "header",
