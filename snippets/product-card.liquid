@@ -1,82 +1,124 @@
 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
   <div class="card h-100 shadow-sm product-card">
-    <div class="container-for-elements">
-      <!-- Product Image -->
-      <div class="product-image-container d-flex">
-        <a href="{{ product.url }}" class="product-link">
-          <img 
-            src="{{ product.featured_image.src | img_url: 'original' }}"
-            alt="{{ product.featured_image.alt }}"
-            width="600"
-            height="250"
-            class="primary-image"
-            loading="lazy"
-          >
+    <!-- Product Image -->
+    <div class="product-image-container">
+      <a href="{{ product.url }}" class="product-link">
+        <img 
+          src="{{ product.featured_image.src | img_url: 'original' }}"
+          alt="{{ product.featured_image.alt | default: product.title }}"
+          width="600"
+          height="250"
+          class="primary-image"
+          loading="lazy"
+        >
 
-          {% if product.images.size > 1 %}
-            <div class="image-slideshow">
+        {% if product.images.size > 1 %}
+          <div class="image-slideshow">
+            {% for image in product.images limit: 5 %}
+              <img
+                src="{{ image.src | img_url: 'original' }}"
+                alt="{{ image.alt | default: product.title }}"
+                width="600"
+                height="250"
+                class="slide-image {% if forloop.first %}active{% endif %}"
+                data-slide-index = "{{ forloop.index0 }}"
+                loading="lazy"
+              >
+            {% endfor %}
+            
+            <div class="slideshow-indicators">
               {% for image in product.images limit: 5 %}
-                <img
-                  src="{{ image.src | img_url: 'original' }}"
-                  alt="{{ image.alt }}"
-                  width="600"
-                  height="250"
-                  class="slide-image {% if forloop.first %}active{% endif %}"
-                  data-slide-index = "{{ forloop.index0 }}"
-                  loading="lazy"
-                >
+                <span class="indicator-dot {% if forloop.first%}active{% endif %}" data-index = "{{ forloop.index0 }}"></span>
               {% endfor %}
-              
-              <div class="slideshow-indicators">
-                {% for image in product.images limit: 5 %}
-                  <span class="indicator-dot {% if forloop.first%}active{% endif %}" data-index = "{{ forloop.index0 }}"></span>
-                {% endfor %}
-              </div>
             </div>
-          {% endif %}
-        </a>
-      </div>
-      <div class="product-info-container">
-        <div class="product-title">
-          {{ product.title }}
-        </div>
-        {% if product.metafields.custom.destination %}
-          <div class="destination-metafield">
-            Destination: <span>{{ product.metafields.custom.destination }}</span>
           </div>
-          <div class="additional-info d-flex">
-            {% if product.metafields.custom.people_allowed %}
-              <div class="people-allowed">
-                {{ product.metafields.custom.people_allowed }} people
-              </div>
-            {% endif %}
-            {% if product.metafields.custom.days_allowed %}
-              <div class="days-allowed">
-                {{ product.metafields.custom.days_allowed }} days
-              </div>
-            {% endif %}
-          </div>
-
-          {% if product.description %}
-            <div class="product-description">
-              {{ product.description }}
-              {% comment %} this should only allow a limited chareacter for stop overflow {% endcomment %}
-            </div>
-          {% else %}
-            <div class="product-description-fallback">
-              Enter in the details to learn more...
-            </div>
-          {% endif %}
         {% endif %}
-      </div>
+        
+        <!-- Product badges -->
+        {% if product.compare_at_price > product.price %}
+          <span class="badge-sale">Sale</span>
+        {% endif %}
+        
+        {% if product.tags contains 'new' %}
+          <span class="badge-new">New</span>
+        {% endif %}
+      </a>
     </div>
     
+    <!-- Card body with product info -->
+    <div class="card-body p-3 d-flex flex-column">
+      <!-- Product Title -->
+      <h5 class="product-title mb-2">
+        <a href="{{ product.url }}" class="text-decoration-none text-dark">{{ product.title }}</a>
+      </h5>
+      
+      <!-- Product Price -->
+      <div class="product-price mb-2">
+        {% if product.compare_at_price > product.price %}
+          <span class="price-sale">{{ product.price | money }}</span>
+          <span class="price-compare text-decoration-line-through">{{ product.compare_at_price | money }}</span>
+        {% else %}
+          <span class="price">{{ product.price | money }}</span>
+        {% endif %}
+      </div>
+      
+      <!-- Travel/Tour Specific Information -->
+      {% if product.metafields.custom.destination %}
+        <div class="destination-metafield mb-2">
+          <i class="bi bi-geo-alt-fill text-primary me-1"></i>
+          <span class="destination-label">Destination:</span> 
+          <span class="destination-value">{{ product.metafields.custom.destination }}</span>
+        </div>
+        
+        <div class="additional-info d-flex mb-3">
+          {% if product.metafields.custom.people_allowed %}
+            <div class="people-allowed me-3">
+              <i class="bi bi-people-fill me-1"></i>
+              <span>{{ product.metafields.custom.people_allowed }} people</span>
+            </div>
+          {% endif %}
+          
+          {% if product.metafields.custom.days_allowed %}
+            <div class="days-allowed">
+              <i class="bi bi-calendar-week me-1"></i>
+              <span>{{ product.metafields.custom.days_allowed }} days</span>
+            </div>
+          {% endif %}
+        </div>
 
-    <!-- Card Body -->
+        {% if product.description %}
+          <div class="product-description text-muted">
+            {{ product.description | strip_html | truncatewords: 15 }}
+          </div>
+        {% else %}
+          <div class="product-description-fallback text-muted fst-italic">
+            Enter in the details to learn more...
+          </div>
+        {% endif %}
+      {% endif %}
+      
+      <!-- Call To Action -->
+      <div class="mt-auto pt-3">
+        <a href="{{ product.url }}" class="btn btn-primary btn-sm w-100">View Details</a>
+      </div>
+    </div>
 
     <!-- Card Footer -->
+    <div class="card-footer bg-white border-top-0 d-flex justify-content-between p-3">
+      <button class="btn btn-outline-secondary btn-sm btn-wishlist" title="Add to Wishlist">
+        <i class="bi bi-heart"></i>
+      </button>
+      
+      <button class="btn btn-outline-secondary btn-sm btn-quickview" title="Quick View" data-product-url="{{ product.url }}">
+        <i class="bi bi-eye"></i>
+      </button>
+      
+      <button class="btn btn-outline-secondary btn-sm btn-compare" data-product-id="{{ product.id }}" title="Compare">
+        <i class="bi bi-arrow-left-right"></i>
+      </button>
+    </div>
 
-    <!-- Add this at the bottom of your product card content -->
+    <!-- Tour card details if needed -->
     {% if product.type contains 'Tour' or product.tags contains 'tour' or product.tags contains 'destination:' %}
       {% include 'extract-tour-data' with product %}
       {% include 'tour-card-details' %}
@@ -85,18 +127,23 @@
 </div>
 
 <style>
-
-  .container-for-elements{
-    display: flex;
-    width: 100%;
+  /* Card structure */
+  .product-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
   }
 
+  /* Image container and slideshow */
   .product-image-container {
     position: relative;
     overflow: hidden;
     height: 250px; 
     width: 100%;
-    padding: 4px;
   }
 
   .product-image-container .product-link {
@@ -130,7 +177,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 250px; /* Fixed height of 250px */
+    height: 250px;
     opacity: 0;
     z-index: 2;
     transition: opacity 0.3s ease;
@@ -146,10 +193,6 @@
 
   .product-link .primary-image {
     opacity: 1;
-  }
-  
-  .product-link:hover .primary-image {
-    opacity: 0;
   }
   
   .product-link.single-image:hover .primary-image {
@@ -190,6 +233,106 @@
     background-color: #fff;
     transform: scale(1.2);
   }
+  
+  /* Product badges */
+  .badge-new, .badge-sale {
+    position: absolute;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    font-weight: 600;
+    z-index: 5;
+    border-radius: 4px;
+  }
+  
+  .badge-new {
+    left: 10px;
+    top: 10px;
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .badge-sale {
+    right: 10px;
+    top: 10px;
+    background-color: #dc3545;
+    color: white;
+  }
+
+  /* Product Info Styles */
+  .product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    height: 2.8rem;
+  }
+  
+  .product-title a:hover {
+    color: #0056b3 !important;
+  }
+  
+  /* Pricing */
+  .product-price {
+    font-weight: 600;
+  }
+  
+  .price, .price-sale {
+    font-size: 1.1rem;
+    color: #212529;
+  }
+  
+  .price-sale {
+    color: #dc3545;
+  }
+  
+  .price-compare {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-left: 0.5rem;
+  }
+  
+  /* Travel & Tour Info */
+  .destination-metafield {
+    font-size: 0.9rem;
+    color: #495057;
+  }
+  
+  .destination-label {
+    font-weight: 600;
+  }
+  
+  .additional-info {
+    font-size: 0.85rem;
+    color: #6c757d;
+  }
+  
+  .people-allowed, .days-allowed {
+    display: flex;
+    align-items: center;
+  }
+  
+  .product-description, .product-description-fallback {
+    font-size: 0.85rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    height: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Card Footer */
+  .card-footer {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+  
+  .btn-wishlist, .btn-quickview, .btn-compare
 </style>
 
 <script>
