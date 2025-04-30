@@ -44,6 +44,29 @@
           <div class="destination-metafield">
             Destination: <span>{{ product.metafields.custom.destination }}</span>
           </div>
+          <div class="additional-info d-flex">
+            {% if product.metafields.custom.people_allowed %}
+              <div class="people-allowed">
+                {{ product.metafields.custom.people_allowed }} people
+              </div>
+            {% endif %}
+            {% if product.metafields.custom.days_allowed %}
+              <div class="days-allowed">
+                {{ product.metafields.custom.days_allowed }} days
+              </div>
+            {% endif %}
+          </div>
+
+          {% if product.description %}
+            <div class="product-description">
+              {{ product.description }}
+              {% comment %} this should only allow a limited chareacter for stop overflow {% endcomment %}
+            </div>
+          {% else %}
+            <div class="product-description-fallback">
+              Enter in the details to learn more...
+            </div>
+          {% endif %}
         {% endif %}
       </div>
     </div>
@@ -73,6 +96,7 @@
     overflow: hidden;
     height: 250px; 
     width: 100%;
+    padding: 4px;
   }
 
   .product-image-container .product-link {
