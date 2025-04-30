@@ -97,7 +97,7 @@
           {% endif %}
           
           <!-- Card Footer Buttons (moved inside for mobile) -->
-          {% if show_buttons_mobile != false %}
+          {% comment %} {% if show_buttons_mobile != false %}
             <div class="d-flex d-md-none mt-3 gap-2">
               <button class="btn btn-outline-secondary btn-sm btn-wishlist flex-grow-1" title="Add to Wishlist">
                 <i class="bi bi-heart me-1"></i> Save
@@ -107,7 +107,7 @@
                 <i class="bi bi-eye me-1"></i> Quick View
               </button>
             </div>
-          {% endif %}
+          {% endif %} {% endcomment %}
         </div>
       </div>
       
@@ -203,6 +203,7 @@
     overflow: hidden;
     height: 250px; 
     width: 100%;
+    padding: 4px;
   }
 
   .product-image-container .product-link {
