@@ -2,21 +2,45 @@
   <div class="card h-100 shadow-sm product-card">
     <!-- Product Image -->
     <div class="product-image-container">
-      <img 
-        src="{{ product.featured_image.src | img_url: 'original' }}"
-        alt="{{ product.featured_image.alt }}"
-        width="600"
-        height="250"
-      >
+      <a href="{{ product.url }}" class="product-link">
+        <img 
+          src="{{ product.featured_image.src | img_url: 'original' }}"
+          alt="{{ product.featured_image.alt }}"
+          width="600"
+          height="250"
+          class="primary-image"
+          loading="lazy"
+        >
+
+        {% if product.images.size > 1 %}
+          <div class="image-slideshow">
+            {% for image in product.images limit: 5 %}
+              <img
+                src="{{ image.src | img_url: 'original' }}"
+                alt="{{ image.alt }}"
+                width="600"
+                height="250"
+                class="slide-image {% if forloop.first %}active{% endif %}"
+                data-slide-index = "{{ forloop.index0 }}"
+                loading="lazy"
+              >
+            {% endfor %}
+            
+            <div class="slideshow-indicators">
+              {% for image in product.images limit: 5 %}
+                <span class="indicator-dot {% if forloop.first%}active{% endif %}" data-index = "{{ forloop.index0 }}"></span>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      </a>
+      
     </div>
     
 
     <!-- Card Body -->
 
     <!-- Card Footer -->
-    <div>
-      I am Pritom
-    </div>
 
     <!-- Add this at the bottom of your product card content -->
     {% if product.type contains 'Tour' or product.tags contains 'tour' or product.tags contains 'destination:' %}
@@ -25,3 +49,173 @@
     {% endif %}
   </div>
 </div>
+
+<style>
+  .product-image-container {
+    position: relative;
+    overflow: hidden;
+    height: 0;
+    padding-bottom: 100%; /* Creates a perfect square for images */
+  }
+
+  .product-image-container .product-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .product-image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease;
+  }
+
+  /* Primary Image */
+  .primary-image {
+    z-index: 1;
+    opacity: 1;
+  }
+
+  /* Slideshow Styles */
+  .image-slideshow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+  }
+
+  .product-link:hover .image-slideshow {
+    opacity: 1;
+  }
+
+  .product-link:hover .primary-image {
+    opacity: 0;
+  }
+
+  .slide-image {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .slide-image.active {
+    opacity: 1;
+  }
+
+  /* Slideshow Indicators */
+  .slideshow-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    z-index: 3;
+  }
+
+  .indicator-dot {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .indicator-dot.active {
+    background-color: #fff;
+    transform: scale(1.2);
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    initProductSlideshows();
+  });
+
+  function initProductSlideshows(){
+    const productCards = card.querySelector('.product-card');
+
+    productCards.forEach(card => {
+      const slideshow = card.querySelector('.image-slideshow');
+      if(!slideshow){
+        return;
+      }
+
+      const slides = slideshow.querySelector('.slide-image');
+      const dots = slideshow.querySelector('.indicator-dot');
+      const productLink = slideshow.querySelector('.product-link');
+
+      if(slides.length <= 1) return;
+
+      let currentIndex = 0;
+      let slideshowInterval;
+      let isHovering = false;
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+
+          const index = parseInt(this.dataset.index);
+          activateSlide(index);
+        })
+      })
+
+      productLink.addEventListener('mouseenter', function(){
+        isHovering = true;
+        startSlideshow();
+      })
+
+      productLink.addEventListener('mouseleave', function(){
+        isHovering = false;
+        stopSlideshow();
+
+        activateSlide(0);
+      })
+
+      function activateSlide(index){
+        currentIndex = index;
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[currentIndex].classList.add('active');
+
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[currentIndex].classList.add('active');
+      }
+
+      function startSlideshow(){
+        if(slideshowInterval){
+          clearInterval(slideshowInterval);
+        }
+
+        slideshowInterval = setInterval(()=>{
+          if(!isHovering){
+            clearInterval(slideshowInterval);
+            return;
+          }
+
+          currentIndex = (currentIndex+1) % slides.length;
+          activateSlide(currentIndex);
+        }, 1000);
+      }
+
+      function stopSlideshow(){
+        if(slideshowInterval){
+          clearInterval(slideshowInterval);
+          slideshowInterval = null;
+        }
+      }
+    });
+  }
+</script>
