@@ -1,10 +1,10 @@
 <div class="product-price mb-2">
   {% if product.compare_at_price > product.price %}
     {% if product.price_varies %}
-      <span>From {{ product.price_min | money }}</span> - <span>{{ product.price_max | money }}</span>
       <div class="var-price mt-4">
         <span>Price: </span> <span id="variant-price-individual">{{ product.price_min | money }}</span>
       </div>
+      {% comment %} need a compare at price {% endcomment %}
     {% else %}
       <span class="text-success fw-bold">{{ product.price | money }}</span>
       <span class="text-muted text-decoration-line-through ms-2">{{ product.compare_at_price | money }}</span>
@@ -20,3 +20,4 @@
     {% endif %}
   {% endif %}
 </div>
+ 
