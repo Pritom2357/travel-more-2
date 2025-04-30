@@ -1,40 +1,51 @@
 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
   <div class="card h-100 shadow-sm product-card">
-    <!-- Product Image -->
-    <div class="product-image-container">
-      <a href="{{ product.url }}" class="product-link">
-        <img 
-          src="{{ product.featured_image.src | img_url: 'original' }}"
-          alt="{{ product.featured_image.alt }}"
-          width="600"
-          height="250"
-          class="primary-image"
-          loading="lazy"
-        >
+    <div class="container-for-elements">
+      <!-- Product Image -->
+      <div class="product-image-container d-flex">
+        <a href="{{ product.url }}" class="product-link">
+          <img 
+            src="{{ product.featured_image.src | img_url: 'original' }}"
+            alt="{{ product.featured_image.alt }}"
+            width="600"
+            height="250"
+            class="primary-image"
+            loading="lazy"
+          >
 
-        {% if product.images.size > 1 %}
-          <div class="image-slideshow">
-            {% for image in product.images limit: 5 %}
-              <img
-                src="{{ image.src | img_url: 'original' }}"
-                alt="{{ image.alt }}"
-                width="600"
-                height="250"
-                class="slide-image {% if forloop.first %}active{% endif %}"
-                data-slide-index = "{{ forloop.index0 }}"
-                loading="lazy"
-              >
-            {% endfor %}
-            
-            <div class="slideshow-indicators">
+          {% if product.images.size > 1 %}
+            <div class="image-slideshow">
               {% for image in product.images limit: 5 %}
-                <span class="indicator-dot {% if forloop.first%}active{% endif %}" data-index = "{{ forloop.index0 }}"></span>
+                <img
+                  src="{{ image.src | img_url: 'original' }}"
+                  alt="{{ image.alt }}"
+                  width="600"
+                  height="250"
+                  class="slide-image {% if forloop.first %}active{% endif %}"
+                  data-slide-index = "{{ forloop.index0 }}"
+                  loading="lazy"
+                >
               {% endfor %}
+              
+              <div class="slideshow-indicators">
+                {% for image in product.images limit: 5 %}
+                  <span class="indicator-dot {% if forloop.first%}active{% endif %}" data-index = "{{ forloop.index0 }}"></span>
+                {% endfor %}
+              </div>
             </div>
+          {% endif %}
+        </a>
+      </div>
+      <div class="product-info-container">
+        <div class="product-title">
+          {{ product.title }}
+        </div>
+        {% if product.metafields.custom.destination %}
+          <div class="destination-metafield">
+            Destination: <span>{{ product.metafields.custom.destination }}</span>
           </div>
         {% endif %}
-      </a>
-      
+      </div>
     </div>
     
 
