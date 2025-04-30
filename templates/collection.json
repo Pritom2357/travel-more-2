@@ -22,8 +22,7 @@
       "type": "main-collection-product-grid",
       "settings": {
         "product_per_page": 12,
-        "number_of_col": 2,
-        "show_second_img": false,
+        "show_second_img": true,
         "show_vendor": false,
         "enable_filtering": true
       }
