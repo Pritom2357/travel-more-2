@@ -1,6 +1,14 @@
 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
   <div class="card h-100 shadow-sm product-card">
     <!-- Product Image -->
+    <div class="product-image-container">
+      <img 
+        src="{{ product.featured_image.src | img_url: 'original' }}"
+        alt="{{ product.featured_image.alt }}"
+        width="400px"
+        height="600px"
+      >
+    </div>
     
 
     <!-- Card Body -->
