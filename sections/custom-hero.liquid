@@ -423,8 +423,9 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, {{section.settings.bg_overlay}});
-    z-index: 1; /* Increased from 0 to 1 */
+    opacity: {{ section.settings.bg_overlay }};
+    background-color: rgba(0, 0, 0, 1);
+    z-index: 1; 
     pointer-events: none; 
   }
   .hero-section .container {
