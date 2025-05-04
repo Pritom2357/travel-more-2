@@ -283,7 +283,7 @@
     border-color: transparent;
     color: {{ section.settings.search_btn_text_color }} !important;
     transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-    font-size: {{section.settings.menu_text_size}}px;
+    font-size: {{section.settings.icon_font_size}}px;
   }
   .hero-section .nav-settings .btn-outline-success:hover {
     {% comment %} background-color: {{ section.settings.search_btn_hover_color }} !important; {% endcomment %}
@@ -846,6 +846,15 @@
       "id": "enable_search_bar",
       "label": "Enable Search Bar",
       "default": true
+    },
+    {
+      "type": "range",
+      "id": "icon_font_size",
+      "label": "Icon Font Size",
+      "default": 18,
+      "min": 14,
+      "max": 30,
+      "step": 1
     },
     {
       "type": "color",
