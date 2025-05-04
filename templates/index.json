@@ -64,7 +64,7 @@
         "dropdown_hover_text_color": "#333333",
         "submenu_hover_text_color": "#cccccc",
         "dropdown_hover_effect": "underline",
-        "enable_search_bar": false,
+        "enable_search_bar": true,
         "search_btn_text_color": "#000000",
         "search_btn_hover_color": "rgba(0,0,0,0)",
         "search_btn_text_hover_color": "#fe4d4d",
