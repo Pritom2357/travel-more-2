@@ -391,6 +391,7 @@
   }
   .hero-subtitle {
     font-size: {{section.settings.sub_title_size}}rem;
+    font-weight: {{ section.settings.sub_title_weight }};h
     margin: 1rem 0 2rem 0;
     color: {{section.settings.sub_title_color}};
   }
@@ -1269,6 +1270,15 @@
       "min": 1,
       "max": 6,
       "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "sub_title_weight",
+      "label": "Subheading Weight",
+      "default": 400,
+      "min": 100,
+      "max": 900,
+      "step": 100
     },
     {
       "type": "color",
