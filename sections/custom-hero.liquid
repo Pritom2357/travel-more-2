@@ -284,6 +284,7 @@
     color: {{ section.settings.search_btn_text_color }} !important;
     transition: background-color 0.3s, border-color 0.3s, color 0.3s;
     font-size: {{section.settings.icon_font_size}}px;
+    font-weight: {{ section.settings.icon_font_weight }};
   }
   .hero-section .nav-settings .btn-outline-success:hover {
     {% comment %} background-color: {{ section.settings.search_btn_hover_color }} !important; {% endcomment %}
@@ -855,6 +856,15 @@
       "min": 14,
       "max": 30,
       "step": 1
+    },
+    {
+      "type": "range",
+      "id": "icon_font_weight",
+      "label": "Icon Font Weight",
+      "default": 400,
+      "min": 100,
+      "max": 900,
+      "step": 100
     },
     {
       "type": "color",
