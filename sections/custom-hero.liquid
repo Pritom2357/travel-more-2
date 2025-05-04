@@ -106,13 +106,13 @@
             <form class="d-flex">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success ml-2" type="submit">
-                <i class="bi bi-search btn-outline-success"></i>
+                <i class="bi bi-search-heart-fill btn-outline-success"></i>
               </button>
               <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
-                <i class="bi bi-person"></i>
+                <i class="bi bi-person-fill"></i>
               </a>
               <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2 cart-link-container" aria-label="Cart">
-                <i class="bi bi-cart"></i>
+                <i class="bi bi-cart-fill"></i>
                 <span class="cart-count-badge">{{ cart.item_count }}</span>
               </a>
             </form>
@@ -284,7 +284,6 @@
     color: {{ section.settings.search_btn_text_color }} !important;
     transition: background-color 0.3s, border-color 0.3s, color 0.3s;
     font-size: {{section.settings.icon_font_size}}px;
-    font-weight: {{ section.settings.icon_font_weight }};
   }
   .hero-section .nav-settings .btn-outline-success:hover {
     {% comment %} background-color: {{ section.settings.search_btn_hover_color }} !important; {% endcomment %}
@@ -856,15 +855,6 @@
       "min": 14,
       "max": 30,
       "step": 1
-    },
-    {
-      "type": "range",
-      "id": "icon_font_weight",
-      "label": "Icon Font Weight",
-      "default": 400,
-      "min": 100,
-      "max": 900,
-      "step": 100
     },
     {
       "type": "color",
