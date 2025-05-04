@@ -412,6 +412,7 @@
     min-height: 100vh;
     background: url('{{ bg_img_url }}') center center no-repeat;
     background-size: cover;
+    isolation: isolate; 
   }
   .hero-section .row.align-items-center {
     min-height: 100vh;
@@ -423,11 +424,12 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, {{section.settings.bg_overlay}});
-    z-index: 0; 
+    z-index: 1; /* Increased from 0 to 1 */
+    pointer-events: none; 
   }
   .hero-section .container {
     position: relative;
-    z-index: 2;
+    z-index: 2; /* Make sure content is above the overlay */
   }
   .hero-title {
     font-family: "{{ section.settings.title_font }}", sans-serif;
@@ -1041,16 +1043,7 @@
       transform: translate3d(0, 0, 0);
     }
   }
-  .highlight-text {
-    position: relative;
-    display: inline-block;
-    color: #fff;
-    padding: 0 5px;
-    background: linear-gradient(45deg, {{ section.settings.btn1_color }}, {{ section.settings.btn1_hover_color }});
-    border-radius: 4px;
-    animation: pulse 3s infinite;
     
-    /* Reset text effects inside highlighted text if needed */
     {% if section.settings.title_effect == 'outline' %}
       -webkit-text-stroke: 0;
       text-stroke: 0;
