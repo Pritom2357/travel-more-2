@@ -307,6 +307,54 @@
       });
     }
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+  // Apply enhanced text outline effect for better browser support
+  function enhanceTextOutline() {
+    if ('{{section.settings.title_effect}}' === 'outline') {
+      const titleElement = document.querySelector('.hero-title');
+      if (titleElement) {
+        // Check if browser supports text-stroke
+        if (!CSS.supports('-webkit-text-stroke', '1px black')) {
+          applyTextStrokePolyfill(titleElement, 
+            '{{section.settings.title_effect_width}}',
+            '{{section.settings.title_effect_color}}');
+        }
+      }
+    }
+    
+    if ('{{section.settings.subtitle_effect}}' === 'outline') {
+      const subtitleElement = document.querySelector('.hero-subtitle');
+      if (subtitleElement) {
+        // Check if browser supports text-stroke
+        if (!CSS.supports('-webkit-text-stroke', '1px black')) {
+          applyTextStrokePolyfill(subtitleElement,
+            '{{section.settings.subtitle_effect_width}}',
+            '{{section.settings.subtitle_effect_color}}');
+        }
+      }
+    }
+  }
+  
+  function applyTextStrokePolyfill(element, width, color) {
+    // Apply a shadow-based fallback for browsers without text-stroke support
+    const shadowWidth = parseInt(width);
+    const shadowColor = color;
+    
+    // Create multiple text shadows to simulate stroke
+    const shadows = [];
+    for (let i = -shadowWidth; i <= shadowWidth; i++) {
+      for (let j = -shadowWidth; j <= shadowWidth; j++) {
+        if (i === 0 && j === 0) continue;
+        shadows.push(`${i}px ${j}px 0 ${shadowColor}`);
+      }
+    }
+    
+    element.style.textShadow = shadows.join(', ');
+  }
+  
+  enhanceTextOutline();
+});
 </script>
 
 <style>
@@ -383,17 +431,44 @@
   }
   .hero-title {
     font-family: "{{ section.settings.title_font }}", sans-serif;
-    font-size: {{section.settings.title_size}}rem;
+    font-size: calc({{section.settings.title_size}}rem + 0.5vw);
     line-height: 1.2;
-    font-weight: 700;
+    font-weight: 800;
     color: {{section.settings.title_color}};
-    z-index: 1;
+    margin-bottom: 1.5rem;
+    position: relative;
+    letter-spacing: -0.5px;
+    
+    /* Apply the selected text effect */
+    {% case section.settings.title_effect %}
+      {% when 'outline' %}
+        -webkit-text-stroke: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_color }};
+        text-stroke: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_color }};
+      {% when 'shadow' %}
+        text-shadow: 0 0 {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_color }};
+      {% else %}
+        text-shadow: none;
+    {% endcase %}
   }
   .hero-subtitle {
-    font-size: {{section.settings.sub_title_size}}rem;
-    font-weight: {{ section.settings.sub_title_weight }};h
-    margin: 1rem 0 2rem 0;
+    font-size: calc({{section.settings.sub_title_size}}rem + 0.2vw);
+    font-weight: {{ section.settings.sub_title_weight }};
+    margin: 0 0 2.5rem 0;
     color: {{section.settings.sub_title_color}};
+    max-width: 90%;
+    line-height: 1.6;
+    position: relative;
+    
+    /* Apply the selected text effect */
+    {% case section.settings.subtitle_effect %}
+      {% when 'outline' %}
+        -webkit-text-stroke: {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_color }};
+        text-stroke: {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_color }};
+      {% when 'shadow' %}
+        text-shadow: 0 0 {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_color }};
+      {% else %}
+        text-shadow: none;
+    {% endcase %}
   }
   .booking-form {
     background-color: rgba({{ form_red }}, {{ form_green }}, {{ form_blue }}, {{ section.settings.form_bg_opacity }}) !important;
@@ -966,6 +1041,36 @@
       transform: translate3d(0, 0, 0);
     }
   }
+  .highlight-text {
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    padding: 0 5px;
+    background: linear-gradient(45deg, {{ section.settings.btn1_color }}, {{ section.settings.btn1_hover_color }});
+    border-radius: 4px;
+    animation: pulse 3s infinite;
+    
+    /* Reset text effects inside highlighted text if needed */
+    {% if section.settings.title_effect == 'outline' %}
+      -webkit-text-stroke: 0;
+      text-stroke: 0;
+    {% elsif section.settings.title_effect == 'shadow' %}
+      text-shadow: none;
+    {% endif %}
+  }
+
+  /* Additional CSS for better text outline effect */
+  @supports (-webkit-text-stroke: 1px black) {
+    .hero-title.text-outline {
+      -webkit-text-stroke: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_color }};
+      paint-order: stroke fill;
+    }
+    
+    .hero-subtitle.text-outline {
+      -webkit-text-stroke: {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_color }};
+      paint-order: stroke fill;
+    }
+  }
 </style>
 
 {% schema %}
@@ -1285,6 +1390,69 @@
       "id": "sub_title_color",
       "label": "Subheading Color",
       "default": "#fff"
+    },
+
+    {
+      "type": "header",
+      "content": "Heading Text Effects"
+    },
+    {
+      "type": "select",
+      "id": "title_effect",
+      "label": "Heading Text Effect",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "outline", "label": "Border Outline" },
+        { "value": "shadow", "label": "Text Shadow" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "title_effect_color",
+      "label": "Heading Effect Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "title_effect_width",
+      "label": "Effect Thickness",
+      "default": 2,
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "info": "For outline width or shadow size"
+    },
+    {
+      "type": "header",
+      "content": "Subtitle Text Effects"
+    },
+    {
+      "type": "select",
+      "id": "subtitle_effect",
+      "label": "Subtitle Text Effect",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "outline", "label": "Border Outline" },
+        { "value": "shadow", "label": "Text Shadow" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_effect_color",
+      "label": "Subtitle Effect Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_effect_width",
+      "label": "Effect Thickness",
+      "default": 1,
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "info": "For outline width or shadow size"
     },
 
     {
