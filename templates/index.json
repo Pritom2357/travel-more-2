@@ -41,7 +41,7 @@
       "type": "custom-hero",
       "settings": {
         "bg_img": "shopify://shop_images/dest6.jpg",
-        "bg_overlay": 0.4,
+        "bg_overlay": 0.6,
         "is_header": true,
         "bg_header": "#ccfdf5",
         "header_bg_opacity": 0.6,
