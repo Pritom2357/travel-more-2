@@ -273,13 +273,11 @@
   });
 
   document.addEventListener('DOMContentLoaded', function() {
-    // Initialize tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl)
     });
     
-    // Parallax effect on mouse movement
     const heroContent = document.querySelector('.hero-content-wrapper');
     if (heroContent && window.innerWidth > 992) {
       document.addEventListener('mousemove', function(e) {
@@ -299,7 +297,6 @@
       });
     }
     
-    // Word typing animation (optional)
     const heroTitle = document.querySelector('.hero-title');
     if (heroTitle) {
       heroTitle.addEventListener('mouseover', function() {
