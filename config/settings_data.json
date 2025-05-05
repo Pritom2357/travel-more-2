@@ -152,7 +152,7 @@
           "store_name_text_size": 14,
           "store_name_color": "#ffffff",
           "store_name_hover_color": "#1ed4be",
-          "store_name_transform": "uppercase",
+          "store_name_transform": "lowercase",
           "store_name_font": "inherit",
           "menu": "main-menu",
           "menu_text_size": 23,
@@ -182,7 +182,7 @@
           "popular_destinations": "Paris, Tokyo, New York, Bali, London, Rome",
           "dropdown_bg_color": "#242833",
           "dropdown_hover_bg_color": "#f8f9fa",
-          "dropdown_hover_text_color": "#333"
+          "dropdown_hover_text_color": "#333333"
         }
       },
       "footer": {
