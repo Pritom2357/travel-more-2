@@ -152,11 +152,11 @@
           "store_name_text_size": 14,
           "store_name_color": "#ffffff",
           "store_name_hover_color": "#1ed4be",
-          "store_name_transform": "uppercase",
+          "store_name_transform": "capitalize",
           "store_name_font": "inherit",
           "menu": "main-menu",
           "menu_text_size": 23,
-          "menu_hover_effect": "underline",
+          "menu_hover_effect": "glow",
           "underline_thickness": 1,
           "glow_intensity": 14,
           "grow_scale": 1.2,
@@ -182,7 +182,7 @@
           "popular_destinations": "Paris, Tokyo, New York, Bali, London, Rome",
           "dropdown_bg_color": "#242833",
           "dropdown_hover_bg_color": "#f8f9fa",
-          "dropdown_hover_text_color": "#333"
+          "dropdown_hover_text_color": "#333333"
         }
       },
       "footer": {
