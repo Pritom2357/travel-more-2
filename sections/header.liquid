@@ -179,6 +179,9 @@
       {% endcapture %}
 
       <div class="d-lg-none order-1">{{ toggle_button }}</div>
+      <div class="d-lg-none d-flex mobile-icons ms-auto order-2">
+        {{ icons_html }}
+      </div>
 
       {% case section.settings.header_layout %}
         {% when 'logo_menu_search' %}
@@ -1159,6 +1162,22 @@
     .dropdown-submenu > .dropdown-item.dropdown-toggle[aria-expanded="true"]::after {
       transform: rotate(180deg);
     }
+  }
+
+  .mobile-icons {
+    position: absolute;
+    top: 15px;
+    right: 70px;
+    z-index: 1031;
+  }
+
+  .mobile-icons .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+  }
+
+  .mobile-icons .locale-selectors {
+    display: none !important;
   }
 </style>
 
