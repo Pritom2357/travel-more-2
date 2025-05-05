@@ -1226,6 +1226,21 @@
     background-color: rgba(255,255,255,0.2);
     transform: translateY(-2px);
   }
+
+  @media (max-width: 991px) {
+    .navbar-nav .dropdown-menu {
+      display: none !important;
+      margin: 0;
+      padding: 0 0 0 15px;
+      border: none;
+      box-shadow: none;
+      transition: none;
+    }
+    
+    .navbar-nav .dropdown-menu.show {
+      display: block !important;
+    }
+  }
 </style>
 
 {% if section.settings.is_sticky_header %}
