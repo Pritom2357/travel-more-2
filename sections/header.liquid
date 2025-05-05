@@ -1449,6 +1449,44 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+  const dropdownToggles = document.querySelectorAll('.dropdown-toggle, .dropdown-submenu > .dropdown-item.dropdown-toggle');
+
+  dropdownToggles.forEach(toggle => {
+    toggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const dropdownMenu = this.nextElementSibling;
+
+      if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+        dropdownMenu.classList.toggle('show');
+        const expanded = dropdownMenu.classList.contains('show');
+        this.setAttribute('aria-expanded', expanded);
+
+        const parent = this.closest('.dropdown-menu, .navbar-nav');
+        const siblings = parent.querySelectorAll(':scope > li > .dropdown-menu');
+        siblings.forEach(menu => {
+          if (menu !== dropdownMenu && menu.classList.contains('show')) {
+            menu.classList.remove('show');
+            const siblingToggle = menu.previousElementSibling;
+            if (siblingToggle) siblingToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  });
+
+  // Close all dropdowns when clicking outside
+  document.addEventListener('click', function () {
+    document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+      menu.classList.remove('show');
+      const toggle = menu.previousElementSibling;
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+});
+
 document.addEventListener('DOMContentLoaded', function() {
   const languageSwitcherItems = document.querySelectorAll('[data-shopify-locale-switcher]');
   languageSwitcherItems.forEach(item => {
