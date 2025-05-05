@@ -110,7 +110,7 @@
       {% endcapture %}
 
       {% capture search_html %}
-        <div class="d-none d-lg-block nav-utilities d-none {% if section.settings.enable_search_bar == false %}nav-utilities-empty{% endif %}">
+        <div class="d-none d-lg-flex nav-utilities d-none {% if section.settings.enable_search_bar == false %}nav-utilities-empty{% endif %}">
           {% if section.settings.enable_search_bar %}
             <form class="d-flex search-form">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
