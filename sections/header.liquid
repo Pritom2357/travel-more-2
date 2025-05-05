@@ -46,14 +46,20 @@
       <div class="d-lg-none ms-auto mobile-logo-container">{{ logo_html }}</div>
 
       {% capture icons_html %}
-        <div class="d-flex icons-container">
-          <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
-            <i class="bi bi-person-fill"></i>
-          </a>
-          <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2 cart-link-container" aria-label="Cart">
-            <i class="bi bi-cart-fill"></i>
-            <span class="cart-count-badge">{{ cart.item_count }}</span>
-          </a>
+        <div class="d-flex icons-container align-items-center">
+          {% if section.settings.enable_locale_selector %}
+            {{ locale_selector_html }}
+          {% endif %}
+          
+          <div class="ms-2 ms-lg-3">
+            <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
+              <i class="bi bi-person-fill"></i>
+            </a>
+            <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2 cart-link-container" aria-label="Cart">
+              <i class="bi bi-cart-fill"></i>
+              <span class="cart-count-badge">{{ cart.item_count }}</span>
+            </a>
+          </div>
         </div>
       {% endcapture %}
 
@@ -126,6 +132,52 @@
         </div>
       {% endcapture %}
 
+      {% capture locale_selector_html %}
+        <div class="locale-selectors d-flex align-items-center">
+          {%- if shop.published_locales.size > 1 -%}
+            <div class="language-selector dropdown">
+              <button class="btn btn-sm dropdown-toggle language-selector-btn" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-globe-americas me-1"></i>
+                {{ localization.language.endonym_name }}
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                {%- for locale in shop.published_locales -%}
+                  <li>
+                    <a class="dropdown-item{% if locale.iso_code == localization.language.iso_code %} active{% endif %}" 
+                       href="#"
+                       data-locale-code="{{ locale.iso_code }}"
+                       data-shopify-locale-switcher>
+                      {{ locale.endonym_name }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+      
+          {%- if shop.available_countries.size > 1 -%}
+            <div class="country-selector dropdown ms-2">
+              <button class="btn btn-sm dropdown-toggle country-selector-btn" type="button" id="countryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-geo-alt me-1"></i>
+                {{ localization.country.name }}
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="countryDropdown">
+                {%- for country in shop.available_countries -%}
+                  <li>
+                    <a class="dropdown-item{% if country.iso_code == localization.country.iso_code %} active{% endif %}" 
+                       href="#"
+                       data-country-code="{{ country.iso_code }}" 
+                       data-shopify-country-switcher>
+                      {{ country.name }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        </div>
+      {% endcapture %}
+
       <div class="d-lg-none order-1">{{ toggle_button }}</div>
 
       {% case section.settings.header_layout %}
@@ -158,6 +210,8 @@
           <div class="order-3 order-lg-2 flex-grow-1">{{ menu_html }}</div>
           <div class="order-2 order-lg-3">{{ search_html }}</div>
       {% endcase %}
+
+      <div class="d-none d-lg-block">{{ locale_selector_html }}</div>
 
     </div>
   </nav>
@@ -204,6 +258,25 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- Hidden localization forms -->
+<div class="localization-forms" style="display: none;">
+  {%- if shop.published_locales.size > 1 -%}
+    <form method="post" action="/localization" id="HeaderLanguageForm" accept-charset="UTF-8" class="localization-form" enctype="multipart/form-data">
+      <input type="hidden" name="form_type" value="localization" />
+      <input type="hidden" name="return_to" value="{{ request.path }}{{ search.terms | escape }}" />
+      <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
+    </form>
+  {%- endif -%}
+  
+  {%- if shop.available_countries.size > 1 -%}
+    <form method="post" action="/localization" id="HeaderCountryForm" accept-charset="UTF-8" class="localization-form" enctype="multipart/form-data">
+      <input type="hidden" name="form_type" value="localization" />
+      <input type="hidden" name="return_to" value="{{ request.path }}{{ search.terms | escape }}" />
+      <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+    </form>
+  {%- endif -%}
 </div>
 
 <style>
@@ -994,6 +1067,80 @@
       white-space: normal;
     }
   }
+
+  /* Language and Country Selectors */
+  .locale-selectors {
+    font-size: 0.85rem;
+  }
+
+  .language-selector-btn,
+  .country-selector-btn {
+    background-color: transparent;
+    color: {{ section.settings.header_text_color }};
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 0.25rem 0.75rem;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .language-selector-btn:hover,
+  .country-selector-btn:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: {{ section.settings.header_text_hover_color }};
+    border-color: rgba(255,255,255,0.5);
+  }
+
+  .language-selector-btn:focus,
+  .country-selector-btn:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.15);
+  }
+
+  .language-selector .dropdown-menu,
+  .country-selector .dropdown-menu {
+    min-width: 160px;
+    background-color: {{ section.settings.dropdown_bg_color }};
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .language-selector .dropdown-item,
+  .country-selector .dropdown-item {
+    color: {{ section.settings.header_text_color }};
+    padding: 0.375rem 1rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .language-selector .dropdown-item:hover,
+  .country-selector .dropdown-item:hover,
+  .language-selector .dropdown-item:focus,
+  .country-selector .dropdown-item:focus {
+    background-color: rgba(255,255,255,0.1);
+    color: {{ section.settings.header_text_hover_color }};
+  }
+
+  .language-selector .dropdown-item.active,
+  .country-selector .dropdown-item.active {
+    background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, 0.7);
+    font-weight: 600;
+  }
+
+  @media (max-width: 991px) {
+    .locale-selectors {
+      margin: 1rem 0;
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .language-selector,
+    .country-selector {
+      width: auto;
+    }
+  }
 </style>
 
 {% if section.settings.is_sticky_header %}
@@ -1153,6 +1300,33 @@
       });
     });
   }
+});
+
+// Language and Country Switcher functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // Handle language selection
+  const languageSwitcherItems = document.querySelectorAll('[data-shopify-locale-switcher]');
+  languageSwitcherItems.forEach(item => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      const localeForm = document.getElementById('HeaderLanguageForm');
+      const localeInput = localeForm.querySelector('[name="locale_code"]');
+      localeInput.value = this.getAttribute('data-locale-code');
+      localeForm.submit();
+    });
+  });
+  
+  // Handle country selection
+  const countrySwitcherItems = document.querySelectorAll('[data-shopify-country-switcher]');
+  countrySwitcherItems.forEach(item => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      const countryForm = document.getElementById('HeaderCountryForm');
+      const countryInput = countryForm.querySelector('[name="country_code"]');
+      countryInput.value = this.getAttribute('data-country-code');
+      countryForm.submit();
+    });
+  });
 });
 </script>
 
@@ -1548,6 +1722,28 @@
       "id": "dropdown_hover_text_color",
       "label": "Dropdown Hover Text Color",
       "default": "#333"
+    },
+    {
+      "type": "header",
+      "content": "Localization"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_locale_selector",
+      "label": "Show language/country selectors",
+      "default": true,
+      "info": "To add languages, go to your Shopify language settings."
+    },
+    {
+      "type": "select",
+      "id": "locale_position",
+      "label": "Mobile position",
+      "options": [
+        { "value": "above_icons", "label": "Above icons" },
+        { "value": "below_menu", "label": "Below menu items" }
+      ],
+      "default": "above_icons",
+      "info": "Controls where selectors appear on mobile devices"
     }
   ],
   "presets": [
