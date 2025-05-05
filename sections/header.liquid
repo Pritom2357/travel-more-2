@@ -1407,6 +1407,15 @@ document.addEventListener('DOMContentLoaded', function () {
             
             const expanded = dropdownMenu.classList.contains('show');
             this.setAttribute('aria-expanded', expanded);
+            
+            if (!expanded) {
+              const nestedDropdowns = dropdownMenu.querySelectorAll('.dropdown-menu.show');
+              nestedDropdowns.forEach(nested => {
+                nested.classList.remove('show');
+                const nestedToggle = nested.previousElementSibling;
+                if (nestedToggle) nestedToggle.setAttribute('aria-expanded', 'false');
+              });
+            }
           }
         }
       });
