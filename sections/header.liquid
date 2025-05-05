@@ -1241,6 +1241,14 @@
       display: block !important;
     }
   }
+
+  .dropdown-menu {
+    display: none;
+  }
+
+  .dropdown-menu.show {
+    display: block;
+  }
 </style>
 
 {% if section.settings.is_sticky_header %}
@@ -1464,6 +1472,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const expanded = dropdownMenu.classList.contains('show');
         this.setAttribute('aria-expanded', expanded);
 
+        // Close sibling dropdowns
         const parent = this.closest('.dropdown-menu, .navbar-nav');
         const siblings = parent.querySelectorAll(':scope > li > .dropdown-menu');
         siblings.forEach(menu => {
@@ -1473,6 +1482,16 @@ document.addEventListener('DOMContentLoaded', function () {
             if (siblingToggle) siblingToggle.setAttribute('aria-expanded', 'false');
           }
         });
+
+        // Close nested dropdowns if collapsing
+        if (!expanded) {
+          const nestedDropdowns = dropdownMenu.querySelectorAll('.dropdown-menu.show');
+          nestedDropdowns.forEach(nested => {
+            nested.classList.remove('show');
+            const nestedToggle = nested.previousElementSibling;
+            if (nestedToggle) nestedToggle.setAttribute('aria-expanded', 'false');
+          });
+        }
       }
     });
   });
