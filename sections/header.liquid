@@ -1139,6 +1139,27 @@
       width: auto;
     }
   }
+
+  @media (max-width: 991px) {
+    .dropdown-submenu .dropdown-menu {
+      display: none;
+    }
+    
+    .dropdown-submenu .dropdown-menu.show {
+      display: block !important;
+    }
+    
+    .dropdown-submenu > .dropdown-item.dropdown-toggle::after {
+      content: "▼";
+      float: right;
+      margin-left: 8px;
+      transition: transform 0.3s ease;
+    }
+    
+    .dropdown-submenu > .dropdown-item.dropdown-toggle[aria-expanded="true"]::after {
+      transform: rotate(180deg);
+    }
+  }
 </style>
 
 {% if section.settings.is_sticky_header %}
@@ -1295,6 +1316,44 @@
           });
           parent.classList.add('show-touch-menu');
         }
+      });
+    });
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.dropdown-toggle, .dropdown-submenu > .dropdown-item.dropdown-toggle')
+    .forEach(toggle => {
+      toggle.addEventListener('click', function (e) {
+        if (window.innerWidth <= 991) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          let dropdownMenu;
+          if (this.classList.contains('dropdown-item')) {
+            dropdownMenu = this.nextElementSibling;
+          } else {
+            dropdownMenu = this.nextElementSibling;
+          }
+          
+          if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+            dropdownMenu.classList.toggle('show');
+            
+            const expanded = dropdownMenu.classList.contains('show');
+            this.setAttribute('aria-expanded', expanded);
+          }
+        }
+      });
+    });
+  
+  if (window.innerWidth > 991) {
+    document.querySelectorAll('.navbar-nav .dropdown').forEach(dropdown => {
+      dropdown.addEventListener('mouseenter', function() {
+        this.querySelector('.dropdown-menu').classList.add('show');
+      });
+      
+      dropdown.addEventListener('mouseleave', function() {
+        this.querySelector('.dropdown-menu').classList.remove('show');
       });
     });
   }
