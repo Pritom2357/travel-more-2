@@ -178,9 +178,9 @@
           
           <!-- Add icons inside the mobile menu -->
           <div class="mobile-menu-icons d-flex d-lg-none justify-content-center mt-3">
-            {% if section.settings.enable_locale_selector %}
+            {% comment %} {% if section.settings.enable_locale_selector %}
               {{ locale_selector_html }}
-            {% endif %}
+            {% endif %} {% endcomment %}
             <div class="ms-2 mobile-icons-add">
               <div class="d-flex nav-utilities {% if section.settings.enable_search_bar == false %}nav-utilities-empty{% endif %}">
                 {% if section.settings.enable_search_bar %}
