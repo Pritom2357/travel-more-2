@@ -27,7 +27,7 @@
       >
       
       {{ 'base.css' | asset_url | stylesheet_tag }}
-      <title>Hello, world!</title>
+      <title>{{ page_title | shop.name }}</title>
       {{ content_for_header }}
     </head>
     <style>

@@ -1300,9 +1300,7 @@
   }
 });
 
-// Language and Country Switcher functionality
 document.addEventListener('DOMContentLoaded', function() {
-  // Handle language selection
   const languageSwitcherItems = document.querySelectorAll('[data-shopify-locale-switcher]');
   languageSwitcherItems.forEach(item => {
     item.addEventListener('click', function(e) {
@@ -1314,7 +1312,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // Handle country selection
   const countrySwitcherItems = document.querySelectorAll('[data-shopify-country-switcher]');
   countrySwitcherItems.forEach(item => {
     item.addEventListener('click', function(e) {
