@@ -217,6 +217,7 @@
     background-color: rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, {{ section.settings.header_bg_opacity }}) !important;
     color: {{ section.settings.header_text_color }} !important;
     font-size: {{ section.settings.menu_text_size }}px;
+    font-weight: {{ section.settings.menu_font_weight }};
     transition: background-color 0.3s ease;
     box-shadow: none;
   }
@@ -1297,6 +1298,15 @@
       "min": 10,
       "max": 40,
       "step": 1
+    },
+    {
+      "type": "range",
+      "id": "menu_font_weight",
+      "label": "Menu Font Weight",
+      "default": 400,
+      "min": 100,
+      "max": 900,
+      "step": 100
     },
     {
       "type": "header",
