@@ -53,7 +53,7 @@
         "store_name_text_size": 21,
         "store_name_color": "#121212",
         "store_name_hover_color": "#ec521d",
-        "store_name_transform": "uppercase",
+        "store_name_transform": "capitalize",
         "store_name_font": "'Playfair Display', serif",
         "menu": "main-menu",
         "menu_text_size": 29,
