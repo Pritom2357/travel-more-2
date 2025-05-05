@@ -175,10 +175,30 @@
               </li>
             {% endfor %}
           </ul>
+          
+          <!-- Add icons inside the mobile menu -->
+          <div class="mobile-menu-icons d-flex d-lg-none justify-content-center mt-3">
+            {% if section.settings.enable_locale_selector %}
+              {{ locale_selector_html }}
+            {% endif %}
+            <div class="ms-2">
+              <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
+                <i class="bi bi-person-fill"></i>
+              </a>
+              <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2 cart-link-container" aria-label="Cart">
+                <i class="bi bi-cart-fill"></i>
+                <span class="cart-count-badge">{{ cart.item_count }}</span>
+              </a>
+            </div>
+          </div>
         </div>
       {% endcapture %}
 
       <div class="d-lg-none order-1">{{ toggle_button }}</div>  
+
+      <div class="d-none d-lg-flex mobile-icons ms-auto order-2">
+        {{ icons_html }}
+      </div>
 
       {% case section.settings.header_layout %}
         {% when 'logo_menu_search' %}
@@ -1159,6 +1179,41 @@
     .dropdown-submenu > .dropdown-item.dropdown-toggle[aria-expanded="true"]::after {
       transform: rotate(180deg);
     }
+  }
+
+  .mobile-icons {
+    position: absolute;
+    top: 15px;
+    right: 70px;
+    z-index: 1031;
+  }
+
+  .mobile-icons .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+  }
+
+  .mobile-icons .locale-selectors {
+    display: none !important;
+  }
+
+  .mobile-menu-icons {
+    padding-top: 0.5rem;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .mobile-menu-icons .btn {
+    background-color: rgba(255,255,255,0.1);
+    margin: 0 5px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu-icons .btn:hover {
+    background-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
   }
 </style>
 
