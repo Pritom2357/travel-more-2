@@ -182,17 +182,6 @@
               {{ locale_selector_html }}
             {% endif %}
             <div class="ms-2">
-              <div class="d-flex nav-utilities d-none d-lg-flex {% if section.settings.enable_search_bar == false %}nav-utilities-empty{% endif %}">
-                {% if section.settings.enable_search_bar %}
-                  <form class="d-flex search-form">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">
-                      <i class="bi bi-search"></i>
-                    </button>
-                  </form>
-                {% endif %}
-                <div class="d-none d-lg-block">{{ icons_html }}</div>
-              </div>
               <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
                 <i class="bi bi-person-fill"></i>
               </a>
