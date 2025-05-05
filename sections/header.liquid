@@ -11,7 +11,7 @@
     <div class="container-fluid">
       {% capture logo_html %}
         <div class="logo-name-container">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="{{ routes.root_url }}">
             <img
               src="{{ section.settings.logo | img_url: '100x' }}"
               alt="{{ shop.name }}"
@@ -20,9 +20,11 @@
             >
           </a>
           {% if section.settings.store_name %}
-            <div class="store-name">
-              {{ section.settings.store_name }}
-            </div>
+            <a href="{{ routes.root_url }}" class="store-name-link">
+              <div class="store-name">
+                {{ section.settings.store_name }}
+              </div>
+            </a>
           {% endif %}
         </div>
       {% endcapture %}
@@ -46,10 +48,10 @@
       {% capture icons_html %}
         <div class="d-flex icons-container">
           <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
-            <i class="bi bi-person"></i>
+            <i class="bi bi-person-fill"></i>
           </a>
           <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2 cart-link-container" aria-label="Cart">
-            <i class="bi bi-cart"></i>
+            <i class="bi bi-cart-fill"></i>
             <span class="cart-count-badge">{{ cart.item_count }}</span>
           </a>
         </div>
@@ -822,9 +824,15 @@
   }
 
   .logo-name-container {
-    {% comment %} display: flex; {% endcomment %}
-    align-items: center;
-    gap: 20px; 
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    gap: 10px;
+  }
+
+  .store-name-link {
+    text-decoration: none;
+    transition: all 0.3s ease;
   }
 
   .store-name {
@@ -837,20 +845,138 @@
     line-height: 1.2;
     font-family: {{ section.settings.store_name_font | default: 'inherit' }};
     text-transform: {{ section.settings.store_name_transform }};
+    white-space: nowrap;
+    text-align: center;
   }
 
-  .store-name:hover {
-    color: {{ section.settings.store_name_hover_color | default: section.settings.header_text_hover_color }};
+  .store-name:hover, 
+  .store-name-link:hover .store-name {
+    color: {{ section.settings.store_name_hover_color | default: section.settings.header_text_hover_color }} !important;
+    transition: color 0.3s ease;
   }
 
-  @media (max-width: 767px) {
-    .store-name {
-      font-size: calc({{ section.settings.store_name_text_size }}px * 0.85);
+  .store-name-link:hover .store-name {
+    text-decoration: underline;
+    transform: scale(1.05);
+  }
+
+  /* Enhanced Button Interactions */
+  .nav-settings .btn-outline-success {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .nav-settings .btn-outline-success i {
+    transition: transform 0.3s ease;
+  }
+
+  .nav-settings .btn-outline-success:hover i {
+    transform: scale(1.2);
+  }
+
+  /* Animated Nav Links */
+  .navbar-nav .nav-item {
+    opacity: 0;
+    animation: fadeInNav 0.5s ease forwards;
+  }
+
+  .navbar-nav .nav-item:nth-child(1) { animation-delay: 0.1s; }
+  .navbar-nav .nav-item:nth-child(2) { animation-delay: 0.2s; }
+  .navbar-nav .nav-item:nth-child(3) { animation-delay: 0.3s; }
+  .navbar-nav .nav-item:nth-child(4) { animation-delay: 0.4s; }
+  .navbar-nav .nav-item:nth-child(5) { animation-delay: 0.5s; }
+
+  @keyframes fadeInNav {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Enhanced Dropdown Effects */
+  .navbar-nav .dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    display: block;
+    visibility: hidden;
+  }
+
+  .navbar-nav .dropdown:hover > .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  /* Mobile menu enhancements */
+  @media (max-width: 991.98px) {
+    .navbar-collapse {
+      background: linear-gradient(to bottom, 
+        rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, 0.95),
+        rgba({{ header_red }}, {{ header_green }}, {{ header_blue }}, 0.98)
+      );
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 0 0 16px 16px;
+      padding-bottom: 1rem;
+      transform: translateY(-10px);
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    
+    .navbar-collapse.show {
+      transform: translateY(0);
+      opacity: 1;
     }
     
     .logo-name-container {
+      flex-direction: row;
+      align-items: center;
       gap: 8px;
     }
+  }
+
+  /* Logo animation */
+  .navbar-brand img {
+    transition: transform 0.3s ease;
+  }
+
+  .navbar-brand:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Cart badge enhancement */
+  .cart-link-container {
+    position: relative;
+  }
+
+  .cart-count-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: {{ section.settings.btn1_color | default: '#449EED' }};
+    color: white;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    line-height: 1;
   }
 
   /* Mobile menu adjustments */
