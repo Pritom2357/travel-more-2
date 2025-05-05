@@ -265,6 +265,7 @@
     background-color: transparent;
     border-color: transparent;
     color: {{ section.settings.search_btn_text_color }} !important;
+    font-size: {{ section.settings.icon_font_size }}px;
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
     position: relative;
   }
@@ -1445,6 +1446,15 @@
       ],
       "default": "color",
       "info": "Select hover effect for icons"
+    },
+    {
+      "type": "range",
+      "id": "icon_font_size",
+      "label": "Icon Font Size",
+      "default": 18,
+      "min": 14,
+      "max": 30,
+      "step": 1
     },
     {
       "type": "header",
