@@ -175,22 +175,6 @@
               </li>
             {% endfor %}
           </ul>
-          
-          <!-- Add icons inside the mobile menu -->
-          <div class="mobile-menu-icons d-flex d-lg-none justify-content-center mt-3">
-            {% if section.settings.enable_locale_selector %}
-              {{ locale_selector_html }}
-            {% endif %}
-            <div class="ms-2">
-              <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
-                <i class="bi bi-person-fill"></i>
-              </a>
-              <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2 cart-link-container" aria-label="Cart">
-                <i class="bi bi-cart-fill"></i>
-                <span class="cart-count-badge">{{ cart.item_count }}</span>
-              </a>
-            </div>
-          </div>
         </div>
       {% endcapture %}
 
