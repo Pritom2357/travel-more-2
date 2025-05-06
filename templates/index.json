@@ -86,7 +86,7 @@
         "title_effect_width": 5,
         "subtitle_effect": "shadow",
         "subtitle_effect_color": "#1c1b1b",
-        "subtitle_effect_width": 2,
+        "subtitle_effect_width": 3,
         "btn1_text": "Discover More",
         "btn1_url": "shopify://collections/all",
         "btn1_color": "#449eed",
