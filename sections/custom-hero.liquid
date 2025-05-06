@@ -131,7 +131,7 @@
           <div class="animated-line"></div>
         </div>
 
-        <h1 class="hero-title animate__animated animate__fadeInUp">
+        <h1 class="hero-title animate__animated animate__fadeInUp {% if section.settings.title_effect != 'none' %}text-{{ section.settings.title_effect }}{% endif %}">
           {% if section.settings.title_text %}
             <span class="hero-title-wrapper">
               {{ section.settings.title_text | replace: 'Dare', '<span class="highlight-text">Dare</span>' | replace: 'Live', '<span class="highlight-text">Live</span>' }}
@@ -139,7 +139,7 @@
           {% endif %}
         </h1>
 
-        <p class="hero-subtitle animate__animated animate__fadeInUp animate__delay-1s">
+        <p class="hero-subtitle animate__animated animate__fadeInUp animate__delay-1s {% if section.settings.subtitle_effect != 'none' %}text-{{ section.settings.subtitle_effect }}{% endif %}">
           {% if section.settings.sub_title_text %}
             {{ section.settings.sub_title_text }}
           {% endif %}
@@ -430,25 +430,7 @@
     z-index: 1;
     
     {% if section.settings.enable_overlay %}
-      {% case section.settings.overlay_type %}
-        {% when 'solid' %}
-          background-color: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }};
-        {% when 'gradient_vertical' %}
-          {% assign end_opacity = section.settings.overlay_opacity | times: 1.5 %}
-          {% if end_opacity > 1 %}{% assign end_opacity = 1 %}{% endif %}
-          background: linear-gradient(
-            to bottom,
-            {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }},
-            {{ section.settings.overlay_color | color_modify: 'alpha', end_opacity }}
-          );
-        {% when 'gradient_radial' %}
-          {% assign center_opacity = section.settings.overlay_opacity | times: 0.7 %}
-          background: radial-gradient(
-            circle at center,
-            {{ section.settings.overlay_color | color_modify: 'alpha', center_opacity }},
-            {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }}
-          );
-      {% endcase %}
+      background-color: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }};
     {% endif %}
   }
   .hero-section .row.align-items-center {
@@ -1054,6 +1036,29 @@
       paint-order: stroke fill;
     }
   }
+
+  /* Text effect styles */
+  .hero-title.text-outline {
+    -webkit-text-stroke: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_color }};
+    text-stroke: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_color }};
+    color: transparent;
+    paint-order: stroke fill;
+  }
+
+  .hero-title.text-shadow {
+    text-shadow: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_width }}px 0 {{ section.settings.title_effect_color }};
+  }
+
+  .hero-subtitle.text-outline {
+    -webkit-text-stroke: {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_color }};
+    text-stroke: {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_color }};
+    color: transparent;
+    paint-order: stroke fill;
+  }
+
+  .hero-subtitle.text-shadow {
+    text-shadow: {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_width }}px 0 {{ section.settings.subtitle_effect_color }};
+  }
 </style>
 
 {% schema %}
@@ -1099,9 +1104,7 @@
       "id": "overlay_type",
       "label": "Overlay Type",
       "options": [
-        {"value": "solid", "label": "Solid Color"},
-        {"value": "gradient_vertical", "label": "Vertical Gradient"},
-        {"value": "gradient_radial", "label": "Radial Gradient"}
+        {"value": "solid", "label": "Solid Color"}
       ],
       "default": "solid"
     },
