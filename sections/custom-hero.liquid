@@ -763,6 +763,7 @@
   /* Enhanced subtitle */
   .hero-subtitle {
     font-size: calc({{section.settings.sub_title_size}}rem + 0.2vw);
+    font-weight: {{ section.settings.sub_title_weight }};
     margin: 0 0 2.5rem 0;
     color: {{section.settings.sub_title_color}};
     max-width: 90%;
@@ -1103,15 +1104,6 @@
       "id": "bg_header",
       "label": "Header Background Color",
       "default": "#449EED"
-    },
-    {
-      "type": "range",
-      "id": "header_bg_opacity",
-      "label": "Header Background Opacity",
-      "default": 0.4,
-      "min": 0,
-      "max": 1,
-      "step": 0.1
     },
     {
       "type": "color",
