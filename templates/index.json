@@ -43,7 +43,7 @@
         "bg_img": "shopify://shop_images/dest6.jpg",
         "enable_overlay": true,
         "overlay_color": "#000000",
-        "overlay_opacity": 0.4,
+        "overlay_opacity": 1,
         "overlay_type": "gradient_radial",
         "is_header": true,
         "bg_header": "#ccfdf5",
