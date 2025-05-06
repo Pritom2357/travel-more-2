@@ -22,7 +22,6 @@
 {% endif %}
 
 <section class="hero-section align-items-center">
-  <div class="hero-overlay"></div>
   {% if section.settings.is_header %}
     <nav class="navbar navbar-expand-lg nav-settings">
       <div class="container-fluid d-flex">
@@ -417,61 +416,9 @@
   .hero-section .row.align-items-center {
     min-height: 100vh;
   }
-  .hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: {{ section.settings.bg_overlay }};
-    background-color: rgba(0, 0, 0, 1);
-    z-index: 1; 
-    pointer-events: none; 
-  }
   .hero-section .container {
     position: relative;
-    z-index: 2; /* Make sure content is above the overlay */
-  }
-  .hero-title {
-    font-family: "{{ section.settings.title_font }}", sans-serif;
-    font-size: calc({{section.settings.title_size}}rem + 0.5vw);
-    line-height: 1.2;
-    font-weight: 800;
-    color: {{section.settings.title_color}};
-    margin-bottom: 1.5rem;
-    position: relative;
-    letter-spacing: -0.5px;
-    
-    /* Apply the selected text effect */
-    {% case section.settings.title_effect %}
-      {% when 'outline' %}
-        -webkit-text-stroke: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_color }};
-        text-stroke: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_color }};
-      {% when 'shadow' %}
-        text-shadow: 0 0 {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_color }};
-      {% else %}
-        text-shadow: none;
-    {% endcase %}
-  }
-  .hero-subtitle {
-    font-size: calc({{section.settings.sub_title_size}}rem + 0.2vw);
-    font-weight: {{ section.settings.sub_title_weight }};
-    margin: 0 0 2.5rem 0;
-    color: {{section.settings.sub_title_color}};
-    max-width: 90%;
-    line-height: 1.6;
-    position: relative;
-    
-    /* Apply the selected text effect */
-    {% case section.settings.subtitle_effect %}
-      {% when 'outline' %}
-        -webkit-text-stroke: {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_color }};
-        text-stroke: {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_color }};
-      {% when 'shadow' %}
-        text-shadow: 0 0 {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_color }};
-      {% else %}
-        text-shadow: none;
-    {% endcase %}
+    z-index: 2; 
   }
   .booking-form {
     background-color: rgba({{ form_red }}, {{ form_green }}, {{ form_blue }}, {{ section.settings.form_bg_opacity }}) !important;
@@ -1079,15 +1026,6 @@
       "type": "image_picker",
       "id": "bg_img",
       "label": "Hero Background Image"
-    },
-    {
-      "type": "range",
-      "id": "bg_overlay",
-      "label": "Background Overlay Opacity",
-      "default": 0.4,
-      "min": 0,
-      "max": 1,
-      "step": 0.1
     },
     
     {
