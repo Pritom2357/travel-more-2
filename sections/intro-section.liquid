@@ -84,6 +84,10 @@
           currentImageIndex = index;
           updateModalImage();
           modal.style.display = "flex";
+          // Add a slight delay before adding active class for smoother animation
+          setTimeout(function() {
+            modal.classList.add('active');
+          }, 10);
           document.body.style.overflow = "hidden";
           
           // Generate thumbnails
@@ -105,12 +109,20 @@
         }
         
         function closeImageModal() {
-          modal.style.display = "none";
-          document.body.style.overflow = "auto";
+          modal.classList.remove('active');
+          setTimeout(function() {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+          }, 300); // Match transition duration
         }
         
         function updateModalImage() {
-          document.getElementById("modalImage").src = modalImages[currentImageIndex];
+          var modalImg = document.getElementById("modalImage");
+          modalImg.style.opacity = '0';
+          setTimeout(function() {
+            modalImg.src = modalImages[currentImageIndex];
+            modalImg.style.opacity = '1';
+          }, 200);
           
           // Update active thumbnail
           var thumbnails = document.querySelectorAll('.thumbnail');
@@ -342,10 +354,16 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.95);
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .image-modal.active {
+    opacity: 1;
   }
   
   .modal-content {
@@ -355,6 +373,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-radius: 8px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
   }
   
   .modal-image-container {
@@ -363,39 +383,65 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 15px;
+    padding: 20px 0;
   }
   
   .modal-image {
     max-width: 100%;
     max-height: 70vh;
     object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 1;
   }
   
   .close-modal {
     position: absolute;
     top: 15px;
     right: 25px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
+    color: white;
+    font-size: 32px;
+    font-weight: normal;
     cursor: pointer;
     z-index: 1001;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    transition: all 0.2s ease;
+  }
+  
+  .close-modal:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
   }
   
   .nav-btn {
     position: absolute;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     color: white;
     border: none;
-    font-size: 24px;
+    font-size: 18px;
     cursor: pointer;
     padding: 15px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   }
   
   .nav-btn:hover {
-    background: rgba(0,0,0,0.8);
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
   }
   
   .prev-btn {
@@ -409,18 +455,21 @@
   .modal-thumbnails {
     display: flex;
     justify-content: center;
-    margin-top: 15px;
-    gap: 10px;
+    margin: 0 auto 20px;
+    gap: 12px;
     flex-wrap: wrap;
+    max-width: 80%;
   }
   
   .thumbnail {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 50px;
     cursor: pointer;
     border: 2px solid transparent;
     opacity: 0.6;
-    transition: all 0.3s;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    overflow: hidden;
   }
   
   .thumbnail img {
@@ -431,11 +480,14 @@
   
   .thumbnail:hover {
     opacity: 0.9;
+    transform: translateY(-3px);
   }
   
   .thumbnail.active {
     border-color: white;
     opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 3px 8px rgba(255, 255, 255, 0.3);
   }
   
   /* Responsive styles */
