@@ -59,7 +59,7 @@
         "store_name_transform": "capitalize",
         "store_name_font": "'Playfair Display', serif",
         "menu": "main-menu",
-        "menu_text_size": 29,
+        "menu_text_size": 40,
         "menu_font_weight": 800,
         "header_alignment": "center",
         "dropdown_bg_color": "#00000080",
