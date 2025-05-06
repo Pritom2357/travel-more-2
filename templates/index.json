@@ -61,7 +61,7 @@
         "menu": "main-menu",
         "menu_text_size": 29,
         "menu_font_weight": 800,
-        "header_alignment": "left",
+        "header_alignment": "center",
         "dropdown_bg_color": "#00000080",
         "dropdown_text_color": "#ffffff",
         "dropdown_hover_text_color": "#333333",
