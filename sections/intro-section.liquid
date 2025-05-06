@@ -18,7 +18,7 @@
         </p>
         
         {% if section.settings.enable_cta %}
-        <div class="cta-container mt-4">
+        <div class="cta-container mt-4 desktop-only-cta">
           <a href="{{ section.settings.cta_link }}" class="intro-cta-btn">
             {{ section.settings.cta_text }}
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -55,6 +55,20 @@
           <p class="image-caption mt-2">{{ section.settings.image_caption }}</p>
           {% endif %}
         </div>
+      {% endif %}
+
+      <!-- Add this after the closing </div> of the image gallery column -->
+      {% if section.settings.enable_cta %}
+      <div class="col-12 text-center mobile-only-cta">
+        <div class="cta-container mt-3 mb-2">
+          <a href="{{ section.settings.cta_link }}" class="intro-cta-btn">
+            {{ section.settings.cta_text }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
       {% endif %}
 
       <!-- Image Modal -->
@@ -490,8 +504,20 @@
     box-shadow: 0 3px 8px rgba(255, 255, 255, 0.3);
   }
   
-  /* Responsive styles */
+  .mobile-only-cta {
+    display: none;
+  }
+
   @media (max-width: 768px) {
+    .desktop-only-cta {
+      display: none;
+    }
+    
+    .mobile-only-cta {
+      display: block;
+      margin-top: 20px;
+    }
+    
     .gallery-grid {
       grid-template-columns: 1fr;
     }
