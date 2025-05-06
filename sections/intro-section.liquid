@@ -239,7 +239,7 @@
   /* Apply text effects based on settings */
   {% if section.settings.title_effect == 'shadow' %}
   .text-info1, .text-info2, .text-info3 {
-    text-shadow: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_width * 2 }}px {{ section.settings.title_effect_color }};
+    text-shadow: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_color }};
   }
   {% elsif section.settings.title_effect == 'outline' %}
   .text-info1, .text-info2, .text-info3 {
