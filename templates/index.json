@@ -60,7 +60,7 @@
         "store_name_font": "'Playfair Display', serif",
         "menu": "main-menu",
         "menu_text_size": 29,
-        "menu_font_weight": 700,
+        "menu_font_weight": 800,
         "header_alignment": "left",
         "dropdown_bg_color": "#00000080",
         "dropdown_text_color": "#ffffff",
