@@ -33,34 +33,19 @@
       {% if section.settings.isImage %}
         <div class="col-md-6 text-center">
           <div class="image-gallery">
-            {% if section.settings.gallery_style == 'single' %}
+            {% if section.settings.gallery_style == 'single' and section.blocks.size > 0 %}
               <div class="styled-image-wrapper gallery-item" data-index="0" onclick="openImageModal(0)">
-                <img src="{{ section.settings.img | img_url:'original' }}" alt="Travel Image" class="styled-image img-fluid">
+                {% assign first_block = section.blocks | first %}
+                <img src="{{ first_block.settings.image | img_url:'original' }}" alt="{{ first_block.settings.image_alt }}" class="styled-image img-fluid">
               </div>
             {% else %}
               <!-- Multiple image gallery style -->
               <div class="gallery-grid">
-                <div class="styled-image-wrapper gallery-item main-image" data-index="0" onclick="openImageModal(0)">
-                  <img src="{{ section.settings.img | img_url:'original' }}" alt="Main Image" class="styled-image img-fluid">
-                </div>
-                
-                {% if section.settings.img2 != blank %}
-                <div class="styled-image-wrapper gallery-item" data-index="1" onclick="openImageModal(1)">
-                  <img src="{{ section.settings.img2 | img_url:'original' }}" alt="Travel Image 2" class="styled-image img-fluid">
-                </div>
-                {% endif %}
-                
-                {% if section.settings.img3 != blank %}
-                <div class="styled-image-wrapper gallery-item" data-index="2" onclick="openImageModal(2)">
-                  <img src="{{ section.settings.img3 | img_url:'original' }}" alt="Travel Image 3" class="styled-image img-fluid">
-                </div>
-                {% endif %}
-                
-                {% if section.settings.img4 != blank %}
-                <div class="styled-image-wrapper gallery-item" data-index="3" onclick="openImageModal(3)">
-                  <img src="{{ section.settings.img4 | img_url:'original' }}" alt="Travel Image 4" class="styled-image img-fluid">
-                </div>
-                {% endif %}
+                {% for block in section.blocks limit: 4 %}
+                  <div class="styled-image-wrapper gallery-item {% if forloop.first %}main-image{% endif %}" data-index="{{ forloop.index0 }}" onclick="openImageModal({{ forloop.index0 }})">
+                    <img src="{{ block.settings.image | img_url:'original' }}" alt="{{ block.settings.image_alt }}" class="styled-image img-fluid">
+                  </div>
+                {% endfor %}
               </div>
             {% endif %}
           </div>
@@ -87,10 +72,9 @@
 
       <script>
         var modalImages = [
-          '{{ section.settings.img | img_url: 'original' }}'
-          {% if section.settings.img2 != blank %}, '{{ section.settings.img2 | img_url: 'original' }}'{% endif %}
-          {% if section.settings.img3 != blank %}, '{{ section.settings.img3 | img_url: 'original' }}'{% endif %}
-          {% if section.settings.img4 != blank %}, '{{ section.settings.img4 | img_url: 'original' }}'{% endif %}
+          {% for block in section.blocks limit: 4 %}
+            '{{ block.settings.image | img_url: 'original' }}'{% unless forloop.last %},{% endunless %}
+          {% endfor %}
         ];
         
         var currentImageIndex = 0;
@@ -473,40 +457,20 @@
       "default": "#fff"
     },
     {
-      "type": "image_picker",
-      "id": "img",
-      "label": "Main Image"
-    },
-    {
       "type": "select",
       "id": "gallery_style",
       "label": "Gallery Style",
       "options": [
         { "value": "single", "label": "Single Image" },
-        { "value": "grid", "label": "Image Grid (Up to 4 images)" }
+        { "value": "grid", "label": "Image Grid" }
       ],
       "default": "single"
-    },
-    {
-      "type": "image_picker",
-      "id": "img2",
-      "label": "Gallery Image 2"
-    },
-    {
-      "type": "image_picker",
-      "id": "img3",
-      "label": "Gallery Image 3"
-    },
-    {
-      "type": "image_picker",
-      "id": "img4",
-      "label": "Gallery Image 4"
     },
     {
       "type": "text",
       "id": "image_caption",
       "label": "Image Caption",
-      "default": ""
+      "default": "Travel Gallery"
     },
     {
       "type": "color",
@@ -804,10 +768,40 @@
       "default": "#FFFFFF"
     }
   ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Gallery Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image Alt Text",
+          "default": "Travel Destination"
+        },
+        {
+          "type": "text",
+          "id": "image_caption",
+          "label": "Image Caption",
+          "default": "Amazing Destination"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "Intro Section",
-      "category": "Intro"
+      "category": "Intro",
+      "blocks": [
+        {
+          "type": "image"
+        }
+      ]
     }
   ]
 }
