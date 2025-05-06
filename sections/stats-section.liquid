@@ -1,1 +1,405 @@
-z
+{% comment %}
+  STATS SECTION
+  This section displays four statistics (label + number) against a background image.
+  You can easily change the layout or add more stats if needed.
+{% endcomment %}
+
+<section
+  id="stats-section"
+  class="stats-section"
+  style="background: no-repeat center/cover url('{{ section.settings.background_image | image_url: width: 2000 }}');"
+>
+  <div
+    class="stats-overlay"
+    style="background-color: {{ section.settings.overlay_color }}; opacity: {{ section.settings.overlay_opacity }};"
+  ></div>
+
+  <div class="container">
+    <div class="stats-content">
+      <div class="stats-item">
+        <h2 class="stats-number">{{ section.settings.stat_1_number }}</h2>
+        <p class="stats-label">{{ section.settings.stat_1_label }}</p>
+      </div>
+      <div class="stats-item">
+        <h2 class="stats-number">{{ section.settings.stat_2_number }}</h2>
+        <p class="stats-label">{{ section.settings.stat_2_label }}</p>
+      </div>
+      <div class="stats-item">
+        <h2 class="stats-number">{{ section.settings.stat_3_number }}</h2>
+        <p class="stats-label">{{ section.settings.stat_3_label }}</p>
+      </div>
+      <div class="stats-item">
+        <h2 class="stats-number">{{ section.settings.stat_4_number }}</h2>
+        <p class="stats-label">{{ section.settings.stat_4_label }}</p>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Container for the entire stats section */
+    #stats-section {
+      position: relative;
+      padding: 60px 20px;
+      color: #fff;
+      text-align: center;
+    }
+
+    /* Semi-transparent overlay on background */
+    .stats-overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    /* Container to keep stats centered and responsive */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Flex container for stats items */
+    .stats-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* Individual stat item */
+    .stats-item {
+      flex: 1 1 180px;
+      min-width: 180px; 
+    }
+
+    /* Hollow number styling */
+    .stats-number {
+      font-size: 3em;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: transparent; 
+      -webkit-text-stroke: 2px #ffffff; 
+      text-stroke: 2px #ffffff; 
+
+      text-shadow:
+        2px 2px 0 {{section.settings.text_color}},
+        -2px 2px 0 {{section.settings.text_color}},
+        2px -2px 0 {{section.settings.text_color}},
+        -2px -2px 0 {{section.settings.text_color}},
+        0px 2px 0 {{section.settings.text_color}},
+        2px 0px 0 {{section.settings.text_color}},
+        0px -2px 0 {{section.settings.text_color}},
+        -2px 0px 0 {{section.settings.text_color}};
+    }
+
+    /* Label styling */
+    .stats-label {
+      font-size: 1.1em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 767px) {
+      #stats-section {
+        padding: 40px 10px;
+      }
+      .stats-number {
+        font-size: 2em;
+      }
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const statsSection = document.getElementById('stats-section');
+      const statsNumbers = document.querySelectorAll('.stats-number');
+      let hasAnimated = false;
+
+      function animateNumbers() {
+        statsNumbers.forEach(stat => {
+          const target = parseInt(stat.textContent, 10);
+          stat.textContent = '0';
+          const increment = target / 200; 
+
+          const updateNumber = () => {
+            let current = parseFloat(stat.textContent);
+            if (current < target) {
+              current += increment;
+              if (current > target) current = target;
+              stat.textContent = Math.ceil(current);
+              requestAnimationFrame(updateNumber);
+            } else {
+              stat.textContent = target;
+            }
+          };
+
+          updateNumber();
+        });
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasAnimated) {
+            animateNumbers();
+            hasAnimated = true;
+            observer.unobserve(statsSection);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      observer.observe(statsSection);
+    });
+  </script>
+
+  {% schema %}
+{
+  "name": "Stats Section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default":"#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "default": 0.5,
+      "min": 0,
+      "max": 1,
+      "step": 0.1
+    },
+    {
+      "type": "header",
+      "content": "Style Settings"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "default": 60,
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "default": 60,
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "text_effect",
+      "label": "Number Text Effect",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "hollow",
+          "label": "Hollow"
+        },
+        {
+          "value": "shadow",
+          "label": "Shadow"
+        },
+        {
+          "value": "glow",
+          "label": "Glow"
+        }
+      ],
+      "default": "hollow"
+    },
+    {
+      "type": "header",
+      "content": "Stat 1"
+    },
+    {
+      "type": "select",
+      "id": "stat_1_source",
+      "label": "Stat 1 Data Source",
+      "options": [
+        {
+          "value": "custom",
+          "label": "Custom Value"
+        },
+        {
+          "value": "products_count",
+          "label": "Total Products"
+        },
+        {
+          "value": "orders_count",
+          "label": "Total Orders"
+        },
+        {
+          "value": "collections_count",
+          "label": "Total Collections"
+        }
+      ],
+      "default": "custom"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_number",
+      "label": "Stat 1 Number (if custom)",
+      "default": "12"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Stat 1 Label",
+      "default": "Amazing Deals"
+    },
+    {
+      "type": "header",
+      "content": "Stat 2"
+    },
+    {
+      "type": "select",
+      "id": "stat_2_source",
+      "label": "Stat 2 Data Source",
+      "options": [
+        {
+          "value": "custom",
+          "label": "Custom Value"
+        },
+        {
+          "value": "products_count",
+          "label": "Total Products"
+        },
+        {
+          "value": "orders_count",
+          "label": "Total Orders"
+        },
+        {
+          "value": "collections_count",
+          "label": "Total Collections"
+        }
+      ],
+      "default": "custom"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_number",
+      "label": "Stat 2 Number (if custom)",
+      "default": "670"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Stat 2 Label",
+      "default": "Sold Tours"
+    },
+    {
+      "type": "header",
+      "content": "Stat 3"
+    },
+    {
+      "type": "select",
+      "id": "stat_3_source",
+      "label": "Stat 3 Data Source",
+      "options": [
+        {
+          "value": "custom",
+          "label": "Custom Value"
+        },
+        {
+          "value": "products_count",
+          "label": "Total Products"
+        },
+        {
+          "value": "orders_count",
+          "label": "Total Orders"
+        },
+        {
+          "value": "collections_count",
+          "label": "Total Collections"
+        }
+      ],
+      "default": "custom"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_number",
+      "label": "Stat 3 Number (if custom)",
+      "default": "24"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Stat 3 Label",
+      "default": "New Tours"
+    },
+    {
+      "type": "header",
+      "content": "Stat 4"
+    },
+    {
+      "type": "select",
+      "id": "stat_4_source",
+      "label": "Stat 4 Data Source",
+      "options": [
+        {
+          "value": "custom",
+          "label": "Custom Value"
+        },
+        {
+          "value": "products_count",
+          "label": "Total Products"
+        },
+        {
+          "value": "orders_count",
+          "label": "Total Orders"
+        },
+        {
+          "value": "collections_count",
+          "label": "Total Collections"
+        }
+      ],
+      "default": "custom"
+    },
+    {
+      "type": "text",
+      "id": "stat_4_number",
+      "label": "Stat 4 Number (if custom)",
+      "default": "980"
+    },
+    {
+      "type": "text",
+      "id": "stat_4_label",
+      "label": "Stat 4 Label",
+      "default": "Happy Customers"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Stats Section"
+    }
+  ]
+}
+  {% endschema %}
+</section>
