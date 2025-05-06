@@ -236,6 +236,32 @@
     font-weight: {{ section.settings.text3_weight }};
   }
 
+  /* Apply text effects based on settings */
+  {% if section.settings.title_effect == 'shadow' %}
+  .text-info1, .text-info2, .text-info3 {
+    text-shadow: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_width * 2 }}px {{ section.settings.title_effect_color }};
+  }
+  {% elsif section.settings.title_effect == 'outline' %}
+  .text-info1, .text-info2, .text-info3 {
+    -webkit-text-stroke: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_color }};
+    text-stroke: {{ section.settings.title_effect_width }}px {{ section.settings.title_effect_color }};
+    color: {{ section.settings.text1_color }};
+    paint-order: stroke fill;
+  }
+  {% endif %}
+
+  {% if section.settings.subtitle_effect == 'shadow' %}
+  .adventure-subheading {
+    text-shadow: {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_width * 2 }}px {{ section.settings.subtitle_effect_color }};
+  }
+  {% elsif section.settings.subtitle_effect == 'outline' %}
+  .adventure-subheading {
+    -webkit-text-stroke: {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_color }};
+    text-stroke: {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_color }};
+    paint-order: stroke fill;
+  }
+  {% endif %}
+
   .adventure-subheading {
     color: {{ section.settings.description_color }};
     font-size: {{ section.settings.description_size }}px;
@@ -533,9 +559,7 @@
       "label": "Text 1 Animation",
       "options": [
         { "value": "none", "label": "None" },
-        { "value": "fadeIn", "label": "Fade In" },
-        { "value": "fadeInUp", "label": "Fade In Up" },
-        { "value": "fadeInDown", "label": "Fade In Down" }
+        { "value": "fadeInUp", "label": "Fade In Up" }
       ],
       "default": "fadeInUp"
     },
@@ -576,9 +600,7 @@
       "label": "Text 2 Animation",
       "options": [
         { "value": "none", "label": "None" },
-        { "value": "fadeIn", "label": "Fade In" },
         { "value": "fadeInUp", "label": "Fade In Up" },
-        { "value": "fadeInDown", "label": "Fade In Down" }
       ],
       "default": "fadeInUp"
     },
@@ -609,9 +631,7 @@
       "label": "Text 3 Animation",
       "options": [
         { "value": "none", "label": "None" },
-        { "value": "fadeIn", "label": "Fade In" },
         { "value": "fadeInUp", "label": "Fade In Up" },
-        { "value": "fadeInDown", "label": "Fade In Down" }
       ],
       "default": "fadeInUp"
     },
