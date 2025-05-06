@@ -1,7 +1,7 @@
 {% comment %}
   STATS SECTION
-  This section displays four statistics (label + number) against a background image.
-  You can easily change the layout or add more stats if needed.
+  This section displays four statistics (label + number) with dynamic or custom values.
+  Values can be pulled dynamically from the store or set manually.
 {% endcomment %}
 
 <section
@@ -11,25 +11,96 @@
 >
   <div
     class="stats-overlay"
-    style="background-color: {{ section.settings.overlay_color }}; opacity: {{ section.settings.overlay_opacity }};"
+    style="background-color: {{ section.settings.overlay_color }};"
   ></div>
 
   <div class="container">
+    {% if section.settings.heading != blank %}
+      <h2 class="stats-heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+    
     <div class="stats-content">
-      <div class="stats-item">
-        <h2 class="stats-number">{{ section.settings.stat_1_number }}</h2>
+      <div class="stats-item wow fadeInUp" data-wow-delay="0.1s">
+        <div class="stats-icon">{% render 'icon-cart' %}</div>
+        <h2 class="stats-number">
+          {% if section.settings.stat_1_dynamic %}
+            {% case section.settings.stat_1_data_source %}
+              {% when 'products' %}
+                {{ collections.all.products.size }}
+              {% when 'orders' %}
+                {{ shop.orders_count }}
+              {% when 'customers' %}
+                {{ shop.customers_count }}
+              {% when 'collections' %}
+                {{ collections.size }}
+            {% endcase %}
+          {% else %}
+            {{ section.settings.stat_1_number }}
+          {% endif %}
+        </h2>
         <p class="stats-label">{{ section.settings.stat_1_label }}</p>
       </div>
-      <div class="stats-item">
-        <h2 class="stats-number">{{ section.settings.stat_2_number }}</h2>
+      
+      <div class="stats-item wow fadeInUp" data-wow-delay="0.2s">
+        <div class="stats-icon">{% render 'icon-globe' %}</div>
+        <h2 class="stats-number">
+          {% if section.settings.stat_2_dynamic %}
+            {% case section.settings.stat_2_data_source %}
+              {% when 'products' %}
+                {{ collections.all.products.size }}
+              {% when 'orders' %}
+                {{ shop.orders_count }}
+              {% when 'customers' %}
+                {{ shop.customers_count }}
+              {% when 'collections' %}
+                {{ collections.size }}
+            {% endcase %}
+          {% else %}
+            {{ section.settings.stat_2_number }}
+          {% endif %}
+        </h2>
         <p class="stats-label">{{ section.settings.stat_2_label }}</p>
       </div>
-      <div class="stats-item">
-        <h2 class="stats-number">{{ section.settings.stat_3_number }}</h2>
+      
+      <div class="stats-item wow fadeInUp" data-wow-delay="0.3s">
+        <div class="stats-icon">{% render 'icon-calendar' %}</div>
+        <h2 class="stats-number">
+          {% if section.settings.stat_3_dynamic %}
+            {% case section.settings.stat_3_data_source %}
+              {% when 'products' %}
+                {{ collections.all.products.size }}
+              {% when 'orders' %}
+                {{ shop.orders_count }}
+              {% when 'customers' %}
+                {{ shop.customers_count }}
+              {% when 'collections' %}
+                {{ collections.size }}
+            {% endcase %}
+          {% else %}
+            {{ section.settings.stat_3_number }}
+          {% endif %}
+        </h2>
         <p class="stats-label">{{ section.settings.stat_3_label }}</p>
       </div>
-      <div class="stats-item">
-        <h2 class="stats-number">{{ section.settings.stat_4_number }}</h2>
+      
+      <div class="stats-item wow fadeInUp" data-wow-delay="0.4s">
+        <div class="stats-icon">{% render 'icon-people' %}</div>
+        <h2 class="stats-number">
+          {% if section.settings.stat_4_dynamic %}
+            {% case section.settings.stat_4_data_source %}
+              {% when 'products' %}
+                {{ collections.all.products.size }}
+              {% when 'orders' %}
+                {{ shop.orders_count }}
+              {% when 'customers' %}
+                {{ shop.customers_count }}
+              {% when 'collections' %}
+                {{ collections.size }}
+            {% endcase %}
+          {% else %}
+            {{ section.settings.stat_4_number }}
+          {% endif %}
+        </h2>
         <p class="stats-label">{{ section.settings.stat_4_label }}</p>
       </div>
     </div>
@@ -39,9 +110,10 @@
     /* Container for the entire stats section */
     #stats-section {
       position: relative;
-      padding: 60px 20px;
-      color: #fff;
+      padding: 80px 20px;
+      color: {{ section.settings.text_color }};
       text-align: center;
+      overflow: hidden;
     }
 
     /* Semi-transparent overlay on background */
@@ -52,6 +124,17 @@
       bottom: 0;
       left: 0;
       pointer-events: none;
+      opacity: {{ section.settings.overlay_opacity }};
+      backdrop-filter: blur({{ section.settings.blur_amount }}px);
+    }
+
+    .stats-heading {
+      color: {{ section.settings.heading_color }};
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 2;
+      font-weight: 600;
     }
 
     /* Container to keep stats centered and responsive */
@@ -67,48 +150,116 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 20px;
+      gap: 30px;
     }
 
     /* Individual stat item */
     .stats-item {
-      flex: 1 1 180px;
-      min-width: 180px; 
+      flex: 1 1 220px;
+      min-width: 220px;
+      background: {{ section.settings.stat_bg_color }};
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      border-radius: 12px;
+      padding: 25px 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Hollow number styling */
-    .stats-number {
-      font-size: 3em;
-      margin-bottom: 10px;
-      font-weight: bold;
-      color: transparent; 
-      -webkit-text-stroke: 2px #ffffff; 
-      text-stroke: 2px #ffffff; 
+    .stats-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
 
-      text-shadow:
-        2px 2px 0 {{section.settings.text_color}},
-        -2px 2px 0 {{section.settings.text_color}},
-        2px -2px 0 {{section.settings.text_color}},
-        -2px -2px 0 {{section.settings.text_color}},
-        0px 2px 0 {{section.settings.text_color}},
-        2px 0px 0 {{section.settings.text_color}},
-        0px -2px 0 {{section.settings.text_color}},
-        -2px 0px 0 {{section.settings.text_color}};
+    .stats-item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, {{ section.settings.accent_color }} 0%, {{ section.settings.accent_color | color_lighten: 30 }} 100%);
+    }
+
+    .stats-icon {
+      margin: 0 auto 15px;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: {{ section.settings.accent_color | color_modify: 'alpha', 0.15 }};
+      border-radius: 50%;
+    }
+
+    .stats-icon svg {
+      width: 30px;
+      height: 30px;
+      fill: {{ section.settings.accent_color }};
+    }
+
+    /* Number styling */
+    .stats-number {
+      font-size: 3.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+      background: linear-gradient(45deg, {{ section.settings.number_color }} 0%, {{ section.settings.number_color | color_lighten: 20 }} 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      
+      {% if section.settings.use_outline %}
+        -webkit-text-stroke: 2px {{ section.settings.outline_color }}; 
+        text-stroke: 2px {{ section.settings.outline_color }};
+        
+        text-shadow:
+          2px 2px 0 {{ section.settings.shadow_color | color_modify: 'alpha', 0.3 }},
+          -2px 2px 0 {{ section.settings.shadow_color | color_modify: 'alpha', 0.3 }},
+          2px -2px 0 {{ section.settings.shadow_color | color_modify: 'alpha', 0.3 }},
+          -2px -2px 0 {{ section.settings.shadow_color | color_modify: 'alpha', 0.3 }};
+      {% endif %}
     }
 
     /* Label styling */
     .stats-label {
-      font-size: 1.1em;
+      font-size: 1.1rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      color: {{ section.settings.label_color }};
+      font-weight: 500;
     }
 
     @media (max-width: 767px) {
       #stats-section {
-        padding: 40px 10px;
+        padding: 60px 10px;
       }
+      
+      .stats-heading {
+        font-size: 2rem;
+        margin-bottom: 30px;
+      }
+      
+      .stats-item {
+        min-width: 160px;
+        padding: 20px 15px;
+      }
+      
+      .stats-icon {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .stats-icon svg {
+        width: 25px;
+        height: 25px;
+      }
+      
       .stats-number {
-        font-size: 2em;
+        font-size: 2.5rem;
+      }
+      
+      .stats-label {
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -121,37 +272,42 @@
 
       function animateNumbers() {
         statsNumbers.forEach(stat => {
-          const target = parseInt(stat.textContent, 10);
+          const target = parseInt(stat.textContent.trim(), 10);
+          if (isNaN(target)) return;
+          
           stat.textContent = '0';
-          const increment = target / 200; 
-
-          const updateNumber = () => {
-            let current = parseFloat(stat.textContent);
-            if (current < target) {
-              current += increment;
-              if (current > target) current = target;
-              stat.textContent = Math.ceil(current);
-              requestAnimationFrame(updateNumber);
+          const duration = 2000; 
+          const frames = 60; 
+          const increment = target / (duration / 1000 * frames);
+          
+          let count = 0;
+          const timer = setInterval(() => {
+            count += increment;
+            if (count >= target) {
+              clearInterval(timer);
+              stat.textContent = Number.isInteger(target) ? target : target.toFixed(1);
             } else {
-              stat.textContent = target;
+              stat.textContent = Math.floor(count);
             }
-          };
-
-          updateNumber();
+          }, 1000 / frames);
         });
       }
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting && !hasAnimated) {
-            animateNumbers();
+            setTimeout(animateNumbers, 300);
             hasAnimated = true;
             observer.unobserve(statsSection);
           }
         });
-      }, { threshold: 0.5 });
+      }, { threshold: 0.3 });
 
       observer.observe(statsSection);
+
+      if (typeof WOW !== 'undefined') {
+        new WOW().init();
+      }
     });
   </script>
 
@@ -159,6 +315,22 @@
 {
   "name": "Stats Section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Our Numbers Speak"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#ffffff"
+    },
     {
       "type": "image_picker",
       "id": "background_image",
@@ -171,70 +343,216 @@
       "default": "#000000"
     },
     {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Color",
-      "default":"transparent"
-    },
-    {
       "type": "range",
       "id": "overlay_opacity",
       "label": "Overlay opacity",
-      "default": 0.5,
+      "default": 0.7,
       "min": 0,
       "max": 1,
-      "step": 0.1
+      "step": 0.05
+    },
+    {
+      "type": "range",
+      "id": "blur_amount",
+      "label": "Background Blur",
+      "default": 0,
+      "min": 0,
+      "max": 10,
+      "step": 1
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "stat_bg_color",
+      "label": "Stat Background Color",
+      "default": "rgba(255, 255, 255, 0.1)"
+    },
+    {
+      "type": "header",
+      "content": "Number Style Settings"
+    },
+    {
+      "type": "color",
+      "id": "number_color",
+      "label": "Number Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label Color",
+      "default": "rgba(255, 255, 255, 0.8)"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#4CAF50"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_outline",
+      "label": "Use Outline Effect",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "outline_color",
+      "label": "Outline Color",
+      "default": "rgba(255, 255, 255, 0.5)"
+    },
+    {
+      "type": "color",
+      "id": "shadow_color",
+      "label": "Shadow Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Stat 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "stat_1_dynamic",
+      "label": "Use Dynamic Data",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "stat_1_data_source",
+      "label": "Data Source",
+      "options": [
+        { "value": "products", "label": "Total Products" },
+        { "value": "orders", "label": "Total Orders" },
+        { "value": "customers", "label": "Total Customers" },
+        { "value": "collections", "label": "Total Collections" }
+      ],
+      "default": "products"
     },
     {
       "type": "text",
       "id": "stat_1_number",
-      "label": "Stat 1 Number",
-      "default": "12"
+      "label": "Custom Number",
+      "default": "12",
+      "info": "Used if not dynamic"
     },
     {
       "type": "text",
       "id": "stat_1_label",
-      "label": "Stat 1 Label",
+      "label": "Label",
       "default": "Amazing Deals"
+    },
+    {
+      "type": "header",
+      "content": "Stat 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "stat_2_dynamic",
+      "label": "Use Dynamic Data",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "stat_2_data_source",
+      "label": "Data Source",
+      "options": [
+        { "value": "products", "label": "Total Products" },
+        { "value": "orders", "label": "Total Orders" },
+        { "value": "customers", "label": "Total Customers" },
+        { "value": "collections", "label": "Total Collections" }
+      ],
+      "default": "orders"
     },
     {
       "type": "text",
       "id": "stat_2_number",
-      "label": "Stat 2 Number",
-      "default": "670"
+      "label": "Custom Number",
+      "default": "670",
+      "info": "Used if not dynamic"
     },
     {
       "type": "text",
       "id": "stat_2_label",
-      "label": "Stat 2 Label",
+      "label": "Label",
       "default": "Sold Tours"
+    },
+    {
+      "type": "header",
+      "content": "Stat 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "stat_3_dynamic",
+      "label": "Use Dynamic Data",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "stat_3_data_source",
+      "label": "Data Source",
+      "options": [
+        { "value": "products", "label": "Total Products" },
+        { "value": "orders", "label": "Total Orders" },
+        { "value": "customers", "label": "Total Customers" },
+        { "value": "collections", "label": "Total Collections" }
+      ],
+      "default": "collections"
     },
     {
       "type": "text",
       "id": "stat_3_number",
-      "label": "Stat 3 Number",
-      "default": "24"
+      "label": "Custom Number",
+      "default": "24",
+      "info": "Used if not dynamic"
     },
     {
       "type": "text",
       "id": "stat_3_label",
-      "label": "Stat 3 Label",
+      "label": "Label",
       "default": "New Tours"
+    },
+    {
+      "type": "header",
+      "content": "Stat 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "stat_4_dynamic",
+      "label": "Use Dynamic Data",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "stat_4_data_source",
+      "label": "Data Source",
+      "options": [
+        { "value": "products", "label": "Total Products" },
+        { "value": "orders", "label": "Total Orders" },
+        { "value": "customers", "label": "Total Customers" },
+        { "value": "collections", "label": "Total Collections" }
+      ],
+      "default": "customers"
     },
     {
       "type": "text",
       "id": "stat_4_number",
-      "label": "Stat 4 Number",
-      "default": "980"
+      "label": "Custom Number",
+      "default": "980",
+      "info": "Used if not dynamic"
     },
     {
       "type": "text",
       "id": "stat_4_label",
-      "label": "Stat 4 Label",
+      "label": "Label",
       "default": "Happy Customers"
     }
   ],
-  "blocks": [],
   "presets": [
     {
       "name": "Stats Section"
