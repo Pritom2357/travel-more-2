@@ -392,6 +392,13 @@
     color: {{ section.settings.search_btn_text_color }} !important;
     transition: background-color 0.3s, border-color 0.3s, color 0.3s;
     font-size: {{section.settings.icon_font_size}}px;
+    padding: 8px 12px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    min-height: 42px;
   }
   .hero-section .nav-settings .btn-outline-success:hover {
     {% comment %} background-color: {{ section.settings.search_btn_hover_color }} !important; {% endcomment %}
@@ -519,12 +526,15 @@
   }
   .cart-link-container {
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .cart-count-badge {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: 0px;
+    right: 0px;
     background-color: {{ section.settings.btn1_color | default: '#449EED' }};
     color: white;
     border-radius: 50%;
@@ -536,7 +546,7 @@
     align-items: center;
     justify-content: center;
     padding: 0 4px;
-    line-height: 1;
+    line-height: 3;
   }
 
   /* Hide badge when cart is empty */
