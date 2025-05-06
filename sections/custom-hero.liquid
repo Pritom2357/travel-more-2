@@ -434,13 +434,20 @@
         {% when 'solid' %}
           background-color: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }};
         {% when 'gradient_vertical' %}
-          background: linear-gradient(to bottom, 
-            {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }} 0%,
-            {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity | times: 1.5 }} 100%);
+          {% assign end_opacity = section.settings.overlay_opacity | times: 1.5 %}
+          {% if end_opacity > 1 %}{% assign end_opacity = 1 %}{% endif %}
+          background: linear-gradient(
+            to bottom,
+            {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }},
+            {{ section.settings.overlay_color | color_modify: 'alpha', end_opacity }}
+          );
         {% when 'gradient_radial' %}
-          background: radial-gradient(circle, 
-            {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity | times: 0.7 }} 0%,
-            {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }} 100%);
+          {% assign center_opacity = section.settings.overlay_opacity | times: 0.7 %}
+          background: radial-gradient(
+            circle at center,
+            {{ section.settings.overlay_color | color_modify: 'alpha', center_opacity }},
+            {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }}
+          );
       {% endcase %}
     {% endif %}
   }
