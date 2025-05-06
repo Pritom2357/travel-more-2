@@ -21,7 +21,7 @@
     
     <div class="stats-content">
       <div class="stats-item wow fadeInUp" data-wow-delay="0.1s">
-        <div class="stats-icon">{% render 'icon-cart' %}</div>
+        {% comment %} <div class="stats-icon">{% render 'icon-cart' %}</div> {% endcomment %}
         <h2 class="stats-number">
           {% if section.settings.stat_1_dynamic %}
             {% case section.settings.stat_1_data_source %}
@@ -42,7 +42,7 @@
       </div>
       
       <div class="stats-item wow fadeInUp" data-wow-delay="0.2s">
-        <div class="stats-icon">{% render 'icon-globe' %}</div>
+        {% comment %} <div class="stats-icon">{% render 'icon-globe' %}</div> {% endcomment %}
         <h2 class="stats-number">
           {% if section.settings.stat_2_dynamic %}
             {% case section.settings.stat_2_data_source %}
@@ -63,7 +63,7 @@
       </div>
       
       <div class="stats-item wow fadeInUp" data-wow-delay="0.3s">
-        <div class="stats-icon">{% render 'icon-calendar' %}</div>
+        {% comment %} <div class="stats-icon">{% render 'icon-calendar' %}</div> {% endcomment %}
         <h2 class="stats-number">
           {% if section.settings.stat_3_dynamic %}
             {% case section.settings.stat_3_data_source %}
@@ -84,7 +84,7 @@
       </div>
       
       <div class="stats-item wow fadeInUp" data-wow-delay="0.4s">
-        <div class="stats-icon">{% render 'icon-people' %}</div>
+        {% comment %} <div class="stats-icon">{% render 'icon-people' %}</div> {% endcomment %}
         <h2 class="stats-number">
           {% if section.settings.stat_4_dynamic %}
             {% case section.settings.stat_4_data_source %}
