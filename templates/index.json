@@ -123,18 +123,65 @@
     },
     "intro_section_tH7HDm": {
       "type": "intro-section",
+      "blocks": {
+        "image_UPB7Lx": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/beach.jpg",
+            "image_alt": "Travel Destination",
+            "image_caption": "Amazing Destination"
+          }
+        },
+        "image_YgKqgU": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/dest6.jpg",
+            "image_alt": "Travel Destination",
+            "image_caption": "Amazing Destination"
+          }
+        },
+        "image_rGXMVX": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/dest1.jpg",
+            "image_alt": "Travel Destination",
+            "image_caption": "Amazing Destination"
+          }
+        }
+      },
+      "block_order": [
+        "image_UPB7Lx",
+        "image_YgKqgU",
+        "image_rGXMVX"
+      ],
       "settings": {
         "isImage": true,
         "bg_color": "#ddf5f5",
-        "img": "shopify://shop_images/beach.jpg",
+        "gallery_style": "single",
+        "image_caption": "Travel Gallery",
+        "caption_color": "#666666",
         "bg_shadow_color": "#d0e4e3",
         "title_size": 48,
+        "text_spacing": 15,
         "text1": "It's Time For a",
         "text1_color": "#1773b0",
+        "text1_weight": 400,
+        "text1_animation": "fadeInUp",
         "text2": "New Adventure!",
         "text2_color": "#85d0d7",
+        "text2_weight": 700,
+        "text2_style": "none",
+        "text2_animation": "fadeInUp",
         "text3": "What are you waiting for?",
         "text3_color": "#1773b0",
+        "text3_weight": 400,
+        "text3_animation": "fadeInUp",
+        "title_effect": "none",
+        "title_effect_color": "#000000",
+        "title_effect_width": 2,
+        "subtitle_effect": "none",
+        "subtitle_effect_color": "#000000",
+        "subtitle_effect_width": 1,
         "description": "<p>Our team of travel insiders is obsessed with finding the best things to do everywhere we travel. From Paris to Phuket to Perth, from traditional tours to once-in-a-lifetime experiences, we have something for every kind of traveler. And we are proud to say that after 27 experience-packed years, we are the world leader. When planning your trip, why start anywhere else?</p>",
         "description_color": "#000000",
         "description_size": 16,
@@ -143,7 +190,12 @@
         "signature_size": 18,
         "designation": "CEO Founder",
         "designation_color": "#000000",
-        "designaton_size": 16
+        "designaton_size": 16,
+        "enable_cta": true,
+        "cta_text": "Explore Destinations",
+        "cta_link": "",
+        "cta_bg_color": "#0066cc",
+        "cta_text_color": "#ffffff"
       }
     },
     "stats_section_JFBK8d": {
