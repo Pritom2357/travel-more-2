@@ -13,9 +13,10 @@
       "type": "floating-countdown-modal",
       "settings": {
         "bg_color": "#ff6b6b",
+        "promo_image": "shopify://shop_images/dest6.jpg",
         "overlay_opacity": 0.7,
         "floating_position": "bottom-right",
-        "floating_icon_type": "percent",
+        "floating_icon_type": "clock",
         "percent_off": "30",
         "promo_subheading": "Limited Time Offer",
         "promo_heading": "30% OFF ALL DESTINATIONS",
@@ -25,7 +26,7 @@
         "secondary_font_size": 16,
         "primary_text_color": "#ffffff",
         "secondary_text_color": "#eeeeee",
-        "end_date": "2025-04-18",
+        "end_date": "2025-5-7",
         "timer_font_size": 24,
         "timer_bg_color": "#ffffff33",
         "timer_text_color": "#ffffff",
@@ -34,7 +35,7 @@
         "button_link": "",
         "button_bg_color": "#ffffff",
         "button_text_color": "#ff6b6b",
-        "display_delay": 3
+        "display_delay": 2
       }
     },
     "custom_hero_VL6Rmr": {
@@ -80,10 +81,10 @@
         "sub_title_size": 1.5,
         "sub_title_weight": 800,
         "sub_title_color": "#ffffff",
-        "title_effect": "outline",
+        "title_effect": "shadow",
         "title_effect_color": "#000000",
         "title_effect_width": 3,
-        "subtitle_effect": "outline",
+        "subtitle_effect": "shadow",
         "subtitle_effect_color": "#1c1b1b",
         "subtitle_effect_width": 2,
         "btn1_text": "Discover More",
