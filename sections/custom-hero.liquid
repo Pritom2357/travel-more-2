@@ -413,6 +413,30 @@
     background-size: cover;
     isolation: isolate; 
   }
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    
+    {% if section.settings.enable_overlay %}
+      {% case section.settings.overlay_type %}
+        {% when 'solid' %}
+          background-color: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }};
+        {% when 'gradient_vertical' %}
+          background: linear-gradient(to bottom, 
+            {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }} 0%,
+            {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity | times: 1.5 }} 100%);
+        {% when 'gradient_radial' %}
+          background: radial-gradient(circle, 
+            {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity | times: 0.7 }} 0%,
+            {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }} 100%);
+      {% endcase %}
+    {% endif %}
+  }
   .hero-section .row.align-items-center {
     min-height: 100vh;
   }
@@ -1026,6 +1050,42 @@
       "type": "image_picker",
       "id": "bg_img",
       "label": "Hero Background Image"
+    },
+    {
+      "type": "header",
+      "content": "Background Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_overlay",
+      "label": "Enable Background Overlay",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.05,
+      "default": 0.4
+    },
+    {
+      "type": "select",
+      "id": "overlay_type",
+      "label": "Overlay Type",
+      "options": [
+        {"value": "solid", "label": "Solid Color"},
+        {"value": "gradient_vertical", "label": "Vertical Gradient"},
+        {"value": "gradient_radial", "label": "Radial Gradient"}
+      ],
+      "default": "solid"
     },
     
     {
