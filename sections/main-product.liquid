@@ -75,7 +75,7 @@
         <div class="product-name" style="color: {{ section.settings.product_title_color }};">
           {{ product.title }}
         </div>
-        {% if product.collections and section.settings.show_collections %}
+        {% comment %} {% if product.collections and section.settings.show_collections %}
           <div class="product-collections">
             <div class="collection-buttons">
               <span class="info-label" style="color: {{ section.settings.label_color }};">Collections:</span>
@@ -86,8 +86,8 @@
               {% endfor %}
             </div>
           </div>
-        {% endif %}
-        {% if product.tags and section.settings.show_tags %}
+        {% endif %} {% endcomment %}
+        {% comment %} {% if product.tags and section.settings.show_tags %}
           <div class="product-tags">
             <div class="tag-buttons">
              <span class="info-label" style="color: {{ section.settings.label_color }};">Tags:</span>
@@ -98,13 +98,13 @@
               {% endfor %}
             </div>
           </div>
-        {% endif %}
-        {% if product.vendor and section.settings.show_vendor %}
+        {% endif %} {% endcomment %}
+        {% comment %} {% if product.vendor and section.settings.show_vendor %}
           <div class="product-vendor">
             <span class="info-label" style="color: {{ section.settings.label_color }};">From:</span> 
             <span class="vendor-name" style="color: {{ section.settings.vendor_text_color }};">{{ product.vendor }}</span>
           </div>
-        {% endif %}
+        {% endif %} {% endcomment %}
 
         <div class="variants-container">
           {% unless product.has_only_default_variant %}
