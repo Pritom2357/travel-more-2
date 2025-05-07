@@ -81,22 +81,28 @@
         color: {{ section.settings.text_color }};
       {% elsif section.settings.text_effect == 'hollow' %}
         color: transparent; 
-        -webkit-text-stroke: 2px {{ section.settings.text_color }}; 
-        text-stroke: 2px {{ section.settings.text_color }};
+        -webkit-text-stroke: {{ section.settings.hollow_stroke_width }}px {{ section.settings.text_color }}; 
+        text-stroke: {{ section.settings.hollow_stroke_width }}px {{ section.settings.text_color }};
       {% elsif section.settings.text_effect == 'shadow' %}
         color: {{ section.settings.text_color }};
+        {% assign shadow_rgba = section.settings.shadow_color | color_modify: 'alpha', section.settings.shadow_intensity %}
+        {% assign shadow_size = section.settings.shadow_size | default: 2 %}
         text-shadow:
-          2px 2px 0 rgba(0,0,0,0.5),
-          -2px 2px 0 rgba(0,0,0,0.5),
-          2px -2px 0 rgba(0,0,0,0.5),
-          -2px -2px 0 rgba(0,0,0,0.5);
+          {{ shadow_size }}px {{ shadow_size }}px 0 {{ shadow_rgba }},
+          -{{ shadow_size }}px {{ shadow_size }}px 0 {{ shadow_rgba }},
+          {{ shadow_size }}px -{{ shadow_size }}px 0 {{ shadow_rgba }},
+          -{{ shadow_size }}px -{{ shadow_size }}px 0 {{ shadow_rgba }};
       {% elsif section.settings.text_effect == 'glow' %}
         color: {{ section.settings.text_color }};
+        {% assign glow_intensity = section.settings.glow_intensity | default: 10 %}
+        {% assign glow_spread = section.settings.glow_spread | default: 3 %}
         text-shadow:
-          0 0 5px {{ section.settings.text_color }},
-          0 0 10px {{ section.settings.text_color }},
-          0 0 15px {{ section.settings.text_color }},
-          0 0 20px {{ section.settings.text_color }};
+          {% if glow_spread >= 1 %}0 0 {{ glow_intensity | divided_by: 2 }}px {{ section.settings.text_color }},{% endif %}
+          {% if glow_spread >= 2 %}0 0 {{ glow_intensity }}px {{ section.settings.text_color }},{% endif %}
+          {% if glow_spread >= 3 %}0 0 {{ glow_intensity | times: 1.5 }}px {{ section.settings.text_color }},{% endif %}
+          {% if glow_spread >= 4 %}0 0 {{ glow_intensity | times: 2 }}px {{ section.settings.text_color }},{% endif %}
+          {% if glow_spread >= 5 %}0 0 {{ glow_intensity | times: 2.5 }}px {{ section.settings.text_color }};{% endif %}
+          {% if glow_spread < 5 %};{% endif %}
       {% endif %}
     }
 
@@ -132,13 +138,12 @@
 
       function animateNumbers() {
         statsNumbers.forEach(stat => {
-          // Store the original number before resetting
           const originalContent = stat.textContent;
           const target = parseInt(originalContent, 10);
-          if (isNaN(target)) return; // Skip if not a valid number
+          if (isNaN(target)) return; 
           
           stat.textContent = '0';
-          const increment = target / 50; // Make animation faster
+          const increment = target / 50; 
 
           const updateNumber = () => {
             let current = parseFloat(stat.textContent);
@@ -148,7 +153,7 @@
               stat.textContent = Math.ceil(current);
               requestAnimationFrame(updateNumber);
             } else {
-              stat.textContent = originalContent; // Restore original content
+              stat.textContent = originalContent; 
             }
           };
 
@@ -156,7 +161,6 @@
         });
       }
 
-      // Fix intersection observer
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting && !hasAnimated) {
@@ -253,6 +257,71 @@
         }
       ],
       "default": "hollow"
+    },
+    {
+      "type": "header",
+      "content": "Text Effect Settings",
+      "info": "Settings for the selected text effect"
+    },
+    {
+      "type": "range",
+      "id": "hollow_stroke_width",
+      "label": "Hollow Text Stroke Width",
+      "min": 1,
+      "max": 5,
+      "step": 0.5,
+      "default": 2,
+      "unit": "px",
+      "info": "Width of the outline for hollow text effect"
+    },
+    {
+      "type": "color",
+      "id": "shadow_color",
+      "label": "Shadow Color",
+      "default": "#000000",
+      "info": "Color of the shadow effect"
+    },
+    {
+      "type": "range",
+      "id": "shadow_intensity",
+      "label": "Shadow Intensity",
+      "min": 0.1,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.5,
+      "info": "Opacity of the shadow effect"
+    },
+    {
+      "type": "range",
+      "id": "shadow_size",
+      "label": "Shadow Size",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 2,
+      "unit": "px",
+      "info": "Size of the shadow effect"
+    },
+    {
+      "type": "range",
+      "id": "glow_intensity",
+      "label": "Glow Intensity",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 10,
+      "unit": "px",
+      "info": "Size of the glow effect"
+    },
+    {
+      "type": "range",
+      "id": "glow_spread",
+      "label": "Glow Spread",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "info": "Number of glow layers"
     },
     {
       "type": "header",
