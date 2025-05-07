@@ -82,7 +82,7 @@
       {% elsif section.settings.text_effect == 'hollow' %}
         color: transparent; 
         -webkit-text-stroke: 2px {{ section.settings.text_color }}; 
-        text-stroke: 2px {{ section.settings.text_color }}; 
+        text-stroke: 2px {{ section.settings.text_color }};
       {% elsif section.settings.text_effect == 'shadow' %}
         color: {{ section.settings.text_color }};
         text-shadow:
@@ -132,9 +132,13 @@
 
       function animateNumbers() {
         statsNumbers.forEach(stat => {
-          const target = parseInt(stat.textContent, 10);
+          // Store the original number before resetting
+          const originalContent = stat.textContent;
+          const target = parseInt(originalContent, 10);
+          if (isNaN(target)) return; // Skip if not a valid number
+          
           stat.textContent = '0';
-          const increment = target / 200; 
+          const increment = target / 50; // Make animation faster
 
           const updateNumber = () => {
             let current = parseFloat(stat.textContent);
@@ -144,7 +148,7 @@
               stat.textContent = Math.ceil(current);
               requestAnimationFrame(updateNumber);
             } else {
-              stat.textContent = target;
+              stat.textContent = originalContent; // Restore original content
             }
           };
 
@@ -152,15 +156,15 @@
         });
       }
 
+      // Fix intersection observer
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting && !hasAnimated) {
             animateNumbers();
             hasAnimated = true;
-            observer.unobserve(statsSection);
           }
         });
-      }, { threshold: 0.5 });
+      }, { threshold: 0.2 });
 
       observer.observe(statsSection);
     });
