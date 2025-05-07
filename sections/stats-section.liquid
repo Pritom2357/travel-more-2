@@ -96,13 +96,12 @@
         color: {{ section.settings.text_color }};
         {% assign glow_intensity = section.settings.glow_intensity | default: 10 %}
         {% assign glow_spread = section.settings.glow_spread | default: 3 %}
-        text-shadow:
-          {% if glow_spread >= 1 %}0 0 {{ glow_intensity | divided_by: 2 }}px {{ section.settings.text_color }},{% endif %}
-          {% if glow_spread >= 2 %}0 0 {{ glow_intensity }}px {{ section.settings.text_color }},{% endif %}
-          {% if glow_spread >= 3 %}0 0 {{ glow_intensity | times: 1.5 }}px {{ section.settings.text_color }},{% endif %}
-          {% if glow_spread >= 4 %}0 0 {{ glow_intensity | times: 2 }}px {{ section.settings.text_color }},{% endif %}
-          {% if glow_spread >= 5 %}0 0 {{ glow_intensity | times: 2.5 }}px {{ section.settings.text_color }};{% endif %}
-          {% if glow_spread < 5 %};{% endif %}
+        text-shadow: 
+          0 0 {{ glow_intensity | divided_by: 2 }}px {{ section.settings.text_color }}
+          {% if glow_spread >= 2 %}, 0 0 {{ glow_intensity }}px {{ section.settings.text_color }}{% endif %}
+          {% if glow_spread >= 3 %}, 0 0 {{ glow_intensity | times: 1.5 }}px {{ section.settings.text_color }}{% endif %}
+          {% if glow_spread >= 4 %}, 0 0 {{ glow_intensity | times: 2 }}px {{ section.settings.text_color }}{% endif %}
+          {% if glow_spread >= 5 %}, 0 0 {{ glow_intensity | times: 2.5 }}px {{ section.settings.text_color }}{% endif %};
       {% endif %}
     }
 
