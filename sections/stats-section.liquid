@@ -46,7 +46,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba({{ section.settings.stats_bg_color }},  {{ section.settings.stats_overlay }});
+      {% assign rgb = section.settings.stats_bg_color | color_to_rgb %}
+      background-color: rgba({{ rgb.r }}, {{ rgb.g }}, {{ rgb.b }}, {{ section.settings.stats_overlay }});
     }
 
     .container {
