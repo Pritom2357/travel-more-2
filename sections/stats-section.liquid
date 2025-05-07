@@ -99,6 +99,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       position: relative;
+      color: {{ section.settings.lebal_color }}
     }
 
     @media (max-width: 767px) {
@@ -161,6 +162,12 @@
       "type": "image_picker",
       "id": "background_image",
       "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label Color",
+      "default": "#000000"
     },
     {
       "type": "color",
