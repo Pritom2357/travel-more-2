@@ -12,19 +12,67 @@
   <div class="container">
     <div class="stats-content">
       <div class="stats-item">
-        <h2 class="stats-number">{{ section.settings.stat_1_number }}</h2>
+        <h2 class="stats-number">
+          {% case section.settings.stat_1_source %}
+            {% when 'custom' %}
+              {{ section.settings.stat_1_number }}
+            {% when 'products_count' %}
+              {{ collections.all.products.size }}
+            {% when 'collections_count' %}
+              {{ collections.size }}
+            {% when 'orders_count' %}
+              {% comment %}Orders count requires additional setup{% endcomment %}
+              {{ shop.metafields.my_fields.total_orders | default: section.settings.stat_1_number }}
+          {% endcase %}
+        </h2>
         <p class="stats-label">{{ section.settings.stat_1_label }}</p>
       </div>
+      
       <div class="stats-item">
-        <h2 class="stats-number">{{ section.settings.stat_2_number }}</h2>
+        <h2 class="stats-number">
+          {% case section.settings.stat_2_source %}
+            {% when 'custom' %}
+              {{ section.settings.stat_2_number }}
+            {% when 'products_count' %}
+              {{ collections.all.products.size }}
+            {% when 'collections_count' %}
+              {{ collections.size }}
+            {% when 'orders_count' %}
+              {{ shop.metafields.my_fields.total_orders | default: section.settings.stat_2_number }}
+          {% endcase %}
+        </h2>
         <p class="stats-label">{{ section.settings.stat_2_label }}</p>
       </div>
+      
       <div class="stats-item">
-        <h2 class="stats-number">{{ section.settings.stat_3_number }}</h2>
+        <h2 class="stats-number">
+          {% case section.settings.stat_3_source %}
+            {% when 'custom' %}
+              {{ section.settings.stat_3_number }}
+            {% when 'products_count' %}
+              {{ collections.all.products.size }}
+            {% when 'collections_count' %}
+              {{ collections.size }}
+            {% when 'orders_count' %}
+              {{ shop.metafields.my_fields.total_orders | default: section.settings.stat_3_number }}
+          {% endcase %}
+        </h2>
         <p class="stats-label">{{ section.settings.stat_3_label }}</p>
       </div>
+      
       <div class="stats-item">
-        <h2 class="stats-number">{{ section.settings.stat_4_number }}</h2>
+        <h2 class="stats-number">
+          {% case section.settings.stat_4_source %}
+            {% when 'custom' %}
+              {{ section.settings.stat_4_number }}
+            {% when 'products_count' %}
+              {{ collections.all.products.size }}
+            {% when 'collections_count' %}
+              {{ collections.size }}
+            {% when 'orders_count' %}
+              {{ shop.metafields.my_fields.total_orders | default: section.settings.stat_4_number }}
+          {% endcase %}
+        </h2>
         <p class="stats-label">{{ section.settings.stat_4_label }}</p>
       </div>
     </div>
