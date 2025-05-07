@@ -9,11 +9,6 @@
   class="stats-section"
   style="background: no-repeat center/cover url('{{ section.settings.background_image | image_url: width: 2000 }}');"
 >
-  <div
-    class="stats-overlay"
-    style="background-color: {{ section.settings.overlay_color }}; opacity: {{ section.settings.overlay_opacity }};"
-  ></div>
-
   <div class="container">
     <div class="stats-content">
       <div class="stats-item">
@@ -40,18 +35,9 @@
     #stats-section {
       position: relative;
       padding: 60px 20px;
-      color: #fff;
+      color: {{ section.settings.text_color }};
       text-align: center;
-    }
-
-    /* Semi-transparent overlay on background */
-    .stats-overlay {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      pointer-events: none;
+      overflow: hidden;
     }
 
     /* Container to keep stats centered and responsive */
@@ -74,6 +60,8 @@
     .stats-item {
       flex: 1 1 180px;
       min-width: 180px; 
+      position: relative;
+      padding: 20px 10px;
     }
 
     /* Hollow number styling */
@@ -101,6 +89,7 @@
       font-size: 1.1em;
       text-transform: uppercase;
       letter-spacing: 1px;
+      position: relative;
     }
 
     @media (max-width: 767px) {
@@ -166,24 +155,9 @@
     },
     {
       "type": "color",
-      "id": "overlay_color",
-      "label": "Overlay color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
       "id": "text_color",
       "label": "Text Color",
       "default":"#ffffff"
-    },
-    {
-      "type": "range",
-      "id": "overlay_opacity",
-      "label": "Overlay opacity",
-      "default": 0.5,
-      "min": 0,
-      "max": 1,
-      "step": 0.1
     },
     {
       "type": "header",
