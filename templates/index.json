@@ -220,7 +220,7 @@
         "labels_font_size": 20,
         "labels_font_weight": 900,
         "labels_text_transform": "capitalize",
-        "stat_1_source": "products_count",
+        "stat_1_source": "orders_count",
         "stat_1_number": "12",
         "stat_1_label": "Amazing Deals",
         "stat_2_source": "custom",
@@ -231,7 +231,7 @@
         "stat_3_label": "New Tours",
         "stat_4_source": "products_count",
         "stat_4_number": "980",
-        "stat_4_label": "Happy Customers"
+        "stat_4_label": "Tours"
       }
     },
     "specialty_J9NYdd": {
