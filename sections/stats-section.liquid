@@ -34,7 +34,6 @@
     #stats-section {
       position: relative;
       padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
-      color: {{ section.settings.text_color }};
       text-align: center;
       overflow: hidden;
     }
@@ -73,41 +72,54 @@
       padding: 20px 10px;
     }
 
-    /* Hollow number styling */
+    /* Number styling based on selected effect */
     .stats-number {
-      font-size: 3em;
+      font-size: {{ section.settings.numbers_font_size }}px;
       margin-bottom: 10px;
-      font-weight: bold;
-      color: transparent; 
-      -webkit-text-stroke: 2px #ffffff; 
-      text-stroke: 2px #ffffff; 
-
-      text-shadow:
-        2px 2px 0 {{section.settings.text_color}},
-        -2px 2px 0 {{section.settings.text_color}},
-        2px -2px 0 {{section.settings.text_color}},
-        -2px -2px 0 {{section.settings.text_color}},
-        0px 2px 0 {{section.settings.text_color}},
-        2px 0px 0 {{section.settings.text_color}},
-        0px -2px 0 {{section.settings.text_color}},
-        -2px 0px 0 {{section.settings.text_color}};
+      font-weight: {{ section.settings.numbers_font_weight }};
+      {% if section.settings.text_effect == 'none' %}
+        color: {{ section.settings.text_color }};
+      {% elsif section.settings.text_effect == 'hollow' %}
+        color: transparent; 
+        -webkit-text-stroke: 2px {{ section.settings.text_color }}; 
+        text-stroke: 2px {{ section.settings.text_color }}; 
+      {% elsif section.settings.text_effect == 'shadow' %}
+        color: {{ section.settings.text_color }};
+        text-shadow:
+          2px 2px 0 rgba(0,0,0,0.5),
+          -2px 2px 0 rgba(0,0,0,0.5),
+          2px -2px 0 rgba(0,0,0,0.5),
+          -2px -2px 0 rgba(0,0,0,0.5);
+      {% elsif section.settings.text_effect == 'glow' %}
+        color: {{ section.settings.text_color }};
+        text-shadow:
+          0 0 5px {{ section.settings.text_color }},
+          0 0 10px {{ section.settings.text_color }},
+          0 0 15px {{ section.settings.text_color }},
+          0 0 20px {{ section.settings.text_color }};
+      {% endif %}
     }
 
     /* Label styling */
     .stats-label {
-      font-size: 1.1em;
-      text-transform: uppercase;
+      font-size: {{ section.settings.labels_font_size }}px;
+      text-transform: {{ section.settings.labels_text_transform }};
+      font-weight: {{ section.settings.labels_font_weight }};
       letter-spacing: 1px;
       position: relative;
-      color: {{ section.settings.label_color }}
+      color: {{ section.settings.label_color }};
     }
 
+    /* Responsive design */
     @media (max-width: 767px) {
       #stats-section {
         padding: 40px 10px;
       }
       .stats-number {
-        font-size: 2em;
+        font-size: calc({{ section.settings.numbers_font_size }}px * 0.65);
+      }
+      .stats-label {
+        font-size: calc({{ section.settings.labels_font_size }}px * 0.9);
       }
     }
   </style>
@@ -237,6 +249,72 @@
         }
       ],
       "default": "hollow"
+    },
+    {
+      "type": "header",
+      "content": "Typography Settings"
+    },
+    {
+      "type": "range",
+      "id": "numbers_font_size",
+      "label": "Numbers Font Size",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "numbers_font_weight",
+      "label": "Numbers Font Weight",
+      "default": 700,
+      "min": 100,
+      "max": 900,
+      "step": 100
+    },
+    {
+      "type": "range",
+      "id": "labels_font_size",
+      "label": "Labels Font Size",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "labels_font_weight",
+      "label": "Labels Font Weight",
+      "default": 400,
+      "min": 100,
+      "max": 900,
+      "step": 100
+    },
+    {
+      "type": "select",
+      "id": "labels_text_transform",
+      "label": "Labels Text Transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "UPPERCASE"
+        },
+        {
+          "value": "lowercase",
+          "label": "lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "uppercase"
     },
     {
       "type": "header",
