@@ -220,7 +220,7 @@
         "labels_font_size": 20,
         "labels_font_weight": 900,
         "labels_text_transform": "capitalize",
-        "stat_1_source": "custom",
+        "stat_1_source": "products_count",
         "stat_1_number": "12",
         "stat_1_label": "Amazing Deals",
         "stat_2_source": "custom",
