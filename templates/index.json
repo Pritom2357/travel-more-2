@@ -214,7 +214,7 @@
         "shadow_intensity": 0.5,
         "shadow_size": 10,
         "glow_intensity": 14,
-        "glow_spread": 3,
+        "glow_spread": 2,
         "numbers_font_size": 48,
         "numbers_font_weight": 900,
         "labels_font_size": 20,
