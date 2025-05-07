@@ -203,7 +203,7 @@
       "settings": {
         "background_image": "shopify://shop_images/dest6.jpg",
         "label_color": "#fbfbfb",
-        "text_color": "rgba(0,0,0,0)",
+        "text_color": "#faf2f2",
         "overlay_color": "#000000",
         "overlay_opacity": 0.3,
         "padding_top": 60,
