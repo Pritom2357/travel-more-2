@@ -121,16 +121,18 @@
           {% endif %}
         </div>
         <div class="additional-info">
-          {% if product.metafields.custom.people_allowed %}
-            <div class="people-allowed">
-              {{ product.metafields.custom.people_allowed }} people allowed
-            </div>
-          {% endif %}
-          {% if product.metafields.custom.days_allowed %}
-            <div class="days-allowed">
-              {{ product.metafields.custom.days_allowed }} days allowed
-            </div>
-          {% endif %}
+          <div class="day-people-field d-flex">
+            {% if product.metafields.custom.people_allowed %}
+              <div class="people-allowed">
+                {{ product.metafields.custom.people_allowed }} people allowed
+              </div>
+            {% endif %}
+            {% if product.metafields.custom.days_allowed %}
+              <div class="days-allowed">
+                {{ product.metafields.custom.days_allowed }} days allowed
+              </div>
+            {% endif %}
+          </div>
           {% if product.metafields.custom.additional_info %}
             <div class="additional-info-metafield">
               {{ product.metafields.custom.additional_info | metafield_tag }}
@@ -1132,9 +1134,9 @@
     background-color: rgba(255, 255, 255, 0.05);
     border-radius: 8px;gba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    display: grid;columns: repeat(auto-fit, minmax(150px, 1fr));
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
   }
   .people-allowed,
   .people-allowed,
