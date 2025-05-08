@@ -19,13 +19,13 @@
 %}
 
 <div class="{%- if enable_filtering -%}container-fluid {%- else %} container{%- endif -%}">
-  <div class="row d-flex">
+  <div class="row">
     {% if enable_filtering %}
-      <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-white">
+      <div class="col-12 col-lg-3 col-xl-2 px-0 px-lg-2 mb-3 mb-lg-0 filter-column">
         {% render 'collection-filter', collection: collection %}
       </div>
     {% endif %}
-    <div class="col py-3">
+    <div class="col-12 {% if enable_filtering %}col-lg-9 col-xl-10{% endif %} py-3">
       <div class="collection-header">
         <div class="d-flex justify-content-between">
           <div class="product-counter">
@@ -162,6 +162,33 @@
 
   .filter-group-display__submit .btn {
     width: 100%;
+  }
+
+  /* Mobile responsive fixes */
+  @media (max-width: 991px) {
+    .filter-column {
+      order: 1; /* Makes filter appear on top on mobile */
+    }
+    
+    /* Adjust collection header spacing on mobile */
+    .collection-header {
+      margin-top: 15px;
+    }
+    
+    /* Improve collection header on mobile */
+    .collection-header .d-flex {
+      flex-direction: column;
+    }
+    
+    .sort-by--container {
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
+    
+    /* Make filter take full width on mobile but contained */
+    .collection-filters-container {
+      padding: 0 10px;
+    }
   }
 </style>
 
