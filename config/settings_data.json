@@ -147,16 +147,16 @@
           "header_alignment": "center",
           "header_layout": "logo_menu_search",
           "logo": "shopify://shop_images/logo.png",
-          "logo_size": 70,
+          "logo_size": 60,
           "store_name": "Store Name",
-          "store_name_text_size": 21,
+          "store_name_text_size": 15,
           "store_name_color": "#ffffff",
           "store_name_hover_color": "#bdfdda",
           "store_name_transform": "capitalize",
           "store_name_font": "inherit",
           "menu": "main-menu",
-          "menu_text_size": 30,
-          "menu_font_weight": 900,
+          "menu_text_size": 24,
+          "menu_font_weight": 800,
           "menu_hover_effect": "glow",
           "underline_thickness": 1,
           "glow_intensity": 14,
@@ -184,7 +184,9 @@
           "popular_destinations": "Paris, Tokyo, New York, Bali, London, Rome",
           "dropdown_bg_color": "#242833",
           "dropdown_hover_bg_color": "#f8f9fa",
-          "dropdown_hover_text_color": "#333333"
+          "dropdown_hover_text_color": "#333333",
+          "enable_locale_selector": true,
+          "locale_position": "above_icons"
         }
       },
       "footer": {
