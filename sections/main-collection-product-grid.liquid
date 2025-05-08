@@ -326,6 +326,37 @@
       z-index: -1;
     }
   }
+
+  /* Update the mobile view for sorting controls */
+  @media (max-width: 576px) {
+    .filter-sort-controls {
+      width: 100%;
+      margin-top: 15px;
+      flex-direction: column; /* Stack vertically */
+      gap: 10px; /* Space between elements */
+    }
+    
+    .filter-toggle-btn {
+      width: 100%; /* Full width */
+      justify-content: center;
+      margin-right: 0;
+      margin-bottom: 8px; /* Add bottom margin for spacing */
+    }
+    
+    .sort-by--container {
+      width: 100%; /* Full width */
+    }
+    
+    .sort-by--container .d-flex {
+      width: 100%;
+      flex-direction: column; /* Stack label and select */
+    }
+    
+    .sort-by--container select {
+      width: 100%;
+      margin-top: 5px;
+    }
+  }
 </style>
 
 {% schema %}
