@@ -76,18 +76,7 @@
           {{ product.title }}
         </div>
          
-        {% comment %} {% if product.tags and section.settings.show_tags %}
-          <div class="product-tags">
-            <div class="tag-buttons">
-             <span class="info-label" style="color: {{ section.settings.label_color }};">Tags:</span>
-              {% for tag in product.tags %}
-                <button class="tag-btn" data-tag="{{ tag.name | handle }}" style="color: {{ section.settings.tag_text_color }};">
-                  {{ tag }}
-                </button>
-              {% endfor %}
-            </div>
-          </div>
-        {% endif %} {% endcomment %}
+         
         {% comment %} {% if product.vendor and section.settings.show_vendor %}
           <div class="product-vendor">
             <span class="info-label" style="color: {{ section.settings.label_color }};">From:</span> 
@@ -135,6 +124,16 @@
               <span class="collection-links">
                 {% for collection in product.collections %}
                   <a href="{{ collection.url }}" class="collection-link" style="color: {{ section.settings.collection_button_color }};">{{ collection.title }}</a>{% unless forloop.last %}, {% endunless %}
+                {% endfor %}
+              </span>
+            </div>
+          {% endif %}
+          {% if product.tags and section.settings.show_tags %}
+            <div class="product-tags">
+              <span class="info-label" style="color: {{ section.settings.label_color }};">Tags:</span>
+              <span class="tag-links">
+                {% for tag in product.tags %}
+                  <a href="/collections/all/{{ tag | handle }}" class="tag-link" style="color: {{ section.settings.tag_text_color }};">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
                 {% endfor %}
               </span>
             </div>
@@ -1206,6 +1205,77 @@
   .collection-link:hover {
     text-decoration: underline;
     opacity: 0.8;
+  }
+
+  /* Container for collections and tags - make them on same row */
+  .collection-n-tags {
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px;
+  }
+
+  /* Collections on the left */
+  .product-collections {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  /* Tags on the right */
+  .product-tags {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-left: auto;
+  }
+
+  /* Common styling for both collections and tags */
+  .collection-links,
+  .tag-links {
+    display: inline;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .collection-link,
+  .tag-link {
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .collection-link {
+    color: #4a90e2;
+  }
+
+  .tag-link {
+    color: {{ section.settings.tag_text_color }};
+  }
+
+  .collection-link:hover,
+  .tag-link:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+
+  /* Responsive adjustment */
+  @media (max-width: 576px) {
+    .collection-n-tags {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .product-tags {
+      margin-left: 0;
+    }
   }
 </style>
 
