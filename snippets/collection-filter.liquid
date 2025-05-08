@@ -204,22 +204,6 @@
   </div>
 </div>
 
-<!-- Add toggle script for mobile -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const filterToggle = document.querySelector('.filter-toggle-btn');
-    const filtersDrawer = document.getElementById('filtersDrawer');
-    
-    if (filterToggle) {
-      filterToggle.addEventListener('click', function() {
-        filtersDrawer.classList.toggle('show');
-        const isExpanded = filterToggle.getAttribute('aria-expanded') === 'true';
-        filterToggle.setAttribute('aria-expanded', !isExpanded);
-      });
-    }
-  });
-</script>
-
 <style>
   /* Mobile/Tablet Responsive Styles */
   @media (max-width: 992px) {

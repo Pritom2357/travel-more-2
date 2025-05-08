@@ -118,6 +118,32 @@
   });
 </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const filterToggleBtn = document.querySelector('.filter-toggle-btn');
+    const filtersDrawer = document.getElementById('filtersDrawer');
+    
+    if (filterToggleBtn && filtersDrawer) {
+      filterToggleBtn.addEventListener('click', function() {
+        filtersDrawer.classList.toggle('show');
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', !isExpanded);
+        
+        // Add visual feedback
+        if (!isExpanded) {
+          this.classList.add('active');
+          this.innerHTML = '<i class="bi bi-funnel-fill"></i><span>Close Filters</span>';
+        } else {
+          this.classList.remove('active');
+          this.innerHTML = '<i class="bi bi-funnel"></i><span>Filters</span>';
+        }
+      });
+    }
+    
+    // Keep existing sort-by code unchanged
+  });
+</script>
+
 <style>
 
   .collection-chooser select {
@@ -253,6 +279,24 @@
     .sort-by--container {
       flex: 1;
     }
+  }
+
+  .filters-drawer.show {
+    display: block;
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* Active state for filter button */
+  .filter-toggle-btn.active {
+    background-color: #0d6efd;
+    color: white;
   }
 </style>
 
