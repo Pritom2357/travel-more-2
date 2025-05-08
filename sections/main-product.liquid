@@ -1031,12 +1031,9 @@
   }
 
   /* Location and Map Styling */
-  .location-map {
-    margin: 15px 0;
-    padding: 15px;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  .map-container{
+    width: 300px;
+    height: 250px;
   }
 
   .location-name {
@@ -1070,6 +1067,49 @@
     .google-map-location iframe {
       height: 180px;
     }
+  }
+
+  /* Location and Map Styling */
+  .location-map {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .map-container {
+    width: 300px;  /* Fixed width */
+    height: 250px; /* Fixed height */
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto; /* Centers the map if smaller than parent */
+  }
+
+  /* Force iframe to fit properly */
+  .map-container iframe,
+  .map-container > div {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    border-radius: 6px !important;
+  }
+
+  /* Remove any inline position styling from embedded divs */
+  .map-container div[style*="position:"] {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Hide attribution links */
+  .map-container a[rel="noopener"] {
+    display: none !important;
   }
 </style>
 
