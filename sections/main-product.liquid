@@ -1209,16 +1209,16 @@
 
   /* Container for collections and tags - make them on same row */
   .collection-n-tags {
-    margin: 15px 0;
+    {% comment %} margin: 15px 0; {% endcomment %}
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: baseline;
-    gap: 10px;
+    {% comment %} gap: 10px; {% endcomment %}
     background-color: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 15px;
+    {% comment %} padding: 15px; {% endcomment %}
   }
 
   /* Collections on the left */
