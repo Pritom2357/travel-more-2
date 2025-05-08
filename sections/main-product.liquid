@@ -148,75 +148,77 @@
       {{ product.description }}
     </div>
      <div class="variants-container">
-          {% unless product.has_only_default_variant %}
-            <div class="variant-options-row">
-              {% for option in product.options_with_values %}
-                <div class="variant-option-group">
-                  <label class="option-label" style="color: {{ section.settings.label_color }};">{{ option.name }}:</label>
-                  
-                  <div class="option-selector">
-                    <select name="{{ option.name | handleize }}" class="single-option-selector" data-option-index="{{ forloop.index0 }}">
-                      {% for value in option.values %}
-                        <option value="{{ value | escape }}" 
-                          {% if option.selected_value == value %}selected="selected"{% endif %}>
-                          {{ value }}
-                        </option>
-                      {% endfor %}
-                    </select>
-                  </div>
+     <div class="pricing">
+        {% unless product.has_only_default_variant %}
+          <div class="variant-options-row">
+            {% for option in product.options_with_values %}
+              <div class="variant-option-group">
+                <label class="option-label" style="color: {{ section.settings.label_color }};">{{ option.name }}:</label>
+                
+                <div class="option-selector">
+                  <select name="{{ option.name | handleize }}" class="single-option-selector" data-option-index="{{ forloop.index0 }}">
+                    {% for value in option.values %}
+                      <option value="{{ value | escape }}" 
+                        {% if option.selected_value == value %}selected="selected"{% endif %}>
+                        {{ value }}
+                      </option>
+                    {% endfor %}
+                  </select>
                 </div>
-              {% endfor %}
-            </div>
-          {% endunless %}
-          
-          <!-- Hidden select for the actual variant ID -->
-          <select name="id" id="productSelect" class="product-variant-id" style="display: none;">
-            {% for variant in product.variants %}
-              <option value="{{ variant.id }}" 
-                {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
-                {% unless variant.available %}disabled="disabled"{% endunless %}>
-                {{ variant.title }} - {{ variant.price | money }}
-              </option>
+              </div>
             {% endfor %}
-          </select>
+          </div>
+        {% endunless %}
+        
+        <!-- Hidden select for the actual variant ID -->
+        <select name="id" id="productSelect" class="product-variant-id" style="display: none;">
+          {% for variant in product.variants %}
+            <option value="{{ variant.id }}" 
+              {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
+              {% unless variant.available %}disabled="disabled"{% endunless %}>
+              {{ variant.title }} - {{ variant.price | money }}
+            </option>
+          {% endfor %}
+        </select>
 
-          <div class="price-section">
-            <div class="current-price" id="productPrice">
-              {% if product.compare_at_price_max > product.price %}
-                <span class="sale-price" data-regular-price="{{ product.price | money_without_currency }}">{{ product.price | money_with_currency }}</span>
-                <span class="compare-at-price" data-compare-price="{{ product.compare_at_price | money_without_currency }}">{{ product.compare_at_price | money_with_currency }}</span>
-                <span class="discount-badge">
-                  {% assign savings = product.compare_at_price_max | minus: product.price | times: 100 | divided_by: product.compare_at_price_max %}
-                  Save {{ savings }}%
-                </span>
-              {% else %}
-                <span data-regular-price="{{ product.price | money_without_currency }}">{{ product.price | money }}</span>
-              {% endif %}
-            </div>
-            
-            <div class="availability" id="productAvailability">
-              {% if product.available %}
-                <span class="in-stock">In Stock</span>
-              {% else %}
-                <span class="out-of-stock">Out of Stock</span>
-              {% endif %}
-            </div>
+        <div class="price-section">
+          <div class="current-price" id="productPrice">
+            {% if product.compare_at_price_max > product.price %}
+              <span class="sale-price" data-regular-price="{{ product.price | money_without_currency }}">{{ product.price | money_with_currency }}</span>
+              <span class="compare-at-price" data-compare-price="{{ product.compare_at_price | money_without_currency }}">{{ product.compare_at_price | money_with_currency }}</span>
+              <span class="discount-badge">
+                {% assign savings = product.compare_at_price_max | minus: product.price | times: 100 | divided_by: product.compare_at_price_max %}
+                Save {{ savings }}%
+              </span>
+            {% else %}
+              <span data-regular-price="{{ product.price | money_without_currency }}">{{ product.price | money }}</span>
+            {% endif %}
           </div>
           
-          <div class="add-to-cart-container">
-            <button type="button" 
-              id="continueToBooking" 
-              class="add-to-cart-button {% unless product.available %}disabled{% endunless %}"
-              {% unless product.available %}disabled{% endunless %}>
-              {% if product.available %}Continue to Booking{% else %}Sold Out{% endif %}
-            </button>
+          <div class="availability" id="productAvailability">
+            {% if product.available %}
+              <span class="in-stock">In Stock</span>
+            {% else %}
+              <span class="out-of-stock">Out of Stock</span>
+            {% endif %}
           </div>
         </div>
-        <div class="custom-tour-part">
-          <a href="/pages/tour-request" class="custom-tour-button">
-            Request Custom Tour
-          </a>
+        
+        <div class="add-to-cart-container">
+          <button type="button" 
+            id="continueToBooking" 
+            class="add-to-cart-button {% unless product.available %}disabled{% endunless %}"
+            {% unless product.available %}disabled{% endunless %}>
+            {% if product.available %}Continue to Booking{% else %}Sold Out{% endif %}
+          </button>
         </div>
+      </div>
+      <div class="custom-tour-part">
+        <a href="/pages/tour-request" class="custom-tour-button">
+          Request Custom Tour
+        </a>
+      </div>
+     </div>
   </div>
 </div>
 
@@ -978,7 +980,43 @@
 
   .description-n-pricing{
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Changed from column to row */
+    gap: 30px;
+    margin-top: 40px;
+    align-items: flex-start;
+  }
+
+  .description-box {
+    flex: 7; /* 70% width */
+    margin-top: 0; /* Remove the top margin that was pushing it down */
+  }
+
+  .variants-container {
+    flex: 3; /* 30% width */
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px;
+  }
+
+  /* Make it responsive - stack on mobile */
+  @media (max-width: 992px) {
+    .description-n-pricing {
+      flex-direction: column;
+    }
+    
+    .description-box,
+    .variants-container {
+      width: 100%;
+    }
+    
+    .variants-container {
+      position: static;
+      margin-top: 30px;
+    }
   }
 
   /* Update description box styles */
