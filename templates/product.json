@@ -24,15 +24,15 @@
         "compare_price_color": "#a0a0a0",
         "in_stock_color": "#4caf50",
         "out_of_stock_color": "#f44336",
-        "slide_duration": 3,
+        "slide_duration": 6,
         "auto_slide": true,
         "show_vendor": true,
         "show_collections": true,
         "show_tags": true,
         "description_title": "Product Description",
-        "description_bg": "#ffffff0d",
-        "description_title_color": "#ffffff",
-        "description_text_color": "#d3d3d3"
+        "description_bg": "#f183830d",
+        "description_title_color": "#7b3034",
+        "description_text_color": "#121212"
       }
     },
     "related-products": {
