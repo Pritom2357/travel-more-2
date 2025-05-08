@@ -131,14 +131,12 @@
         <div class="collection-n-tags">
           {% if product.collections and section.settings.show_collections %}
             <div class="product-collections">
-              <div class="collection-buttons">
-                <span class="info-label" style="color: {{ section.settings.label_color }};">Collections:</span>
+              <span class="info-label" style="color: {{ section.settings.label_color }};">Collections:</span>
+              <span class="collection-links">
                 {% for collection in product.collections %}
-                  <button class="collection-btn">
-                    <a href="{{ collection.url }}" style="color: {{ section.settings.collection_button_color }};">{{ collection.title }}</a>
-                  </button>
+                  <a href="{{ collection.url }}" class="collection-link" style="color: {{ section.settings.collection_button_color }};">{{ collection.title }}</a>{% unless forloop.last %}, {% endunless %}
                 {% endfor %}
-              </div>
+              </span>
             </div>
           {% endif %}
         </div>
@@ -1183,6 +1181,31 @@
       grid-template-columns: 1fr;
       padding: 12px;
     }
+  }
+
+  .product-collections {
+    margin: 10px 0;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .collection-links {
+    display: inline;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .collection-link {
+    color: #4a90e2;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .collection-link:hover {
+    text-decoration: underline;
+    opacity: 0.8;
   }
 </style>
 
