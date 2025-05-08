@@ -120,6 +120,23 @@
             </div>
           {% endif %}
         </div>
+        <div class="additional-info">
+          {% if product.metafields.custom.people_allowed %}
+            <div class="people-allowed">
+              {{ product.metafields.custom.people_allowed }} people allowed
+            </div>
+          {% endif %}
+          {% if product.metafields.custom.days_allowed %}
+            <div class="days-allowed">
+              {{ product.metafields.custom.days_allowed }} days allowed
+            </div>
+          {% endif %}
+          {% if product.metafields.custom.additional_info %}
+            <div class="additional-info-metafield">
+              {{ product.metafields.custom.additional_info }}
+            </div>
+          {% endif %}
+        </div>
 
         <div class="variants-container">
           {% unless product.has_only_default_variant %}
@@ -529,7 +546,7 @@
   .essential-info {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 5px;
   }
 
   .product-name {
@@ -1110,6 +1127,71 @@
   /* Hide attribution links */
   .map-container a[rel="noopener"] {
     display: none !important;
+  }
+
+  /* Additional Info Styling */
+  .additional-info {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  .people-allowed,
+  .days-allowed,
+  .additional-info-metafield {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+  }
+
+  .people-allowed:before {
+    content: "\F4E1"; /* Bootstrap Icons person-fill */
+    font-family: "bootstrap-icons";
+    margin-right: 8px;
+    color: #4a90e2;
+    font-size: 16px;
+  }
+
+  .days-allowed:before {
+    content: "\F210"; /* Bootstrap Icons calendar-event */
+    font-family: "bootstrap-icons";
+    margin-right: 8px;
+    color: #4a90e2;
+    font-size: 16px;
+  }
+
+  .additional-info-metafield:before {
+    content: "\F131"; /* Bootstrap Icons info-circle */
+    font-family: "bootstrap-icons";
+    margin-right: 8px;
+    color: #4a90e2;
+    font-size: 16px;
+  }
+
+  /* Hover effect */
+  .people-allowed:hover,
+  .days-allowed:hover,
+  .additional-info-metafield:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .additional-info {
+      grid-template-columns: 1fr;
+      padding: 12px;
+    }
   }
 </style>
 
