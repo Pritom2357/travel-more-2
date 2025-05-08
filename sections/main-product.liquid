@@ -1395,6 +1395,143 @@
       transform: rotate(-90deg);
     }
   }
+
+  /* Replace all individual mobile media queries with a standardized tablet+mobile breakpoint */
+  @media (max-width: 992px) {
+    /* Product gallery and layout */
+    .image-plus-info {
+      flex-direction: column;
+    }
+    
+    .product-gallery-container {
+      max-width: 100%;
+      flex-direction: column-reverse;
+      margin-bottom: 20px;
+      order: 1;
+    }
+    
+    .main-image-container {
+      width: 100%;
+      height: 350px;
+      order: 1;
+    }
+    
+    .thumbnails-container {
+      width: 100%;
+      height: auto;
+      margin-bottom: 15px;
+      order: 2;
+    }
+    
+    .thumbnails-scroll-container {
+      height: auto;
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 5px;
+      height: 80px;
+    }
+    
+    .thumbnail-controls {
+      height: auto;
+      width: 100%;
+      flex-direction: row;
+      top: auto;
+      bottom: 50%;
+      transform: translateY(50%);
+      padding: 0 10px;
+    }
+    
+    .scroll-up, .scroll-down {
+      transform: rotate(-90deg);
+    }
+    
+    /* Product info section */
+    .product-info-container {
+      padding: 0;
+      order: 2;
+      width: 100%;
+    }
+    
+    /* Map container aligned left */
+    .map-container {
+      width: 100%;
+      max-width: 350px;
+      margin: 0;
+      margin-bottom: 15px;
+    }
+
+    .location-map {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 15px;
+    }
+    
+    /* Pricing and description */
+    .description-n-pricing {
+      flex-direction: column;
+    }
+    
+    .variants-container {
+      order: 1;
+      position: static;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .description-box {
+      order: 2;
+      padding: 20px;
+      margin-top: 0;
+    }
+    
+    .description-box::before {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    
+    /* Pricing elements */
+    .price-section {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    
+    .current-price {
+      margin-bottom: 10px;
+    }
+    
+    /* Collection and tags */
+    .collection-n-tags {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .product-tags {
+      margin-left: 0;
+    }
+    
+    /* Buttons and form elements */
+    .variants-container > div:first-child {
+      flex-direction: column;
+    }
+    
+    .option-selector {
+      max-width: 100%;
+    }
+    
+    /* Stacked buttons for mobile */
+    .buttons-container {
+      flex-direction: column;
+    }
+    
+    .add-to-cart-button,
+    .custom-tour-button {
+      padding: 16px 12px;
+    }
+  }
 </style>
 
 <script>
