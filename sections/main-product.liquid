@@ -140,7 +140,14 @@
           {% endif %}
         </div>
 
-        <div class="variants-container">
+      </div>
+    </div>
+  </div>
+  <div class="description-n-pricing">
+    <div class="description-box" style="background-color: {{ section.settings.description_bg }}; color: {{ section.settings.description_text_color }};">
+      {{ product.description }}
+    </div>
+     <div class="variants-container">
           {% unless product.has_only_default_variant %}
             <div class="variant-options-row">
               {% for option in product.options_with_values %}
@@ -210,13 +217,6 @@
             Request Custom Tour
           </a>
         </div>
-        
-        
-      </div>
-    </div>
-  </div>
-  <div class="description-box" style="background-color: {{ section.settings.description_bg }}; color: {{ section.settings.description_text_color }};">
-    {{ product.description }}
   </div>
 </div>
 
@@ -974,6 +974,11 @@
 
   .out-of-stock {
     color: var(--out-of-stock-color);
+  }
+
+  .description-n-pricing{
+    display: flex;
+    flex-direction: column;
   }
 
   /* Update description box styles */
