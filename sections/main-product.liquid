@@ -75,18 +75,7 @@
         <div class="product-name" style="color: {{ section.settings.product_title_color }};">
           {{ product.title }}
         </div>
-        {% comment %} {% if product.collections and section.settings.show_collections %}
-          <div class="product-collections">
-            <div class="collection-buttons">
-              <span class="info-label" style="color: {{ section.settings.label_color }};">Collections:</span>
-              {% for collection in product.collections %}
-                <button class="collection-btn">
-                  <a href="{{ collection.url }}" style="color: {{ section.settings.collection_button_color }};">{{ collection.title }}</a>
-                </button>
-              {% endfor %}
-            </div>
-          </div>
-        {% endif %} {% endcomment %}
+         
         {% comment %} {% if product.tags and section.settings.show_tags %}
           <div class="product-tags">
             <div class="tag-buttons">
@@ -136,6 +125,20 @@
           {% if product.metafields.custom.additional_info %}
             <div class="additional-info-metafield">
               {{ product.metafields.custom.additional_info | metafield_tag }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="collection-n-tags">
+          {% if product.collections and section.settings.show_collections %}
+            <div class="product-collections">
+              <div class="collection-buttons">
+                <span class="info-label" style="color: {{ section.settings.label_color }};">Collections:</span>
+                {% for collection in product.collections %}
+                  <button class="collection-btn">
+                    <a href="{{ collection.url }}" style="color: {{ section.settings.collection_button_color }};">{{ collection.title }}</a>
+                  </button>
+                {% endfor %}
+              </div>
             </div>
           {% endif %}
         </div>
@@ -566,16 +569,11 @@
     margin-right: 10px;
   }
 
-  /* Collection buttons styling */
-  .product-collections, .product-tags {
-    margin-bottom: 10px;
-  }
 
   .collection-buttons, .tag-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 8px;
   }
 
   .collection-btn, .tag-btn {
@@ -585,12 +583,9 @@
     transition: all 0.2s ease;
     cursor: pointer;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    background-color: rgba(255, 255, 255, 0.1);
+    {% comment %} background-color: rgba(255, 255, 255, 0.1); {% endcomment %}
   }
 
-  .collection-btn {
-    background-color: rgba(74, 144, 226, 0.2);
-  }
 
   .collection-btn:hover {
     background-color: rgba(74, 144, 226, 0.3);
