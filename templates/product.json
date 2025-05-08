@@ -24,7 +24,7 @@
         "compare_price_color": "#a0a0a0",
         "in_stock_color": "#4caf50",
         "out_of_stock_color": "#f44336",
-        "slide_duration": 3,
+        "slide_duration": 10,
         "auto_slide": true,
         "show_vendor": true,
         "show_collections": true,
