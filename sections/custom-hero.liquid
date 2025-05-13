@@ -478,7 +478,7 @@ else window.addEventListener('load', loadDeferredStyles);
   
   /* Background image with proper aspect ratio to prevent layout shift */
   .hero-section {
-    background-image: url('{{ bg_img_url }}');
+    background-image: url('{{ bg_img_desktop }}');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -502,7 +502,7 @@ else window.addEventListener('load', loadDeferredStyles);
   /* Use appropriate background images for different screen sizes */
   @media (max-width: 767px) {
     .hero-section {
-      background-image: url('{{ bg_img_url_mobile }}');
+      background-image: url('{{ bg_img_mobile }}');
     }
   }
   .hero-section .row.align-items-center {
