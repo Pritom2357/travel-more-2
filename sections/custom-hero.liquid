@@ -1,9 +1,11 @@
-{%- assign bg_img_url = section.settings.bg_img | img_url: '1600x', format: 'webp' -%}
-{%- assign bg_img_url_mobile = section.settings.bg_img | img_url: '800x', format: 'webp' -%}
-
-<!-- Critical resources preloading for performance -->
-<link rel="preload" href="{{ bg_img_url }}" as="image" media="(min-width: 768px)">
-<link rel="preload" href="{{ bg_img_url_mobile }}" as="image" media="(max-width: 767px)">
+{%- if section.settings.bg_img -%}
+  {%- assign bg_img_url = section.settings.bg_img | img_url: '1600x', format: 'webp' -%}
+  {%- assign bg_img_url_mobile = section.settings.bg_img | img_url: '800x', format: 'webp' -%}
+  
+  <!-- Critical resources preloading for performance -->
+  <link rel="preload" href="{{ bg_img_url }}" as="image" media="(min-width: 768px)">
+  <link rel="preload" href="{{ bg_img_url_mobile }}" as="image" media="(max-width: 767px)">
+{%- endif -%}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -298,6 +300,66 @@ document.addEventListener('DOMContentLoaded', function() {
 // Non-critical JS that can wait until everything else is loaded
 window.addEventListener('load', function() {
   // Setup tooltips - visual enhancement only
+  if (typeof bootstrap !== 'undefined') {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  }
+  
+  // Decorative animations and effects - purely visual
+  const heroContent = document.querySelector('.hero-content-wrapper');
+  const heroTitle = document.querySelector('.hero-title');
+  const circles = document.querySelectorAll('.floating-circle');
+  
+  if (heroContent && window.innerWidth > 992) {
+    document.addEventListener('mousemove', function(e) {
+      // Check for reduced motion preference
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        
+        if (heroTitle) {
+          heroTitle.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
+        }
+        
+        circles.forEach((circle, index) => {
+          const factor = index === 0 ? -1 : 1;
+          circle.style.transform = `translate(${x * 20 * factor}px, ${y * 20 * factor}px)`;
+        });
+      }
+    });
+  }
+  
+  // Hover effects - purely decorative
+  if (heroTitle) {
+    heroTitle.addEventListener('mouseover', function() {
+      this.classList.add('hover-effect');
+    });
+    
+    heroTitle.addEventListener('mouseout', function() {
+      this.classList.remove('hover-effect');
+    });
+  }
+});
+
+// Helper function that might be called from multiple places
+function updateCartCount() {
+  fetch('/cart.js')
+    .then(response => response.json())
+    .then(cart => {
+      const countBadges = document.querySelectorAll('.cart-count-badge');
+      countBadges.forEach(badge => {
+        badge.textContent = cart.item_count;
+        badge.setAttribute('data-count', cart.item_count);
+      });
+    })
+    .catch(error => console.error('Error updating cart count:', error));
+}
+
+// Non-critical JS that can wait until everything else is loaded
+window.addEventListener('load', function() {
+  // Setup tooltips - visual enhancement only
   var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
   var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl);
@@ -492,22 +554,15 @@ HeroController.init();
     position: relative;
     width: 100%;
     min-height: 100vh;
-    isolation: isolate;
     background-color: #000; /* Fallback before image loads */
   }
   
   /* Background image with proper aspect ratio to prevent layout shift */
-  .hero-section::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: url('{{ bg_img_url }}') center center no-repeat;
+  .hero-section {
+    background-image: url('{{ bg_img_url }}');
+    background-position: center center;
+    background-repeat: no-repeat;
     background-size: cover;
-    will-change: transform; /* Hint for browsers to optimize */
   }
   
   /* Overlay with better stacking context */
@@ -527,7 +582,7 @@ HeroController.init();
   
   /* Use appropriate background images for different screen sizes */
   @media (max-width: 767px) {
-    .hero-section::after {
+    .hero-section {
       background-image: url('{{ bg_img_url_mobile }}');
     }
   }
@@ -695,7 +750,7 @@ HeroController.init();
     border-radius: 4px;
     padding: 10px 0;
     z-index: 1000;
-    min-width: 200px;
+    min-width: 200px.
   }
 
   .navbar-nav .dropdown-item {
