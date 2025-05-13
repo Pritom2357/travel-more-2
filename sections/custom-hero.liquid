@@ -204,155 +204,148 @@
 </section>
 
 <script>
-// Critical JS that needs to run immediately
-// Keep this minimal
-
-// Preload critical fonts
 document.head.insertAdjacentHTML('beforeend', `
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 `);
 
-// Consolidated hero functionality
-const HeroController = {
-  // Store frequently accessed elements to avoid repeated DOM lookups
-  elements: {},
+document.addEventListener('DOMContentLoaded', function() {
+  const bookNowBtn = document.getElementById('bookNowBtn');
+  if(bookNowBtn) {
+    bookNowBtn.addEventListener('click', () => {
+      const destSelect = document.getElementById('destinationSelect');
+      const selectedOption = destSelect.options[destSelect.selectedIndex];
+
+      const destinationTitle = selectedOption.value; 
+      const destinationDescription = selectedOption.dataset.destDescription; 
+      const destinationPrice = selectedOption.dataset.destPrice; 
+      const tourType = document.getElementById('tourType').value;
+
+      const url = `/pages/tour-booking?dest=${encodeURIComponent(destinationTitle)}&desc=${encodeURIComponent(destinationDescription)}&price=${encodeURIComponent(destinationPrice)}&type=${encodeURIComponent(tourType)}`;
+
+      window.location.href = url;
+    });
+  }
   
-  // Initialize all hero section functionality
-  init() {
-    document.addEventListener('DOMContentLoaded', this.onDOMReady.bind(this));
-    window.addEventListener('load', this.onPageLoad.bind(this));
-  },
-  
-  // Handle essential functionality when DOM is ready
-  onDOMReady() {
-    this.cacheElements();
-    this.initializeEssentials();
-    this.initBookingForm();
-    this.initNavigation();
-    this.enhanceTextEffects();
-    this.updateCartCount();
-  },
-  
-  // Handle non-critical functionality when page is fully loaded
-  onPageLoad() {
-    this.initTooltips();
-    this.initDecorations();
-  },
-  
-  // Cache DOM elements to avoid repeated lookups
-  cacheElements() {
-    this.elements = {
-      heroSection: document.querySelector('.hero-section'),
-      heroTitle: document.querySelector('.hero-title'),
-      heroSubtitle: document.querySelector('.hero-subtitle'),
-      bookNowBtn: document.getElementById('bookNowBtn'),
-      dropdownToggles: document.querySelectorAll('.dropdown-toggle'),
-      circles: document.querySelectorAll('.floating-circle'),
-      heroContent: document.querySelector('.hero-content-wrapper'),
-      countBadges: document.querySelectorAll('.cart-count-badge'),
-      tooltipTriggers: document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    };
-  },
-  
-  // Basic initialization
-  initializeEssentials() {
-    // Add polyfill checks or basic functionality here
-  },
-  
-  // Initialize booking form functionality
-  initBookingForm() {
-    const { bookNowBtn } = this.elements;
-    
-    if (bookNowBtn) {
-      bookNowBtn.addEventListener('click', () => {
-        const destSelect = document.getElementById('destinationSelect');
-        if (!destSelect) return;
+  const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+  dropdownToggles.forEach(toggle => {
+    toggle.addEventListener('click', function (e) {
+      if (this.nextElementSibling && this.nextElementSibling.classList.contains('dropdown-menu')) {
+        e.preventDefault();
+        e.stopPropagation();
         
-        const selectedOption = destSelect.options[destSelect.selectedIndex];
-        const destinationTitle = selectedOption.value; 
-        const destinationDescription = selectedOption.dataset.destDescription; 
-        const destinationPrice = selectedOption.dataset.destPrice; 
-        const tourType = document.getElementById('tourType')?.value || '';
-
-        const url = `/pages/tour-booking?dest=${encodeURIComponent(destinationTitle)}&desc=${encodeURIComponent(destinationDescription)}&price=${encodeURIComponent(destinationPrice)}&type=${encodeURIComponent(tourType)}`;
-
-        window.location.href = url;
-      });
-    }
-  },
-  
-  // Initialize navigation and dropdowns
-  initNavigation() {
-    const { dropdownToggles } = this.elements;
-    
-    dropdownToggles.forEach(toggle => {
-      toggle.addEventListener('click', function(e) {
-        if (this.nextElementSibling?.classList.contains('dropdown-menu')) {
-          e.preventDefault();
-          e.stopPropagation();
+        const dropdownMenu = this.nextElementSibling;
+        
+        if (window.innerWidth <= 991) {
+          dropdownMenu.classList.toggle('show');
           
-          const dropdownMenu = this.nextElementSibling;
-          
-          if (window.innerWidth <= 991) {
-            dropdownMenu.classList.toggle('show');
-            
-            const parent = this.closest('li')?.parentNode;
-            if (parent?.classList.contains('dropdown-menu')) {
-              const siblings = parent.querySelectorAll(':scope > li > .dropdown-menu');
-              siblings.forEach(menu => {
-                if (menu !== dropdownMenu && menu.classList.contains('show')) {
-                  menu.classList.remove('show');
-                }
-              });
-            }
+          const parent = this.closest('li').parentNode;
+          if (parent.classList.contains('dropdown-menu')) {
+            const siblings = parent.querySelectorAll(':scope > li > .dropdown-menu');
+            siblings.forEach(menu => {
+              if (menu !== dropdownMenu && menu.classList.contains('show')) {
+                menu.classList.remove('show');
+              }
+            });
           }
         }
-      });
+      }
     });
+  });
 
-    // Touch menu behavior - enhancement
-    if ('ontouchstart' in document.documentElement) {
-      document.querySelectorAll('.dropdown-submenu > .dropdown-item').forEach(item => {
-        item.addEventListener('click', function(e) {
-          const parent = this.parentElement;
-          if (!parent.classList.contains('show-touch-menu')) {
-            e.preventDefault();
-            document.querySelectorAll('.show-touch-menu').forEach(el => {
-              if (!parent.contains(el)) el.classList.remove('show-touch-menu');
-            });
-            parent.classList.add('show-touch-menu');
-          }
-        });
-      });
+  // Text outline effect - improves accessibility
+  function enhanceTextOutline() {
+    if ('{{section.settings.title_effect}}' === 'outline') {
+      const titleElement = document.querySelector('.hero-title');
+      if (titleElement && !CSS.supports('-webkit-text-stroke', '1px black')) {
+        applyTextStrokePolyfill(titleElement, 
+          '{{section.settings.title_effect_width}}',
+          '{{section.settings.title_effect_color}}');
+      }
     }
-  },
+    
+    if ('{{section.settings.subtitle_effect}}' === 'outline') {
+      const subtitleElement = document.querySelector('.hero-subtitle');
+      if (subtitleElement && !CSS.supports('-webkit-text-stroke', '1px black')) {
+        applyTextStrokePolyfill(subtitleElement,
+          '{{section.settings.subtitle_effect_width}}',
+          '{{section.settings.subtitle_effect_color}}');
+      }
+    }
+  }
   
-  // Add text effects and enhance accessibility
-  enhanceTextEffects() {
-    const { heroTitle, heroSubtitle } = this.elements;
-    const titleEffectType = '{{section.settings.title_effect}}';
-    const subtitleEffectType = '{{section.settings.subtitle_effect}}';
+  function applyTextStrokePolyfill(element, width, color) {
+    const shadowWidth = parseInt(width);
+    const shadowColor = color;
     
-    // Apply text outline effect for browsers without native support
-    if (titleEffectType === 'outline' && heroTitle && !CSS.supports('-webkit-text-stroke', '1px black')) {
-      this.applyTextStrokePolyfill(
-        heroTitle, 
-        '{{section.settings.title_effect_width}}',
-        '{{section.settings.title_effect_color}}'
-      );
+    const shadows = [];
+    for (let i = -shadowWidth; i <= shadowWidth; i++) {
+      for (let j = -shadowWidth; j <= shadowWidth; j++) {
+        if (i === 0 && j === 0) continue;
+        shadows.push(`${i}px ${j}px 0 ${shadowColor}`);
+      }
     }
     
-    if (subtitleEffectType === 'outline' && heroSubtitle && !CSS.supports('-webkit-text-stroke', '1px black')) {
-      this.applyTextStrokePolyfill(
-        heroSubtitle,
-        '{{section.settings.subtitle_effect_width}}',
-        '{{section.settings.subtitle_effect_color}}'
-      );
-    }
+    element.style.textShadow = shadows.join(', ');
+  }
+  
+  enhanceTextOutline();
+  
+  // Initial cart update
+  updateCartCount();
+});
 
-    // Add decorative hover effect
-    if (heroTitle) {
+// Non-critical JS that can wait until everything else is loaded
+window.addEventListener('load', function() {
+  // Setup tooltips - visual enhancement only
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+  
+  // Decorative animations and effects - purely visual
+  const heroContent = document.querySelector('.hero-content-wrapper');
+  if (heroContent && window.innerWidth > 992) {
+    document.addEventListener('mousemove', function(e) {
+      // Check for reduced motion preference
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        
+        const title = document.querySelector('.hero-title');
+        if (title) {
+          title.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
+        }
+        
+        const circles = document.querySelectorAll('.floating-circle');
+        circles.forEach((circle, index) => {
+          const factor = index === 0 ? -1 : 1;
+          circle.style.transform = `translate(${x * 20 * factor}px, ${y * 20 * factor}px)`;
+        });
+      }
+    });
+  }
+  
+  // Hover effects - purely decorative
+  const heroTitle = document.querySelector('.hero-title');
+  if (heroTitle) {
+    heroTitle.addEventListener('mouseover', function() {
+      this.classList.add('hover-effect');
+    });
+    
+    heroTitle.addEventListener('mouseout', function() {
+      this.classList.remove('hover-effect');
+    });
+  }
+  
+  // Touch menu behavior - enhancement
+  if ('ontouchstart' in document.documentElement) {
+    document.querySelectorAll('.dropdown-submenu > .dropdown-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        const parent = this.parentElement;
+        if (!parent.classList.contains('show-touch-menu')) {
+          e.preventDefault();
+          document.querySelectorAll('.show-touch-menu').forEach(el => {
       heroTitle.addEventListener('mouseover', () => heroTitle.classList.add('hover-effect'));
       heroTitle.addEventListener('mouseout', () => heroTitle.classList.remove('hover-effect'));
     }
