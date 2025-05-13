@@ -448,6 +448,9 @@
     border-radius: 0.25rem;
     border: 2px solid #ffffff;
     box-shadow: none;
+    min-height: 450px; /* Adjust to match your form's height */
+    height: auto;
+    width: 100%;
   }
   .booking-form .form-control {
     border: 1px solid #ccc;
@@ -738,6 +741,7 @@
     position: relative;
     padding: 2rem 1rem 2rem 0;
     z-index: 10;
+    min-height: 400px; /* Adjust based on your content */
   }
   
   /* Animated title with gradient highlight */
@@ -853,6 +857,7 @@
     border-radius: 50%;
     opacity: 0.5;
     filter: blur(10px);
+    contain: layout paint;
   }
   
   .circle-1 {
@@ -881,6 +886,7 @@
     top: 30%;
     left: -80px;
     animation: slide 3s ease-in-out infinite;
+    contain: layout paint;
   }
   
   /* Destination teasers */
@@ -1058,6 +1064,46 @@
 
   .hero-subtitle.text-shadow {
     text-shadow: {{ section.settings.subtitle_effect_width }}px {{ section.settings.subtitle_effect_width }}px 0 {{ section.settings.subtitle_effect_color }};
+  }
+
+  .hero-section {
+    aspect-ratio: 16 / 9; /* Or whatever ratio your background image has */
+    min-height: 600px; /* Fallback */
+  }
+
+  .navbar-brand img {
+    width: {{ section.settings.logo_size }}px;
+    height: auto;
+    aspect-ratio: 1 / 1; /* Adjust to your logo's aspect ratio */
+  }
+
+  .hero-title, .hero-subtitle {
+    font-display: swap;
+  }
+
+  .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s forwards;
+  }
+
+  .hero-subtitle {
+    animation-delay: 0.2s;
+  }
+
+  .hero-buttons {
+    animation-delay: 0.4s;
+  }
+
+  .destination-teasers {
+    animation-delay: 0.6s;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>
 
@@ -1609,7 +1655,7 @@
   ],
   "presets": [
     {
-      "name": "Custom Hero Section",
+      "name": "Hero Section",
       "category": "Hero Section"
     }
   ]
