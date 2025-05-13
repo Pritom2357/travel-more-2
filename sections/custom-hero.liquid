@@ -1,9 +1,14 @@
 {%- if section.settings.bg_img -%}
-  {%- assign bg_img_mobile = section.settings.bg_img | img_url: '800x', quality: 80 -%}
-  {%- assign bg_img_desktop = section.settings.bg_img | img_url: '1600x', quality: 85 -%}
-  
-
+  {%- assign bg_img_mobile = section.settings.bg_img | img_url: '800x', format: 'pjpg', quality: 80 -%}
+  {%- assign bg_img_desktop = section.settings.bg_img | img_url: '1600x', format: 'pjpg', quality: 85 -%}
   {%- assign bg_img_url = bg_img_desktop -%}
+
+  <div style="display:none">
+    Mobile URL: {{ bg_img_mobile }}
+    Desktop URL: {{ bg_img_desktop }}
+  </div> 
+{%- else -%}
+  {%- assign bg_img_url = '' -%}
 {%- endif -%}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -473,36 +478,21 @@ else window.addEventListener('load', loadDeferredStyles);
     position: relative;
     width: 100%;
     min-height: 100vh;
-    {% comment %} background-color: #000; /* Fallback before image loads */ {% endcomment %}
-  }
-  
-  /* Background image with proper aspect ratio to prevent layout shift */
-  .hero-section {
-    background-image: url('{{ bg_img_desktop }}') !important;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  
-  /* Overlay with better stacking context */
-  .hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    
-    {% if section.settings.enable_overlay %}
-      background-color: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }};
+    background-color: #000; /* Fallback color before image loads */
+    {% if section.settings.bg_img %}
+      background-image: url("{{ bg_img_url }}");
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
     {% endif %}
   }
   
   /* Use appropriate background images for different screen sizes */
   @media (max-width: 767px) {
     .hero-section {
-      background-image: url('{{ bg_img_mobile }}') !important;
+      {% if section.settings.bg_img %}
+        background-image: url("{{ bg_img_mobile }}");
+      {% endif %}
     }
   }
   .hero-section .row.align-items-center {
