@@ -1292,7 +1292,7 @@ else window.addEventListener('load', loadDeferredStyles);
 
 @media (max-width: 767px) {
   .hero-section {
-    background-image: url('{{ bg_img_mobile }}');
+    background-image: url({{ section.settings.bg_img | img_url: '800x' }});
   }
 }
 
