@@ -1,6 +1,6 @@
 {%- if section.settings.bg_img -%}
-  {%- assign bg_img_url = section.settings.bg_img | img_url: '1600x', format: 'webp' -%}
-  {%- assign bg_img_url_mobile = section.settings.bg_img | img_url: '800x', format: 'webp' -%}
+  {%- assign bg_img_url = section.settings.bg_img | img_url: '1600x' -%}
+  {%- assign bg_img_url_mobile = section.settings.bg_img | img_url: '800x' -%}
   
   {% if bg_img_url != blank and bg_img_url != empty %}
     <link rel="preload" href="{{ bg_img_url }}" as="image" media="(min-width: 768px)">
