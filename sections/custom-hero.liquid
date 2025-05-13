@@ -2,9 +2,12 @@
   {%- assign bg_img_url = section.settings.bg_img | img_url: '1600x', format: 'webp' -%}
   {%- assign bg_img_url_mobile = section.settings.bg_img | img_url: '800x', format: 'webp' -%}
   
-  <!-- Critical resources preloading for performance -->
-  <link rel="preload" href="{{ bg_img_url }}" as="image" media="(min-width: 768px)">
-  <link rel="preload" href="{{ bg_img_url_mobile }}" as="image" media="(max-width: 767px)">
+  {% if bg_img_url != blank and bg_img_url != empty %}
+    <link rel="preload" href="{{ bg_img_url }}" as="image" media="(min-width: 768px)">
+  {% endif %}
+  {% if bg_img_url_mobile != blank and bg_img_url_mobile != empty %}
+    <link rel="preload" href="{{ bg_img_url_mobile }}" as="image" media="(max-width: 767px)">
+  {% endif %}
 {%- endif -%}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -212,6 +215,7 @@ document.head.insertAdjacentHTML('beforeend', `
 `);
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Form functionality
   const bookNowBtn = document.getElementById('bookNowBtn');
   if(bookNowBtn) {
     bookNowBtn.addEventListener('click', () => {
@@ -229,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
+  // Dropdown toggle functionality
   const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
   dropdownToggles.forEach(toggle => {
     toggle.addEventListener('click', function (e) {
@@ -255,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Text outline effect - improves accessibility
+  // Text effect enhancement
   function enhanceTextOutline() {
     if ('{{section.settings.title_effect}}' === 'outline') {
       const titleElement = document.querySelector('.hero-title');
@@ -292,8 +297,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   enhanceTextOutline();
-  
-  // Initial cart update
   updateCartCount();
 });
 
@@ -301,8 +304,8 @@ document.addEventListener('DOMContentLoaded', function() {
 window.addEventListener('load', function() {
   // Setup tooltips - visual enhancement only
   if (typeof bootstrap !== 'undefined') {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl);
     });
   }
@@ -341,6 +344,22 @@ window.addEventListener('load', function() {
       this.classList.remove('hover-effect');
     });
   }
+  
+  // Touch menu behavior - enhancement
+  if ('ontouchstart' in document.documentElement) {
+    document.querySelectorAll('.dropdown-submenu > .dropdown-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        const parent = this.parentElement;
+        if (!parent.classList.contains('show-touch-menu')) {
+          e.preventDefault();
+          document.querySelectorAll('.show-touch-menu').forEach(el => {
+            if (!parent.contains(el)) el.classList.remove('show-touch-menu');
+          });
+          parent.classList.add('show-touch-menu');
+        }
+      });
+    });
+  }
 });
 
 // Helper function that might be called from multiple places
@@ -356,142 +375,6 @@ function updateCartCount() {
     })
     .catch(error => console.error('Error updating cart count:', error));
 }
-
-// Non-critical JS that can wait until everything else is loaded
-window.addEventListener('load', function() {
-  // Setup tooltips - visual enhancement only
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl);
-  });
-  
-  // Decorative animations and effects - purely visual
-  const heroContent = document.querySelector('.hero-content-wrapper');
-  if (heroContent && window.innerWidth > 992) {
-    document.addEventListener('mousemove', function(e) {
-      // Check for reduced motion preference
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        const x = e.clientX / window.innerWidth;
-        const y = e.clientY / window.innerHeight;
-        
-        const title = document.querySelector('.hero-title');
-        if (title) {
-          title.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
-        }
-        
-        const circles = document.querySelectorAll('.floating-circle');
-        circles.forEach((circle, index) => {
-          const factor = index === 0 ? -1 : 1;
-          circle.style.transform = `translate(${x * 20 * factor}px, ${y * 20 * factor}px)`;
-        });
-      }
-    });
-  }
-  
-  // Hover effects - purely decorative
-  const heroTitle = document.querySelector('.hero-title');
-  if (heroTitle) {
-    heroTitle.addEventListener('mouseover', function() {
-      this.classList.add('hover-effect');
-    });
-    
-    heroTitle.addEventListener('mouseout', function() {
-      this.classList.remove('hover-effect');
-    });
-  }
-  
-  // Touch menu behavior - enhancement
-  if ('ontouchstart' in document.documentElement) {
-    document.querySelectorAll('.dropdown-submenu > .dropdown-item').forEach(item => {
-      item.addEventListener('click', function(e) {
-        const parent = this.parentElement;
-        if (!parent.classList.contains('show-touch-menu')) {
-          e.preventDefault();
-          document.querySelectorAll('.show-touch-menu').forEach(el => {
-      heroTitle.addEventListener('mouseover', () => heroTitle.classList.add('hover-effect'));
-      heroTitle.addEventListener('mouseout', () => heroTitle.classList.remove('hover-effect'));
-    }
-  },
-  
-  // Helper for text stroke polyfill
-  applyTextStrokePolyfill(element, width, color) {
-    const shadowWidth = parseInt(width);
-    const shadowColor = color;
-    
-    if (isNaN(shadowWidth)) return;
-    
-    const shadows = [];
-    for (let i = -shadowWidth; i <= shadowWidth; i++) {
-      for (let j = -shadowWidth; j <= shadowWidth; j++) {
-        if (i === 0 && j === 0) continue;
-        shadows.push(`${i}px ${j}px 0 ${shadowColor}`);
-      }
-    }
-    
-    element.style.textShadow = shadows.join(', ');
-  },
-  
-  // Initialize tooltips
-  initTooltips() {
-    const { tooltipTriggers } = this.elements;
-    
-    if (typeof bootstrap !== 'undefined' && tooltipTriggers.length > 0) {
-      tooltipTriggers.forEach(el => new bootstrap.Tooltip(el));
-    }
-  },
-  
-  // Initialize purely decorative animations and effects
-  initDecorations() {
-    const { heroContent, circles, heroTitle } = this.elements;
-    
-    // Only initialize mousemove effects on desktop
-    if (heroContent && window.innerWidth > 992) {
-      // Use passive event listener for better scroll performance
-      document.addEventListener('mousemove', this.handleMouseMove.bind(this), { passive: true });
-    }
-  },
-  
-  // Handle mousemove event for decorative effects
-  handleMouseMove(e) {
-    const { heroTitle, circles } = this.elements;
-
-    // Respect user's motion preferences
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const x = e.clientX / window.innerWidth;
-    const y = e.clientY / window.innerHeight;
-    
-    // Apply parallax effect to title - use transform for better performance
-    if (heroTitle) {
-      heroTitle.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
-    }
-    
-    // Apply effect to decorative circles
-    if (circles.length) {
-      circles.forEach((circle, index) => {
-        const factor = index === 0 ? -1 : 1;
-        circle.style.transform = `translate(${x * 20 * factor}px, ${y * 20 * factor}px)`;
-      });
-    }
-  },
-  
-  // Update cart count badge from cart.js endpoint
-  updateCartCount() {
-    fetch('/cart.js')
-      .then(response => response.json())
-      .then(cart => {
-        const { countBadges } = this.elements;
-        countBadges.forEach(badge => {
-          badge.textContent = cart.item_count;
-          badge.setAttribute('data-count', cart.item_count);
-        });
-      })
-      .catch(error => console.error('Error updating cart count:', error));
-  }
-};
-
-// Initialize the controller
-HeroController.init();
 </script>
 
 <style>
