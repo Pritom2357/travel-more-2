@@ -2,7 +2,7 @@
   {%- assign bg_img_mobile = section.settings.bg_img | img_url: '800x', format: 'pjpg', quality: 80 -%}
   {%- assign bg_img_desktop = section.settings.bg_img | img_url: '1600x', format: 'pjpg', quality: 85 -%}
   
-  {% comment %} Also set bg_img_url for compatibility with existing code {% endcomment %}
+
   {%- assign bg_img_url = bg_img_desktop -%}
 {%- endif -%}
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -471,7 +471,7 @@ else window.addEventListener('load', loadDeferredStyles);
     position: relative;
     width: 100%;
     min-height: 100vh;
-    background-color: #000; /* Fallback before image loads */
+    {% comment %} background-color: #000; /* Fallback before image loads */ {% endcomment %}
   }
   
   /* Background image with proper aspect ratio to prevent layout shift */
@@ -1302,7 +1302,7 @@ else window.addEventListener('load', loadDeferredStyles);
 }
 
 .hero-section {
-  background-color: #000; /* Solid fallback color */
+  {% comment %} background-color: #000; /* Solid fallback color */ {% endcomment %}
   background-image: url('{{ bg_img_desktop }}');
   background-size: cover;
 }
