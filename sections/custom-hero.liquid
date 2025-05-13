@@ -1,20 +1,22 @@
 {%- if section.settings.bg_img -%}
-  {%- assign bg_img_url = section.settings.bg_img | img_url: '1600x' -%}
-  {%- assign bg_img_url_mobile = section.settings.bg_img | img_url: '800x' -%}
-  
-  {% if bg_img_url != blank and bg_img_url != empty %}
-    <link rel="preload" href="{{ bg_img_url }}" as="image" media="(min-width: 768px)">
-  {% endif %}
-  {% if bg_img_url_mobile != blank and bg_img_url_mobile != empty %}
-    <link rel="preload" href="{{ bg_img_url_mobile }}" as="image" media="(max-width: 767px)">
-  {% endif %}
+  {% comment %} Generate smaller images for mobile and desktop {% endcomment %}
+  {%- assign bg_img_mobile = section.settings.bg_img | img_url: '800x', format: 'pjpg', quality: 80 -%}
+  {%- assign bg_img_desktop = section.settings.bg_img | img_url: '1600x', format: 'pjpg', quality: 85 -%}
+
+  {% comment %} Use preload with fetchpriority {% endcomment %}
+  <link rel="preload" fetchpriority="high" href="{{ bg_img_mobile }}" as="image" media="(max-width: 767px)">
+  <link rel="preload" fetchpriority="high" href="{{ bg_img_desktop }}" as="image" media="(min-width: 768px)">
 {%- endif -%}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<!-- Font preloading -->
+<!-- Font optimization for mobile performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Only load critical font weights -->
 {% if section.settings.title_font != "Helvetica, sans-serif" %}
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family={{ section.settings.title_font | replace: ' ', '+' }}:wght@700&display=swap" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" fetchpriority="high" href="https://fonts.googleapis.com/css2?family={{ section.settings.title_font | replace: ' ', '+' }}:wght@700&display=swap">
 {% endif %}
 
 <!-- For browsers that support fetchpriority -->
@@ -375,6 +377,40 @@ function updateCartCount() {
     })
     .catch(error => console.error('Error updating cart count:', error));
 }
+
+// Move all decorative animations to deferred loading
+const decorativeEffects = function() {
+  const heroContent = document.querySelector('.hero-content-wrapper');
+  const heroTitle = document.querySelector('.hero-title');
+  const circles = document.querySelectorAll('.floating-circle');
+  
+  if (heroContent && window.innerWidth > 992) {
+    document.addEventListener('mousemove', function(e) {
+      // Mouse tracking animation code
+    });
+  }
+};
+
+// Only load decorative effects after everything else
+if (window.requestIdleCallback) {
+  window.requestIdleCallback(decorativeEffects);
+} else {
+  setTimeout(decorativeEffects, 2000);
+}
+
+// Defer loading of non-critical CSS
+const loadDeferredStyles = function() {
+  const addStylesNode = document.getElementById('deferred-styles');
+  const replacement = document.createElement('div');
+  replacement.innerHTML = addStylesNode.textContent;
+  document.body.appendChild(replacement);
+  addStylesNode.parentElement.removeChild(addStylesNode);
+};
+
+const raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+else window.addEventListener('load', loadDeferredStyles);
 </script>
 
 <style>
@@ -1264,6 +1300,51 @@ function updateCartCount() {
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+.hero-section {
+  background-color: #000; /* Solid fallback color */
+  background-image: url('{{ bg_img_desktop }}');
+  background-size: cover;
+}
+
+@media (max-width: 767px) {
+  .hero-section {
+    background-image: url('{{ bg_img_mobile }}');
+  }
+}
+
+/* Disable unnecessary animations on mobile */
+@media (max-width: 767px) {
+  .floating-circle, .animated-line {
+    display: none !important;
+  }
+  
+  /* Use simpler animation for text */
+  .hero-title, .hero-subtitle, .hero-buttons {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  
+  /* Remove fancy hover effects on mobile */
+  .hero-btn:hover .btn-content,
+  .hero-btn:hover .btn-icon {
+    transform: none !important;
+  }
+}
+
+/* Improve performance by delaying non-critical rendering */
+@media (max-width: 767px) {
+  .destination-teasers {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 50px;
+  }
+  
+  .navbar-collapse {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 0;
   }
 }
 </style>
