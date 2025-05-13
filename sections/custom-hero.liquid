@@ -1,4 +1,19 @@
-{%- assign bg_img_url = section.settings.bg_img | img_url: '1600x' -%}
+{%- assign bg_img_url = section.settings.bg_img | img_url: '1600x' format: 'webp' -%}
+{%- assign bg_img_url_mobile = section.settings.bg_img | img_url: '800x' format: 'webp' -%}
+
+<!-- Critical resources preloading for performance -->
+<link rel="preload" href="{{ bg_img_url }}" as="image" media="(min-width: 768px)">
+<link rel="preload" href="{{ bg_img_url_mobile }}" as="image" media="(max-width: 767px)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Font preloading -->
+{% if section.settings.title_font != "Helvetica, sans-serif" %}
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family={{ section.settings.title_font | replace: ' ', '+' }}:wght@700&display=swap" as="font" type="font/woff2" crossorigin>
+{% endif %}
+
+<!-- For browsers that support fetchpriority -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ section.settings.title_font | replace: ' ', '+' }}:wght@700&display=swap" fetchpriority="high">
 <!-- Convert Form Background Color -->
 {% assign input_hex_color = section.settings.form_bg_color %}
 {% include 'hex-to-rgb' %}
@@ -189,49 +204,91 @@
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+// Critical JS that needs to run immediately
+// Keep this minimal
+
+// Preload critical fonts
+document.head.insertAdjacentHTML('beforeend', `
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+`);
+
+// Consolidated hero functionality
+const HeroController = {
+  // Store frequently accessed elements to avoid repeated DOM lookups
+  elements: {},
+  
+  // Initialize all hero section functionality
+  init() {
+    document.addEventListener('DOMContentLoaded', this.onDOMReady.bind(this));
+    window.addEventListener('load', this.onPageLoad.bind(this));
+  },
+  
+  // Handle essential functionality when DOM is ready
+  onDOMReady() {
+    this.cacheElements();
+    this.initializeEssentials();
+    this.initBookingForm();
+    this.initNavigation();
+    this.enhanceTextEffects();
+    this.updateCartCount();
+  },
+  
+  // Handle non-critical functionality when page is fully loaded
+  onPageLoad() {
+    this.initTooltips();
+    this.initDecorations();
+  },
+  
+  // Cache DOM elements to avoid repeated lookups
+  cacheElements() {
+    this.elements = {
+      heroSection: document.querySelector('.hero-section'),
+      heroTitle: document.querySelector('.hero-title'),
+      heroSubtitle: document.querySelector('.hero-subtitle'),
+      bookNowBtn: document.getElementById('bookNowBtn'),
+      dropdownToggles: document.querySelectorAll('.dropdown-toggle'),
+      circles: document.querySelectorAll('.floating-circle'),
+      heroContent: document.querySelector('.hero-content-wrapper'),
+      countBadges: document.querySelectorAll('.cart-count-badge'),
+      tooltipTriggers: document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    };
+  },
+  
+  // Basic initialization
+  initializeEssentials() {
+    // Add polyfill checks or basic functionality here
+  },
+  
+  // Initialize booking form functionality
+  initBookingForm() {
+    const { bookNowBtn } = this.elements;
     
-    const bookNowBtn = document.getElementById('bookNowBtn');
-    if(bookNowBtn) {
+    if (bookNowBtn) {
       bookNowBtn.addEventListener('click', () => {
         const destSelect = document.getElementById('destinationSelect');
+        if (!destSelect) return;
+        
         const selectedOption = destSelect.options[destSelect.selectedIndex];
-
         const destinationTitle = selectedOption.value; 
         const destinationDescription = selectedOption.dataset.destDescription; 
         const destinationPrice = selectedOption.dataset.destPrice; 
-        const tourType = document.getElementById('tourType').value;
+        const tourType = document.getElementById('tourType')?.value || '';
 
         const url = `/pages/tour-booking?dest=${encodeURIComponent(destinationTitle)}&desc=${encodeURIComponent(destinationDescription)}&price=${encodeURIComponent(destinationPrice)}&type=${encodeURIComponent(tourType)}`;
 
         window.location.href = url;
       });
     }
-  });
-
-  function updateCartCount() {
-    fetch('/cart.js')
-      .then(response => response.json())
-      .then(cart => {
-        const countBadges = document.querySelectorAll('.cart-count-badge');
-        countBadges.forEach(badge => {
-          badge.textContent = cart.item_count;
-          badge.setAttribute('data-count', cart.item_count);
-        });
-      })
-      .catch(error => console.error('Error updating cart count:', error));
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    updateCartCount();
-  });
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+  },
+  
+  // Initialize navigation and dropdowns
+  initNavigation() {
+    const { dropdownToggles } = this.elements;
     
     dropdownToggles.forEach(toggle => {
-      toggle.addEventListener('click', function (e) {
-        if (this.nextElementSibling && this.nextElementSibling.classList.contains('dropdown-menu')) {
+      toggle.addEventListener('click', function(e) {
+        if (this.nextElementSibling?.classList.contains('dropdown-menu')) {
           e.preventDefault();
           e.stopPropagation();
           
@@ -240,8 +297,8 @@
           if (window.innerWidth <= 991) {
             dropdownMenu.classList.toggle('show');
             
-            const parent = this.closest('li').parentNode;
-            if (parent.classList.contains('dropdown-menu')) {
+            const parent = this.closest('li')?.parentNode;
+            if (parent?.classList.contains('dropdown-menu')) {
               const siblings = parent.querySelectorAll(':scope > li > .dropdown-menu');
               siblings.forEach(menu => {
                 if (menu !== dropdownMenu && menu.classList.contains('show')) {
@@ -253,7 +310,8 @@
         }
       });
     });
-    
+
+    // Touch menu behavior - enhancement
     if ('ontouchstart' in document.documentElement) {
       document.querySelectorAll('.dropdown-submenu > .dropdown-item').forEach(item => {
         item.addEventListener('click', function(e) {
@@ -268,79 +326,45 @@
         });
       });
     }
-  });
-
-  document.addEventListener('DOMContentLoaded', function() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl)
-    });
-    
-    const heroContent = document.querySelector('.hero-content-wrapper');
-    if (heroContent && window.innerWidth > 992) {
-      document.addEventListener('mousemove', function(e) {
-        const x = e.clientX / window.innerWidth;
-        const y = e.clientY / window.innerHeight;
-        
-        const title = document.querySelector('.hero-title');
-        if (title) {
-          title.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
-        }
-        
-        const circles = document.querySelectorAll('.floating-circle');
-        circles.forEach((circle, index) => {
-          const factor = index === 0 ? -1 : 1;
-          circle.style.transform = `translate(${x * 20 * factor}px, ${y * 20 * factor}px)`;
-        });
-      });
-    }
-    
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-      heroTitle.addEventListener('mouseover', function() {
-        this.classList.add('hover-effect');
-      });
-      
-      heroTitle.addEventListener('mouseout', function() {
-        this.classList.remove('hover-effect');
-      });
-    }
-  });
-
-  document.addEventListener('DOMContentLoaded', function() {
-  // Apply enhanced text outline effect for better browser support
-  function enhanceTextOutline() {
-    if ('{{section.settings.title_effect}}' === 'outline') {
-      const titleElement = document.querySelector('.hero-title');
-      if (titleElement) {
-        // Check if browser supports text-stroke
-        if (!CSS.supports('-webkit-text-stroke', '1px black')) {
-          applyTextStrokePolyfill(titleElement, 
-            '{{section.settings.title_effect_width}}',
-            '{{section.settings.title_effect_color}}');
-        }
-      }
-    }
-    
-    if ('{{section.settings.subtitle_effect}}' === 'outline') {
-      const subtitleElement = document.querySelector('.hero-subtitle');
-      if (subtitleElement) {
-        // Check if browser supports text-stroke
-        if (!CSS.supports('-webkit-text-stroke', '1px black')) {
-          applyTextStrokePolyfill(subtitleElement,
-            '{{section.settings.subtitle_effect_width}}',
-            '{{section.settings.subtitle_effect_color}}');
-        }
-      }
-    }
-  }
+  },
   
-  function applyTextStrokePolyfill(element, width, color) {
-    // Apply a shadow-based fallback for browsers without text-stroke support
+  // Add text effects and enhance accessibility
+  enhanceTextEffects() {
+    const { heroTitle, heroSubtitle } = this.elements;
+    const titleEffectType = '{{section.settings.title_effect}}';
+    const subtitleEffectType = '{{section.settings.subtitle_effect}}';
+    
+    // Apply text outline effect for browsers without native support
+    if (titleEffectType === 'outline' && heroTitle && !CSS.supports('-webkit-text-stroke', '1px black')) {
+      this.applyTextStrokePolyfill(
+        heroTitle, 
+        '{{section.settings.title_effect_width}}',
+        '{{section.settings.title_effect_color}}'
+      );
+    }
+    
+    if (subtitleEffectType === 'outline' && heroSubtitle && !CSS.supports('-webkit-text-stroke', '1px black')) {
+      this.applyTextStrokePolyfill(
+        heroSubtitle,
+        '{{section.settings.subtitle_effect_width}}',
+        '{{section.settings.subtitle_effect_color}}'
+      );
+    }
+
+    // Add decorative hover effect
+    if (heroTitle) {
+      heroTitle.addEventListener('mouseover', () => heroTitle.classList.add('hover-effect'));
+      heroTitle.addEventListener('mouseout', () => heroTitle.classList.remove('hover-effect'));
+    }
+  },
+  
+  // Helper for text stroke polyfill
+  applyTextStrokePolyfill(element, width, color) {
     const shadowWidth = parseInt(width);
     const shadowColor = color;
     
-    // Create multiple text shadows to simulate stroke
+    if (isNaN(shadowWidth)) return;
+    
     const shadows = [];
     for (let i = -shadowWidth; i <= shadowWidth; i++) {
       for (let j = -shadowWidth; j <= shadowWidth; j++) {
@@ -350,10 +374,69 @@
     }
     
     element.style.textShadow = shadows.join(', ');
-  }
+  },
   
-  enhanceTextOutline();
-});
+  // Initialize tooltips
+  initTooltips() {
+    const { tooltipTriggers } = this.elements;
+    
+    if (typeof bootstrap !== 'undefined' && tooltipTriggers.length > 0) {
+      tooltipTriggers.forEach(el => new bootstrap.Tooltip(el));
+    }
+  },
+  
+  // Initialize purely decorative animations and effects
+  initDecorations() {
+    const { heroContent, circles, heroTitle } = this.elements;
+    
+    // Only initialize mousemove effects on desktop
+    if (heroContent && window.innerWidth > 992) {
+      // Use passive event listener for better scroll performance
+      document.addEventListener('mousemove', this.handleMouseMove.bind(this), { passive: true });
+    }
+  },
+  
+  // Handle mousemove event for decorative effects
+  handleMouseMove(e) {
+    const { heroTitle, circles } = this.elements;
+
+    // Respect user's motion preferences
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const x = e.clientX / window.innerWidth;
+    const y = e.clientY / window.innerHeight;
+    
+    // Apply parallax effect to title - use transform for better performance
+    if (heroTitle) {
+      heroTitle.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
+    }
+    
+    // Apply effect to decorative circles
+    if (circles.length) {
+      circles.forEach((circle, index) => {
+        const factor = index === 0 ? -1 : 1;
+        circle.style.transform = `translate(${x * 20 * factor}px, ${y * 20 * factor}px)`;
+      });
+    }
+  },
+  
+  // Update cart count badge from cart.js endpoint
+  updateCartCount() {
+    fetch('/cart.js')
+      .then(response => response.json())
+      .then(cart => {
+        const { countBadges } = this.elements;
+        countBadges.forEach(badge => {
+          badge.textContent = cart.item_count;
+          badge.setAttribute('data-count', cart.item_count);
+        });
+      })
+      .catch(error => console.error('Error updating cart count:', error));
+  }
+};
+
+// Initialize the controller
+HeroController.init();
 </script>
 
 <style>
@@ -416,10 +499,25 @@
     position: relative;
     width: 100%;
     min-height: 100vh;
+    isolation: isolate;
+    background-color: #000; /* Fallback before image loads */
+  }
+  
+  /* Background image with proper aspect ratio to prevent layout shift */
+  .hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
     background: url('{{ bg_img_url }}') center center no-repeat;
     background-size: cover;
-    isolation: isolate; 
+    will-change: transform; /* Hint for browsers to optimize */
   }
+  
+  /* Overlay with better stacking context */
   .hero-section::before {
     content: '';
     position: absolute;
@@ -432,6 +530,13 @@
     {% if section.settings.enable_overlay %}
       background-color: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }};
     {% endif %}
+  }
+  
+  /* Use appropriate background images for different screen sizes */
+  @media (max-width: 767px) {
+    .hero-section::after {
+      background-image: url('{{ bg_img_url_mobile }}');
+    }
   }
   .hero-section .row.align-items-center {
     min-height: 100vh;
@@ -1069,8 +1174,12 @@
   }
 
   .hero-section {
-    aspect-ratio: 16 / 9; /* Or whatever ratio your background image has */
-    min-height: 600px; /* Fallback */
+    aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 400px;
+    contain: layout paint;
+    content-visibility: auto; /* Improve rendering performance */
+    contain-intrinsic-size: 100% 600px; /* Ensure content-visibility doesn't cause layout shift */
   }
 
   .navbar-brand img {
@@ -1078,16 +1187,21 @@
     height: calc({{ section.settings.logo_size }}px * 0.75); /* Estimate height */
     aspect-ratio: auto; /* Let browser determine ratio from actual dimensions */
     object-fit: contain; /* Ensure image fits without distortion */
+    display: block; /* Prevent unexpected layout shift */
   }
 
   .hero-title, .hero-subtitle {
     font-display: swap;
+    max-width: 100%; /* Prevent overflow */
   }
 
-  .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s forwards;
+  /* Apply animations with better performance */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s forwards;
+    }
   }
 
   .hero-subtitle {
@@ -1142,11 +1256,6 @@
       animation: none;
     }
     
-    /* Hide decorative elements that cause layout shifts */
-    .floating-circle, .animated-line {
-      display: none;
-    }
-    
     /* Prevent text movement */
     .hero-title {
       transform: none !important;
@@ -1154,35 +1263,76 @@
   }
 
   @media (max-width: 767px) {
-  .col-lg-7.col-md-12.hero-content-wrapper {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-bottom: 20px;
+    .col-lg-7.col-md-12.hero-content-wrapper {
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .col-lg-4.col-md-8.offset-lg-1.offset-md-0 {
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+    
+    /* Improve container */
+    .container.position-relative.d-flex {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+    
+    .row.align-items-center {
+      margin-left: -15px;
+      margin-right: -15px;
+      width: 100%;
+    }
+  }
+
+  /* Use content-visibility to help prevent layout shifts */
+  @media (max-width: 767px) {
+    .booking-form {
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 450px; /* Approximation of form height */
+    }
+  }
+
+  /* Only use will-change for non-mobile devices to avoid memory issues on mobile */
+  @media (min-width: 768px) {
+    .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
+      will-change: opacity, transform;
+    }
+  }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s forwards;
   }
   
-  .col-lg-4.col-md-8.offset-lg-1.offset-md-0 {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-  
-  /* Improve container */
-  .container.position-relative.d-flex {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-  
-  .row.align-items-center {
-    margin-left: -15px;
-    margin-right: -15px;
-    width: 100%;
-  }
+  .hero-subtitle { animation-delay: 0.1s; }
+  .hero-buttons { animation-delay: 0.2s; }
+  .destination-teasers { animation-delay: 0.3s; }
 }
 
-/* Use content-visibility to help prevent layout shifts */
-@media (max-width: 767px) {
-  .booking-form {
-    content-visibility: auto;
-    contain-intrinsic-size: 1px 450px; /* Approximation of form height */
+/* Fix layout shifting by setting dimensions before content loads */
+.hero-section {
+  min-height: 100vh;
+}
+
+/* Optimize paint and layout performance */
+.hero-content-wrapper {
+  transform: translateZ(0);
+}
+
+/* Optimize animations by using only transform and opacity */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>
