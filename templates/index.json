@@ -422,31 +422,14 @@
             "book_now_text": "Book Now"
           }
         },
-        "tour_card_cwmfia": {
-          "type": "tour_card",
+        "product_tour_card_pdrD7R": {
+          "type": "product_tour_card",
           "settings": {
-            "image": "shopify://shop_images/dest3.jpg",
-            "title": "Desert",
-            "description": "Brief description of the tour.",
-            "button_url": "/",
-            "tour_category": "beach",
+            "product": "desert",
             "is_featured": false,
-            "rating": 4.5,
-            "review_count": "24",
             "grid_span": 1,
             "grid_height_span": 1,
-            "title_color": "#000000",
-            "description_color": "#ffffff",
-            "dest_checker": true,
-            "destination": "Sahara Desert",
-            "duration_checker": true,
-            "duration": "7 days",
-            "date_checker": true,
-            "date": "23/02/2025",
-            "cost_checker": true,
-            "cost": "300",
             "button_text": "View Details",
-            "event_url": "/",
             "book_now_text": "Book Now"
           }
         },
@@ -464,7 +447,7 @@
       },
       "block_order": [
         "product_tour_card_EAt39a",
-        "tour_card_cwmfia",
+        "product_tour_card_pdrD7R",
         "product_tour_card_Fw8Jtf"
       ],
       "settings": {
