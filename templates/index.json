@@ -494,12 +494,40 @@
             "event_url": "/",
             "book_now_text": "Book Now"
           }
+        },
+        "tour_card_HChKe7": {
+          "type": "tour_card",
+          "settings": {
+            "title": "Amazing Beach Tour",
+            "description": "Experience the beauty of pristine beaches and crystal clear waters on this unforgettable tour.",
+            "button_url": "/",
+            "tour_category": "beach",
+            "is_featured": false,
+            "rating": 4.5,
+            "review_count": "24",
+            "grid_span": 1,
+            "grid_height_span": 1,
+            "title_color": "#000000",
+            "description_color": "#666666",
+            "dest_checker": true,
+            "destination": "Bali, Indonesia",
+            "duration_checker": true,
+            "duration": "7 Days",
+            "date_checker": true,
+            "date": "Apr - Oct",
+            "cost_checker": true,
+            "cost": "599",
+            "button_text": "View Details",
+            "event_url": "/",
+            "book_now_text": "Book Now"
+          }
         }
       },
       "block_order": [
         "tour_card_eJTdqr",
         "tour_card_nCghwJ",
-        "tour_card_cwmfia"
+        "tour_card_cwmfia",
+        "tour_card_HChKe7"
       ],
       "settings": {
         "bg_color": "#effffd",
