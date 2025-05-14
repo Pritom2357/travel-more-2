@@ -378,7 +378,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/dest1_9023997e-c4dd-4eca-a9fa-b917c238c64f.jpg",
-            "overlay_opacity": 0.6,
+            "overlay_opacity": 0.2,
             "overlay_color": "#000000",
             "text_alignment": "center",
             "slide_heading": "Special Destination Offer",
