@@ -1,25 +1,4 @@
-{%- if section.settings.bg_img -%}
-  {%- assign bg_img_mobile = section.settings.bg_img | img_url: '800x', format: 'pjpg', quality: 80 -%}
-  {%- assign bg_img_desktop = section.settings.bg_img | img_url: '1600x', format: 'pjpg', quality: 85 -%}
-  {%- assign bg_img_url = bg_img_desktop -%}
-
-{%- else -%}
-  {%- assign bg_img_url = '' -%}
-{%- endif -%}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<!-- Font optimization for mobile performance -->
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<!-- Only load critical font weights -->
-{% if section.settings.title_font != "Helvetica, sans-serif" %}
-  <link rel="preload" as="font" fetchpriority="high" href="https://fonts.googleapis.com/css2?family={{ section.settings.title_font | replace: ' ', '+' }}:wght@700&display=swap">
-{% endif %}
-
-<!-- For browsers that support fetchpriority -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ section.settings.title_font | replace: ' ', '+' }}:wght@700&display=swap" fetchpriority="high">
+{%- assign bg_img_url = section.settings.bg_img | img_url: '1600x' -%}
 <!-- Convert Form Background Color -->
 {% assign input_hex_color = section.settings.form_bg_color %}
 {% include 'hex-to-rgb' %}
@@ -210,82 +189,158 @@
 </section>
 
 <script>
-document.head.insertAdjacentHTML('beforeend', `
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-`);
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const bookNowBtn = document.getElementById('bookNowBtn');
+    if(bookNowBtn) {
+      bookNowBtn.addEventListener('click', () => {
+        const destSelect = document.getElementById('destinationSelect');
+        const selectedOption = destSelect.options[destSelect.selectedIndex];
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Form functionality
-  const bookNowBtn = document.getElementById('bookNowBtn');
-  if(bookNowBtn) {
-    bookNowBtn.addEventListener('click', () => {
-      const destSelect = document.getElementById('destinationSelect');
-      const selectedOption = destSelect.options[destSelect.selectedIndex];
+        const destinationTitle = selectedOption.value; 
+        const destinationDescription = selectedOption.dataset.destDescription; 
+        const destinationPrice = selectedOption.dataset.destPrice; 
+        const tourType = document.getElementById('tourType').value;
 
-      const destinationTitle = selectedOption.value; 
-      const destinationDescription = selectedOption.dataset.destDescription; 
-      const destinationPrice = selectedOption.dataset.destPrice; 
-      const tourType = document.getElementById('tourType').value;
+        const url = `/pages/tour-booking?dest=${encodeURIComponent(destinationTitle)}&desc=${encodeURIComponent(destinationDescription)}&price=${encodeURIComponent(destinationPrice)}&type=${encodeURIComponent(tourType)}`;
 
-      const url = `/pages/tour-booking?dest=${encodeURIComponent(destinationTitle)}&desc=${encodeURIComponent(destinationDescription)}&price=${encodeURIComponent(destinationPrice)}&type=${encodeURIComponent(tourType)}`;
-
-      window.location.href = url;
-    });
-  }
-  
-  // Dropdown toggle functionality
-  const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-  dropdownToggles.forEach(toggle => {
-    toggle.addEventListener('click', function (e) {
-      if (this.nextElementSibling && this.nextElementSibling.classList.contains('dropdown-menu')) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const dropdownMenu = this.nextElementSibling;
-        
-        if (window.innerWidth <= 991) {
-          dropdownMenu.classList.toggle('show');
-          
-          const parent = this.closest('li').parentNode;
-          if (parent.classList.contains('dropdown-menu')) {
-            const siblings = parent.querySelectorAll(':scope > li > .dropdown-menu');
-            siblings.forEach(menu => {
-              if (menu !== dropdownMenu && menu.classList.contains('show')) {
-                menu.classList.remove('show');
-              }
-            });
-          }
-        }
-      }
-    });
+        window.location.href = url;
+      });
+    }
   });
 
-  // Text effect enhancement
+  function updateCartCount() {
+    fetch('/cart.js')
+      .then(response => response.json())
+      .then(cart => {
+        const countBadges = document.querySelectorAll('.cart-count-badge');
+        countBadges.forEach(badge => {
+          badge.textContent = cart.item_count;
+          badge.setAttribute('data-count', cart.item_count);
+        });
+      })
+      .catch(error => console.error('Error updating cart count:', error));
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    updateCartCount();
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    
+    dropdownToggles.forEach(toggle => {
+      toggle.addEventListener('click', function (e) {
+        if (this.nextElementSibling && this.nextElementSibling.classList.contains('dropdown-menu')) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const dropdownMenu = this.nextElementSibling;
+          
+          if (window.innerWidth <= 991) {
+            dropdownMenu.classList.toggle('show');
+            
+            const parent = this.closest('li').parentNode;
+            if (parent.classList.contains('dropdown-menu')) {
+              const siblings = parent.querySelectorAll(':scope > li > .dropdown-menu');
+              siblings.forEach(menu => {
+                if (menu !== dropdownMenu && menu.classList.contains('show')) {
+                  menu.classList.remove('show');
+                }
+              });
+            }
+          }
+        }
+      });
+    });
+    
+    if ('ontouchstart' in document.documentElement) {
+      document.querySelectorAll('.dropdown-submenu > .dropdown-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+          const parent = this.parentElement;
+          if (!parent.classList.contains('show-touch-menu')) {
+            e.preventDefault();
+            document.querySelectorAll('.show-touch-menu').forEach(el => {
+              if (!parent.contains(el)) el.classList.remove('show-touch-menu');
+            });
+            parent.classList.add('show-touch-menu');
+          }
+        });
+      });
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+    
+    const heroContent = document.querySelector('.hero-content-wrapper');
+    if (heroContent && window.innerWidth > 992) {
+      document.addEventListener('mousemove', function(e) {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        
+        const title = document.querySelector('.hero-title');
+        if (title) {
+          title.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
+        }
+        
+        const circles = document.querySelectorAll('.floating-circle');
+        circles.forEach((circle, index) => {
+          const factor = index === 0 ? -1 : 1;
+          circle.style.transform = `translate(${x * 20 * factor}px, ${y * 20 * factor}px)`;
+        });
+      });
+    }
+    
+    const heroTitle = document.querySelector('.hero-title');
+    if (heroTitle) {
+      heroTitle.addEventListener('mouseover', function() {
+        this.classList.add('hover-effect');
+      });
+      
+      heroTitle.addEventListener('mouseout', function() {
+        this.classList.remove('hover-effect');
+      });
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+  // Apply enhanced text outline effect for better browser support
   function enhanceTextOutline() {
     if ('{{section.settings.title_effect}}' === 'outline') {
       const titleElement = document.querySelector('.hero-title');
-      if (titleElement && !CSS.supports('-webkit-text-stroke', '1px black')) {
-        applyTextStrokePolyfill(titleElement, 
-          '{{section.settings.title_effect_width}}',
-          '{{section.settings.title_effect_color}}');
+      if (titleElement) {
+        // Check if browser supports text-stroke
+        if (!CSS.supports('-webkit-text-stroke', '1px black')) {
+          applyTextStrokePolyfill(titleElement, 
+            '{{section.settings.title_effect_width}}',
+            '{{section.settings.title_effect_color}}');
+        }
       }
     }
     
     if ('{{section.settings.subtitle_effect}}' === 'outline') {
       const subtitleElement = document.querySelector('.hero-subtitle');
-      if (subtitleElement && !CSS.supports('-webkit-text-stroke', '1px black')) {
-        applyTextStrokePolyfill(subtitleElement,
-          '{{section.settings.subtitle_effect_width}}',
-          '{{section.settings.subtitle_effect_color}}');
+      if (subtitleElement) {
+        // Check if browser supports text-stroke
+        if (!CSS.supports('-webkit-text-stroke', '1px black')) {
+          applyTextStrokePolyfill(subtitleElement,
+            '{{section.settings.subtitle_effect_width}}',
+            '{{section.settings.subtitle_effect_color}}');
+        }
       }
     }
   }
   
   function applyTextStrokePolyfill(element, width, color) {
+    // Apply a shadow-based fallback for browsers without text-stroke support
     const shadowWidth = parseInt(width);
     const shadowColor = color;
     
+    // Create multiple text shadows to simulate stroke
     const shadows = [];
     for (let i = -shadowWidth; i <= shadowWidth; i++) {
       for (let j = -shadowWidth; j <= shadowWidth; j++) {
@@ -298,120 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   enhanceTextOutline();
-  updateCartCount();
 });
-
-// Non-critical JS that can wait until everything else is loaded
-window.addEventListener('load', function() {
-  // Setup tooltips - visual enhancement only
-  if (typeof bootstrap !== 'undefined') {
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-  }
-  
-  // Decorative animations and effects - purely visual
-  const heroContent = document.querySelector('.hero-content-wrapper');
-  const heroTitle = document.querySelector('.hero-title');
-  const circles = document.querySelectorAll('.floating-circle');
-  
-  if (heroContent && window.innerWidth > 992) {
-    document.addEventListener('mousemove', function(e) {
-      // Check for reduced motion preference
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        const x = e.clientX / window.innerWidth;
-        const y = e.clientY / window.innerHeight;
-        
-        if (heroTitle) {
-          heroTitle.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
-        }
-        
-        circles.forEach((circle, index) => {
-          const factor = index === 0 ? -1 : 1;
-          circle.style.transform = `translate(${x * 20 * factor}px, ${y * 20 * factor}px)`;
-        });
-      }
-    });
-  }
-  
-  // Hover effects - purely decorative
-  if (heroTitle) {
-    heroTitle.addEventListener('mouseover', function() {
-      this.classList.add('hover-effect');
-    });
-    
-    heroTitle.addEventListener('mouseout', function() {
-      this.classList.remove('hover-effect');
-    });
-  }
-  
-  // Touch menu behavior - enhancement
-  if ('ontouchstart' in document.documentElement) {
-    document.querySelectorAll('.dropdown-submenu > .dropdown-item').forEach(item => {
-      item.addEventListener('click', function(e) {
-        const parent = this.parentElement;
-        if (!parent.classList.contains('show-touch-menu')) {
-          e.preventDefault();
-          document.querySelectorAll('.show-touch-menu').forEach(el => {
-            if (!parent.contains(el)) el.classList.remove('show-touch-menu');
-          });
-          parent.classList.add('show-touch-menu');
-        }
-      });
-    });
-  }
-});
-
-// Helper function that might be called from multiple places
-function updateCartCount() {
-  fetch('/cart.js')
-    .then(response => response.json())
-    .then(cart => {
-      const countBadges = document.querySelectorAll('.cart-count-badge');
-      countBadges.forEach(badge => {
-        badge.textContent = cart.item_count;
-        badge.setAttribute('data-count', cart.item_count);
-      });
-    })
-    .catch(error => console.error('Error updating cart count:', error));
-}
-
-// Move all decorative animations to deferred loading
-const decorativeEffects = function() {
-  const heroContent = document.querySelector('.hero-content-wrapper');
-  const heroTitle = document.querySelector('.hero-title');
-  const circles = document.querySelectorAll('.floating-circle');
-  
-  if (heroContent && window.innerWidth > 992) {
-    document.addEventListener('mousemove', function(e) {
-      // Mouse tracking animation code
-    });
-  }
-};
-
-// Only load decorative effects after everything else
-if (window.requestIdleCallback) {
-  window.requestIdleCallback(decorativeEffects);
-} else {
-  setTimeout(decorativeEffects, 2000);
-}
-
-// Defer loading of non-critical CSS
-const loadDeferredStyles = function() {
-  const addStylesNode = document.getElementById('deferred-styles');
-  if (addStylesNode) { // Check if element exists first
-    const replacement = document.createElement('div');
-    replacement.innerHTML = addStylesNode.textContent;
-    document.body.appendChild(replacement);
-    addStylesNode.parentElement.removeChild(addStylesNode);
-  }
-};
-
-const raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
-else window.addEventListener('load', loadDeferredStyles);
 </script>
 
 <style>
@@ -474,22 +416,22 @@ else window.addEventListener('load', loadDeferredStyles);
     position: relative;
     width: 100%;
     min-height: 100vh;
-    background-color: #000; /* Fallback color before image loads */
-    {% if section.settings.bg_img != blank %}
-      background-image: url({{ section.settings.bg_img | img_url: '1800x' }});
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    {% endif %}
+    background: url('{{ bg_img_url }}') center center no-repeat;
+    background-size: cover;
+    isolation: isolate; 
   }
-  
-  /* Use appropriate background images for different screen sizes */
-  @media (max-width: 767px) {
-    .hero-section {
-      {% if section.settings.bg_img != blank %}
-        background-image: url({{ section.settings.bg_img | img_url: '800x' }});
-      {% endif %}
-    }
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    
+    {% if section.settings.enable_overlay %}
+      background-color: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }};
+    {% endif %}
   }
   .hero-section .row.align-items-center {
     min-height: 100vh;
@@ -655,7 +597,7 @@ else window.addEventListener('load', loadDeferredStyles);
     border-radius: 4px;
     padding: 10px 0;
     z-index: 1000;
-    min-width: 200px.
+    min-width: 200px;
   }
 
   .navbar-nav .dropdown-item {
@@ -800,8 +742,6 @@ else window.addEventListener('load', loadDeferredStyles);
     padding: 2rem 1rem 2rem 0;
     z-index: 10;
     min-height: 400px; /* Adjust based on your content */
-    height: auto;
-    min-height: unset; /* Remove fixed height constraint */
   }
   
   /* Animated title with gradient highlight */
@@ -1127,34 +1067,24 @@ else window.addEventListener('load', loadDeferredStyles);
   }
 
   .hero-section {
-    aspect-ratio: 16 / 9;
-    height: auto;
-    min-height: 400px;
-    contain: layout paint;
-    content-visibility: auto; /* Improve rendering performance */
-    contain-intrinsic-size: 100% 600px; /* Ensure content-visibility doesn't cause layout shift */
+    aspect-ratio: 16 / 9; /* Or whatever ratio your background image has */
+    min-height: 600px; /* Fallback */
   }
 
   .navbar-brand img {
     width: {{ section.settings.logo_size }}px;
-    height: calc({{ section.settings.logo_size }}px * 0.75); /* Estimate height */
-    aspect-ratio: auto; /* Let browser determine ratio from actual dimensions */
-    object-fit: contain; /* Ensure image fits without distortion */
-    display: block; /* Prevent unexpected layout shift */
+    height: auto;
+    aspect-ratio: 1 / 1; /* Adjust to your logo's aspect ratio */
   }
 
   .hero-title, .hero-subtitle {
     font-display: swap;
-    max-width: 100%; /* Prevent overflow */
   }
 
-  /* Apply animations with better performance */
-  @media (prefers-reduced-motion: no-preference) {
-    .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.8s forwards;
-    }
+  .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s forwards;
   }
 
   .hero-subtitle {
@@ -1175,159 +1105,6 @@ else window.addEventListener('load', loadDeferredStyles);
       transform: translateY(0);
     }
   }
-
-  /* Background styles moved to the primary .hero-section selector above */
-.hero-section {
-    position: relative;
-    width: 100%;
-    min-height: 100vh; /* Use viewport height instead of fixed pixels */
-    max-height: unset; /* Remove any max-height restrictions */
-    aspect-ratio: unset; /* Remove aspect ratio on mobile */
-    overflow: hidden; /* Contain all elements */
-  }
-
-  /* Control height more precisely on mobile */
-  @media (max-width: 767px) {
-    .hero-section {
-      height: auto; /* Auto height based on content */
-      min-height: 100vh;
-      padding-bottom: 30px; /* Add padding at bottom to prevent cutoff */
-    }
-    
-    .hero-section .row.align-items-center {
-      min-height: unset; /* Remove min-height constraint */
-    }
-  }
-
-  /* More efficient animations */
-  @media (max-width: 767px) {
-    /* Reduce or eliminate animations on mobile */
-    .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
-      opacity: 1;
-      transform: none;
-      animation: none;
-    }
-    
-    /* Prevent text movement */
-    .hero-title {
-      transform: none !important;
-    }
-  }
-
-  @media (max-width: 767px) {
-    .col-lg-7.col-md-12.hero-content-wrapper {
-      padding-right: 15px;
-      padding-left: 15px;
-      margin-bottom: 20px;
-    }
-    
-    .col-lg-4.col-md-8.offset-lg-1.offset-md-0 {
-      padding-right: 15px;
-      padding-left: 15px;
-    }
-    
-    /* Improve container */
-    .container.position-relative.d-flex {
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-    
-    .row.align-items-center {
-      margin-left: -15px;
-      margin-right: -15px;
-      width: 100%;
-    }
-  }
-
-  /* Use content-visibility to help prevent layout shifts */
-  @media (max-width: 767px) {
-    .booking-form {
-      content-visibility: auto;
-      contain-intrinsic-size: 1px 450px; /* Approximation of form height */
-    }
-  }
-
-  /* Only use will-change for non-mobile devices to avoid memory issues on mobile */
-  @media (min-width: 768px) {
-    .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
-      will-change: opacity, transform;
-    }
-  }
-
-@media (prefers-reduced-motion: no-preference) {
-  .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s forwards;
-  }
-  
-  .hero-subtitle { animation-delay: 0.1s; }
-  .hero-buttons { animation-delay: 0.2s; }
-  .destination-teasers { animation-delay: 0.3s; }
-}
-
-/* Fix layout shifting by setting dimensions before content loads */
-.hero-section {
-  min-height: 100vh;
-}
-
-/* Optimize paint and layout performance */
-.hero-content-wrapper {
-  transform: translateZ(0);
-}
-
-/* Optimize animations by using only transform and opacity */
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Background styles moved to the top of the stylesheet */
-
-@media (max-width: 767px) {
-  .hero-section {
-    background-image: url({{ section.settings.bg_img | img_url: '800x' }});
-  }
-}
-
-/* Disable unnecessary animations on mobile */
-@media (max-width: 767px) {
-  .floating-circle, .animated-line {
-    display: none !important;
-  }
-  
-  /* Use simpler animation for text */
-  .hero-title, .hero-subtitle, .hero-buttons {
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-  }
-  
-  /* Remove fancy hover effects on mobile */
-  .hero-btn:hover .btn-content,
-  .hero-btn:hover .btn-icon {
-    transform: none !important;
-  }
-}
-
-/* Improve performance by delaying non-critical rendering */
-@media (max-width: 767px) {
-  .destination-teasers {
-    content-visibility: auto;
-    contain-intrinsic-size: 0 50px;
-  }
-  
-  .navbar-collapse {
-    content-visibility: auto;
-    contain-intrinsic-size: 0 0;
-  }
-}
 </style>
 
 {% schema %}
