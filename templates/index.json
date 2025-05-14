@@ -404,7 +404,7 @@
         "mobile_banner_height": 390,
         "content_width": 1200,
         "autoplay": true,
-        "autoplay_speed": 3,
+        "autoplay_speed": 10,
         "pause_on_hover": true
       }
     },
