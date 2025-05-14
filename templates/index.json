@@ -401,7 +401,7 @@
       ],
       "settings": {
         "banner_height": 360,
-        "mobile_banner_height": 360,
+        "mobile_banner_height": 390,
         "content_width": 1200,
         "autoplay": true,
         "autoplay_speed": 5,
