@@ -358,7 +358,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/dest4.jpg",
-            "overlay_opacity": 0.6,
+            "overlay_opacity": 0.3,
             "overlay_color": "#000000",
             "text_alignment": "center",
             "slide_heading": "Special Destination Offer",
@@ -378,7 +378,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/dest1_9023997e-c4dd-4eca-a9fa-b917c238c64f.jpg",
-            "overlay_opacity": 0.3,
+            "overlay_opacity": 0.2,
             "overlay_color": "#000000",
             "text_alignment": "center",
             "slide_heading": "Special Destination Offer",
@@ -400,8 +400,8 @@
         "slide_RERCV3"
       ],
       "settings": {
-        "banner_height": 400,
-        "mobile_banner_height": 300,
+        "banner_height": 360,
+        "mobile_banner_height": 360,
         "content_width": 1200,
         "autoplay": true,
         "autoplay_speed": 5,
