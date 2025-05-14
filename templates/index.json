@@ -339,7 +339,7 @@
         "use_full_width": false,
         "enable_hover_effect": true,
         "enable_image_overlay": true,
-        "show_cta": true,
+        "show_cta": false,
         "cta_title": "Ready to Experience Our Services?",
         "cta_description": "Join thousands of satisfied customers who have trusted our expertise.",
         "cta_button_text": "Get Started",
