@@ -359,6 +359,7 @@
           "settings": {
             "image": "shopify://shop_images/dest4.jpg",
             "overlay_opacity": 0.6,
+            "overlay_color": "#000000",
             "text_alignment": "center",
             "slide_heading": "Special Destination Offer",
             "heading_size": 48,
@@ -378,6 +379,7 @@
           "settings": {
             "image": "shopify://shop_images/dest1_9023997e-c4dd-4eca-a9fa-b917c238c64f.jpg",
             "overlay_opacity": 0.3,
+            "overlay_color": "#000000",
             "text_alignment": "center",
             "slide_heading": "Special Destination Offer",
             "heading_size": 48,
