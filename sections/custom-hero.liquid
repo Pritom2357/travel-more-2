@@ -742,6 +742,8 @@
     padding: 2rem 1rem 2rem 0;
     z-index: 10;
     min-height: 400px; /* Adjust based on your content */
+    height: auto;
+    min-height: unset; /* Remove fixed height constraint */
   }
   
   /* Animated title with gradient highlight */
@@ -1073,8 +1075,9 @@
 
   .navbar-brand img {
     width: {{ section.settings.logo_size }}px;
-    height: auto;
-    aspect-ratio: 1 / 1; /* Adjust to your logo's aspect ratio */
+    height: calc({{ section.settings.logo_size }}px * 0.75); /* Estimate height */
+    aspect-ratio: auto; /* Let browser determine ratio from actual dimensions */
+    object-fit: contain; /* Ensure image fits without distortion */
   }
 
   .hero-title, .hero-subtitle {
@@ -1105,6 +1108,83 @@
       transform: translateY(0);
     }
   }
+
+  .hero-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh; /* Use viewport height instead of fixed pixels */
+    max-height: unset; /* Remove any max-height restrictions */
+    aspect-ratio: unset; /* Remove aspect ratio on mobile */
+    overflow: hidden; /* Contain all elements */
+    background: url('{{ bg_img_url }}') center center no-repeat;
+    background-size: cover;
+  }
+
+  /* Control height more precisely on mobile */
+  @media (max-width: 767px) {
+    .hero-section {
+      height: auto; /* Auto height based on content */
+      min-height: 100vh;
+      padding-bottom: 30px; /* Add padding at bottom to prevent cutoff */
+    }
+    
+    .hero-section .row.align-items-center {
+      min-height: unset; /* Remove min-height constraint */
+    }
+  }
+
+  /* More efficient animations */
+  @media (max-width: 767px) {
+    /* Reduce or eliminate animations on mobile */
+    .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+    
+    /* Hide decorative elements that cause layout shifts */
+    .floating-circle, .animated-line {
+      display: none;
+    }
+    
+    /* Prevent text movement */
+    .hero-title {
+      transform: none !important;
+    }
+  }
+
+  @media (max-width: 767px) {
+  .col-lg-7.col-md-12.hero-content-wrapper {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .col-lg-4.col-md-8.offset-lg-1.offset-md-0 {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  
+  /* Improve container */
+  .container.position-relative.d-flex {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .row.align-items-center {
+    margin-left: -15px;
+    margin-right: -15px;
+    width: 100%;
+  }
+}
+
+/* Use content-visibility to help prevent layout shifts */
+@media (max-width: 767px) {
+  .booking-form {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 450px; /* Approximation of form height */
+  }
+}
 </style>
 
 {% schema %}
