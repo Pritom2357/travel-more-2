@@ -8,8 +8,8 @@
           <div class="banner-slide" {{ block.shopify_attributes }} id="banner-slide-{{ forloop.index }}">
             {% if block.settings.image %}
               <div class="slide-image-container">
-                <img src="{{ block.settings.image | img_url: 'master' }}" class="slide-full-image" alt="{{ block.settings.slide_heading | escape }}">
-                {% comment %} <div class="slide-overlay" style="background-color: {{ block.settings.overlay_color | color_modify: 'alpha', block.settings.overlay_opacity }};"></div> {% endcomment %}
+                <img src="{{ block.settings.image | img_url: 'master' }}" class="slide-full-image" alt="{{ block.settings.slide_heading | escape }}" style="z-index: 1;">
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background-color: {{ block.settings.overlay_color | color_modify: 'alpha', block.settings.overlay_opacity }}; pointer-events: none;"></div>
               </div>
             {% else %}
               <div class="slide-placeholder">
@@ -17,7 +17,7 @@
               </div>
             {% endif %}
             
-            <div class="slide-content-container container">
+            <div class="slide-content-container container" style="position: relative; z-index: 3;">
               <div class="slide-content position-relative" style="text-align: {{ block.settings.text_alignment }};">
                 {% if block.settings.slide_heading != blank %}
                   <h2 class="slide-heading" 
@@ -227,17 +227,6 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-  }
-
-  .slide-image-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    background-color: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }};
   }
   
   .slide-image {
