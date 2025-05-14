@@ -411,31 +411,14 @@
     "plans_eq7HhF": {
       "type": "plans",
       "blocks": {
-        "tour_card_nCghwJ": {
-          "type": "tour_card",
+        "product_tour_card_EAt39a": {
+          "type": "product_tour_card",
           "settings": {
-            "image": "shopify://shop_images/dest1.jpg",
-            "title": "Chakra City",
-            "description": "Unleash your imagination",
-            "button_url": "/",
-            "tour_category": "beach",
+            "product": "old-towns",
             "is_featured": false,
-            "rating": 4.5,
-            "review_count": "24",
             "grid_span": 1,
             "grid_height_span": 1,
-            "title_color": "#000000",
-            "description_color": "#caf178",
-            "dest_checker": true,
-            "destination": "Chakra City",
-            "duration_checker": true,
-            "duration": "10 days",
-            "date_checker": true,
-            "date": "02/02/2025",
-            "cost_checker": true,
-            "cost": "100",
             "button_text": "View Details",
-            "event_url": "/",
             "book_now_text": "Book Now"
           }
         },
@@ -480,7 +463,7 @@
         }
       },
       "block_order": [
-        "tour_card_nCghwJ",
+        "product_tour_card_EAt39a",
         "tour_card_cwmfia",
         "product_tour_card_Fw8Jtf"
       ],
