@@ -691,6 +691,43 @@
   .compare-controls button {
     font-weight: bold;
   }
+  
+  /* Rich text styling for comparison */
+  .rich-text-content {
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 10px 0;
+  }
+  
+  .rich-text-content p {
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+  }
+  
+  .rich-text-content ul, 
+  .rich-text-content ol {
+    padding-left: 1.5rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .rich-text-content li {
+    margin-bottom: 0.3rem;
+  }
+  
+  .rich-text-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 0.8rem 0;
+    border-radius: 4px;
+  }
+  
+  .rich-text-content h1, 
+  .rich-text-content h2, 
+  .rich-text-content h3, 
+  .rich-text-content h4 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
 </style>
 
 <script>
@@ -950,7 +987,6 @@
           <tr>
             <td class="comparison-feature">Destination</td>
       `;
-      
       productsToCompare.forEach(product => {
         const destination = product.destination || 'Not specified';
         comparisonHtml += `<td>${destination}</td>`;
@@ -958,39 +994,40 @@
       
       // Days Allowed
       comparisonHtml += `
-          </tr>
-          <tr>
+    </tr>
+    <tr>
             <td class="comparison-feature">Days</td>
-      `;
-      
-      productsToCompare.forEach(product => {
-        const days = product.days_allowed || 'Not specified';
-        comparisonHtml += `<td>${days}</td>`;
-      });
-      
-      // People Allowed
-      comparisonHtml += `
+            `;
+            
+            productsToCompare.forEach(product => {
+              const days = product.days_allowed || 'Not specified';
+              comparisonHtml += `<td>${days}</td>`;
+            });
+            
+            // People Allowed
+            comparisonHtml += `
           </tr>
           <tr>
             <td class="comparison-feature">People</td>
-      `;
-      
-      productsToCompare.forEach(product => {
-        const people = product.people_allowed || 'Not specified';
-        comparisonHtml += `<td>${people}</td>`;
-      });
-      
-      // Additional Info
-      comparisonHtml += `
+            `;
+            
+            productsToCompare.forEach(product => {
+              const people = product.people_allowed || 'Not specified';
+              comparisonHtml += `<td>${people}</td>`;
+            });
+            
+            // Additional Info
+            comparisonHtml += `
           </tr>
           <tr>
             <td class="comparison-feature">Additional Info</td>
-      `;
-      
-      productsToCompare.forEach(product => {
-        const additionalInfo = product.additional_info || 'No additional information';
-        comparisonHtml += `<td>${additionalInfo}</td>`;
-      });
+            `;
+            
+          productsToCompare.forEach(product => {
+            const additionalInfo = product.additional_info || 'No additional information';
+            // The additionalInfo variable now contains HTML rendered by metafield_tag
+            comparisonHtml += `<td><div class="rich-text-content">${additionalInfo}</div></td>`;
+          });
       
     } catch (error) {
       console.error('Error fetching metafield data:', error);
