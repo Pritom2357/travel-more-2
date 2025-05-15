@@ -77,6 +77,7 @@
                 grid-row: span {{ block.settings.grid_height_span }};
               "
               {{ block.shopify_attributes }}
+              data-product-id="{{ block.settings.title | handleize }}-{{ forloop.index }}"
             >
               <!-- Existing custom card layout -->
               <div class="tour-card">
@@ -200,6 +201,7 @@
                   grid-row: span {{ block.settings.grid_height_span }};
                 "
                 {{ block.shopify_attributes }}
+                data-product-id="{{ product.id }}"
               >
                 <div class="tour-card">
                   <div class="tour-card-media">
@@ -356,19 +358,117 @@
     
     const wishlistBtns = document.querySelectorAll('.wishlist-btn');
     wishlistBtns.forEach(btn => {
+      const card = btn.closest('.tour-card');
+      const cardWrapper = btn.closest('.tour-card-wrapper');
+      
+      let productId, productData;
+      
+      if (card.querySelector('.tour-title')) {
+        const title = card.querySelector('.tour-title').textContent.trim();
+        const imageEl = card.querySelector('.tour-image');
+        const imageUrl = imageEl ? imageEl.getAttribute('src') : '';
+        
+        // For product cards, get the URL from the view details button
+        const detailsLink = card.querySelector('.btn-view-details');
+        const productUrl = detailsLink ? detailsLink.getAttribute('href') : '#';
+        
+        // For price, try to get from price badge
+        const priceBadge = card.querySelector('.price-badge .price');
+        const price = priceBadge ? priceBadge.textContent.trim() : '';
+        
+        // Generate a unique ID - either from the data attribute or create a hash from the title
+        productId = cardWrapper.getAttribute('data-product-id') || 
+                    title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+        
+        productData = {
+          id: productId,
+          title: title,
+          image: imageUrl,
+          url: productUrl,
+          price: price
+        };
+      }
+      
+      // Check if item is already in wishlist and set initial state
+      const wishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
+      
+      if (productId && wishlist[productId]) {
+        btn.classList.add('active');
+        btn.querySelector('i').classList.remove('bi-heart');
+        btn.querySelector('i').classList.add('bi-heart-fill');
+      }
+      
+      // Add click event
       btn.addEventListener('click', function(e) {
         e.preventDefault();
+        
+        if (!productId || !productData) {
+          console.warn("Couldn't determine product information for wishlist");
+          return;
+        }
+        
+        const wishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
+        
         this.classList.toggle('active');
         
         if (this.classList.contains('active')) {
           this.querySelector('i').classList.remove('bi-heart');
           this.querySelector('i').classList.add('bi-heart-fill');
+          
+          // Add to wishlist in localStorage
+          wishlist[productId] = productData;
+          localStorage.setItem('tourWishlist', JSON.stringify(wishlist));
+          
+          // Show confirmation message
+          showWishlistToast('Added to wishlist');
         } else {
           this.querySelector('i').classList.remove('bi-heart-fill');
           this.querySelector('i').classList.add('bi-heart');
+          
+          // Remove from wishlist in localStorage
+          delete wishlist[productId];
+          localStorage.setItem('tourWishlist', JSON.stringify(wishlist));
+          
+          // Show confirmation message
+          showWishlistToast('Removed from wishlist');
         }
       });
     });
+    
+    // Toast notification function
+    function showWishlistToast(message) {
+      let toast = document.getElementById('wishlist-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'wishlist-toast';
+        toast.style.position = 'fixed';
+        toast.style.bottom = '20px';
+        toast.style.right = '20px';
+        toast.style.background = '#333';
+        toast.style.color = '#fff';
+        toast.style.padding = '12px 20px';
+        toast.style.borderRadius = '4px';
+        toast.style.zIndex = '9999';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+        toast.style.transition = 'opacity 0.3s, transform 0.3s';
+        document.body.appendChild(toast);
+      }
+      
+      toast.textContent = message;
+      
+      // Show the toast
+      setTimeout(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+      }, 10);
+      
+      // Hide after 3 seconds
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+      }, 3000);
+    }
     
     const quickViewBtns = document.querySelectorAll('.btn-quick-view');
     quickViewBtns.forEach(btn => {
@@ -871,6 +971,26 @@
     .tour-actions {
       flex-direction: column;
     }
+  }
+
+  #wishlist-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 4px;
+    z-index: 9999;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  #wishlist-toast.show {
+    opacity: 1;
+    transform: translateY(0);
   }
 </style>
 
