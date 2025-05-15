@@ -571,6 +571,7 @@
 
   .wishlist-section .wishlist-actions {
     display: flex;
+    flex-direction: column;
     gap: 10px;
   }
 
@@ -621,7 +622,7 @@
   }
 
   .compare-controls {
-    margin: 20px 0;
+    margin: 50px 0;
     text-align: right;
   }
 
@@ -667,6 +668,33 @@
   .comparison-feature {
     font-weight: 600;
     background-color: #f8f9fa;
+  }
+
+  /* Add this to your CSS */
+  .compare-checkbox {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .compare-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+    cursor: pointer;
+  }
+
+  /* Make the Compare Controls more visible */
+  .compare-controls {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .compare-controls button {
+    font-weight: bold;
   }
 </style>
 
@@ -857,6 +885,7 @@
     }
   }
 
+  // Update the compareProducts function
   async function compareProducts(productIds) {
     if (productIds.length < 2) {
       showToast('Select at least 2 products to compare');
@@ -889,9 +918,9 @@
     });
     
     comparisonHtml += `
-          </tr>
-          <tr>
-            <td></td>
+            </tr>
+            <tr>
+              <td></td>
     `;
     
     // Add product images
@@ -904,11 +933,11 @@
     });
     
     comparisonHtml += `
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="comparison-feature">Price</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="comparison-feature">Price</td>
     `;
     
     // Add prices
@@ -925,9 +954,9 @@
       
       // Destination
       comparisonHtml += `
-        </tr>
-        <tr>
-          <td class="comparison-feature">Destination</td>
+          </tr>
+          <tr>
+            <td class="comparison-feature">Destination</td>
       `;
       
       productsToCompare.forEach(product => {
@@ -937,9 +966,9 @@
       
       // Days Allowed
       comparisonHtml += `
-        </tr>
-        <tr>
-          <td class="comparison-feature">Days</td>
+          </tr>
+          <tr>
+            <td class="comparison-feature">Days</td>
       `;
       
       productsToCompare.forEach(product => {
@@ -949,9 +978,9 @@
       
       // People Allowed
       comparisonHtml += `
-        </tr>
-        <tr>
-          <td class="comparison-feature">People</td>
+          </tr>
+          <tr>
+            <td class="comparison-feature">People</td>
       `;
       
       productsToCompare.forEach(product => {
@@ -961,9 +990,9 @@
       
       // Additional Info
       comparisonHtml += `
-        </tr>
-        <tr>
-          <td class="comparison-feature">Additional Info</td>
+          </tr>
+          <tr>
+            <td class="comparison-feature">Additional Info</td>
       `;
       
       productsToCompare.forEach(product => {
@@ -976,17 +1005,22 @@
     }
     
     comparisonHtml += `
-        </tr>
-      </tbody>
-    </table>
-    </div>
+          </tr>
+        </tbody>
+      </table>
+      </div>
     `;
     
-    // Show the comparison in modal
+    // Show the comparison in modal - update this part
     document.getElementById('comparison-content').innerHTML = comparisonHtml;
-    $('#compareModal').modal('show');
+    
+    // Use Bootstrap 5 modal API
+    const compareModal = new bootstrap.Modal(document.getElementById('compareModal'));
+    compareModal.show();
   }
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 {% schema %}
 {
