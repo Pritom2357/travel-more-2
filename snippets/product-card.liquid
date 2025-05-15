@@ -688,6 +688,7 @@
     
     wishlistBtns.forEach(btn => {
       const productId = btn.getAttribute('data-product-id');
+      console.log('Init wishlist button for product ID:', productId);
       
       // Check if this product is already in wishlist and set initial state
       const wishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
@@ -704,68 +705,110 @@
       // Add click event
       btn.addEventListener('click', function(e) {
         e.preventDefault();
+        console.log('Wishlist button clicked for product ID:', productId);
         
-        // Get product data
-        const card = btn.closest('.product-card');
-        const title = card.querySelector('.product-title a').textContent.trim();
-        const imageEl = card.querySelector('.primary-image');
-        const imageUrl = imageEl ? imageEl.getAttribute('src') : '';
-        const productUrl = card.querySelector('.product-title a').getAttribute('href');
-        const priceEl = card.querySelector('.price, .price-sale');
-        const price = priceEl ? priceEl.textContent.trim() : '';
-        
-        // Get metafields if available
-        const destinationEl = card.querySelector('.destination-value');
-        const destination = destinationEl ? destinationEl.textContent.trim() : '';
-        
-        const peopleEl = card.querySelector('.people-allowed span');
-        const people_allowed = peopleEl ? peopleEl.textContent.trim() : '';
-        
-        const daysEl = card.querySelector('.days-allowed span');
-        const days_allowed = daysEl ? daysEl.textContent.trim() : '';
-        
-        const wishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
-        
-        const isCurrentlyActive = this.classList.contains('active');
-        const icon = this.querySelector('i');
-        
-        if (!isCurrentlyActive) { 
-          this.classList.add('active');
+        try {
+          // Get product data - more robust approach
+          const card = btn.closest('.product-card') || btn.closest('.card');
+          console.log('Found card element:', card ? true : false);
           
-          if (icon) {
-            icon.classList.remove('bi-heart');
-            icon.classList.add('bi-heart-fill');
+          // More flexible way to get product title
+          let title = '';
+          const titleEl = card.querySelector('.product-title a') || card.querySelector('.product-title');
+          if (titleEl) {
+            title = titleEl.textContent.trim();
+          }
+          console.log('Found product title:', title);
+          
+          // More flexible way to get product image
+          let imageUrl = '';
+          const imageEl = card.querySelector('.primary-image') || card.querySelector('.tour-image');
+          if (imageEl) {
+            imageUrl = imageEl.getAttribute('src');
+          }
+          console.log('Found product image:', imageUrl ? true : false);
+          
+          // More flexible way to get product URL
+          let productUrl = '';
+          const urlEl = card.querySelector('.product-title a') || card.querySelector('.btn-view-details');
+          if (urlEl) {
+            productUrl = urlEl.getAttribute('href');
+          }
+          console.log('Found product URL:', productUrl ? true : false);
+          
+          // More flexible way to get price
+          let price = '';
+          const priceEl = card.querySelector('.price, .price-sale') || card.querySelector('.price-badge .price');
+          if (priceEl) {
+            price = priceEl.textContent.trim();
+          }
+          console.log('Found product price:', price);
+          
+          // Get metafields with fallbacks
+          const destinationEl = card.querySelector('.destination-value') || 
+                               card.querySelector('.destination-metafield .destination-value');
+          const destination = destinationEl ? destinationEl.textContent.trim() : '';
+          
+          const peopleEl = card.querySelector('.people-allowed span');
+          const people_allowed = peopleEl ? peopleEl.textContent.trim() : '';
+          
+          const daysEl = card.querySelector('.days-allowed span');
+          const days_allowed = daysEl ? daysEl.textContent.trim() : '';
+          
+          // If product ID wasn't set as an attribute, generate one from title
+          const finalProductId = productId || title.toLowerCase().replace(/\s+/g, '-');
+          if (!finalProductId) {
+            throw new Error('Could not determine product ID');
           }
           
-          wishlist[productId] = {
-            id: productId,
-            title: title,
-            image: imageUrl,
-            url: productUrl,
-            price: price,
-            destination: destination,
-            days_allowed: days_allowed,
-            people_allowed: people_allowed
-          };
-          localStorage.setItem('tourWishlist', JSON.stringify(wishlist));
+          const wishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
           
-          // Show notification
-          showWishlistToast('Added to wishlist');
-        } else { // If in wishlist, remove it
-          this.classList.remove('active');
+          const isCurrentlyActive = this.classList.contains('active');
+          const icon = this.querySelector('i');
           
-          // Add heart outline icon
-          if (icon) {
-            icon.classList.remove('bi-heart-fill');
-            icon.classList.add('bi-heart');
+          console.log('Current active state:', isCurrentlyActive);
+          
+          if (!isCurrentlyActive) { 
+            this.classList.add('active');
+            
+            if (icon) {
+              icon.classList.remove('bi-heart');
+              icon.classList.add('bi-heart-fill');
+            }
+            
+            wishlist[finalProductId] = {
+              id: finalProductId,
+              title: title,
+              image: imageUrl,
+              url: productUrl,
+              price: price,
+              destination: destination,
+              days_allowed: days_allowed,
+              people_allowed: people_allowed
+            };
+            localStorage.setItem('tourWishlist', JSON.stringify(wishlist));
+            console.log('Added to wishlist:', finalProductId);
+            
+            // Show notification
+            showWishlistToast('Added to wishlist');
+          } else { 
+            this.classList.remove('active');
+            
+            if (icon) {
+              icon.classList.remove('bi-heart-fill');
+              icon.classList.add('bi-heart');
+            }
+            
+            delete wishlist[finalProductId];
+            localStorage.setItem('tourWishlist', JSON.stringify(wishlist));
+            console.log('Removed from wishlist:', finalProductId);
+            
+            // Show notification
+            showWishlistToast('Removed from wishlist');
           }
-          
-          // Remove from wishlist in localStorage
-          delete wishlist[productId];
-          localStorage.setItem('tourWishlist', JSON.stringify(wishlist));
-          
-          // Show notification
-          showWishlistToast('Removed from wishlist');
+        } catch (error) {
+          console.error('Error handling wishlist action:', error);
+          showWishlistToast('Error updating wishlist');
         }
       });
     });
