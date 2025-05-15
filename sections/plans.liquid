@@ -72,13 +72,13 @@
               {% assign people_allowed = product.metafields.custom.people_allowed | default: '' %}
               {% assign additional_info = product.metafields.custom.additional_info | default: '' %}
               
-              {%- capture additional_info_html -%}
+              {% comment %} {%- capture additional_info_html -%}
                 {% if product.metafields.custom.additional_info %}
                   {{ product.metafields.custom.additional_info | metafield_tag }}
                 {% else %}
                   No additional information
                 {% endif %}
-              {%- endcapture -%}
+              {%- endcapture -%} {% endcomment %}
 
               {% if destination == blank %}{% assign destination = 'Destination Not Set' %}{% endif %}
               {% if days_allowed == blank %}{% assign days_allowed = 'Duration Not Set' %}{% endif %}
@@ -91,7 +91,7 @@
                 data-destination="{{ destination | escape }}"
                 data-days="{{ days_allowed | escape }}"
                 data-people="{{ people_allowed | escape }}"
-                data-additional-info="{{ additional_info_html | escape }}"
+                {% comment %} data-additional-info="{{ additional_info_html | escape }}" {% endcomment %}
                 data-aos="fade-up"
                 data-aos-delay="{{ forloop.index | times: 100 }}"
                 style="
