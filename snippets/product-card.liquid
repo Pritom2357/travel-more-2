@@ -726,17 +726,17 @@
         
         const wishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
         
-        this.classList.toggle('active');
+        const isCurrentlyActive = this.classList.contains('active');
         const icon = this.querySelector('i');
         
-        if (this.classList.contains('active')) {
-          // Add heart-fill icon
+        if (!isCurrentlyActive) { 
+          this.classList.add('active');
+          
           if (icon) {
             icon.classList.remove('bi-heart');
             icon.classList.add('bi-heart-fill');
           }
           
-          // Add to wishlist in localStorage
           wishlist[productId] = {
             id: productId,
             title: title,
@@ -751,7 +751,9 @@
           
           // Show notification
           showWishlistToast('Added to wishlist');
-        } else {
+        } else { // If in wishlist, remove it
+          this.classList.remove('active');
+          
           // Add heart outline icon
           if (icon) {
             icon.classList.remove('bi-heart-fill');
