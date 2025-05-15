@@ -519,6 +519,7 @@
     
     // Initialize wishlist functionality
     initWishlist();
+    
   });
 
   function initProductSlideshows(){
@@ -776,7 +777,10 @@
               icon.classList.add('bi-heart-fill');
             }
             
-            wishlist[finalProductId] = {
+            // Get the most current wishlist data
+            const currentWishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
+            
+            currentWishlist[finalProductId] = {
               id: finalProductId,
               title: title,
               image: imageUrl,
@@ -786,9 +790,18 @@
               days_allowed: days_allowed,
               people_allowed: people_allowed
             };
-            localStorage.setItem('tourWishlist', JSON.stringify(wishlist));
-            console.log('Added to wishlist:', finalProductId);
-            console.log("Final wishlist: ", JSON.parse(localStorage.getItem('tourWishlist')));
+            
+            // Save and verify
+            try {
+              localStorage.setItem('tourWishlist', JSON.stringify(currentWishlist));
+              console.log('Wishlist after addition:', JSON.stringify(currentWishlist));
+              
+              // Verify data was saved correctly
+              const verifyData = localStorage.getItem('tourWishlist');
+              console.log('Verified wishlist from localStorage:', verifyData);
+            } catch (storageError) {
+              console.error('LocalStorage error:', storageError);
+            }
             
             // Show notification
             showWishlistToast('Added to wishlist');
@@ -800,9 +813,21 @@
               icon.classList.add('bi-heart');
             }
             
-            delete wishlist[finalProductId];
-            localStorage.setItem('tourWishlist', JSON.stringify(wishlist));
-            console.log('Removed from wishlist:', finalProductId);
+            // Ensure we're getting the latest data from localStorage
+            const currentWishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
+            delete currentWishlist[finalProductId];
+            
+            // Save and verify
+            try {
+              localStorage.setItem('tourWishlist', JSON.stringify(currentWishlist));
+              console.log('Wishlist after removal:', JSON.stringify(currentWishlist));
+              
+              // Verify data was saved correctly
+              const verifyData = localStorage.getItem('tourWishlist');
+              console.log('Verified wishlist from localStorage:', verifyData);
+            } catch (storageError) {
+              console.error('LocalStorage error:', storageError);
+            }
             
             // Show notification
             showWishlistToast('Removed from wishlist');
@@ -849,4 +874,23 @@
       toast.style.transform = 'translateY(20px)';
     }, 3000);
   }
+
+  // Add this to your script
+  function testLocalStorage() {
+    try {
+      localStorage.setItem('testKey', 'testValue');
+      const retrieved = localStorage.getItem('testKey');
+      console.log('LocalStorage test:', retrieved === 'testValue' ? 'PASSED' : 'FAILED');
+      localStorage.removeItem('testKey');
+      return retrieved === 'testValue';
+    } catch (e) {
+      console.error('LocalStorage test failed with error:', e);
+      return false;
+    }
+  }
+
+  // Call this when the page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    testLocalStorage();
+  });
 </script>
