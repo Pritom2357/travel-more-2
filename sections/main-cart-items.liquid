@@ -701,6 +701,7 @@
       const emptyWishlistRow = document.querySelector('.wishlist-empty');
       
       const wishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
+      console.log(wishlist);
       const wishlistKeys = Object.keys(wishlist);
       
       if (wishlistKeys.length === 0) {
@@ -944,10 +945,6 @@
     
     // Try to fetch additional metafield data
     try {
-      // For this demo, we'll use data from localStorage, but in a real implementation,
-      // you might want to fetch this data from your product endpoints
-      
-      // Destination
       comparisonHtml += `
           </tr>
           <tr>
