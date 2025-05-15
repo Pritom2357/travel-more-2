@@ -38,7 +38,9 @@
         {% assign destinations = "" | split: "" %}
         
         {% for block in section.blocks %}
-          {% if block.type == 'product_tour_card' and block.settings.product != blank %}
+          {% if block.type == 'tour_card' and block.settings.tour_category != blank %}
+            {% assign destinations = destinations | push: block.settings.tour_category %}
+          {% elsif block.type == 'product_tour_card' and block.settings.product != blank %}
             {% assign product = block.settings.product %}
             {% assign product_destination = product.metafields.custom.destination | default: '' %}
             {% if product_destination != blank %}
@@ -64,34 +66,139 @@
     <div class="tours-grid" data-aos="fade-up" data-aos-delay="500">
       {% for block in section.blocks %}
         {% case block.type %}
+          {% when 'tour_card' %}
+            <div
+              class="tour-item tour-card-wrapper filter-{{ block.settings.tour_category | default: 'all' | handleize }}"
+              data-category="{{ block.settings.tour_category | default: 'all' | handleize }}"
+              data-aos="fade-up"
+              data-aos-delay="{{ forloop.index | times: 100 }}"
+              style="
+                grid-column: span {{ block.settings.grid_span }};
+                grid-row: span {{ block.settings.grid_height_span }};
+              "
+              {{ block.shopify_attributes }}
+              data-product-id="{{ block.settings.title | handleize }}-{{ forloop.index }}"
+            >
+              <!-- Existing custom card layout -->
+              <div class="tour-card">
+                <div class="tour-card-media">
+                  <img
+                    src="{{ block.settings.image | img_url: '800x600' }}"
+                    alt="{{ block.settings.title }}"
+                    loading="lazy"
+                    class="tour-image"
+                  >
+                  
+                  <div class="tour-overlay"></div>
+                  
+                  {% if block.settings.is_featured %}
+                    <div class="featured-badge" style="background-color: {{ section.settings.accent_color }};">
+                      <i class="bi bi-star-fill"></i> Featured
+                    </div>
+                  {% endif %}
+                  
+                  <div class="quick-actions">
+                    <button class="quick-action-btn wishlist-btn" title="Add to wishlist">
+                      <i class="bi bi-heart"></i>
+                    </button>
+                    <button class="quick-action-btn share-btn" title="Share this tour">
+                      <i class="bi bi-share"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="tour-card-content">
+                  {% if block.settings.cost_checker %}
+                    <div class="price-badge" style="background-color: {{ section.settings.accent_color }};">
+                      <span class="price">{{shop.currency}}{{ block.settings.cost }}</span>
+                      <span class="price-period">/person</span>
+                    </div>
+                  {% endif %}
+                  
+                  <h3 class="tour-title" style="color: {{ block.settings.title_color }};">
+                    {{ block.settings.title }}
+                  </h3>
+                  
+                  <div class="tour-rating">
+                    {% assign rating = block.settings.rating | default: 5 %}
+                    {% for i in (1..5) %}
+                      {% if i <= rating %}
+                        <i class="bi bi-star-fill" style="color: {{ section.settings.accent_color }};"></i>
+                      {% else %}
+                        <i class="bi bi-star" style="color: {{ section.settings.accent_color }};"></i>
+                      {% endif %}
+                    {% endfor %}
+                    {% if block.settings.review_count %}
+                      <span class="review-count">({{ block.settings.review_count }})</span>
+                    {% endif %}
+                  </div>
+                  
+                  <div class="tour-details">
+                    {% if block.settings.dest_checker %}
+                    <div class="tour-detail">
+                      <i class="bi bi-geo-alt-fill" style="color: {{ section.settings.accent_color }};"></i>
+                      <span>{{ block.settings.destination }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if block.settings.duration_checker %}
+                    <div class="tour-detail">
+                      <i class="bi bi-clock-fill" style="color: {{ section.settings.accent_color }};"></i>
+                      <span>{{ block.settings.duration }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if block.settings.date_checker %}
+                    <div class="tour-detail">
+                      <i class="bi bi-calendar-event-fill" style="color: {{ section.settings.accent_color }};"></i>
+                      <span>{{ block.settings.date }}</span>
+                    </div>
+                    {% endif %}
+                  </div>
+                  
+                  <p class="tour-description" style="color: {{ block.settings.description_color }};">
+                    {{ block.settings.description }}
+                  </p>
+                  
+                  <div class="tour-actions">
+                    <a href="{{ block.settings.button_url | default: block.settings.event_url }}" class="btn-view-details">
+                      {{ block.settings.button_text | default: "View Details" }}
+                      <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <button class="btn-quick-view">
+                      Quick View
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="tour-hover-content">
+                  <h3>{{ block.settings.title }}</h3>
+                  <p>{{ block.settings.description }}</p>
+                  <a href="{{ block.settings.button_url | default: block.settings.event_url }}" class="btn-book-now" style="background-color: {{ section.settings.accent_color }};">
+                    {{ block.settings.book_now_text | default: "Book Now" }}
+                    <i class="bi bi-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          
           {% when 'product_tour_card' %}
             {% assign product = block.settings.product %}
             {% if product != blank %}
-              {% assign destination = product.metafields.custom.destination | default: '' %}
-              {% assign days_allowed = product.metafields.custom.days_allowed | default: '' %}  
-              {% assign people_allowed = product.metafields.custom.people_allowed | default: '' %}
+              {% assign destination = product.metafields.custom.destination | default: 'Destination' %}
+              {% assign days_allowed = product.metafields.custom.days_allowed | default: '7 Days' %}
+              {% assign people_allowed = product.metafields.custom.people_allowed | default: '2 People' %}
               {% assign additional_info = product.metafields.custom.additional_info | default: '' %}
-              
-              {% comment %} {%- capture additional_info_html -%}
-                {% if product.metafields.custom.additional_info %}
-                  {{ product.metafields.custom.additional_info | metafield_tag }}
-                {% else %}
-                  No additional information
-                {% endif %}
-              {%- endcapture -%} {% endcomment %}
-
-              {% if destination == blank %}{% assign destination = 'Destination Not Set' %}{% endif %}
-              {% if days_allowed == blank %}{% assign days_allowed = 'Duration Not Set' %}{% endif %}
-              {% if people_allowed == blank %}{% assign people_allowed = 'Capacity Not Set' %}{% endif %}
+              {% assign destination_embeded = product.metafields.custom.destination_embeded | default: '' %}
               
               <div 
                 class="tour-item tour-card-wrapper filter-{{ destination | handleize | default: 'all' }}"
                 data-category="{{ destination | handleize | default: 'all' }}"
                 data-product-id="{{ product.id }}"
-                data-destination="{{ destination | escape }}"
-                data-days="{{ days_allowed | escape }}"
-                data-people="{{ people_allowed | escape }}"
-                {% comment %} data-additional-info="{{ additional_info_html | escape }}" {% endcomment %}
+                data-destination="{{ product.metafields.custom.destination | escape }}"
+                data-days="{{ product.metafields.custom.days_allowed | escape }}"
+                data-people="{{ product.metafields.custom.people_allowed | escape }}"
+                data-additional-info="{{ product.metafields.custom.additional_info | escape }}"
                 data-aos="fade-up"
                 data-aos-delay="{{ forloop.index | times: 100 }}"
                 style="
@@ -146,21 +253,21 @@
                     </div>
                     
                     <div class="tour-details">
-                      {% if destination != blank and destination != 'Destination Not Set' %}
+                      {% if destination != blank %}
                         <div class="tour-detail">
                           <i class="bi bi-geo-alt-fill" style="color: {{ section.settings.accent_color }};"></i>
                           <span>{{ destination }}</span>
                         </div>
                       {% endif %}
                       
-                      {% if days_allowed != blank and days_allowed != 'Duration Not Set' %}
+                      {% if days_allowed != blank %}
                         <div class="tour-detail">
                           <i class="bi bi-clock-fill" style="color: {{ section.settings.accent_color }};"></i>
                           <span>{{ days_allowed }}</span>
                         </div>
                       {% endif %}
                       
-                      {% if people_allowed != blank and people_allowed != 'Capacity Not Set' %}
+                      {% if people_allowed != blank %}
                         <div class="tour-detail">
                           <i class="bi bi-people-fill" style="color: {{ section.settings.accent_color }};"></i>
                           <span>{{ people_allowed }}</span>
@@ -265,7 +372,7 @@
         const imageEl = card.querySelector('.tour-image');
         const imageUrl = imageEl ? imageEl.getAttribute('src') : '';
         
-        // Get the URL from the view details button
+        // For product cards, get the URL from the view details button
         const detailsLink = card.querySelector('.btn-view-details');
         const productUrl = detailsLink ? detailsLink.getAttribute('href') : '#';
         
@@ -273,18 +380,16 @@
         const priceBadge = card.querySelector('.price-badge .price');
         const price = priceBadge ? priceBadge.textContent.trim() : '';
         
-        // Get the product ID from the data attribute
-        productId = cardWrapper.getAttribute('data-product-id');
+        // Generate a unique ID - either from the data attribute or create a hash from the title
+        productId = cardWrapper.getAttribute('data-product-id') || 
+                    title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
         
         const productMetafields = {
-          destination: cardWrapper.getAttribute('data-destination') || 'Destination Not Set',
-          days_allowed: cardWrapper.getAttribute('data-days') || 'Duration Not Set',
-          people_allowed: cardWrapper.getAttribute('data-people') || 'Capacity Not Set',
-          additional_info: cardWrapper.getAttribute('data-additional-info') || 'No additional information'
+          destination: card.getAttribute('data-destination') || '',
+          days_allowed: card.getAttribute('data-days') || '',
+          people_allowed: card.getAttribute('data-people') || '',
+          additional_info: card.getAttribute('data-additional-info') || ''
         };
-
-        // Log metafield data to console for debugging
-        console.log('Product Metafields:', productMetafields);
 
         productData = {
           id: productId,
@@ -1016,6 +1121,179 @@
   ],
   "blocks": [
     {
+      "type": "tour_card",
+      "name": "Tour Card",
+      "settings": [
+        {
+          "type": "header",
+          "content": "General Information"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Tour Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Tour Name",
+          "default": "Amazing Beach Tour"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Short Description",
+          "default": "Experience the beauty of pristine beaches and crystal clear waters on this unforgettable tour."
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button Link",
+          "default": "/"
+        },
+        {
+          "type": "text",
+          "id": "tour_category",
+          "label": "Category (for filtering)",
+          "default": "beach",
+          "info": "This should match one of your filter button names"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_featured",
+          "label": "Mark as Featured",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Tour Rating",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "default": 4.5
+        },
+        {
+          "type": "text",
+          "id": "review_count",
+          "label": "Number of Reviews",
+          "default": "24"
+        },
+        {
+          "type": "range",
+          "id": "grid_span",
+          "label": "Grid Width Span",
+          "default": 1,
+          "min": 1,
+          "max": 4,
+          "step": 1
+        },
+        {
+          "type": "range",
+          "id": "grid_height_span",
+          "label": "Grid Height Span",
+          "default": 1,
+          "min": 1,
+          "max": 4,
+          "step": 1
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title Color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "description_color",
+          "label": "Description Color",
+          "default": "#666666"
+        },
+        {
+          "type": "header",
+          "content": "Destination"
+        },
+        {
+          "type": "checkbox",
+          "id": "dest_checker",
+          "label": "Show Destination",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "destination",
+          "label": "Destination",
+          "default": "Bali, Indonesia"
+        },
+        {
+          "type": "header",
+          "content": "Duration"
+        },
+        {
+          "type": "checkbox",
+          "id": "duration_checker",
+          "label": "Show Duration",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "duration",
+          "label": "Duration",
+          "default": "7 Days"
+        },
+        {
+          "type": "header",
+          "content": "Date"
+        },
+        {
+          "type": "checkbox",
+          "id": "date_checker",
+          "label": "Show Date",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "Apr - Oct"
+        },
+        {
+          "type": "header",
+          "content": "Pricing"
+        },
+        {
+          "type": "checkbox",
+          "id": "cost_checker",
+          "label": "Show Price",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "cost",
+          "label": "Price",
+          "default": "599"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "View Details"
+        },
+        {
+          "type": "url",
+          "id": "event_url",
+          "label": "Button Link",
+          "default": "/"
+        },
+        {
+          "type": "text",
+          "id": "book_now_text",
+          "label": "Book Now Button Text",
+          "default": "Book Now"
+        }
+      ]
+    },
+    {
       "type": "product_tour_card",
       "name": "Product Tour Card",
       "settings": [
@@ -1069,16 +1347,16 @@
       "category": "Tours",
       "blocks": [
         {
-          "type": "product_tour_card"
+          "type": "tour_card"
         },
         {
-          "type": "product_tour_card"
+          "type": "tour_card"
         },
         {
-          "type": "product_tour_card"
+          "type": "tour_card"
         },
         {
-          "type": "product_tour_card"
+          "type": "tour_card"
         }
       ]
     }
