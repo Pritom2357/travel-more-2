@@ -788,7 +788,7 @@
             };
             localStorage.setItem('tourWishlist', JSON.stringify(wishlist));
             console.log('Added to wishlist:', finalProductId);
-            console.log("Final wishlist: ", JSON.stringify(localStorage.getItem('tourWishlist')));
+            console.log("Final wishlist: ", JSON.parse(localStorage.getItem('tourWishlist')));
             
             // Show notification
             showWishlistToast('Added to wishlist');
