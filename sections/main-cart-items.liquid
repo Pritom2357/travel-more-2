@@ -768,7 +768,7 @@
       const emptyWishlistRow = document.querySelector('.wishlist-empty');
       
       const wishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
-      console.log(wishlist);
+      {% comment %} console.log(wishlist); {% endcomment %}
       const wishlistKeys = Object.keys(wishlist);
       
       if (wishlistKeys.length === 0) {
