@@ -154,16 +154,14 @@
             <!-- Card Footer Buttons (desktop only) -->
              {% if show_buttons_desktop != false %}
               <div class="d-none d-md-flex justify-content-between mt-3">
-                <button class="btn btn-outline-secondary btn-sm btn-wishlist" title="Add to Wishlist">
+                <button class="btn btn-outline-secondary btn-sm btn-wishlist" 
+                  title="Add to Wishlist"
+                  data-product-id="{{ product.id }}">
                   <i class="bi bi-heart"></i>
                 </button>
                 
                 <button class="btn btn-outline-secondary btn-sm btn-quickview" title="Quick View" data-product-url="{{ product.url }}">
                   <i class="bi bi-eye"></i>
-                </button>
-                
-                <button class="btn btn-outline-secondary btn-sm btn-compare" data-product-id="{{ product.id }}" title="Compare">
-                  <i class="bi bi-arrow-left-right"></i>
                 </button>
               </div>
             {% endif %}
