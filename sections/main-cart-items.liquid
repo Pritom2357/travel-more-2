@@ -173,7 +173,7 @@
 </div>
 
 <!-- Comparison Modal -->
-<div class="modal fade" id="compareModal" tabindex="-1" role="dialog" aria-labelledby="compareModalLabel" aria-hidden="true">
+<div class="modal fade modal-comparison" id="compareModal" tabindex="-1" role="dialog" aria-labelledby="compareModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -714,6 +714,50 @@
     height: auto;
     margin: 0.5rem 0;
   }
+
+  /* Enhanced modal backdrop for better focus */
+  .modal-backdrop {
+    opacity: 0.7 !important; /* Darker than Bootstrap default */
+    backdrop-filter: blur(2px); /* Slight blur effect */
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  /* Ensure modal appears above the darkened backdrop */
+  .modal {
+    z-index: 1060;
+  }
+
+  /* Add a subtle entrance animation */
+  .modal.fade .modal-dialog {
+    transform: translateY(-20px);
+    transition: transform 0.3s ease-out;
+  }
+
+  .modal.show .modal-dialog {
+    transform: translateY(0);
+  }
+
+  /* Make the modal content stand out more */
+  .modal-content {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    border: none;
+  }
+
+  /* Optional: Add a subtle glow to the modal */
+  .modal-comparison .modal-content {
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 105, 255, 0.1);
+  }
+
+  /* Focus animation for the comparison table */
+  @keyframes highlightFocus {
+    0% { box-shadow: 0 0 0 rgba(13, 110, 253, 0); }
+    50% { box-shadow: 0 0 15px rgba(13, 110, 253, 0.4); }
+    100% { box-shadow: 0 0 0 rgba(13, 110, 253, 0); }
+  }
+
+  .highlight-animation {
+    animation: highlightFocus 1.5s ease-in-out;
+  }
 </style>
 
 <script>
@@ -1022,6 +1066,10 @@
     // Use Bootstrap 5 modal API
     const compareModal = new bootstrap.Modal(document.getElementById('compareModal'));
     compareModal.show();
+
+    setTimeout(() => {
+      document.querySelector('.comparison-table').classList.add('highlight-animation');
+    }, 300);
   }
 
   // Save to wishlist
