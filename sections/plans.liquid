@@ -191,9 +191,14 @@
               {% assign additional_info = product.metafields.custom.additional_info | default: '' %}
               {% assign destination_embeded = product.metafields.custom.destination_embeded | default: '' %}
               
-              <div
+              <div 
                 class="tour-item tour-card-wrapper filter-{{ destination | handleize | default: 'all' }}"
                 data-category="{{ destination | handleize | default: 'all' }}"
+                data-product-id="{{ product.id }}"
+                data-destination="{{ product.metafields.custom.destination | escape }}"
+                data-days="{{ product.metafields.custom.days_allowed | escape }}"
+                data-people="{{ product.metafields.custom.people_allowed | escape }}"
+                data-additional-info="{{ product.metafields.custom.additional_info | escape }}"
                 data-aos="fade-up"
                 data-aos-delay="{{ forloop.index | times: 100 }}"
                 style="
@@ -201,7 +206,6 @@
                   grid-row: span {{ block.settings.grid_height_span }};
                 "
                 {{ block.shopify_attributes }}
-                data-product-id="{{ product.id }}"
               >
                 <div class="tour-card">
                   <div class="tour-card-media">
@@ -380,12 +384,23 @@
         productId = cardWrapper.getAttribute('data-product-id') || 
                     title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
         
+        const productMetafields = {
+          destination: card.getAttribute('data-destination') || '',
+          days_allowed: card.getAttribute('data-days') || '',
+          people_allowed: card.getAttribute('data-people') || '',
+          additional_info: card.getAttribute('data-additional-info') || ''
+        };
+
         productData = {
           id: productId,
           title: title,
           image: imageUrl,
           url: productUrl,
-          price: price
+          price: price,
+          destination: productMetafields.destination,
+          days_allowed: productMetafields.days_allowed,
+          people_allowed: productMetafields.people_allowed,
+          additional_info: productMetafields.additional_info
         };
       }
       

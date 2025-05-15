@@ -166,6 +166,32 @@
   </div>
 </div>
 
+<div class="compare-controls" style="display: none;">
+  <button type="button" class="btn btn-primary" id="compare-selected-btn" disabled>
+    Compare Selected (<span id="compare-count">0</span>)
+  </button>
+</div>
+
+<!-- Comparison Modal -->
+<div class="modal fade" id="compareModal" tabindex="-1" role="dialog" aria-labelledby="compareModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="compareModalLabel">Product Comparison</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="comparison-content">
+        <!-- Comparison content will be populated here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <style>
 
   /* Reset some basic elements */
@@ -588,6 +614,60 @@
     padding: 0;
     line-height: 1.2;
   }
+
+  /* Comparison feature styles */
+  .compare-checkbox {
+    padding-top: 45px;
+  }
+
+  .compare-controls {
+    margin: 20px 0;
+    text-align: right;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .comparison-table th {
+    background-color: #f1f1f1;
+    padding: 10px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .comparison-table td {
+    padding: 10px;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .comparison-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .comparison-table .product-header {
+    background-color: #e9ecef;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .comparison-table .product-image {
+    text-align: center;
+  }
+
+  .comparison-table .product-image img {
+    max-width: 100px;
+    height: auto;
+    margin: 10px 0;
+  }
+
+  .comparison-feature {
+    font-weight: 600;
+    background-color: #f8f9fa;
+  }
 </style>
 
 <script>
@@ -616,6 +696,10 @@
         row.innerHTML = `
           <td>
             <div class="item-content d-flex">
+              <div class="compare-checkbox mr-2">
+                <input type="checkbox" class="compare-select" data-product-id="${item.id}" id="compare-${item.id}">
+                <label for="compare-${item.id}" class="mb-0"></label>
+              </div>
               <div class="item-image p-2">
                 ${item.image ? `<img src="${item.image}" width="100px" height="auto" alt="${item.title}">` : ''}
               </div>
@@ -645,6 +729,7 @@
       });
       
       setupWishlistButtons();
+      setupComparisonFeature();
     }
     
     function setupWishlistButtons() {
@@ -723,6 +808,184 @@
     
     loadWishlist();
   });
+
+  // Global variables for comparison
+  let selectedForCompare = [];
+  const compareControls = document.querySelector('.compare-controls');
+  const compareBtn = document.getElementById('compare-selected-btn');
+  const compareCountSpan = document.getElementById('compare-count');
+
+  function setupComparisonFeature() {
+    // Setup compare checkboxes
+    document.querySelectorAll('.compare-select').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const productId = this.dataset.productId;
+        
+        if (this.checked) {
+          // Add to selected array if not already there
+          if (!selectedForCompare.includes(productId)) {
+            selectedForCompare.push(productId);
+          }
+        } else {
+          // Remove from selected array
+          const index = selectedForCompare.indexOf(productId);
+          if (index > -1) {
+            selectedForCompare.splice(index, 1);
+          }
+        }
+        
+        // Update UI
+        updateCompareSelection();
+      });
+    });
+    
+    // Setup compare button
+    compareBtn.addEventListener('click', function() {
+      compareProducts(selectedForCompare);
+    });
+  }
+
+  function updateCompareSelection() {
+    const count = selectedForCompare.length;
+    compareCountSpan.textContent = count;
+    
+    if (count > 0) {
+      compareControls.style.display = 'block';
+      compareBtn.disabled = count < 2;
+    } else {
+      compareControls.style.display = 'none';
+    }
+  }
+
+  async function compareProducts(productIds) {
+    if (productIds.length < 2) {
+      showToast('Select at least 2 products to compare');
+      return;
+    }
+    
+    // Get products from local storage
+    const wishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
+    const productsToCompare = productIds.map(id => wishlist[id]).filter(Boolean);
+    
+    if (productsToCompare.length < 2) {
+      showToast('Error retrieving product data');
+      return;
+    }
+    
+    // Create comparison HTML
+    let comparisonHtml = `
+      <div class="comparison-container">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th></th>
+    `;
+    
+    // Add product headers
+    productsToCompare.forEach(product => {
+      comparisonHtml += `
+        <th class="product-header">${product.title}</th>
+      `;
+    });
+    
+    comparisonHtml += `
+          </tr>
+          <tr>
+            <td></td>
+    `;
+    
+    // Add product images
+    productsToCompare.forEach(product => {
+      comparisonHtml += `
+        <td class="product-image">
+          ${product.image ? `<img src="${product.image}" alt="${product.title}">` : 'No image'}
+        </td>
+      `;
+    });
+    
+    comparisonHtml += `
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="comparison-feature">Price</td>
+    `;
+    
+    // Add prices
+    productsToCompare.forEach(product => {
+      comparisonHtml += `
+        <td>${product.price || 'Contact for price'}</td>
+      `;
+    });
+    
+    // Try to fetch additional metafield data
+    try {
+      // For this demo, we'll use data from localStorage, but in a real implementation,
+      // you might want to fetch this data from your product endpoints
+      
+      // Destination
+      comparisonHtml += `
+        </tr>
+        <tr>
+          <td class="comparison-feature">Destination</td>
+      `;
+      
+      productsToCompare.forEach(product => {
+        const destination = product.destination || 'Not specified';
+        comparisonHtml += `<td>${destination}</td>`;
+      });
+      
+      // Days Allowed
+      comparisonHtml += `
+        </tr>
+        <tr>
+          <td class="comparison-feature">Days</td>
+      `;
+      
+      productsToCompare.forEach(product => {
+        const days = product.days_allowed || 'Not specified';
+        comparisonHtml += `<td>${days}</td>`;
+      });
+      
+      // People Allowed
+      comparisonHtml += `
+        </tr>
+        <tr>
+          <td class="comparison-feature">People</td>
+      `;
+      
+      productsToCompare.forEach(product => {
+        const people = product.people_allowed || 'Not specified';
+        comparisonHtml += `<td>${people}</td>`;
+      });
+      
+      // Additional Info
+      comparisonHtml += `
+        </tr>
+        <tr>
+          <td class="comparison-feature">Additional Info</td>
+      `;
+      
+      productsToCompare.forEach(product => {
+        const additionalInfo = product.additional_info || 'No additional information';
+        comparisonHtml += `<td>${additionalInfo}</td>`;
+      });
+      
+    } catch (error) {
+      console.error('Error fetching metafield data:', error);
+    }
+    
+    comparisonHtml += `
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    `;
+    
+    // Show the comparison in modal
+    document.getElementById('comparison-content').innerHTML = comparisonHtml;
+    $('#compareModal').modal('show');
+  }
 </script>
 
 {% schema %}
