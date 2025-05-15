@@ -805,33 +805,7 @@
             
             // Show notification
             showWishlistToast('Added to wishlist');
-          } else { 
-            this.classList.remove('active');
-            
-            if (icon) {
-              icon.classList.remove('bi-heart-fill');
-              icon.classList.add('bi-heart');
-            }
-            
-            // Ensure we're getting the latest data from localStorage
-            const currentWishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
-            delete currentWishlist[finalProductId];
-            
-            // Save and verify
-            try {
-              localStorage.setItem('tourWishlist', JSON.stringify(currentWishlist));
-              console.log('Wishlist after removal:', JSON.stringify(currentWishlist));
-              
-              // Verify data was saved correctly
-              const verifyData = localStorage.getItem('tourWishlist');
-              console.log('Verified wishlist from localStorage:', verifyData);
-            } catch (storageError) {
-              console.error('LocalStorage error:', storageError);
-            }
-            
-            // Show notification
-            showWishlistToast('Removed from wishlist');
-          }
+          } 
         } catch (error) {
           console.error('Error handling wishlist action:', error);
           showWishlistToast('Error updating wishlist');
