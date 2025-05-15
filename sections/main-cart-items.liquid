@@ -571,6 +571,23 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  .wishlist-section .item-content {
+    align-items: center;
+  }
+
+  .wishlist-section .content {
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .wishlist-section .content .title {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+  }
 </style>
 
 <script>
@@ -603,7 +620,7 @@
                 ${item.image ? `<img src="${item.image}" width="100px" height="auto" alt="${item.title}">` : ''}
               </div>
               <div class="content">
-                <p class="title mb-1"><a href="${item.url}">${item.title}</a></p>
+                <a href="${item.url}" class="title">${item.title}</a>
               </div>
             </div>
           </td>
