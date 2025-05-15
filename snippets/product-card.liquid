@@ -688,9 +688,9 @@
     
     wishlistBtns.forEach(btn => {
       const productId = btn.getAttribute('data-product-id');
+      {% comment %} console.log("Product id: ", productId); {% endcomment %}
       console.log('Init wishlist button for product ID:', productId);
       
-      // Check if this product is already in wishlist and set initial state
       const wishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
       
       if (wishlist[productId]) {
@@ -788,6 +788,7 @@
             };
             localStorage.setItem('tourWishlist', JSON.stringify(wishlist));
             console.log('Added to wishlist:', finalProductId);
+            console.log("Final wishlist: ", localStorage.getItem('tourWishlist'));
             
             // Show notification
             showWishlistToast('Added to wishlist');
