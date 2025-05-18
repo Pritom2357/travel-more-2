@@ -686,6 +686,34 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* Enhanced modal backdrop */
+  .modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.7) !important; /* Darker background */
+    backdrop-filter: blur(2px); /* Slight blur effect */
+  }
+
+  /* Enhanced modal appearance */
+  .modal-content {
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+    border: none;
+  }
+
+  .modal-comparison {
+    z-index: 1060; /* Ensure it's above other elements */
+  }
+
+  /* Animation for modal appearance */
+  .modal.fade .modal-dialog {
+    transform: scale(0.95);
+    opacity: 0;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  }
+
+  .modal.show .modal-dialog {
+    transform: scale(1);
+    opacity: 1;
+  }
 </style>
 
 <script>
