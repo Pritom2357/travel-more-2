@@ -104,6 +104,12 @@
                 data-product-id="{{ product.id }}">
                 <i class="bi bi-heart me-1"></i> Save
               </button>
+
+              <button class="btn btn-outline-secondary btn-sm btn-compare flex-grow-1" 
+                title="Compare Product"
+                data-product-id="{{ product.id }}">
+                <i class="bi bi-arrow-left-right me-1"></i> Compare
+              </button>
               
               <button class="btn btn-outline-secondary btn-sm btn-quickview flex-grow-1" title="Quick View" data-product-url="{{ product.url }}">
                 <i class="bi bi-eye me-1"></i> Quick View
@@ -158,6 +164,12 @@
                   title="Add to Wishlist"
                   data-product-id="{{ product.id }}">
                   <i class="bi bi-heart"></i>
+                </button>
+                
+                <button class="btn btn-outline-secondary btn-sm btn-compare" 
+                  title="Compare Product"
+                  data-product-id="{{ product.id }}">
+                  <i class="bi bi-arrow-left-right"></i>
                 </button>
                 
                 <button class="btn btn-outline-secondary btn-sm btn-quickview" title="Quick View" data-product-url="{{ product.url }}">
