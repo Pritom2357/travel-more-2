@@ -1088,10 +1088,7 @@
         try {
           const card = button.closest('.product-card') || button.closest('.card');
           
-          // Only handle adding to compare (no toggling)
-          // Check if product is already in compare list
           if (!comparedProducts[productId]) {
-            // Limit to 4 products
             if (Object.keys(comparedProducts).length >= 4) {
               showCompareToast('Maximum 4 products can be compared');
               return;
@@ -1116,7 +1113,7 @@
             const destination = destinationEl ? destinationEl.textContent.trim() : '';
             
             const peopleEl = card.querySelector('.people-allowed span');
-            const people_allowed = peopleEl ? people_allowed.textContent.trim() : '';
+            const people_allowed = peopleEl ? peopleEl.textContent.trim() : '';
             
             const daysEl = card.querySelector('.days-allowed span');
             const days_allowed = daysEl ? daysEl.textContent.trim() : '';
