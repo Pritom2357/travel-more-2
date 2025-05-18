@@ -1095,53 +1095,7 @@
             delete comparedProducts[productId];
             localStorage.setItem('productCompare', JSON.stringify(comparedProducts));
             showCompareToast('Removed from comparison');
-          } else {
-            // Limit to 4 products
-            if (Object.keys(comparedProducts).length >= 4) {
-              showCompareToast('Maximum 4 products can be compared');
-              return;
-            }
-            
-            // Get product data
-            const titleEl = card.querySelector('.product-title a') || card.querySelector('.product-title');
-            const title = titleEl ? titleEl.textContent.trim() : '';
-            
-            const imageEl = card.querySelector('.primary-image') || card.querySelector('.tour-image');
-            const imageUrl = imageEl ? imageEl.getAttribute('src') : '';
-            
-            const urlEl = card.querySelector('.product-title a') || card.querySelector('.btn-view-details');
-            const productUrl = urlEl ? urlEl.getAttribute('href') : '';
-            
-            const priceEl = card.querySelector('.price, .price-sale') || card.querySelector('.price-badge .price');
-            const price = priceEl ? priceEl.textContent.trim() : '';
-            
-            // Get metafields
-            const destinationEl = card.querySelector('.destination-value') || 
-                                card.querySelector('.destination-metafield .destination-value');
-            const destination = destinationEl ? destinationEl.textContent.trim() : '';
-            
-            const peopleEl = card.querySelector('.people-allowed span');
-            const people_allowed = peopleEl ? peopleEl.textContent.trim() : '';
-            
-            const daysEl = card.querySelector('.days-allowed span');
-            const days_allowed = daysEl ? daysEl.textContent.trim() : '';
-            
-            // Add to compare
-            button.classList.add('active');
-            comparedProducts[productId] = {
-              id: productId,
-              title: title,
-              image: imageUrl,
-              url: productUrl,
-              price: price,
-              destination: destination,
-              days_allowed: days_allowed,
-              people_allowed: people_allowed
-            };
-            
-            localStorage.setItem('productCompare', JSON.stringify(comparedProducts));
-            showCompareToast('Added to comparison');
-          }
+          } 
           
           // Update compare UI
           updateCompareUI();
