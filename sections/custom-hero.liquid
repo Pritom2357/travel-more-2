@@ -1,4 +1,4 @@
-{%- assign bg_img_url = section.settings.bg_img | img_url: '2048x', format: 'pjpg', quality: 85 -%}
+{%- assign bg_img_url = section.settings.bg_img | img_url: '1600x', format: 'pjpg' -%}
 <!-- Convert Form Background Color -->
 {% assign input_hex_color = section.settings.form_bg_color %}
 {% include 'hex-to-rgb' %}
@@ -28,15 +28,13 @@
         <div class="justify-content-start">
           <div class="logo-name-container">
             <a class="navbar-brand" href="#">
-              <img src="{{ section.settings.logo | img_url: '100x', format: 'webp', quality: 85 }}"
-                   srcset="{{ section.settings.logo | img_url: '100x', format: 'webp', quality: 85 }} 1x, 
-                           {{ section.settings.logo | img_url: '200x', format: 'webp', quality: 85 }} 2x"
+              <img src="{{ section.settings.logo | img_url: '100x', format: 'webp' }}"
+                   srcset="{{ section.settings.logo | img_url: '100x', format: 'webp' }} 1x, 
+                           {{ section.settings.logo | img_url: '200x', format: 'webp' }} 2x"
                    width="100" 
-                   height="40"
+                   height="auto" 
                    loading="eager" 
-                   fetchpriority="high"
-                   alt="{{ shop.name }}"
-                   style="aspect-ratio: 2.5/1; object-fit: contain;">
+                   alt="{{ shop.name }}">
             </a>
             {% if section.settings.store_name %}
               <a href="{{ routes.root_url }}" class="store-name-link">
@@ -193,59 +191,24 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-  // Immediately execute critical functions
-  updateCartCount();
-  enhanceTextOutline();
-  
-  // Defer non-critical interactions
-  setTimeout(() => {
-    // Init dropdowns
-    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-    dropdownToggles.forEach(toggle => {
-      // Your existing dropdown code
-    });
     
-    // Init tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-    
-    // Mouse movement effects - low priority
-    if (window.innerWidth > 992) {
-      const heroContent = document.querySelector('.hero-content-wrapper');
-      if (heroContent) {
-        document.addEventListener('mousemove', function(e) {
-          // Your existing mouse movement code
-        });
-      }
+    const bookNowBtn = document.getElementById('bookNowBtn');
+    if(bookNowBtn) {
+      bookNowBtn.addEventListener('click', () => {
+        const destSelect = document.getElementById('destinationSelect');
+        const selectedOption = destSelect.options[destSelect.selectedIndex];
+
+        const destinationTitle = selectedOption.value; 
+        const destinationDescription = selectedOption.dataset.destDescription; 
+        const destinationPrice = selectedOption.dataset.destPrice; 
+        const tourType = document.getElementById('tourType').value;
+
+        const url = `/pages/tour-booking?dest=${encodeURIComponent(destinationTitle)}&desc=${encodeURIComponent(destinationDescription)}&price=${encodeURIComponent(destinationPrice)}&type=${encodeURIComponent(tourType)}`;
+
+        window.location.href = url;
+      });
     }
-  }, 1000); // Delay by 1 second
-  
-  // Book now button handler
-  const bookNowBtn = document.getElementById('bookNowBtn');
-  if(bookNowBtn) {
-    // Your existing code
-  }
-  
-  // Wait for fonts to load before playing animations
-  if ('fonts' in document) {
-    document.fonts.ready.then(() => {
-      document.querySelectorAll('.hero-title, .hero-subtitle, .hero-buttons, .destination-teasers')
-        .forEach(el => {
-          el.style.animationPlayState = 'running';
-        });
-    });
-  } else {
-    // Fallback for browsers without font loading API
-    setTimeout(() => {
-      document.querySelectorAll('.hero-title, .hero-subtitle, .hero-buttons, .destination-teasers')
-        .forEach(el => {
-          el.style.animationPlayState = 'running';
-        });
-    }, 500);
-  }
-});
+  });
 
   function updateCartCount() {
     fetch('/cart.js')
@@ -391,27 +354,6 @@
   }
   
   enhanceTextOutline();
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-  // Wait for fonts to load before playing animations
-  document.fonts.ready.then(() => {
-    document.querySelectorAll('.hero-title, .hero-subtitle, .hero-buttons, .destination-teasers')
-      .forEach(el => {
-        el.style.animationPlayState = 'running';
-      });
-  });
-});
-
-// Critical resource loading
-document.addEventListener('DOMContentLoaded', function() {
-  // Preload hero image with priority
-  const heroImage = new Image();
-  heroImage.fetchPriority = "high"; // Modern browsers support
-  heroImage.src = '{{ bg_img_url }}';
-  heroImage.onload = function() {
-    document.querySelector('.hero-section').style.backgroundImage = 'url("{{ bg_img_url }}")';
-  }
 });
 </script>
 
@@ -1144,11 +1086,21 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
-    will-change: opacity, transform;
-    opacity: 1; /* Start visible */
-    transform: translateY(0); /* Start in final position */
+    opacity: 0;
+    transform: translateY(20px);
     animation: fadeInUp 0.8s forwards;
-    animation-play-state: paused; /* Don't animate until fonts are loaded */
+  }
+
+  .hero-subtitle {
+    animation-delay: 0.2s;
+  }
+
+  .hero-buttons {
+    animation-delay: 0.4s;
+  }
+
+  .destination-teasers {
+    animation-delay: 0.6s;
   }
 
   @keyframes fadeInUp {
@@ -1233,68 +1185,6 @@ document.addEventListener('DOMContentLoaded', function() {
     content-visibility: auto;
     contain-intrinsic-size: 1px 450px; /* Approximation of form height */
   }
-}
-
-.hero-section {
-  min-height: 100vh;
-  contain: layout paint;
-}
-
-.hero-content-wrapper {
-  min-height: 400px;
-  height: auto;
-  contain: layout;
-}
-
-/* Reserve space for the booking form to prevent layout shift */
-.col-lg-4.col-md-8.offset-lg-1.offset-md-0 {
-  min-height: 450px;
-  contain: layout;
-}
-
-/* Use explicit dimensions for your booking form */
-.booking-form {
-  height: auto;
-  min-height: 450px;
-  contain: content;
-}
-
-/* Progressive loading for background image */
-.hero-section {
-  background-color: #1a1a1a; /* Placeholder color while image loads */
-  background-image: none; /* Remove initial background image */
-}
-</style>
-
-<style>
-/* Critical CSS */
-.hero-section {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  background-color: #1a1a1a; /* Fallback */
-  contain: layout;
-}
-.hero-title {
-  font-family: "{{ section.settings.title_font }}", sans-serif;
-  font-size: calc({{section.settings.title_size}}rem + 0.5vw);
-  line-height: 1.2;
-  font-weight: 800;
-  color: {{section.settings.title_color}};
-  margin-bottom: 1.5rem;
-}
-.hero-subtitle {
-  font-size: calc({{section.settings.sub_title_size}}rem + 0.2vw);
-  font-weight: {{ section.settings.sub_title_weight }};
-  margin: 0 0 2.5rem 0;
-  color: {{section.settings.sub_title_color}};
-  max-width: 90%;
-}
-.nav-settings {
-  position: relative;
-  z-index: 2;
-  background-color: rgba({{ header_red }}, {{ header_green }}, {{ heaeder_blue }}, {{ section.settings.header_bg_opacity }});
-  color: {{ section.settings.header_text_color }};
 }
 </style>
 
