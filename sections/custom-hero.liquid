@@ -1,13 +1,8 @@
 <!-- Resource hints -->
 <link rel="preconnect" href="https://cdn.shopify.com">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<!-- Preload critical hero image -->
-<link rel="preload" as="image" href="{{ bg_img_small }}">
-
-<!-- Preload critical fonts -->
-<link rel="preload" as="font" type="font/woff2" href="[your-font-file]" crossorigin>
+<!-- Only preload the smallest image -->
+<link rel="preload" as="image" href="{{ bg_img_small }}" fetchpriority="high">
 
 {%- assign bg_img_url = section.settings.bg_img | img_url: '1600x', format: 'pjpg' -%}
 {%- assign bg_img_small = section.settings.bg_img | img_url: '800x', format: 'webp', quality: 60 -%}
@@ -41,20 +36,26 @@
     <source media="(min-width: 768px)" srcset="{{ bg_img_medium }}">
     <img src="{{ bg_img_small }}" alt="" 
          fetchpriority="high" 
-         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;" 
+         decoding="async"
+         width="1600" 
+         height="900"
+         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"
          onload="this.classList.add('loaded')">
   </picture>
+
   {% if section.settings.is_header %}
     <nav class="navbar navbar-expand-lg nav-settings">
       <div class="container-fluid d-flex">
         <div class="justify-content-start">
           <div class="logo-name-container">
             <a class="navbar-brand" href="#">
-              <img
-                src="{{ section.settings.logo | img_url: '100px' }}"
-                alt="{{ shop.name }}"
+              <img 
+                src="{{ section.settings.logo | img_url: '100x', format: 'png' }}"
+                alt="{{ shop.name }}" 
                 width="{{ section.settings.logo_size }}"
-                height="auto"
+                height="{{ section.settings.logo_size | divided_by: 2.5 | round }}"
+                style="object-fit: contain;"
+                loading="eager"
               >
             </a>
             {% if section.settings.store_name %}
@@ -213,29 +214,14 @@
 <script>
   // Consolidate all DOM content loaded events into one
   document.addEventListener('DOMContentLoaded', function() {
-    // Critical functions first
+    // Critical functions only
     updateCartCount();
-    enhanceTextOutline();
-    
-    // Initialize bootstrap components
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-    
-    // Handle dropdowns
-    initializeDropdowns();
     
     // Handle booking button
     initializeBookingButton();
     
-    // Delay non-critical interactions
-    requestIdleCallback(() => {
-      // Mouse movement effects and other non-critical features
-      if (window.innerWidth > 992) {
-        initializeHeroEffects();
-      }
-    });
+    // Defer everything else
+    setTimeout(deferNonCritical, 1000);
   });
 
   // Move your functions here
@@ -406,6 +392,20 @@
         el.style.opacity = '1';
         el.style.transform = 'translateY(0)';
       }, 100 * index);
+    });
+  }
+  
+  // Add this function to defer non-critical JavaScript
+  function deferNonCritical() {
+    // Mouse movement effects and other non-critical features
+    if (window.innerWidth > 992) {
+      initializeHeroEffects();
+    }
+    
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
     });
   }
   
@@ -1177,8 +1177,8 @@
     max-height: unset; /* Remove any max-height restrictions */
     aspect-ratio: unset; /* Remove aspect ratio on mobile */
     overflow: hidden; /* Contain all elements */
-    background: url('{{ bg_img_url }}') center center no-repeat;
-    background-size: cover;
+    background: none; /* Remove the background image from CSS */
+    position: relative;
   }
 
   /* Control height more precisely on mobile */
@@ -1253,6 +1253,26 @@
 }
 .hero-background img.loaded {
   opacity: 1;
+}
+
+/* Remove or simplify complex animations for initial load */
+@media (max-width: 991px) {
+  /* Disable animations on mobile */
+  .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  
+  /* Hide decorative elements */
+  .floating-circle, .animated-line {
+    display: none !important;
+  }
+}
+
+/* Optimize animation performance */
+.hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
+  will-change: opacity, transform; /* GPU acceleration hint */
 }
 </style>
 
