@@ -1,5 +1,4 @@
-{%- assign bg_img_url = section.settings.bg_img | img_url: '1600x', format: 'pjpg'}
-{% comment %}Generate responsive image URLs{% endcomment %}
+{%- assign bg_img_url = section.settings.bg_img | img_url: '1600x', format: 'pjpg' -%}
 {%- assign bg_img_small = section.settings.bg_img | img_url: '800x', format: 'webp', quality: 60 -%}
 {%- assign bg_img_medium = section.settings.bg_img | img_url: '1200x', format: 'webp', quality: 75 -%}
 {%- assign bg_img_large = section.settings.bg_img | img_url: '2000x', format: 'webp', quality: 85 -%}
