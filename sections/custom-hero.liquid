@@ -1,4 +1,4 @@
-{%- assign bg_img_url = section.settings.bg_img | img_url: '1600x' format: 'pjpg' -%}
+{%- assign bg_img_url = section.settings.bg_img | img_url: '1600x', format: 'pjpg' -%}
 <!-- Convert Form Background Color -->
 {% assign input_hex_color = section.settings.form_bg_color %}
 {% include 'hex-to-rgb' %}
