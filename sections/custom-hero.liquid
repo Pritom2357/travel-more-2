@@ -32,10 +32,9 @@
                    srcset="{{ section.settings.logo | img_url: '100x', format: 'webp' }} 1x, 
                            {{ section.settings.logo | img_url: '200x', format: 'webp' }} 2x"
                    width="100" 
-                   height="40" 
+                   height="auto" 
                    loading="eager" 
-                   alt="{{ shop.name }}"
-                   style="aspect-ratio: 2.5/1; object-fit: contain;">
+                   alt="{{ shop.name }}">
             </a>
             {% if section.settings.store_name %}
               <a href="{{ routes.root_url }}" class="store-name-link">
@@ -355,16 +354,6 @@
   }
   
   enhanceTextOutline();
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-  // Wait for fonts to load before playing animations
-  document.fonts.ready.then(() => {
-    document.querySelectorAll('.hero-title, .hero-subtitle, .hero-buttons, .destination-teasers')
-      .forEach(el => {
-        el.style.animationPlayState = 'running';
-      });
-  });
 });
 </script>
 
@@ -1097,11 +1086,21 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
-    will-change: opacity, transform;
-    opacity: 1; /* Start visible */
-    transform: translateY(0); /* Start in final position */
+    opacity: 0;
+    transform: translateY(20px);
     animation: fadeInUp 0.8s forwards;
-    animation-play-state: paused; /* Don't animate until fonts are loaded */
+  }
+
+  .hero-subtitle {
+    animation-delay: 0.2s;
+  }
+
+  .hero-buttons {
+    animation-delay: 0.4s;
+  }
+
+  .destination-teasers {
+    animation-delay: 0.6s;
   }
 
   @keyframes fadeInUp {
@@ -1186,30 +1185,6 @@ document.addEventListener('DOMContentLoaded', function() {
     content-visibility: auto;
     contain-intrinsic-size: 1px 450px; /* Approximation of form height */
   }
-}
-
-.hero-section {
-  min-height: 100vh;
-  contain: layout paint;
-}
-
-.hero-content-wrapper {
-  min-height: 400px;
-  height: auto;
-  contain: layout;
-}
-
-/* Reserve space for the booking form to prevent layout shift */
-.col-lg-4.col-md-8.offset-lg-1.offset-md-0 {
-  min-height: 450px;
-  contain: layout;
-}
-
-/* Use explicit dimensions for your booking form */
-.booking-form {
-  height: auto;
-  min-height: 450px;
-  contain: content;
 }
 </style>
 
