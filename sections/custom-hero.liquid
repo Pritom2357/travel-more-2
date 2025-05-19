@@ -1,4 +1,8 @@
 {%- assign bg_img_url = section.settings.bg_img | img_url: '1600x', format: 'pjpg'}
+{% comment %}Generate responsive image URLs{% endcomment %}
+{%- assign bg_img_small = section.settings.bg_img | img_url: '800x', format: 'webp', quality: 60 -%}
+{%- assign bg_img_medium = section.settings.bg_img | img_url: '1200x', format: 'webp', quality: 75 -%}
+{%- assign bg_img_large = section.settings.bg_img | img_url: '2000x', format: 'webp', quality: 85 -%}
 <!-- Convert Form Background Color -->
 {% assign input_hex_color = section.settings.form_bg_color %}
 {% include 'hex-to-rgb' %}
@@ -22,6 +26,14 @@
 {% endif %}
 
 <section class="hero-section align-items-center">
+  <picture class="hero-background">
+    <source media="(min-width: 1200px)" srcset="{{ bg_img_large }}">
+    <source media="(min-width: 768px)" srcset="{{ bg_img_medium }}">
+    <img src="{{ bg_img_small }}" alt="" 
+         fetchpriority="high" 
+         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;" 
+         onload="this.classList.add('loaded')">
+  </picture>
   {% if section.settings.is_header %}
     <nav class="navbar navbar-expand-lg nav-settings">
       <div class="container-fluid d-flex">
@@ -416,8 +428,7 @@
     position: relative;
     width: 100%;
     min-height: 100vh;
-    background: url('{{ bg_img_url }}') center center no-repeat;
-    background-size: cover;
+    background: none; /* Remove background image declaration */
     isolation: isolate; 
   }
   .hero-section::before {
@@ -1184,6 +1195,14 @@
     content-visibility: auto;
     contain-intrinsic-size: 1px 450px; /* Approximation of form height */
   }
+}
+
+.hero-background img {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.hero-background img.loaded {
+  opacity: 1;
 }
 </style>
 
