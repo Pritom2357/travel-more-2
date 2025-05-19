@@ -415,6 +415,21 @@
       setTimeout(startAnimations, 100);
     });
   });
+
+  // Add this to your script section
+  document.addEventListener('DOMContentLoaded', function() {
+    // Fix background image loading
+    const heroImage = document.querySelector('.hero-background img');
+    if (heroImage) {
+      if (heroImage.complete) {
+        heroImage.classList.add('loaded');
+      } else {
+        heroImage.onload = function() {
+          this.classList.add('loaded');
+        }
+      }
+    }
+  });
 </script>
 
 
@@ -478,7 +493,7 @@
     position: relative;
     width: 100%;
     min-height: 100vh;
-    background:  url('{{ bg_img_url }}') center center no-repeat; /* Remove background image declaration */
+    background: none; /* No background image in CSS */
     isolation: isolate; 
   }
   .hero-section::before {
@@ -1273,6 +1288,31 @@
 /* Optimize animation performance */
 .hero-title, .hero-subtitle, .hero-buttons, .destination-teasers {
   will-change: opacity, transform; /* GPU acceleration hint */
+}
+
+/* Add this to your CSS */
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* Make sure this overlay is above the background */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  
+  {% if section.settings.enable_overlay %}
+    background-color: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity }};
+  {% endif %}
 }
 </style>
 
