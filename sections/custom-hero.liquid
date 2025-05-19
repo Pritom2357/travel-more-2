@@ -193,24 +193,59 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+  // Immediately execute critical functions
+  updateCartCount();
+  enhanceTextOutline();
+  
+  // Defer non-critical interactions
+  setTimeout(() => {
+    // Init dropdowns
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(toggle => {
+      // Your existing dropdown code
+    });
     
-    const bookNowBtn = document.getElementById('bookNowBtn');
-    if(bookNowBtn) {
-      bookNowBtn.addEventListener('click', () => {
-        const destSelect = document.getElementById('destinationSelect');
-        const selectedOption = destSelect.options[destSelect.selectedIndex];
-
-        const destinationTitle = selectedOption.value; 
-        const destinationDescription = selectedOption.dataset.destDescription; 
-        const destinationPrice = selectedOption.dataset.destPrice; 
-        const tourType = document.getElementById('tourType').value;
-
-        const url = `/pages/tour-booking?dest=${encodeURIComponent(destinationTitle)}&desc=${encodeURIComponent(destinationDescription)}&price=${encodeURIComponent(destinationPrice)}&type=${encodeURIComponent(tourType)}`;
-
-        window.location.href = url;
-      });
+    // Init tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Mouse movement effects - low priority
+    if (window.innerWidth > 992) {
+      const heroContent = document.querySelector('.hero-content-wrapper');
+      if (heroContent) {
+        document.addEventListener('mousemove', function(e) {
+          // Your existing mouse movement code
+        });
+      }
     }
-  });
+  }, 1000); // Delay by 1 second
+  
+  // Book now button handler
+  const bookNowBtn = document.getElementById('bookNowBtn');
+  if(bookNowBtn) {
+    // Your existing code
+  }
+  
+  // Wait for fonts to load before playing animations
+  if ('fonts' in document) {
+    document.fonts.ready.then(() => {
+      document.querySelectorAll('.hero-title, .hero-subtitle, .hero-buttons, .destination-teasers')
+        .forEach(el => {
+          el.style.animationPlayState = 'running';
+        });
+    });
+  } else {
+    // Fallback for browsers without font loading API
+    setTimeout(() => {
+      document.querySelectorAll('.hero-title, .hero-subtitle, .hero-buttons, .destination-teasers')
+        .forEach(el => {
+          el.style.animationPlayState = 'running';
+        });
+    }, 500);
+  }
+});
 
   function updateCartCount() {
     fetch('/cart.js')
@@ -1228,6 +1263,38 @@ document.addEventListener('DOMContentLoaded', function() {
 .hero-section {
   background-color: #1a1a1a; /* Placeholder color while image loads */
   background-image: none; /* Remove initial background image */
+}
+</style>
+
+<style>
+/* Critical CSS */
+.hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #1a1a1a; /* Fallback */
+  contain: layout;
+}
+.hero-title {
+  font-family: "{{ section.settings.title_font }}", sans-serif;
+  font-size: calc({{section.settings.title_size}}rem + 0.5vw);
+  line-height: 1.2;
+  font-weight: 800;
+  color: {{section.settings.title_color}};
+  margin-bottom: 1.5rem;
+}
+.hero-subtitle {
+  font-size: calc({{section.settings.sub_title_size}}rem + 0.2vw);
+  font-weight: {{ section.settings.sub_title_weight }};
+  margin: 0 0 2.5rem 0;
+  color: {{section.settings.sub_title_color}};
+  max-width: 90%;
+}
+.nav-settings {
+  position: relative;
+  z-index: 2;
+  background-color: rgba({{ header_red }}, {{ header_green }}, {{ heaeder_blue }}, {{ section.settings.header_bg_opacity }});
+  color: {{ section.settings.header_text_color }};
 }
 </style>
 
