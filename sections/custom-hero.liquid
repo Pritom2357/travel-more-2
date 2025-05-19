@@ -50,13 +50,12 @@
         <div class="justify-content-start">
           <div class="logo-name-container">
             <a class="navbar-brand" href="#">
-              <img src="{{ section.settings.logo | img_url: '100x', format: 'webp' }}"
-                   alt="{{ shop.name }}"
-                   width="{{ section.settings.logo_size }}"
-                   height="{{ section.settings.logo_size | divided_by: 3 }}"
-                   style="aspect-ratio: {{ section.settings.logo_size }}/{{ section.settings.logo_size | divided_by: 3 }}; 
-                          object-fit: contain;"
-                   fetchpriority="high">
+              <img
+                src="{{ section.settings.logo | img_url: '100px' }}"
+                alt="{{ shop.name }}"
+                width="{{ section.settings.logo_size }}"
+                height="auto"
+              >
             </a>
             {% if section.settings.store_name %}
               <a href="{{ routes.root_url }}" class="store-name-link">
