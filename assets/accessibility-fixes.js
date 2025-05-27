@@ -60,9 +60,49 @@
       textarea:focus-visible {
         outline: 2px solid #0066cc !important;
         outline-offset: 2px !important;
-      }
-    `;
+      }    `;
     document.head.appendChild(style);
+  }
+
+  // Improve generic links for better accessibility
+  function improveGenericLinks() {
+    // Find links with generic text that need better context
+    const genericLinkSelectors = [
+      'a[href*="/collections"]:not([aria-label])',
+      'a[href*="/products"]:not([aria-label])',
+      'a[href*="/pages"]:not([aria-label])',
+      'button:not([aria-label])'
+    ];
+
+    genericLinkSelectors.forEach(selector => {
+      const links = document.querySelectorAll(selector);
+      links.forEach(link => {
+        const text = link.textContent.trim().toLowerCase();
+        
+        // Add appropriate aria-labels for common generic text
+        if (text === 'more' || text === 'read more' || text === 'learn more') {
+          if (link.href && link.href.includes('/collections')) {
+            link.setAttribute('aria-label', 'Browse available tours and experiences');
+          } else if (link.href && link.href.includes('/products')) {
+            link.setAttribute('aria-label', 'View product details');
+          } else if (link.href && link.href.includes('/pages')) {
+            link.setAttribute('aria-label', 'Learn more about our services');
+          }
+        }
+        
+        if (text === 'view all' || text === 'see all') {
+          link.setAttribute('aria-label', 'View all available tours and experiences');
+        }
+        
+        if (text === 'book now' || text === 'book') {
+          link.setAttribute('aria-label', 'Book this travel experience');
+        }
+        
+        if (text === 'contact' || text === 'contact us') {
+          link.setAttribute('aria-label', 'Contact our travel experts');
+        }
+      });
+    });
   }
 
   // Initialize accessibility fixes
@@ -71,6 +111,7 @@
     fixShopifyPreviewBarIframe();
     fixGenericIframes();
     enhanceFocusVisibility();
+    improveGenericLinks();
 
     // Set up mutation observer to catch dynamically added iframes
     const observer = new MutationObserver(function(mutations) {

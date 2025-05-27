@@ -500,11 +500,10 @@
       console.error('Error retrieving product data', e);
       bookingProduct = null;
     }
-    
-    if (!bookingProduct) {
+      if (!bookingProduct) {
       console.warn('No product selected for booking');
       document.querySelector('.booking-form-container').innerHTML = 
-        '<div class="error-message">No product selected for booking. <a href="/collections/all">Browse tours</a></div>';
+        '<div class="error-message">No product selected for booking. <a href="/collections/all" aria-label="Browse all available tours and experiences">Browse available tours</a></div>';
       return;
     }
     

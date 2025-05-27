@@ -71,6 +71,7 @@
         <h3 class="cta-title" style="color: {{ section.settings.cta_title_color }};">{{ section.settings.cta_title | default: "Ready to experience our specialties?" }}</h3>
         <p class="cta-description" style="color: {{ section.settings.cta_description_color }};">{{ section.settings.cta_description }}</p>
         <a href="{{ section.settings.cta_button_link | default: '#' }}" class="cta-button" 
+           aria-label="Learn more about our specialty travel experiences and services"
            style="background-color: {{ section.settings.cta_button_bg_color }}; color: {{ section.settings.cta_button_text_color }};">
           {{ section.settings.cta_button_text | default: "Learn More" }}
         </a>

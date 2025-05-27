@@ -80,6 +80,44 @@
       
       <meta name="description" content="{{ meta_description | escape }}">
       
+      {%- comment -%} Open Graph Meta Tags for Social Media {%- endcomment -%}
+      <meta property="og:site_name" content="{{ shop.name }}">
+      <meta property="og:url" content="{{ canonical_url }}">
+      <meta property="og:title" content="{{ page_title | default: shop.name }}">
+      <meta property="og:type" content="{% if product %}product{% elsif article %}article{% else %}website{% endif %}">
+      <meta property="og:description" content="{{ meta_description | escape }}">
+      
+      {%- if product and product.featured_media -%}
+        <meta property="og:image" content="http:{{ product.featured_media | image_url: width: 1200 }}">
+        <meta property="og:image:secure_url" content="https:{{ product.featured_media | image_url: width: 1200 }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:alt" content="{{ product.featured_media.alt | escape }}">
+      {%- elsif page.featured_image -%}
+        <meta property="og:image" content="http:{{ page.featured_image | image_url: width: 1200 }}">
+        <meta property="og:image:secure_url" content="https:{{ page.featured_image | image_url: width: 1200 }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:alt" content="{{ page.featured_image.alt | escape }}">
+      {%- elsif article and article.image -%}
+        <meta property="og:image" content="http:{{ article.image | image_url: width: 1200 }}">
+        <meta property="og:image:secure_url" content="https:{{ article.image | image_url: width: 1200 }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:alt" content="{{ article.image.alt | escape }}">
+      {%- elsif settings.share_image -%}
+        <meta property="og:image" content="http:{{ settings.share_image | image_url: width: 1200 }}">
+        <meta property="og:image:secure_url" content="https:{{ settings.share_image | image_url: width: 1200 }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:alt" content="{{ settings.share_image.alt | default: shop.name | escape }}">
+      {%- endif -%}
+      
+      {%- comment -%} Twitter Card Meta Tags {%- endcomment -%}
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:title" content="{{ page_title | default: shop.name }}">
+      <meta name="twitter:description" content="{{ meta_description | escape }}">
+      
       {%- comment -%} Additional SEO Meta Tags {%- endcomment -%}
       <meta name="robots" content="index, follow">
       <meta name="author" content="{{ shop.name }}">
@@ -87,7 +125,63 @@
       {%- if product -%}
         <meta property="product:price:amount" content="{{ product.price | money_without_currency }}">
         <meta property="product:price:currency" content="{{ cart.currency.iso_code }}">
+        <meta property="product:availability" content="{% if product.available %}in stock{% else %}out of stock{% endif %}">
+        <meta property="product:condition" content="new">
       {%- endif -%}
+      
+      {%- comment -%} Structured Data for SEO {%- endcomment -%}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "{% if product %}Product{% elsif article %}Article{% else %}Organization{% endif %}",
+        {% if product -%}
+          "name": {{ product.title | json }},
+          "description": {{ product.description | strip_html | truncate: 300 | json }},
+          "image": "https:{{ product.featured_media | image_url: width: 1200 }}",
+          "url": "{{ shop.url }}{{ product.url }}",
+          "sku": {{ product.selected_or_first_available_variant.sku | json }},
+          "offers": {
+            "@type": "Offer",
+            "url": "{{ shop.url }}{{ product.url }}",
+            "priceCurrency": {{ cart.currency.iso_code | json }},
+            "price": {{ product.price | divided_by: 100.0 | json }},
+            "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
+          },
+          "brand": {
+            "@type": "Brand", 
+            "name": {{ shop.name | json }}
+          }
+        {%- elsif article -%}
+          "headline": {{ article.title | json }},
+          "description": {{ article.excerpt | default: article.content | strip_html | truncate: 300 | json }},
+          "image": "https:{{ article.image | image_url: width: 1200 }}",
+          "url": "{{ shop.url }}{{ article.url }}",
+          "datePublished": {{ article.published_at | date: '%Y-%m-%d' | json }},
+          "dateModified": {{ article.updated_at | date: '%Y-%m-%d' | json }},
+          "author": {
+            "@type": "Person",
+            "name": {{ article.author | json }}
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": {{ shop.name | json }}
+          }
+        {%- else -%}
+          "name": {{ shop.name | json }},
+          "description": {{ meta_description | json }},
+          "url": {{ shop.url | json }},
+          "@type": "TravelAgency",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": {{ localization.country.iso_code | json }}
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service"
+          }
+        {%- endif %}
+      }
+      </script>
       
       {{ content_for_header }}
     </head>

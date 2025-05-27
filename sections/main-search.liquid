@@ -167,7 +167,7 @@
                           </div>
                         {% endif %}
                         <div class="hover-overlay">
-                          <div class="view-btn">Read More</div>
+                          <div class="view-btn">Read Article: {{ item.title | truncate: 30 }}</div>
                         </div>
                       </div>
                     </a>
@@ -219,8 +219,8 @@
         
         {% if search.results_count > 12 %}
           <div class="text-center mt-4 mb-5">
-            <button id="load-more-results" class="btn-load-more">
-              <span>Load More</span>
+            <button id="load-more-results" class="btn-load-more" aria-label="Load more search results">
+              <span>Load More Results</span>
               <i class="bi bi-arrow-down-circle"></i>
             </button>
           </div>
@@ -245,8 +245,8 @@
             </div>
             
             <div class="search-actions mt-4">
-              <a href="/collections/all" class="btn-secondary">Browse All Tours</a>
-              <a href="/pages/tour-request" class="btn-primary">Request Custom Tour</a>
+              <a href="/collections/all" class="btn-secondary" aria-label="Browse all available tours and travel experiences">Browse All Tours</a>
+              <a href="/pages/tour-request" class="btn-primary" aria-label="Request a custom tour tailored to your preferences">Request Custom Tour</a>
             </div>
           </div>
         {% endif %}
@@ -1090,7 +1090,7 @@
               if (!morePages) {
                 loadMoreBtn.style.display = 'none';
               } else {
-                loadMoreBtn.innerHTML = '<span>Load More</span><i class="bi bi-arrow-down-circle"></i>';
+                loadMoreBtn.innerHTML = '<span>Load More Results</span><i class="bi bi-arrow-down-circle"></i>';
                 loadMoreBtn.disabled = false;
               }
               
