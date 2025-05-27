@@ -27,7 +27,68 @@
       >
       
       {{ 'base.css' | asset_url | stylesheet_tag }}
-      <title>{{ page_title | shop.name }}</title>
+      
+      {%- comment -%} SEO Meta Tags {%- endcomment -%}
+      <title>
+        {%- if page_title -%}
+          {{ page_title }}{{ page_title | remove: shop.name | size | at_least: 1 | prepend: ' - ' | append: shop.name }}
+        {%- else -%}
+          {{ shop.name }}
+        {%- endif -%}
+      </title>
+      
+      {%- comment -%} Meta Description for SEO {%- endcomment -%}
+      {%- assign meta_description = '' -%}
+      {%- if page.description and page.description != blank -%}
+        {%- assign meta_description = page.description | strip_html | truncate: 160 -%}
+      {%- elsif product.description and product.description != blank -%}
+        {%- assign meta_description = product.description | strip_html | truncate: 160 -%}
+      {%- elsif collection.description and collection.description != blank -%}
+        {%- assign meta_description = collection.description | strip_html | truncate: 160 -%}
+      {%- elsif blog.description and blog.description != blank -%}
+        {%- assign meta_description = blog.description | strip_html | truncate: 160 -%}
+      {%- elsif article.excerpt and article.excerpt != blank -%}
+        {%- assign meta_description = article.excerpt | strip_html | truncate: 160 -%}
+      {%- elsif article.content and article.content != blank -%}
+        {%- assign meta_description = article.content | strip_html | truncate: 160 -%}
+      {%- elsif shop.description and shop.description != blank -%}
+        {%- assign meta_description = shop.description | strip_html | truncate: 160 -%}
+      {%- else -%}
+        {%- case template -%}
+          {%- when 'index' -%}
+            {%- assign meta_description = 'Discover amazing travel experiences and unforgettable adventures. Book your perfect tour with our expert travel guides and create memories that last a lifetime.' -%}
+          {%- when 'product' -%}
+            {%- assign meta_description = 'Book this incredible travel experience and create unforgettable memories. Expert guides, amazing destinations, and exceptional service await you.' -%}
+          {%- when 'collection' -%}
+            {%- assign meta_description = 'Explore our curated collection of travel experiences and tours. Find the perfect adventure for your next journey with our expert travel services.' -%}
+          {%- when 'search' -%}
+            {%- assign meta_description = 'Search our travel experiences and tours. Find the perfect adventure, destination, or travel package for your next unforgettable journey.' -%}
+          {%- when 'cart' -%}
+            {%- assign meta_description = 'Review your selected travel experiences and complete your booking. Secure checkout for your next adventure awaits.' -%}
+          {%- when 'page' -%}
+            {%- if page.handle == 'about' -%}
+              {%- assign meta_description = 'Learn about our travel company, our mission to create unforgettable experiences, and meet the team behind your next adventure.' -%}
+            {%- elsif page.handle == 'contact' -%}
+              {%- assign meta_description = 'Contact our travel experts for personalized assistance, custom tour planning, or any questions about your next adventure.' -%}
+            {%- else -%}
+              {%- assign meta_description = 'Discover travel information, tips, and insights to help you plan your perfect adventure with our expert travel services.' -%}
+            {%- endif -%}
+          {%- else -%}
+            {%- assign meta_description = 'Explore exceptional travel experiences, tours, and adventures. Book with confidence and create memories that last a lifetime.' -%}
+        {%- endcase -%}
+      {%- endif -%}
+      
+      <meta name="description" content="{{ meta_description | escape }}">
+      
+      {%- comment -%} Additional SEO Meta Tags {%- endcomment -%}
+      <meta name="robots" content="index, follow">
+      <meta name="author" content="{{ shop.name }}">
+      
+      {%- if product -%}
+        <meta property="product:price:amount" content="{{ product.price | money_without_currency }}">
+        <meta property="product:price:currency" content="{{ cart.currency.iso_code }}">
+      {%- endif -%}
+      
       {{ content_for_header }}
     </head>
     <style>
