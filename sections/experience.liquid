@@ -4,17 +4,17 @@
       <h2 class="section-title">{{ section.settings.section_title }}</h2>
     {% endif %}
 
-    <div class="slideshow-container">
+    <div class="slideshow-container" role="region" aria-label="Customer reviews slideshow">
       {% if section.settings.hero_image != blank %}
         <div class="hero-image-wrapper">
           <img src="{{ section.settings.hero_image | img_url: '1200x' }}" alt="Travel Experiences" class="hero-background">
         </div>
       {% endif %}
 
-      <div class="slideshow-content">
+      <div class="slideshow-content" aria-live="polite">
         {% for block in section.blocks %}
           {% if block.type == 'review' %}
-            <div class="review-slide" data-slide-index="{{ forloop.index0 }}">
+            <div class="review-slide" data-slide-index="{{ forloop.index0 }}" role="tabpanel" aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}">
               <div class="review-card">
                 {% if block.settings.traveler_image != blank %}
                   <div class="traveler-image-container">
@@ -60,8 +60,8 @@
           {% endif %}
         {% endfor %}
 
-        <button class="prev-button" aria-label="Previous review">❮</button>
-        <button class="next-button" aria-label="Next review">❯</button>
+        <button class="prev-button" aria-label="Previous review" tabindex="0">❮</button>
+        <button class="next-button" aria-label="Next review" tabindex="0">❯</button>
 
         <div class="pagination-dots">
           {% for block in section.blocks %}
@@ -92,9 +92,10 @@
       text-align: center;
       font-size: 2.5rem;
       margin-bottom: 3rem;
-      color: #333;
+      color: #1a1a1a;
       position: relative;
       z-index: 2;
+      font-weight: 700;
     }
 
     /* Slideshow container */
@@ -201,24 +202,26 @@
     .review-title {
       font-size: 1.5rem;
       margin-bottom: 0.5rem;
-      color: #333;
+      color: #1a1a1a;
+      font-weight: 600;
     }
 
     .reviewer-info {
       font-size: 1rem;
-      color: #777;
+      color: #2c2c2c;
       margin-bottom: 1.5rem;
+      font-weight: 500;
     }
 
     .date-divider {
       margin: 0 0.5rem;
-      color: #ccc;
+      color: #666;
     }
 
     .review-text {
       font-size: 1.1rem;
       line-height: 1.7;
-      color: #555;
+      color: #1a1a1a;
       font-style: italic;
     }
 
@@ -254,6 +257,12 @@
     .prev-button:hover, .next-button:hover {
       background-color: #f39c12;
       color: white;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .prev-button:focus, .next-button:focus {
+      outline: 2px solid #f39c12;
+      outline-offset: 2px;
     }
 
     /* Pagination dots */

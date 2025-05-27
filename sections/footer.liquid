@@ -32,7 +32,7 @@
           margin: 0 auto; /* Center the div itself */
         "
       >
-        <h4 class="mb-3" style="color: #fff;">
+        <h4 class="mb-3" style="color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 700;">
           {{ section.settings.newsletter_title }}
         </h4>
 
@@ -49,22 +49,30 @@
             max-width: 600px; /* Limit maximum width */
             z-index: 2;
           "
+          aria-label="Newsletter subscription form"
         >
+          <label for="newsletter-email" class="sr-only">Email address for newsletter</label>
           <input
             type="email"
+            id="newsletter-email"
+            name="email"
             class="form-control"
             placeholder="{{ section.settings.newsletter_placeholder }}"
             required
-            style="flex: 1; max-width: 400px; padding: 10px;"
+            aria-required="true"
+            aria-describedby="newsletter-description"
+            style="flex: 1; max-width: 400px; padding: 10px; border: 2px solid #ffffff; background: rgba(255,255,255,0.95); color: #333;"
           >
           <button
             class="btn btn-dark"
             type="submit"
-            style="flex: 0; padding: 10px 20px;"
+            style="flex: 0; padding: 10px 20px; background-color: #ffffff; color: #333333; border: 2px solid #ffffff; font-weight: 600;"
+            aria-label="Subscribe to newsletter"
           >
             {{ section.settings.newsletter_button }}
           </button>
         </form>
+        <div id="newsletter-description" class="sr-only">Enter your email address to receive our latest travel news and updates</div>
       </div>
     </div>
 
@@ -125,7 +133,7 @@
           "
         ></div>
 
-        <p class="text-muted" style="font-size: 1rem;">
+        <p class="text-muted" style="font-size: 1rem; color: #e0e0e0;">
           {{ section.settings.cta_subtitle }}
         </p>
       </div>
@@ -269,6 +277,37 @@
     transform: scale(1.2);
   }
 
+  /* Enhanced newsletter accessibility */
+  #custom-footer .form-control:focus {
+    border-color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.5);
+    outline: none;
+  }
+
+  #custom-footer .btn:focus {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+
+  #custom-footer .btn:hover {
+    background-color: #f8f9fa !important;
+    color: #1a1a1a !important;
+    transform: translateY(-1px);
+  }
+
+  /* Screen reader only class for accessibility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   #custom-footer .carousel img {
     border: 2px solid #ffffff;
     transition: transform 0.3s, border-color 0.3s;
@@ -302,8 +341,8 @@
       "type": "range",
       "id": "news_opacity",
       "label": "Newsletter opacity",
-      "default": 0.5,
-      "min": 0,
+      "default": 0.9,
+      "min": 0.7,
       "max": 1,
       "step": 0.1
     },
