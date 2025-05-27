@@ -28,9 +28,8 @@
                 <label for="personCount">How many persons?</label>
                 <input type="number" id="personCount" class="number-input" min="1" value="2">
             </div>
-            
-            <div class="button-group">
-              <button id="searchToursBtn" class="search-button primary-search-btn">
+              <div class="button-group">
+              <button id="searchToursBtn" class="search-button primary-search-btn" aria-label="Search for tours">
                 <i class="bi bi-search"></i> Search
               </button>
               
@@ -55,10 +54,9 @@
             <span class="close-modal">&times;</span>
         </div>
         <div class="modal-body">
-            <p>We don't have a tour that exactly matches your criteria. Would you like to:</p>
-            <div class="modal-options">
-                <button id="viewSimilarBtn" class="primary-button">View Similar Tours</button>
-                <button id="requestCustomBtn" class="secondary-button">Request Custom Tour</button>
+            <p>We don't have a tour that exactly matches your criteria. Would you like to:</p>            <div class="modal-options">
+                <button id="viewSimilarBtn" class="primary-button" aria-label="View similar tours">View Similar Tours</button>
+                <button id="requestCustomBtn" class="secondary-button" aria-label="Request a custom tour">Request Custom Tour</button>
             </div>
         </div>
     </div>

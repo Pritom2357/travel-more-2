@@ -348,6 +348,7 @@
                                 type="button"
                                 class="quantity-popover__info-button quantity-popover__info-button--icon-with-label button button--tertiary"
                                 aria-expanded="false"
+                                aria-label="Show quantity information"
                               >
                                 <span class="svg-wrapper">
                                   {{- 'icon-info.svg' | inline_asset_content -}}
@@ -548,6 +549,7 @@
             class="cart__checkout-button button"
             name="checkout"
             form="CartDrawer-Form"
+            aria-label="Proceed to checkout"
             {% if cart == empty %}
               disabled
             {% endif %}

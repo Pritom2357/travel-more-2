@@ -142,7 +142,7 @@
                   class="no-js-hidden"
                   data-action="confirm"
                 >
-                  <button class="button button--tertiary" type="button">
+                  <button class="button button--tertiary" type="button" aria-label="Remove all items from quick order list">
                     <span class="svg-wrapper">
                       {{- 'icon-remove.svg' | inline_asset_content -}}
                     </span>
@@ -233,7 +233,7 @@
                   class="no-js-hidden"
                   data-action="confirm"
                 >
-                  <button class="button button--tertiary" type="button">
+                  <button class="button button--tertiary" type="button" aria-label="Remove all items from quick order list">
                     <span class="svg-wrapper">
                       {{- 'icon-remove.svg' | inline_asset_content -}}
                     </span>
@@ -266,6 +266,7 @@
             <button
               class="quick-order-list__button-confirm button button--secondary"
               type="button"
+              aria-label="Confirm removal of all items"
             >
               {{- 'sections.quick_order_list.remove_all' | t -}}
             </button>
@@ -276,6 +277,7 @@
             <button
               class="quick-order-list__button-cancel button button--tertiary"
               type="button"
+              aria-label="Cancel removal"
             >
               {{- 'sections.quick_order_list.cancel' | t -}}
             </button>
