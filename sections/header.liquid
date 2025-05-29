@@ -1407,19 +1407,22 @@
   function initializeDropdowns() {
     let hoverTimeouts = new Map();
     
-    // Enhanced click handler for dropdown toggles
-    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-    
-    dropdownToggles.forEach(toggle => {
-      toggle.addEventListener('click', function (e) {
-        const dropdownMenu = this.nextElementSibling;
+    // Use event delegation for better performance and reliability with dynamic content
+    document.addEventListener('click', function(e) {
+      // Check if the clicked element is a dropdown toggle
+      if (e.target.classList.contains('dropdown-toggle') || 
+          e.target.closest('.dropdown-toggle')) {
+        
+        const toggle = e.target.classList.contains('dropdown-toggle') ? 
+                      e.target : e.target.closest('.dropdown-toggle');
+        const dropdownMenu = toggle.nextElementSibling;
         
         if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
           e.preventDefault();
           e.stopPropagation();
           
           // Check if this is a grandchild menu (submenu)
-          const isSubmenu = this.closest('.dropdown-submenu');
+          const isSubmenu = toggle.closest('.dropdown-submenu');
           
           if (window.innerWidth <= 991 || isSubmenu) {
             // Toggle the dropdown menu
@@ -1427,19 +1430,19 @@
             
             if (isSubmenu) {
               // For submenus, toggle the parent submenu class as well
-              const submenuParent = this.closest('.dropdown-submenu');
+              const submenuParent = toggle.closest('.dropdown-submenu');
               submenuParent.classList.toggle('show', !isCurrentlyShown);
             }
             
             dropdownMenu.classList.toggle('show', !isCurrentlyShown);
             
             // Set aria-expanded for accessibility
-            this.setAttribute('aria-expanded', !isCurrentlyShown);
+            toggle.setAttribute('aria-expanded', !isCurrentlyShown);
             
             // Close sibling menus at the same level
             const parentContainer = isSubmenu ? 
-              this.closest('.dropdown-menu') : 
-              this.closest('.navbar-nav');
+              toggle.closest('.dropdown-menu') : 
+              toggle.closest('.navbar-nav');
               
             if (parentContainer) {
               const siblingMenus = parentContainer.querySelectorAll(
@@ -1464,7 +1467,7 @@
             }
           }
         }
-      });
+      }
     });
 
     // Enhanced desktop hover functionality with stable hover zones
@@ -1561,36 +1564,39 @@
       });
     }
     
-    // Enhanced touch support for mobile devices
+    // Enhanced touch support for mobile devices using event delegation
     if ('ontouchstart' in document.documentElement) {
-      document.querySelectorAll('.dropdown-submenu > .dropdown-item').forEach(item => {
-        item.addEventListener('click', function(e) {
-          if (window.innerWidth <= 991) {
-            const parent = this.parentElement;
-            const submenu = this.nextElementSibling;
+      document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('dropdown-item') && 
+            e.target.classList.contains('dropdown-toggle') &&
+            e.target.closest('.dropdown-submenu') && 
+            window.innerWidth <= 991) {
+          
+          const item = e.target;
+          const parent = item.parentElement;
+          const submenu = item.nextElementSibling;
+          
+          if (submenu && submenu.classList.contains('dropdown-menu')) {
+            e.preventDefault();
             
-            if (submenu && submenu.classList.contains('dropdown-menu')) {
-              e.preventDefault();
-              
-              const isCurrentlyShown = submenu.classList.contains('show');
-              
-              // Close other submenus
-              document.querySelectorAll('.dropdown-submenu').forEach(otherSubmenu => {
-                if (otherSubmenu !== parent) {
-                  const otherMenu = otherSubmenu.querySelector('.dropdown-menu');
-                  if (otherMenu) {
-                    otherMenu.classList.remove('show');
-                    otherSubmenu.classList.remove('show');
-                  }
+            const isCurrentlyShown = submenu.classList.contains('show');
+            
+            // Close other submenus
+            document.querySelectorAll('.dropdown-submenu').forEach(otherSubmenu => {
+              if (otherSubmenu !== parent) {
+                const otherMenu = otherSubmenu.querySelector('.dropdown-menu');
+                if (otherMenu) {
+                  otherMenu.classList.remove('show');
+                  otherSubmenu.classList.remove('show');
                 }
-              });
-              
-              // Toggle current submenu
-              submenu.classList.toggle('show', !isCurrentlyShown);
-              parent.classList.toggle('show', !isCurrentlyShown);
-            }
+              }
+            });
+            
+            // Toggle current submenu
+            submenu.classList.toggle('show', !isCurrentlyShown);
+            parent.classList.toggle('show', !isCurrentlyShown);
           }
-        });
+        }
       });
     }
 
