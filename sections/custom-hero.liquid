@@ -301,10 +301,12 @@
   }
 
   function initializeDropdowns() {
-    let hoverTimeouts = new Map();
-    
+    // CUSTOM HERO SECTION: Click-only navigation for stability
     // Use event delegation for better performance and reliability with dynamic content
     document.addEventListener('click', function(e) {
+      // Only handle clicks within the custom-hero section
+      if (!e.target.closest('.hero-section')) return;
+      
       // Check if the clicked element is a dropdown toggle
       if (e.target.classList.contains('dropdown-toggle') || 
           e.target.closest('.dropdown-toggle')) {
@@ -320,224 +322,60 @@
           // Check if this is a grandchild menu (submenu)
           const isSubmenu = toggle.closest('.dropdown-submenu');
           
-          if (window.innerWidth <= 991 || isSubmenu) {
-            // Toggle the dropdown menu
-            const isCurrentlyShown = dropdownMenu.classList.contains('show');
+          // For custom-hero section, ALL dropdowns use click toggle (desktop and mobile)
+          // Toggle the dropdown menu
+          const isCurrentlyShown = dropdownMenu.classList.contains('show');
+          
+          if (isSubmenu) {
+            // For submenus, toggle the parent submenu class as well
+            const submenuParent = toggle.closest('.dropdown-submenu');
+            submenuParent.classList.toggle('show', !isCurrentlyShown);
+          }
+          
+          dropdownMenu.classList.toggle('show', !isCurrentlyShown);
+          
+          // Set aria-expanded for accessibility
+          toggle.setAttribute('aria-expanded', !isCurrentlyShown);
+          
+          // Close sibling menus at the same level
+          const parentContainer = isSubmenu ? 
+            toggle.closest('.dropdown-menu') : 
+            toggle.closest('.navbar-nav');
             
-            if (isSubmenu) {
-              // For submenus, toggle the parent submenu class as well
-              const submenuParent = toggle.closest('.dropdown-submenu');
-              submenuParent.classList.toggle('show', !isCurrentlyShown);
-            }
+          if (parentContainer) {
+            const siblingMenus = parentContainer.querySelectorAll(
+              isSubmenu ? 
+              ':scope > li.dropdown-submenu > .dropdown-menu' : 
+              ':scope > li.dropdown > .dropdown-menu'
+            );
             
-            dropdownMenu.classList.toggle('show', !isCurrentlyShown);
-            
-            // Set aria-expanded for accessibility
-            toggle.setAttribute('aria-expanded', !isCurrentlyShown);
-            
-            // Close sibling menus at the same level
-            const parentContainer = isSubmenu ? 
-              toggle.closest('.dropdown-menu') : 
-              toggle.closest('.navbar-nav');
-              
-            if (parentContainer) {
-              const siblingMenus = parentContainer.querySelectorAll(
-                isSubmenu ? 
-                ':scope > li.dropdown-submenu > .dropdown-menu' : 
-                ':scope > li.dropdown > .dropdown-menu'
-              );
-              
-              siblingMenus.forEach(menu => {
-                if (menu !== dropdownMenu && menu.classList.contains('show')) {
-                  menu.classList.remove('show');
-                  const siblingSubmenu = menu.closest('.dropdown-submenu');
-                  if (siblingSubmenu) {
-                    siblingSubmenu.classList.remove('show');
-                  }
-                  const siblingToggle = menu.previousElementSibling;
-                  if (siblingToggle) {
-                    siblingToggle.setAttribute('aria-expanded', 'false');
-                  }
+            siblingMenus.forEach(menu => {
+              if (menu !== dropdownMenu && menu.classList.contains('show')) {
+                menu.classList.remove('show');
+                const siblingSubmenu = menu.closest('.dropdown-submenu');
+                if (siblingSubmenu) {
+                  siblingSubmenu.classList.remove('show');
                 }
-              });
-            }
+                const siblingToggle = menu.previousElementSibling;
+                if (siblingToggle) {
+                  siblingToggle.setAttribute('aria-expanded', 'false');
+                }
+              }
+            });
           }
         }
       }
     });
 
-    // Enhanced desktop hover functionality with stable hover zones
-    if (window.innerWidth > 991) {
-      // Main dropdown hover
-      document.querySelectorAll('.navbar-nav .dropdown').forEach(dropdown => {
-        dropdown.addEventListener('mouseenter', function() {
-          const menu = this.querySelector('.dropdown-menu');
-          if (menu) {
-            clearTimeout(hoverTimeouts.get(menu));
-            menu.classList.add('show');
-          }
-        });
-        
-        dropdown.addEventListener('mouseleave', function() {
-          const menu = this.querySelector('.dropdown-menu');
-          if (menu) {
-            const timeoutId = setTimeout(() => {
-              menu.classList.remove('show');
-              // Also hide all submenus
-              this.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(submenu => {
-                submenu.style.display = 'none';
-                const submenuParent = submenu.closest('.dropdown-submenu');
-                if (submenuParent) {
-                  submenuParent.classList.remove('show');
-                }
-              });
-            }, 150); // Increased delay for more stability
-            hoverTimeouts.set(menu, timeoutId);
-          }
-        });
-      });
-
-      // Enhanced submenu hover with stable transition zones
-      document.querySelectorAll('.navbar-nav .dropdown-submenu').forEach(submenu => {
-        submenu.addEventListener('mouseenter', function() {
-          const submenuDropdown = this.querySelector('.dropdown-menu');
-          if (submenuDropdown) {
-            clearTimeout(hoverTimeouts.get(submenuDropdown));
-            submenuDropdown.style.display = 'block';
-            submenuDropdown.style.opacity = '1';
-            submenuDropdown.style.visibility = 'visible';
-            this.classList.add('show');
-            
-            // Hide sibling submenus
-            const parentMenu = this.closest('.dropdown-menu');
-            if (parentMenu) {
-              parentMenu.querySelectorAll(':scope > li.dropdown-submenu').forEach(sibling => {
-                if (sibling !== this) {
-                  const siblingMenu = sibling.querySelector('.dropdown-menu');
-                  if (siblingMenu) {
-                    siblingMenu.style.display = 'none';
-                    siblingMenu.style.opacity = '0';
-                    siblingMenu.style.visibility = 'hidden';
-                    sibling.classList.remove('show');
-                  }
-                }
-              });
-            }
-          }
-        });
-        
-        submenu.addEventListener('mouseleave', function() {
-          const submenuDropdown = this.querySelector('.dropdown-menu');
-          if (submenuDropdown) {
-            const timeoutId = setTimeout(() => {
-              submenuDropdown.style.display = 'none';
-              submenuDropdown.style.opacity = '0';
-              submenuDropdown.style.visibility = 'hidden';
-              this.classList.remove('show');
-            }, 200); // Increased delay for better stability
-            hoverTimeouts.set(submenuDropdown, timeoutId);
-          }
-        });
-      });
-
-      // Prevent submenu from closing when hovering over the submenu itself
-      document.querySelectorAll('.navbar-nav .dropdown-submenu .dropdown-menu').forEach(submenu => {
-        submenu.addEventListener('mouseenter', function() {
-          clearTimeout(hoverTimeouts.get(this));
-        });
-        
-        submenu.addEventListener('mouseleave', function() {
-          const submenuParent = this.closest('.dropdown-submenu');
-          if (submenuParent) {
-            const timeoutId = setTimeout(() => {
-              this.style.display = 'none';
-              this.style.opacity = '0';
-              this.style.visibility = 'hidden';
-              submenuParent.classList.remove('show');
-            }, 200);
-            hoverTimeouts.set(this, timeoutId);
-          }
-        });
-      });
-
-      // Prevent menu from closing when hovering over the gap between parent and submenu
-      document.querySelectorAll('.navbar-nav .dropdown-menu').forEach(menu => {
-        menu.addEventListener('mouseenter', function() {
-          clearTimeout(hoverTimeouts.get(this));
-        });
-        
-        menu.addEventListener('mouseleave', function() {
-          const parentDropdown = this.closest('.dropdown');
-          if (parentDropdown) {
-            const timeoutId = setTimeout(() => {
-              this.classList.remove('show');
-              // Hide all submenus when main menu closes
-              this.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(submenu => {
-                submenu.style.display = 'none';
-                const submenuParent = submenu.closest('.dropdown-submenu');
-                if (submenuParent) {
-                  submenuParent.classList.remove('show');
-                }
-              });
-            }, 150);
-            hoverTimeouts.set(this, timeoutId);
-          }
-        });
-      });
-    }
-    
-    // Enhanced touch support for mobile devices using event delegation
-    if ('ontouchstart' in document.documentElement) {
-      document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('dropdown-item') && 
-            e.target.classList.contains('dropdown-toggle') &&
-            e.target.closest('.dropdown-submenu') && 
-            window.innerWidth <= 991) {
-          
-          const item = e.target;
-          const parent = item.parentElement;
-          const submenu = item.nextElementSibling;
-          
-          if (submenu && submenu.classList.contains('dropdown-menu')) {
-            e.preventDefault();
-            
-            const isCurrentlyShown = submenu.classList.contains('show');
-            
-            // Close other submenus
-            document.querySelectorAll('.dropdown-submenu').forEach(otherSubmenu => {
-              if (otherSubmenu !== parent) {
-                const otherMenu = otherSubmenu.querySelector('.dropdown-menu');
-                if (otherMenu) {
-                  otherMenu.classList.remove('show');
-                  otherSubmenu.classList.remove('show');
-                }
-              }
-            });
-            
-            // Toggle current submenu
-            submenu.classList.toggle('show', !isCurrentlyShown);
-            parent.classList.toggle('show', !isCurrentlyShown);
-          }
-        }
-      });
-    }
-
-    // Close dropdowns when clicking outside
+    // Close dropdowns when clicking outside (only for custom-hero section)
     document.addEventListener('click', function(e) {
-      if (!e.target.closest('.navbar-nav')) {
-        document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-          menu.classList.remove('show');
-          const submenuParent = menu.closest('.dropdown-submenu');
-          if (submenuParent) {
-            submenuParent.classList.remove('show');
-          }
-        });
-        
-        // Also hide desktop submenus
-        if (window.innerWidth > 991) {
-          document.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(submenu => {
-            submenu.style.display = 'none';
-            const submenuParent = submenu.closest('.dropdown-submenu');
+      if (!e.target.closest('.navbar-nav') && !e.target.closest('.hero-section')) {
+        // Only affect dropdowns within the hero section
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection) {
+          heroSection.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+            menu.classList.remove('show');
+            const submenuParent = menu.closest('.dropdown-submenu');
             if (submenuParent) {
               submenuParent.classList.remove('show');
             }
@@ -1469,6 +1307,131 @@
 }
 .hero-background img.loaded {
   opacity: 1;
+}
+
+/* CUSTOM HERO SECTION SPECIFIC - Click-only navigation styles */
+.hero-section .navbar-nav .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  background-color: {{ section.settings.dropdown_bg_color | default: 'rgba(0, 0, 0, 0.9)' }} !important;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  padding: 10px 0;
+  z-index: 1000;
+  min-width: 200px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: none !important; /* Disable transitions for click-only behavior */
+}
+
+/* Disable hover effects for custom-hero dropdowns */
+.hero-section .navbar-nav .dropdown:hover > .dropdown-menu,
+.hero-section .navbar-nav .dropdown-submenu:hover > .dropdown-menu {
+  display: none !important; /* Override hover behavior */
+}
+
+/* Only show dropdowns with .show class (click activated) */
+.hero-section .navbar-nav .dropdown-menu.show {
+  display: block !important;
+}
+
+/* Custom hero submenu styles - click only */
+.hero-section .navbar-nav .dropdown-submenu {
+  position: relative;
+}
+
+.hero-section .navbar-nav .dropdown-submenu .dropdown-menu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  margin-left: 0.1rem;
+  margin-top: -6px;
+  display: none;
+  background-color: {{ section.settings.dropdown_bg_color | default: 'rgba(0, 0, 0, 0.9)' }} !important;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  z-index: 1001;
+  transition: none !important; /* Disable transitions */
+}
+
+/* Click-only submenu display */
+.hero-section .navbar-nav .dropdown-submenu.show > .dropdown-menu {
+  display: block !important;
+}
+
+/* Remove hover bridge areas for custom-hero */
+.hero-section .navbar-nav .dropdown-submenu:before {
+  display: none !important;
+}
+
+/* Dropdown arrows for custom-hero */
+.hero-section .navbar-nav .dropdown-submenu > .dropdown-toggle::after {
+  content: "▶";
+  float: right;
+  margin-left: 8px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.8);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.hero-section .navbar-nav .dropdown-submenu.show > .dropdown-toggle::after {
+  transform: rotate(90deg);
+}
+
+/* Custom hero dropdown items */
+.hero-section .navbar-nav .dropdown-item {
+  color: #ffffff;
+  padding: 8px 15px;
+  transition: background-color 0.2s ease;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.hero-section .navbar-nav .dropdown-item:hover {
+  background-color: rgba(255,255,255,0.1) !important;
+  color: #ffffff !important;
+}
+
+/* Mobile responsive for custom-hero */
+@media (max-width: 991px) {
+  .hero-section .navbar-nav .dropdown-menu {
+    position: static !important;
+    display: none !important;
+    float: none;
+    width: auto;
+    margin-top: 0;
+    background-color: {{ section.settings.dropdown_bg_color | default: 'rgba(0, 0, 0, 0.9)' }} !important;
+    border: 0;
+    box-shadow: none;
+    padding-left: 15px;
+  }
+  
+  .hero-section .navbar-nav .dropdown-menu.show {
+    display: block !important;
+  }
+  
+  .hero-section .navbar-nav .dropdown-submenu .dropdown-menu {
+    position: static !important;
+    margin-left: 0;
+    padding-left: 15px;
+    display: none !important;
+  }
+  
+  .hero-section .navbar-nav .dropdown-submenu .dropdown-menu.show {
+    display: block !important;
+  }
+  
+  .hero-section .navbar-nav .dropdown-submenu > .dropdown-toggle::after {
+    content: "▼";
+    transform: rotate(0deg);
+  }
+  
+  .hero-section .navbar-nav .dropdown-submenu.show > .dropdown-toggle::after {
+    content: "▲";
+    transform: rotate(0deg);
+  }
 }
 </style>
 
