@@ -9,7 +9,7 @@
   <div class="contact-about-section" style="background-color: {{ section.settings.about_bg_color }};">
     <div class="container">
       <div class="section-header text-center">
-        <h2 class="section-title" style="color: {{ section.settings.about_title_color }};">
+        <h2 class="section-title" style="color: {{ section.settings.about_title_color }}; font-family: var(--font-heading-family);">
           {{ section.settings.about_title | default: 'About Us' }}
         </h2>
         <div class="title-separator" style="background-color: {{ section.settings.accent_color }};"></div>
@@ -19,7 +19,7 @@
         {% for block in section.blocks %}
           {% if block.type == 'about_paragraph' %}
             <div class="about-paragraph" {{ block.shopify_attributes }}>
-              <h3 style="color: {{ section.settings.about_heading_color }};">{{ block.settings.heading }}</h3>
+              <h3 style="color: {{ section.settings.about_heading_color }}; font-family: var(--font-heading-family);">{{ block.settings.heading }}</h3>
               <div class="paragraph-content" style="color: {{ section.settings.about_text_color }};">
                 {{ block.settings.content }}
               </div>
@@ -30,7 +30,7 @@
 
       {% if section.settings.show_social_links %}
         <div class="social-links-container">
-          <h3 class="social-heading" style="color: {{ section.settings.about_heading_color }};">
+          <h3 class="social-heading" style="color: {{ section.settings.about_heading_color }}; font-family: var(--font-heading-family);">
             {{ section.settings.social_heading | default: 'Connect With Us' }}
           </h3>
           
@@ -79,13 +79,13 @@
   <div class="contact-form-section" style="background-color: {{ section.settings.form_bg_color }};">
     <div class="container">
       <div class="section-header text-center">
-        <h2 class="section-title" style="color: {{ section.settings.form_title_color }};">
+        <h2 class="section-title" style="color: {{ section.settings.form_title_color }}; font-family: var(--font-heading-family);">
           {{ section.settings.form_title | default: 'Contact Us' }}
         </h2>
         <div class="title-separator" style="background-color: {{ section.settings.accent_color }};"></div>
         
         {% if section.settings.form_subtitle != blank %}
-          <p class="section-subtitle" style="color: {{ section.settings.form_text_color }};">
+          <p class="section-subtitle" style="color: {{ section.settings.form_text_color }}; font-family: var(--font-body-family);">
             {{ section.settings.form_subtitle }}
           </p>
         {% endif %}
@@ -162,7 +162,7 @@
         <div class="contact-map-container">
           <div class="address-info">
             <div class="section-header">
-              <h2 class="section-title" style="color: {{ section.settings.map_title_color }};">
+              <h2 class="section-title" style="color: {{ section.settings.map_title_color }}; font-family: var(--font-heading-family);">
                 {{ section.settings.address_title | default: 'Our Location' }}
               </h2>
               <div class="title-separator" style="background-color: {{ section.settings.accent_color }};"></div>

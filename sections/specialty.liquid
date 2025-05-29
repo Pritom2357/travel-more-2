@@ -5,7 +5,7 @@
         <span class="section-subtitle" style="color: {{ section.settings.subtitle_color }};">{{ section.settings.section_subtitle }}</span>
       {% endif %}
       
-      <h2 class="section-title" style="color: {{ section.settings.title_color }};">
+      <h2 class="section-title" style="color: {{ section.settings.title_color }}; font-family: var(--font-heading-family);">
         {{ section.settings.section_title | default: "What do you Get?" }}
       </h2>
       
@@ -44,7 +44,7 @@
                     </div>
                   {% endif %}
                   
-                  <h3 class="specialty-title" style="color: {{ block.settings.title_color }};">
+                  <h3 class="specialty-title" style="color: {{ block.settings.title_color }}; font-family: var(--font-heading-family);">
                     {{ block.settings.image_text }}
                   </h3>
                   
@@ -68,8 +68,8 @@
 
     {% if section.settings.show_cta %}
       <div class="specialty-cta">
-        <h3 class="cta-title" style="color: {{ section.settings.cta_title_color }};">{{ section.settings.cta_title | default: "Ready to experience our specialties?" }}</h3>
-        <p class="cta-description" style="color: {{ section.settings.cta_description_color }};">{{ section.settings.cta_description }}</p>
+        <h3 class="cta-title" style="color: {{ section.settings.cta_title_color }}; font-family: var(--font-heading-family);">{{ section.settings.cta_title | default: "Ready to experience our specialties?" }}</h3>
+        <p class="cta-description" style="color: {{ section.settings.cta_description_color }}; font-family: var(--font-body-family);">{{ section.settings.cta_description }}</p>
         <a href="{{ section.settings.cta_button_link | default: '#' }}" class="cta-button" 
            aria-label="Learn more about our specialty travel experiences and services"
            style="background-color: {{ section.settings.cta_button_bg_color }}; color: {{ section.settings.cta_button_text_color }};">

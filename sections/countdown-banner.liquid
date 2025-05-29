@@ -12,7 +12,7 @@
     <div class="promo-content-wrapper">
       <div class="promo-text-content">
         {% if section.settings.promo_subheading != blank %}
-          <p class="promo-subheading" style="color: {{ section.settings.secondary_text_color }};">{{ section.settings.promo_subheading }}</p>
+          <p class="promo-subheading" style="color: {{ section.settings.secondary_text_color }}; font-family: var(--font-body-family);">{{ section.settings.promo_subheading }}</p>
         {% endif %}
         
         {% if section.settings.promo_heading != blank %}
@@ -20,7 +20,7 @@
         {% endif %}
         
         {% if section.settings.promo_description != blank %}
-          <p class="promo-description" style="color: {{ section.settings.secondary_text_color }};">{{ section.settings.promo_description }}</p>
+          <p class="promo-description" style="color: {{ section.settings.secondary_text_color }}; font-family: var(--font-body-family);">{{ section.settings.promo_description }}</p>
         {% endif %}
       </div>
       
