@@ -301,13 +301,9 @@
   }
 
   function initializeDropdowns() {
-    // CUSTOM HERO SECTION: Click-only navigation for stability
-    // Use event delegation for better performance and reliability with dynamic content
     document.addEventListener('click', function(e) {
-      // Only handle clicks within the custom-hero section
       if (!e.target.closest('.hero-section')) return;
       
-      // Check if the clicked element is a dropdown toggle
       if (e.target.classList.contains('dropdown-toggle') || 
           e.target.closest('.dropdown-toggle')) {
         
@@ -319,15 +315,11 @@
           e.preventDefault();
           e.stopPropagation();
           
-          // Check if this is a grandchild menu (submenu)
           const isSubmenu = toggle.closest('.dropdown-submenu');
           
-          // For custom-hero section, ALL dropdowns use click toggle (desktop and mobile)
-          // Toggle the dropdown menu
           const isCurrentlyShown = dropdownMenu.classList.contains('show');
           
           if (isSubmenu) {
-            // For submenus, toggle the parent submenu class as well
             const submenuParent = toggle.closest('.dropdown-submenu');
             submenuParent.classList.toggle('show', !isCurrentlyShown);
           }
@@ -1491,7 +1483,7 @@
       "type": "checkbox",
       "id": "is_header",
       "label": "Enable Header in Hero Section",
-      "default": false
+      "default": true
     },
     {
       "type": "color",
