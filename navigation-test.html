@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Test the CSS fixes */
+        .navbar-nav .dropdown-submenu {
+            position: relative;
+        }
+
+        .navbar-nav .dropdown-submenu .dropdown-menu {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            margin-left: 0.1rem;
+            border-radius: 4px;
+            display: none;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+
+        .navbar-nav .dropdown-submenu:hover > .dropdown-menu,
+        .navbar-nav .dropdown-submenu.show > .dropdown-menu {
+            display: block !important;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .navbar-nav .dropdown-submenu:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -10px;
+            width: 10px;
+            height: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-nav .dropdown-submenu > .dropdown-toggle::after {
+            content: "▶";
+            float: right;
+            margin-left: 8px;
+            font-size: 0.8rem;
+            color: #4a4a4a;
+            transition: transform 0.2s ease;
+            cursor: pointer;
+        }
+
+        .navbar-nav .dropdown-submenu.show > .dropdown-toggle::after {
+            transform: rotate(90deg);
+        }
+
+        @media (max-width: 991px) {
+            .navbar-nav .dropdown-submenu .dropdown-menu {
+                position: static !important;
+                margin-left: 0;
+                padding-left: 15px;
+                display: none !important;
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .navbar-nav .dropdown-submenu .dropdown-menu.show {
+                display: block !important;
+            }
+
+            .navbar-nav .dropdown-submenu > .dropdown-toggle::after {
+                content: "▼";
+                transform: rotate(0deg);
+            }
+
+            .navbar-nav .dropdown-submenu.show > .dropdown-toggle::after {
+                content: "▲";
+                transform: rotate(0deg);
+            }
+
+            .navbar-nav .dropdown-submenu:before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Test Navigation</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            Destinations
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Europe</a></li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Asia</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Japan</a></li>
+                                    <li><a class="dropdown-item" href="#">Thailand</a></li>
+                                    <li><a class="dropdown-item" href="#">Singapore</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Americas</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">USA</a></li>
+                                    <li><a class="dropdown-item" href="#">Canada</a></li>
+                                    <li><a class="dropdown-item" href="#">Mexico</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Africa</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Tours</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Navigation Functionality Test</h1>
+        <div class="alert alert-info">
+            <h4>Test Instructions:</h4>
+            <ol>
+                <li><strong>Hover Test (Desktop):</strong> Hover over "Destinations" → then hover over "Asia" or "Americas" to see grandchild menus</li>
+                <li><strong>Click Test (Mobile/Touch):</strong> Resize browser to mobile view and click the dropdown arrows</li>
+                <li><strong>Stability Test:</strong> Move mouse slowly between parent and child menus - they should remain open</li>
+            </ol>
+        </div>
+
+        <div class="alert alert-success">
+            <h4>Fixed Issues:</h4>
+            <ul>
+                <li>✅ <strong>Stable hover zones:</strong> Added invisible 10px bridge area to prevent premature menu closure</li>
+                <li>✅ <strong>Smooth transitions:</strong> Added opacity/visibility transitions with 0.2s ease</li>
+                <li>✅ <strong>Grandchild arrows:</strong> Properly rotating arrows (▶/▼/▲) with click functionality</li>
+                <li>✅ <strong>Mobile responsive:</strong> Different arrow behavior and static positioning on mobile</li>
+                <li>✅ <strong>Timeout management:</strong> 150ms delay buffer for stable navigation</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Test the JavaScript fixes
+        function initializeDropdowns() {
+            let hoverTimeouts = new Map();
+            
+            // Enhanced click handler for dropdown toggles
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function (e) {
+                    const dropdownMenu = this.nextElementSibling;
+                    
+                    if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // Check if this is a grandchild menu (submenu)
+                        const isSubmenu = this.closest('.dropdown-submenu');
+                        
+                        if (window.innerWidth <= 991 || isSubmenu) {
+                            // Toggle the dropdown menu
+                            const isCurrentlyShown = dropdownMenu.classList.contains('show');
+                            
+                            if (isSubmenu) {
+                                // For submenus, toggle the parent submenu class as well
+                                const submenuParent = this.closest('.dropdown-submenu');
+                                submenuParent.classList.toggle('show', !isCurrentlyShown);
+                            }
+                            
+                            dropdownMenu.classList.toggle('show', !isCurrentlyShown);
+                            
+                            // Set aria-expanded for accessibility
+                            this.setAttribute('aria-expanded', !isCurrentlyShown);
+                        }
+                    }
+                });
+            });
+
+            // Enhanced submenu hover with stable transition zones
+            document.querySelectorAll('.navbar-nav .dropdown-submenu').forEach(submenu => {
+                submenu.addEventListener('mouseenter', function() {
+                    const submenuDropdown = this.querySelector('.dropdown-menu');
+                    if (submenuDropdown) {
+                        clearTimeout(hoverTimeouts.get(submenuDropdown));
+                        submenuDropdown.style.display = 'block';
+                        this.classList.add('show');
+                    }
+                });
+                
+                submenu.addEventListener('mouseleave', function() {
+                    const submenuDropdown = this.querySelector('.dropdown-menu');
+                    if (submenuDropdown) {
+                        const timeoutId = setTimeout(() => {
+                            submenuDropdown.style.display = 'none';
+                            this.classList.remove('show');
+                        }, 150);
+                        hoverTimeouts.set(submenuDropdown, timeoutId);
+                    }
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDropdowns();
+        });
+    </script>
+</body>
+</html>
