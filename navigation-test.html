@@ -5,8 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navigation Test</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Test the CSS fixes */
+    <style>        /* Enhanced CSS for stable dropdowns */
+        .navbar-nav .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            display: none;
+            background-color: rgba(0, 0, 0, 0.9) !important;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            padding: 10px 0;
+            z-index: 1000;
+            min-width: 200px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
         .navbar-nav .dropdown-submenu {
             position: relative;
         }
@@ -21,7 +34,10 @@
             z-index: 1001;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.9) !important;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .navbar-nav .dropdown-submenu:hover > .dropdown-menu,
@@ -35,10 +51,22 @@
             content: '';
             position: absolute;
             top: 0;
-            right: -10px;
-            width: 10px;
+            right: -15px;
+            width: 15px;
             height: 100%;
             z-index: 1000;
+        }
+
+        .navbar-nav .dropdown-item {
+            color: #ffffff;
+            padding: 8px 15px;
+            transition: all 0.3s ease;
+            background-color: transparent;
+        }
+
+        .navbar-nav .dropdown-item:hover {
+            background-color: rgba(255,255,255,0.1) !important;
+            color: #ffffff !important;
         }
 
         .navbar-nav .dropdown-submenu > .dropdown-toggle::after {
@@ -46,7 +74,7 @@
             float: right;
             margin-left: 8px;
             font-size: 0.8rem;
-            color: #4a4a4a;
+            color: rgba(255,255,255,0.8);
             transition: transform 0.2s ease;
             cursor: pointer;
         }
@@ -190,15 +218,15 @@
                         }
                     }
                 });
-            });
-
-            // Enhanced submenu hover with stable transition zones
+            });            // Enhanced submenu hover with stable transition zones
             document.querySelectorAll('.navbar-nav .dropdown-submenu').forEach(submenu => {
                 submenu.addEventListener('mouseenter', function() {
                     const submenuDropdown = this.querySelector('.dropdown-menu');
                     if (submenuDropdown) {
                         clearTimeout(hoverTimeouts.get(submenuDropdown));
                         submenuDropdown.style.display = 'block';
+                        submenuDropdown.style.opacity = '1';
+                        submenuDropdown.style.visibility = 'visible';
                         this.classList.add('show');
                     }
                 });
@@ -208,9 +236,31 @@
                     if (submenuDropdown) {
                         const timeoutId = setTimeout(() => {
                             submenuDropdown.style.display = 'none';
+                            submenuDropdown.style.opacity = '0';
+                            submenuDropdown.style.visibility = 'hidden';
                             this.classList.remove('show');
-                        }, 150);
+                        }, 200); // Increased delay for better stability
                         hoverTimeouts.set(submenuDropdown, timeoutId);
+                    }
+                });
+            });
+
+            // Prevent submenu from closing when hovering over the submenu itself
+            document.querySelectorAll('.navbar-nav .dropdown-submenu .dropdown-menu').forEach(submenu => {
+                submenu.addEventListener('mouseenter', function() {
+                    clearTimeout(hoverTimeouts.get(this));
+                });
+                
+                submenu.addEventListener('mouseleave', function() {
+                    const submenuParent = this.closest('.dropdown-submenu');
+                    if (submenuParent) {
+                        const timeoutId = setTimeout(() => {
+                            this.style.display = 'none';
+                            this.style.opacity = '0';
+                            this.style.visibility = 'hidden';
+                            submenuParent.classList.remove('show');
+                        }, 200);
+                        hoverTimeouts.set(this, timeoutId);
                     }
                 });
             });
