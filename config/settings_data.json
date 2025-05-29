@@ -10,7 +10,7 @@
 {
   "current": {
     "logo_width": 90,
-    "type_header_font": "bevan_n4",
+    "type_header_font": "bodoni_moda_n4",
     "heading_scale": 100,
     "type_body_font": "abril_fatface_n4",
     "body_scale": 100,
@@ -148,12 +148,11 @@
           "header_layout": "logo_menu_search",
           "logo": "shopify://shop_images/logo.png",
           "logo_size": 60,
-          "store_name": "Store Name",
+          "store_name": "Travel More",
           "store_name_text_size": 15,
           "store_name_color": "#ffffff",
           "store_name_hover_color": "#bdfdda",
-          "store_name_transform": "capitalize",
-          "store_name_font": "inherit",
+          "store_name_transform": "uppercase",
           "menu": "main-menu",
           "menu_text_size": 24,
           "menu_font_weight": 800,
