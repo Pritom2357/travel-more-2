@@ -152,7 +152,7 @@
           "store_name_text_size": 15,
           "store_name_color": "#ffffff",
           "store_name_hover_color": "#bdfdda",
-          "store_name_transform": "capitalize",
+          "store_name_transform": "uppercase",
           "menu": "main-menu",
           "menu_text_size": 24,
           "menu_font_weight": 800,
