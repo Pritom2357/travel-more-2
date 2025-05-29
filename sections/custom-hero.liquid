@@ -620,7 +620,7 @@
     font-weight: 700;
     color: {{ section.settings.store_name_color }};
     text-transform: {{ section.settings.store_name_transform }};
-    font-family: {{ section.settings.store_name_font | default: 'inherit' }};
+    font-family: var(--font-body-family);
     white-space: nowrap;
     text-align: center; 
   }
@@ -809,7 +809,7 @@
   
   /* Animated title with gradient highlight */
   .hero-title {
-    font-family: "{{ section.settings.title_font }}", sans-serif;
+    font-family: var(--font-heading-family);
     font-size: calc({{section.settings.title_size}}rem + 0.5vw);
     line-height: 1.2;
     font-weight: 800;

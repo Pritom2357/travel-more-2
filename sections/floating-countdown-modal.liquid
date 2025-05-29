@@ -287,10 +287,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .modal-heading {
   font-size: {{ section.settings.primary_font_size }}px;
-  font-weight: 700;
-  margin: 0 0 15px;
+  font-weight: 700;  margin: 0 0 15px;
   color: {{ section.settings.primary_text_color }};
-  font-family: {{ section.settings.heading_font }};
+  font-family: var(--font-heading-family);
 }
 
 .modal-description {
