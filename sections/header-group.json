@@ -13,26 +13,15 @@
   "sections": {
     "announcement-bar": {
       "type": "announcement-bar",
-      "blocks": {
-        "announcement-bar-0": {
-          "type": "announcement",
-          "settings": {
-            "text": "Welcome to our store! Free shipping on orders over $50",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "announcement-bar-0"
-      ],
       "settings": {
-        "color_scheme": "scheme-1",
-        "show_line_separator": true,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
+        "position_class": "bottom-right",
+        "collapsed_label": "Region",
+        "expanded_title": "Select Your Preferences",
+        "dismiss_text": "Don't show again",
         "enable_country_selector": true,
-        "enable_language_selector": true
+        "country_label": "Country",
+        "enable_language_selector": true,
+        "language_label": "Language"
       }
     },
     "header": {

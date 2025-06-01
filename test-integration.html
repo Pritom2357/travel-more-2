@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Selector Integration Test</title>
+    <style>
+        /* Mock Shopify theme variables */
+        :root {
+            --color-background: #ffffff;
+            --color-foreground: #121212;
+            --color-base-accent-1: #007ace;
+            --font-body-family: system-ui, sans-serif;
+            --font-body-style: normal;
+            --font-body-weight: 400;
+        }
+
+        /* Basic page styling */
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: var(--font-body-family);
+            background-color: var(--color-background);
+            color: var(--color-foreground);
+            min-height: 100vh;
+        }
+
+        .header-group {
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .test-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        /* Copy the floating selector styles from announcement-bar.liquid */
+        .floating-selector {
+            position: fixed;
+            z-index: 9999;
+            font-family: var(--font-body-family, system-ui, sans-serif);
+            font-style: var(--font-body-style, normal);
+            font-weight: var(--font-body-weight, 400);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .floating-selector.bottom-right {
+            bottom: 2rem;
+            right: 2rem;
+        }
+
+        .floating-selector.bottom-left {
+            bottom: 2rem;
+            left: 2rem;
+        }
+
+        .floating-selector.top-right {
+            top: 2rem;
+            right: 2rem;
+        }
+
+        .floating-selector.top-left {
+            top: 2rem;
+            left: 2rem;
+        }
+
+        .floating-selector.dismissed {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8) translateY(20px);
+        }
+
+        .selector-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.5rem;
+            height: 3.5rem;
+            background: linear-gradient(135deg, var(--color-base-accent-1, #007ace) 0%, #0056b3 100%);
+            color: var(--color-background, white);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.2),
+                0 2px 8px rgba(0, 122, 206, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .selector-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .selector-toggle:hover::before {
+            left: 100%;
+        }
+
+        .selector-toggle:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.3),
+                0 4px 15px rgba(0, 122, 206, 0.4);
+        }
+
+        .selector-toggle:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .selector-content {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: 1rem;
+            background: var(--color-background, white);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.15),
+                0 8px 16px rgba(0, 0, 0, 0.1);
+            min-width: 280px;
+            max-width: 320px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+        }
+
+        .floating-selector.expanded .selector-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .selector-header {
+            padding: 1.25rem 1.25rem 0.75rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        .selector-title {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-foreground, #121212);
+        }
+
+        .selector-body {
+            padding: 1rem 1.25rem;
+        }
+
+        .selector-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .selector-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .selector-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-foreground, #121212);
+        }
+
+        .selector-field {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            background: var(--color-background, white);
+            color: var(--color-foreground, #121212);
+            transition: all 0.2s ease;
+        }
+
+        .selector-field:focus {
+            outline: none;
+            border-color: var(--color-base-accent-1, #007ace);
+            box-shadow: 0 0 0 3px rgba(0, 122, 206, 0.1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-foreground, #121212);
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .dismiss-btn {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            color: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .dismiss-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .floating-selector {
+                bottom: 1rem !important;
+                right: 1rem !important;
+                left: 1rem !important;
+                top: auto !important;
+            }
+
+            .selector-content {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                margin: 0;
+                margin-top: 1rem;
+                min-width: auto;
+                max-width: none;
+            }
+
+            .selector-toggle {
+                width: 100%;
+                height: 3rem;
+                border-radius: 25px;
+                justify-content: space-between;
+                padding: 0 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-group">
+        <h1 style="color: white; margin: 0; text-align: center;">Travel More - Header Group Test</h1>
+    </div>
+
+    <div class="test-content">
+        <h2>Floating Selector Integration Test</h2>
+        <p>This page tests the floating localization selector with the current configuration:</p>
+        <ul>
+            <li><strong>Position:</strong> bottom-right</li>
+            <li><strong>Country Selector:</strong> Enabled</li>
+            <li><strong>Language Selector:</strong> Enabled</li>
+            <li><strong>Collapsed Label:</strong> "Region"</li>
+            <li><strong>Expanded Title:</strong> "Select Your Preferences"</li>
+        </ul>
+        
+        <p>The floating selector should appear in the bottom-right corner. Click it to test the functionality.</p>
+        
+        <div style="height: 200vh; background: linear-gradient(to bottom, #f8f9fa, #e9ecef); margin-top: 2rem; padding: 2rem; border-radius: 8px;">
+            <h3>Scroll Test Area</h3>
+            <p>Scroll down to test that the floating selector stays in position and remains accessible.</p>
+            <br><br><br><br><br><br><br><br><br><br>
+            <p style="text-align: center; opacity: 0.6;">Keep scrolling...</p>
+            <br><br><br><br><br><br><br><br><br><br>
+            <p style="text-align: center; opacity: 0.6;">Almost there...</p>
+            <br><br><br><br><br><br><br><br><br><br>
+            <p style="text-align: center;"><strong>Bottom of test area</strong></p>
+        </div>
+    </div>
+
+    <!-- Floating Selector Implementation -->
+    <div class="floating-selector bottom-right" id="floating-selector">
+        <button class="selector-toggle" id="selector-toggle" type="button" aria-label="Region selection">
+            <span>🌍</span>
+        </button>
+        
+        <div class="selector-content" id="selector-content">
+            <div class="selector-header">
+                <h3 class="selector-title">Select Your Preferences</h3>
+                <button class="close-btn" id="close-btn" type="button" aria-label="Close selector">
+                    <span>&times;</span>
+                </button>
+            </div>
+            
+            <form class="selector-body" id="localization-form" method="post" enctype="application/x-www-form-urlencoded">
+                <div class="selector-group">
+                    <label class="selector-label" for="country-selector">Country</label>
+                    <select class="selector-field" id="country-selector" name="country_code">
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                        <option value="GB">United Kingdom</option>
+                        <option value="DE">Germany</option>
+                        <option value="FR">France</option>
+                        <option value="ES">Spain</option>
+                        <option value="IT">Italy</option>
+                        <option value="AU">Australia</option>
+                        <option value="JP">Japan</option>
+                        <option value="BR">Brazil</option>
+                    </select>
+                </div>
+                
+                <div class="selector-group">
+                    <label class="selector-label" for="language-selector">Language</label>
+                    <select class="selector-field" id="language-selector" name="locale_code">
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="it">Italiano</option>
+                        <option value="pt">Português</option>
+                        <option value="ja">日本語</option>
+                        <option value="zh">中文</option>
+                    </select>
+                </div>
+            </form>
+            
+            <button class="dismiss-btn" id="dismiss-btn" type="button">
+                Don't show again
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Floating Selector JavaScript Implementation
+        class FloatingSelector {
+            constructor() {
+                this.selector = document.getElementById('floating-selector');
+                this.toggle = document.getElementById('selector-toggle');
+                this.content = document.getElementById('selector-content');
+                this.closeBtn = document.getElementById('close-btn');
+                this.dismissBtn = document.getElementById('dismiss-btn');
+                this.form = document.getElementById('localization-form');
+                this.selects = this.form.querySelectorAll('select');
+                
+                this.isExpanded = false;
+                this.isDismissed = this.checkDismissed();
+                
+                this.init();
+            }
+            
+            init() {
+                if (this.isDismissed) {
+                    this.selector.classList.add('dismissed');
+                    return;
+                }
+                
+                this.bindEvents();
+                this.loadSavedValues();
+            }
+            
+            bindEvents() {
+                this.toggle.addEventListener('click', () => this.toggleSelector());
+                this.closeBtn.addEventListener('click', () => this.closeSelector());
+                this.dismissBtn.addEventListener('click', () => this.dismissSelector());
+                
+                // Auto-submit on select change
+                this.selects.forEach(select => {
+                    select.addEventListener('change', () => this.handleSelectChange());
+                });
+                
+                // Close on outside click
+                document.addEventListener('click', (e) => {
+                    if (!this.selector.contains(e.target) && this.isExpanded) {
+                        this.closeSelector();
+                    }
+                });
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.isExpanded) {
+                        this.closeSelector();
+                    }
+                });
+            }
+            
+            toggleSelector() {
+                if (this.isExpanded) {
+                    this.closeSelector();
+                } else {
+                    this.openSelector();
+                }
+            }
+            
+            openSelector() {
+                this.isExpanded = true;
+                this.selector.classList.add('expanded');
+                this.toggle.setAttribute('aria-expanded', 'true');
+                
+                // Focus first select element
+                setTimeout(() => {
+                    const firstSelect = this.selects[0];
+                    if (firstSelect) firstSelect.focus();
+                }, 200);
+            }
+            
+            closeSelector() {
+                this.isExpanded = false;
+                this.selector.classList.remove('expanded');
+                this.toggle.setAttribute('aria-expanded', 'false');
+            }
+            
+            dismissSelector() {
+                this.isDismissed = true;
+                this.selector.classList.add('dismissed');
+                localStorage.setItem('floating-selector-dismissed', 'true');
+            }
+            
+            checkDismissed() {
+                return localStorage.getItem('floating-selector-dismissed') === 'true';
+            }
+            
+            loadSavedValues() {
+                this.selects.forEach(select => {
+                    const savedValue = localStorage.getItem(`floating-selector-${select.name}`);
+                    if (savedValue && select.querySelector(`option[value="${savedValue}"]`)) {
+                        select.value = savedValue;
+                    }
+                });
+            }
+            
+            handleSelectChange() {
+                // Save current values
+                this.selects.forEach(select => {
+                    localStorage.setItem(`floating-selector-${select.name}`, select.value);
+                });
+                
+                // Simulate form submission (in real Shopify, this would redirect)
+                console.log('Form would submit with:', {
+                    country_code: this.form.querySelector('[name="country_code"]')?.value,
+                    locale_code: this.form.querySelector('[name="locale_code"]')?.value
+                });
+                
+                // Visual feedback
+                this.showSubmissionFeedback();
+            }
+            
+            showSubmissionFeedback() {
+                const originalText = this.toggle.innerHTML;
+                this.toggle.innerHTML = '<span>✓</span>';
+                this.toggle.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                
+                setTimeout(() => {
+                    this.toggle.innerHTML = originalText;
+                    this.toggle.style.background = '';
+                    this.closeSelector();
+                }, 1000);
+            }
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new FloatingSelector();
+        });
+        
+        // Test function to reset the selector
+        function resetSelector() {
+            localStorage.removeItem('floating-selector-dismissed');
+            localStorage.removeItem('floating-selector-country_code');
+            localStorage.removeItem('floating-selector-locale_code');
+            location.reload();
+        }
+        
+        // Add reset button
+        document.addEventListener('DOMContentLoaded', () => {
+            const resetBtn = document.createElement('button');
+            resetBtn.textContent = 'Reset Selector (for testing)';
+            resetBtn.style.cssText = `
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                padding: 0.5rem 1rem;
+                background: #dc3545;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                z-index: 10000;
+            `;
+            resetBtn.onclick = resetSelector;
+            document.body.appendChild(resetBtn);
+        });
+    </script>
+</body>
+</html>
