@@ -1,0 +1,17 @@
+{
+  "current": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "position_class": "bottom-right",
+        "collapsed_label": "Region",
+        "expanded_title": "Select Your Preferences",
+        "dismiss_text": "Don't show again",
+        "enable_country_selector": true,
+        "country_label": "Country",
+        "enable_language_selector": true,
+        "language_label": "Language"
+      }
+    }
+  }
+}

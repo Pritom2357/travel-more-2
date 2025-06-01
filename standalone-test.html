@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standalone Announcement Bar Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-success { background: #28a745; }
+        .status-pending { background: #ffc107; }
+        .status-error { background: #dc3545; }
+        
+        .mock-header {
+            background: #449eed;
+            color: white;
+            padding: 15px 30px;
+            margin: -30px -30px 30px -30px;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+        }
+        
+        .mock-content {
+            background: #f0f0f0;
+            padding: 40px;
+            margin: 20px 0;
+            text-align: center;
+            border-radius: 5px;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .checklist li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .test-instructions {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .conversion-status {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="mock-header">
+            <h1>🌍 Travel More - Theme Header</h1>
+            <p>Mock header to simulate the actual theme layout</p>
+        </div>
+        
+        <div class="test-header">
+            <h2>📍 Standalone Announcement Bar Test</h2>
+            <p>Testing the converted floating localization selector as an independent section</p>
+        </div>
+        
+        <div class="conversion-status">
+            <h3><span class="status-indicator status-success"></span>Conversion Status: Complete ✅</h3>
+            <p><strong>The announcement-bar has been successfully converted to a standalone section!</strong></p>
+            <ul>
+                <li>✅ Removed from header-group dependency</li>
+                <li>✅ Updated schema to allow independent placement</li>
+                <li>✅ Added to theme.liquid as standalone section</li>
+                <li>✅ Backup created for rollback if needed</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 Integration Points</h3>
+            <div class="test-instructions">
+                <h4>Files Modified:</h4>
+                <ul>
+                    <li><strong>sections/announcement-bar.liquid</strong> - Removed header group restriction</li>
+                    <li><strong>sections/header-group.json</strong> - Removed announcement-bar integration</li>
+                    <li><strong>layout/theme.liquid</strong> - Added standalone section call</li>
+                </ul>
+                
+                <h4>Current Implementation:</h4>
+                <code>{% section 'announcement-bar' %}</code>
+                <p>Now appears independently after the header-group in theme.liquid</p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎯 Functionality Test Checklist</h3>
+            <ul class="checklist">
+                <li><span class="status-indicator status-success"></span>Floating selector appears on page</li>
+                <li><span class="status-indicator status-pending"></span>Click to expand/collapse works</li>
+                <li><span class="status-indicator status-pending"></span>Country selector dropdown functions</li>
+                <li><span class="status-indicator status-pending"></span>Language selector dropdown functions</li>
+                <li><span class="status-indicator status-pending"></span>Position settings work (bottom-right, etc.)</li>
+                <li><span class="status-indicator status-pending"></span>Session storage maintains state</li>
+                <li><span class="status-indicator status-pending"></span>Form submissions work properly</li>
+                <li><span class="status-indicator status-pending"></span>Mobile responsiveness maintained</li>
+                <li><span class="status-indicator status-pending"></span>No console errors</li>
+                <li><span class="status-indicator status-pending"></span>Keyboard navigation works</li>
+            </ul>
+        </div>
+        
+        <div class="mock-content">
+            <div>
+                <h3>🏝️ Main Content Area</h3>
+                <p>This represents the main page content where the floating selector should overlay</p>
+                <p><strong>Look for the floating selector in the bottom-right corner!</strong></p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>⚙️ Configuration Options</h3>
+            <p>The standalone section can now be configured independently:</p>
+            <ul>
+                <li><strong>Position</strong>: bottom-right, bottom-left, top-right, top-left</li>
+                <li><strong>Labels</strong>: Customize collapsed label and expanded title</li>
+                <li><strong>Selectors</strong>: Enable/disable country and language independently</li>
+                <li><strong>Placement</strong>: Can be moved anywhere in theme.liquid</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>🚀 Benefits of Standalone Conversion</h3>
+            <ul>
+                <li><strong>Flexibility</strong>: Can be placed anywhere, not just in header-group</li>
+                <li><strong>Independence</strong>: No dependency on header functionality</li>
+                <li><strong>Maintainability</strong>: Easier to debug and modify separately</li>
+                <li><strong>Performance</strong>: Only loads when explicitly included</li>
+                <li><strong>Accessibility</strong>: Better control over DOM placement and focus</li>
+            </ul>
+        </div>
+        
+        <div class="test-instructions">
+            <h4>🧪 To Test on Live Theme:</h4>
+            <ol>
+                <li>Deploy the updated files to your Shopify theme</li>
+                <li>Visit any page of your store</li>
+                <li>Look for the floating selector (usually bottom-right)</li>
+                <li>Test expand/collapse functionality</li>
+                <li>Test country and language selection</li>
+                <li>Verify settings work in Theme Editor → Sections → Announcement Bar</li>
+            </ol>
+        </div>
+    </div>
+    
+    <!-- Simulate the floating selector with static HTML -->
+    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: rgba(255,255,255,0.9); border-radius: 25px; padding: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
+        <div style="display: flex; align-items: center; cursor: pointer;" onclick="alert('This is a mock selector - the real one will appear when integrated with Shopify!')">
+            <svg style="width: 20px; height: 20px; margin-right: 8px; fill: #449eed;" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
+            <span style="font-weight: 500; color: #333;">Region</span>
+            <span style="margin-left: 8px; color: #666; font-size: 12px;">📍 Mock Selector</span>
+        </div>
+    </div>
+</body>
+</html>

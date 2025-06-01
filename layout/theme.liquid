@@ -230,9 +230,12 @@
     <body>
       <div>
         <!-- header start -->
-        {% sections 'header-group' %}
+        {% section 'header' %}
         <!-- header end -->
       </div>
+      
+      <!-- Floating Localization Selector (Standalone) -->
+      {% section 'announcement-bar' %}
   
       <main class="main">
         {{ content_for_layout }}
