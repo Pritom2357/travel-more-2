@@ -412,7 +412,129 @@
         "calculating_shipping": "গণনা করা হচ্ছে...",
         "calculating": "গণনা করা হচ্ছে...",
         "shipping_default_value": "পরবর্তী ধাপে গণনা করা হবে",
-        "shipping_discount_title": "শিপিং ডিসকাউন্ট"
+        "shipping_discount_title": "শিপিং ডিসকাউন্ট",
+        "shipping_pending_message": "এখনও উপলব্ধ নয়",
+        "shipping_policy_link": "পরিবহন খরচ",
+        "taxes_label": "কর",
+        "estimated_taxes_label": "আনুমানিক কর",
+        "information_estimated_taxes_label": "কর (আনুমানিক)",
+        "estimated_taxes_finalization_tooltip_content": "আপনার অর্ডার দেওয়ার পর চূড়ান্ত কর এবং মোট পরিমাণ ইমেল বা টেক্সটের মাধ্যমে নিশ্চিত করা হবে।",
+        "order_total_label": "মোট অর্ডার",
+        "price_before_discount_aria_text": "আসল দাম",
+        "price_after_discount_aria_text": "ছাড় দেওয়া দাম",
+        "discount_code_aria_text": "ছাড় কোড",
+        "total_savings": "মোট সঞ্চয়",
+        "total_label": "মোট",
+        "total_outstanding_label": "পরিশোধের পরিমাণ",
+        "deposit_label": "জমা",
+        "total_due_today_label": "আজ মোট বকেয়া",
+        "total_due_later_label": "পরে মোট বকেয়া",
+        "partial_total_label": "মোট",
+        "free_total_label": "বিনামূল্যে",
+        "free_shipping_total_label": "বিনামূল্যে",
+        "paid_label": "পরিশোধিত",
+        "payment_due_label": "পেমেন্ট বাকি আছে",
+        "vat_label_html": "করের মধ্যে %{amount} অন্তর্ভুক্ত",
+        "duties_included_label": "মোট মূল্যে কর এবং শুল্ক অন্তর্ভুক্ত। ডেলিভারিতে কোনও অতিরিক্ত চার্জ নেই।",
+        "discount_and_gift_card_savings_notice": "ছাড়ের ক্ষেত্রে %{discount_amount} এবং উপহার কার্ডের ক্ষেত্রে %{gift_card_amount} এর পরে",
+        "discount_savings_notice": "%{discount_amount} ছাড়ের পরে",
+        "gift_card_savings_notice": "গিফট কার্ডে %{gift_card_amount} এর পরে",
+        "cost_table_title": "খরচের সারাংশ",
+        "cost_table_item_column_header": "আইটেম",
+        "cost_table_value_column_header": "মূল্য",
+        "description_label": "বিবরণ",
+        "price_label": "দাম",
+        "price_per_item": {
+          "accessibility_label": "প্রতি আইটেমের জন্য %{মূল্য}",
+          "label": "%{দাম}/ea"
+        },
+        "quantity_label": "পরিমাণ",
+        "product_change_label": "পরিবর্তন",
+        "product_image_label": "পণ্যের ছবি",
+        "product_image_quantity_label": "পরিমাণ",
+        "scroll_order_summary": "আরও আইটেমের জন্য স্ক্রোল করুন",
+        "expand_order_summary_short": "দেখান",
+        "collapse_order_summary_short": "লুকান",
+        "expand_order_summary": "অর্ডারের সারাংশ দেখান",
+        "collapse_order_summary": "অর্ডারের সারাংশ লুকান",
+        "original_price": "আসল দাম",
+        "sale_price": "বিক্রয় মূল্য",
+        "total_updated_label": "মোট মূল্য আপডেট করা হয়েছে:",
+        "order_total_updated_label": "মোট আপডেট করা হয়েছে",
+        "total_already_paid_label": "পরিশোধিত",
+        "unit_price": {
+          "accessible_separator": "প্রতি",
+          "content_html": "%{মূল্য}%{অ্যাক্সেসিবল_সেপারেটর}%{প্রতি_ইউনিট}",
+          "per_item": {
+            "single": "%{মূল্য} প্রতিটি",
+            "one": "%{গণনা} আইটেমের জন্য %{মূল্য}",
+            "other": "%{গণনা}টি আইটেমের জন্য %{মূল্য}"
+          },
+          "per_unit": {
+            "single": "%{দাম}/%{ইউনিট}",
+            "plural": "%{মূল্য}/%{গণনা}%{ইউনিট}"
+          }
+        },
+        "gift_card_ending": "%{last_characters} দিয়ে শেষ হওয়া উপহার কার্ড",
+        "estimated_tax_label": "আনুমানিক কর",
+        "multiple_shipping_lines_label": "মোট শিপিং খরচ",
+        "recurring_subtotal_label": "পুনরাবৃত্ত উপ-সমষ্টি",
+        "recurring_total_label": "পুনরাবৃত্ত মোট",
+        "recurring_total_tooltip": "শিপিং, কর, শুল্ক, বা প্রযোজ্য কোনও ছাড় অন্তর্ভুক্ত নয়।",
+        "confirmation_number_label": "নিশ্চিতকরণ #%{নিশ্চিতকরণ_সংখ্যা}",
+        "higher_value_discount_applied": "<strong style=\"text-transform:uppercase\">%{code}</strong> আপনার বিদ্যমান ছাড়ের সাথে ব্যবহার করা যাবে না।",
+        "percent_off_shipping": "শিপিংয়ে %{percent}% ছাড়",
+        "amount_off_shipping": "শিপিংয়ে %{amount} ছাড়",
+        "deferred_payment_info": {
+          "title": "%{amount_due} এর পেমেন্ট %{due_at} তারিখে বাকি আছে।",
+          "description_html": "আপনার অর্ডার সম্পর্কে কোনও প্রশ্নের জন্য, %{contact_us}.",
+          "paid_today": "আজ মোট পরিশোধিত অর্থ",
+          "due_on_fulfillment_title": "পূরণের পর %{amount_due} পেমেন্ট করতে হবে",
+          "due_on_receipt_title": "%{amount_due} পেমেন্ট প্রাপ্তির সময় দিতে হবে"
+        },
+        "deferred_balance_info": {
+          "title": "{{amount_due}} এর বাকি অংশ {{due_at}} তারিখে পরিশোধ করতে হবে।",
+          "due_on_fulfillment_title": "{{amount_due}} বাকি থাকা টাকা পূরণের সময় পরিশোধ করতে হবে"
+        },
+        "payment_terms_totals": {
+          "due_today": "আজ মোট বকেয়া",
+          "due_later": "মোট বকেয়া %{due_at}",
+          "due_on_fulfillment": "পূরণের সময় মোট বকেয়া",
+          "due_on_receipt": "প্রাপ্তির সময় মোট বকেয়া",
+          "due_later_checkout_to_draft": "পরে মোট বকেয়া",
+          "total_paid": "মোট প্রদত্ত"
+        },
+        "maximum_discount_code_limit_reached": "আপনি ছাড় কোডের সর্বাধিক সংখ্যায় পৌঁছে গেছেন। <strong style=\"text-transform:uppercase\">%{code}</strong> ব্যবহার করতে একটি বিদ্যমান কোড সরান।",
+        "discount_code_application_failed": "<strong style=\"text-transform:uppercase\">%{code}</strong> এখন কাজ করছে না। সাহায্যের জন্য আমাদের সাথে যোগাযোগ করুন।",
+        "due_on_fulfillment": "পূরণের জন্য বকেয়া",
+        "gift_card_masked": "•••• %{শেষ_অক্ষর}",
+        "subscriptions": "সাবস্ক্রিপশন",
+        "duties_label": "কর্তব্য",
+        "duties_and_taxes_label": "কর্তব্য এবং কর",
+        "error_duties_tooltip": "এই অর্ডারটি অন্য দেশ থেকে পাঠানো হচ্ছে, তাই ডেলিভারির সময় শুল্ক এবং কর ধার্য করা হতে পারে।",
+        "may_be_charged_on_delivery": "ডেলিভারির সময় চার্জ করা হতে পারে",
+        "total_updated_label_with_price": "আপডেট করা মোট দাম: %{totalPrice}",
+        "updated_shipping_method": "আপডেট করা শিপিং পদ্ধতি: %{shipping_method}",
+        "recurring_payments": "পুনরাবৃত্ত পেমেন্ট",
+        "recurring_total_multiple_label": "এই অর্ডারে একাধিক আইটেমের জন্য পুনরাবৃত্তিমূলক চার্জ প্রযোজ্য।",
+        "deferred_total_due_date_label": "মোট বকেয়া {{date}}",
+        "full_price": "সম্পূর্ণ মূল্য: %{price}",
+        "custom_discount": "কাস্টম ছাড়",
+        "expand_component_information": {
+          "one": "%{count} আইটেমটি দেখান",
+          "other": "%{count} টি আইটেম দেখান"
+        },
+        "collapse_component_information": {
+          "one": "%{count} আইটেমটি লুকান",
+          "other": "%{count} টি আইটেম লুকান"
+        },
+        "component_quantity_title": "%{পরিমাণ} × %{পণ্যের_শিরোনাম}",
+        "discount_discovery": {
+          "add_code": "ছাড় যোগ করুন",
+          "merchandise_quantity_label": {
+            "one": "%{গণনা} আইটেম"
+          }
+        }
       }
     }
   },
@@ -553,6 +675,174 @@
           "with_pending_orders": "এই পেমেন্ট পদ্ধতিটি মুছে ফেললে এটি আপনার অ্যাকাউন্ট থেকে সরে যাবে এবং ভবিষ্যতের কেনাকাটার জন্য আর উপলব্ধ থাকবে না। বিদ্যমান অর্ডারগুলিতে বকেয়া থাকা যেকোনো ব্যালেন্সের জন্য এটি এখনও চার্জ করা হবে।",
           "with_subscriptions": "এই পেমেন্ট পদ্ধতিটি মুছে ফেললে পূর্ব-অনুমোদিত পেমেন্টগুলি প্রভাবিত হবে। আসন্ন অর্ডারগুলি গ্রহণ চালিয়ে যেতে একটি বিকল্প পেমেন্ট পদ্ধতি যোগ করুন।"
         }
+      },
+      "title": "পেমেন্ট পদ্ধতি",
+      "add_payment_method_button": "পেমেন্ট পদ্ধতি যোগ করুন",
+      "add_payment_method_banner": "দ্রুত চেকআউট বা পূর্ব-অনুমোদিত পরিষেবার জন্য পেমেন্ট পদ্ধতি যোগ করুন",
+      "no_payment_methods_banner": "কোনও পেমেন্ট পদ্ধতি যোগ করা হয়নি",
+      "edit_payment_method_button_accessibility_label": "{{lastDigits}} দিয়ে শেষ হওয়া {{paymentMethodName}} } সম্পাদনা করুন",
+      "edit_payment_method_brand_button_accessibility_label": "{{paymentMethodName}} সম্পাদনা করুন",
+      "delete_payment_method_button": "মুছে ফেলুন",
+      "delete_payment_method_button_accessibility_label": "{{paymentMethodName}} মুছে ফেলুন",
+      "back_button": "পিছনে",
+      "back_button_accessibility_label": "{{paymentMethodStepTitle}} এ ফিরে যান",
+      "default": "ডিফল্ট",
+      "generic_card": "কার্ড",
+      "expiration_warning_button_accessibility_label": "{{lastDigits}} দিয়ে শেষ হওয়া {{paymentMethodName}} } এর মেয়াদ শেষ হওয়ার সতর্কতা দেখান",
+      "expires_soon": "এই কার্ডের মেয়াদ শীঘ্রই শেষ হচ্ছে।",
+      "expired": "এই কার্ডের মেয়াদ শেষ হয়ে গেছে।",
+      "card_update_consent": "এই পেমেন্ট পদ্ধতিটি ভবিষ্যতের কেনাকাটার জন্য সংরক্ষণ করা হবে।",
+      "card_update_consent_subscriptions": "এই পেমেন্ট পদ্ধতিটি ভবিষ্যতের কেনাকাটার জন্য সংরক্ষণ করা হবে এবং যেকোনো পুনরাবৃত্ত বা বিলম্বিত কেনাকাটার জন্য ব্যবহার করা যেতে পারে।",
+      "digital_wallet_title": "ডিজিটাল ওয়ালেট"
+    },
+    "B2B": {
+      "draft_order_details": {
+        "payment_status": {
+          "pending": {
+            "description_authorized": "আপনার পেমেন্ট পদ্ধতির জন্য নির্ধারিত তারিখে চার্জ করা হবে, অথবা আপনি এখনই পেমেন্ট করতে পারেন।",
+            "description_waiting_for_manual_payment": "এই অর্ডারের একটি পেমেন্ট বাকি আছে। পেমেন্ট পাওয়ার পর ব্যালেন্স আপডেট করা হবে।",
+            "description_due_on_receipt": "পেমেন্ট শেষ হলে আপনি একটি চালান পাবেন।",
+            "description_due_on_receipt_partially_paid": "এই অর্ডারের আংশিক অর্থ প্রদান করা হয়েছে। আপনার বাকি টাকা আছে। অর্থ প্রদানের সময় আপনি একটি চালান পাবেন।",
+            "description_due_on_fulfillment": "এই অর্ডারের সমস্ত আইটেম পূরণ হয়ে গেলে অর্থ প্রদান করতে হবে।",
+            "description_due_on_fulfillment_partially_paid": "এই অর্ডারের আংশিক অর্থ প্রদান করা হয়েছে। আপনার বাকি টাকা আছে। এই অর্ডারের সমস্ত আইটেম পূরণ হয়ে গেলে অর্থ প্রদান করতে হবে।"
+          },
+          "draft": {
+            "description": "অর্ডার নিশ্চিত হলে পেমেন্টের বিবরণ নির্ধারণ করা হয়।",
+            "title": "পেমেন্ট এখনও বাকি নেই",
+            "in_review": {
+              "description": "অর্ডার নিশ্চিত হলে পেমেন্টের বিবরণ নির্ধারণ করা হয়।",
+              "title": "পেমেন্ট এখনও বাকি নেই"
+            },
+            "submitted": {
+              "description": "এই অর্ডার নিশ্চিত করতে পেমেন্ট জমা দিন।",
+              "title": "নিশ্চিত করতে পেমেন্ট করুন",
+              "deposit": {
+                "title": "পেমেন্ট বাকি আছে",
+                "due_later": "ব্যালেন্স {{translatedName}} শর্তাবলীতে এবং {{dueDate}} তারিখে পরিশোধযোগ্য।",
+                "due_on_fulfillment": "এই অর্ডারের সমস্ত আইটেম পূরণ হয়ে গেলে বাকি টাকা পরিশোধ করতে হবে।",
+                "due_on_receipt": "বাকি টাকা পরিশোধের জন্য আপনি একটি ইনভয়েস পাবেন।",
+                "due_on_date": "বাকি টাকা {{dueDate}} তারিখে পরিশোধ করতে হবে।"
+              }
+            },
+            "deposit": {
+              "due_later": "আপনার অর্ডার নিশ্চিত হওয়ার পর {{depositAmount}} টাকা পরিশোধ করতে হবে। ব্যালেন্স {{translatedName}} শর্তে প্রদান করা হবে।",
+              "due_on_fulfillment": "আপনার অর্ডার নিশ্চিত হলে {{depositAmount}} পরিশোধ করা হবে। অর্ডার পূরণ হলে বাকি টাকা পরিশোধ করা হবে।",
+              "due_on_receipt": "আপনার অর্ডার নিশ্চিত হওয়ার পর {{depositAmount}} টাকা পরিশোধ করতে হবে। বাকি টাকা পরে পরিশোধ করতে হবে।",
+              "due_on_date": "আপনার অর্ডার নিশ্চিত হওয়ার পর {{depositAmount}} টাকা পরিশোধ করা হবে। বাকি টাকা {{dueDate}} তারিখে পরিশোধ করা হবে।"
+            }
+          },
+          "paid": {
+            "title": "পরিশোধিত",
+            "title_with_date": "প্রদত্ত {{date}}",
+            "description": "আপনার অর্ডারের সম্পূর্ণ মূল্য পরিশোধ করা হয়েছে।"
+          },
+          "refund": {
+            "title": "ফেরত দেওয়া হয়েছে",
+            "title_with_date": "ফেরত দেওয়া হয়েছে {{date}}",
+            "description_full_refund": "এই অর্ডারের জন্য আপনি সম্পূর্ণ টাকা ফেরত পেয়েছেন।",
+            "description_single_refund": "এই অর্ডারের জন্য আপনি আংশিক টাকা ফেরত পেয়েছেন।",
+            "description_multiple_refunds": "আপনি এই অর্ডারের জন্য আংশিক টাকা ফেরত পেয়েছেন।"
+          },
+          "canceled": {
+            "title": "পেমেন্ট বাতিল করা হয়েছে",
+            "description": "তোমাকে অভিযুক্ত করা হয়নি।"
+          },
+          "pay_now": "এখনই পেমেন্ট করুন",
+          "pay_now_accessibility_label": "{{orderName}} অর্ডারের জন্য এখনই পেমেন্ট করুন",
+          "title": "পেমেন্টের অবস্থা"
+        },
+        "order_timeline": {
+          "expand_events_label": "বিস্তারিত দেখান",
+          "expand_events_accessibility_label": "ড্রাফ্ট অর্ডারের বিবরণ দেখান",
+          "hide_events_label": "বিবরণ লুকান",
+          "hide_events_accessibility_label": "ড্রাফ্ট অর্ডারের বিবরণ লুকান"
+        },
+        "subtitle": "জমা দেওয়া হয়েছে {{date}}",
+        "title": "অর্ডার {{name}}"
+      },
+      "payment_methods": {
+        "payment_delete": {
+          "description_without_replacement": "এই স্থান থেকে ভবিষ্যতে কেনাকাটার জন্য এই পেমেন্ট পদ্ধতি আর উপলব্ধ থাকবে না।",
+          "description_with_replacement": "এই পেমেন্ট পদ্ধতিটি মুছে ফেললে এই অবস্থানের জন্য পূর্ব-অনুমোদিত পেমেন্টগুলি প্রভাবিত হবে। আসন্ন অর্ডারগুলি গ্রহণ চালিয়ে যেতে এটিকে একটি বিকল্প পেমেন্ট পদ্ধতি দিয়ে প্রতিস্থাপন করুন।"
+        },
+        "payment_details": {
+          "order_label": "অর্ডার {{name}}",
+          "draft_label": "খসড়া অর্ডার {{name}}"
+        }
+      },
+      "purchase_order_number": {
+        "add_accessibility_label": "PO নম্বর যোগ করুন",
+        "add_modal_title": "PO নম্বর যোগ করুন",
+        "cancel": "বাতিল করুন",
+        "close_modal_accessibility_label": "PO নম্বর মোডাল বন্ধ করুন",
+        "discard": "বাতিল করুন",
+        "discard_changes_modal_title": "পরিবর্তনগুলি বাতিল করবেন?",
+        "edit_accessibility_label": "PO নম্বর সম্পাদনা করুন",
+        "edit_modal_title": "PO নম্বর সম্পাদনা করুন",
+        "empty_state": "কোনও PO নম্বর নেই",
+        "modal_po_number_input_label": "পিও নম্বর",
+        "modal_po_number_input_max_length_error": "PO নম্বরগুলিতে সর্বাধিক {{maxLength}} অক্ষর থাকে।",
+        "save": "সংরক্ষণ করুন",
+        "title": "পোস্ট নম্বর # {{poNumber}}"
+      }
+    },
+    "errors": {
+      "address_deletion_error": {
+        "description": "এই ঠিকানাটি মুছে ফেলার সময় একটি সমস্যা হয়েছে। আবার চেষ্টা করুন অথবা পৃষ্ঠাটি রিফ্রেশ করুন।"
+      },
+      "addresses_loading_issue": {
+        "description": "সংযোগ ত্রুটি। আপনার ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।"
+      },
+      "banner_title": {
+        "one": "{{count}} ত্রুটি আছে।",
+        "other": "{{count}} টি ত্রুটি আছে।"
+      },
+      "failed_address_creation": {
+        "description": "আপনার ঠিকানা তৈরি করতে সমস্যা হয়েছে। এই পৃষ্ঠাটি রিফ্রেশ করে দেখুন অথবা আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন।"
+      },
+      "failed_address_update": {
+        "description": "আপনার ঠিকানা আপডেট করার সময় একটি সমস্যা হয়েছে। এই পৃষ্ঠাটি রিফ্রেশ করার চেষ্টা করুন অথবা আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন।"
+      },
+      "load_orders_error": {
+        "title": "অর্ডার লোড করা যাচ্ছে না",
+        "description": "আবার চেষ্টা করুন অথবা পরে ফিরে আসুন।",
+        "retry_button": "পুনরায় চেষ্টা করুন"
+      },
+      "load_paypal_error": {
+        "description": "PayPal লোড করতে সমস্যা হচ্ছে। অনুগ্রহ করে আবার চেষ্টা করুন।"
+      },
+      "logout_everywhere": {
+        "description": "লগ আউট করার সময় কিছু সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।"
+      },
+      "no_access_to_locations": {
+        "description": "আপনার কোনও লোকেশনে অ্যাক্সেস নেই"
+      },
+      "not_found": {
+        "description": "URL টি পরীক্ষা করুন অথবা কয়েক মিনিটের মধ্যে আবার চেষ্টা করুন।",
+        "title": "এই পৃষ্ঠাটি লোড করতে সমস্যা হচ্ছে।"
+      },
+      "order_not_found": {
+        "description": "এই অর্ডারটি বিদ্যমান নেই অথবা আপনার এটি দেখার অনুমতি নেই।",
+        "title": "অর্ডার পাওয়া যায়নি"
+      },
+      "profile_update_error": {
+        "description": "আপনার প্রোফাইল আপডেট করার সময় একটি সমস্যা হয়েছে। এই পৃষ্ঠাটি রিফ্রেশ করার চেষ্টা করুন অথবা আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন।"
+      },
+      "retry_action_label": "পুনরায় চেষ্টা করুন",
+      "resend_link": {
+        "too_many_requests": "অনেক বেশি অনুরোধ। পরে আবার চেষ্টা করুন।",
+        "generic": "ব্যর্থ অনুরোধ"
+      },
+      "load_extension_error": {
+        "title": "ত্রুটি",
+        "description": "এই পৃষ্ঠাটি রিফ্রেশ করুন অথবা কয়েক মিনিটের মধ্যে আবার চেষ্টা করুন।",
+        "refresh_button": "পৃষ্ঠা রিফ্রেশ করুন"
+      }
+    },
+    "throttle": {
+      "too_many_attempts": {
+        "message": "অনেক বেশি প্রচেষ্টা",
+        "description": "কয়েক মিনিটের মধ্যে আবার চেষ্টা করুন।"
       }
     }
   }
