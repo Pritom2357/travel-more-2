@@ -1911,7 +1911,15 @@
           "with_pending_orders_and_subscriptions": "এই পেমেন্ট পদ্ধতিটি মুছে ফেললে পূর্ব-অনুমোদিত পেমেন্টগুলি প্রভাবিত হবে। বিদ্যমান অর্ডারগুলিতে বকেয়া থাকা যেকোনো ব্যালেন্সের জন্য এই পেমেন্ট পদ্ধতিতে এখনও চার্জ করা হবে, তবে আপনি আসন্ন সাবস্ক্রিপশন অর্ডারগুলি পাবেন না। সাবস্ক্রিপশন অর্ডারগুলি গ্রহণ চালিয়ে যেতে একটি বিকল্প পেমেন্ট পদ্ধতি যোগ করুন।",
           "with_pending_orders": "এই পেমেন্ট পদ্ধতিটি মুছে ফেললে এটি আপনার অ্যাকাউন্ট থেকে সরে যাবে এবং ভবিষ্যতের কেনাকাটার জন্য আর উপলব্ধ থাকবে না। বিদ্যমান অর্ডারগুলিতে বকেয়া থাকা যেকোনো ব্যালেন্সের জন্য এটি এখনও চার্জ করা হবে।",
           "with_subscriptions": "এই পেমেন্ট পদ্ধতিটি মুছে ফেললে পূর্ব-অনুমোদিত পেমেন্টগুলি প্রভাবিত হবে। আসন্ন অর্ডারগুলি গ্রহণ চালিয়ে যেতে একটি বিকল্প পেমেন্ট পদ্ধতি যোগ করুন।"
-        }
+        },
+        "payment_method_selector_placeholder": "একটি প্রতিস্থাপন পেমেন্ট পদ্ধতি নির্বাচন করুন (ঐচ্ছিক)",
+        "payment_method_selector_no_alternative_payment": "কোনও প্রতিস্থাপন পদ্ধতি নেই",
+        "replace_method_with_new_method_description": "আপনার {{currentPaymentMethodName}} মুছে ফেলা হবে এবং আপনার {{newPaymentMethodName}} দিয়ে প্রতিস্থাপিত হবে।",
+        "error_when_deleting": "আমরা দুঃখিত কিন্তু কিছু ভুল হয়েছে এবং আমরা এই পেমেন্ট পদ্ধতিটি মুছতে পারিনি। অনুগ্রহ করে পরে আবার চেষ্টা করুন অথবা পৃষ্ঠাটি রিফ্রেশ করুন।",
+        "delete_and_replace_button": "মুছে ফেলুন এবং প্রতিস্থাপন করুন",
+        "delete_and_replace_button_accessibility_label": "{{currentPaymentMethodName}} মুছে ফেলুন এবং {{newPaymentMethodName}} দিয়ে প্রতিস্থাপন করুন।",
+        "deleted_successfully": "পেমেন্ট পদ্ধতি সফলভাবে মুছে ফেলা হয়েছে।",
+        "loading_available_payment_methods_accessibility_label": "উপলব্ধ পেমেন্ট পদ্ধতি লোড করা হচ্ছে"
       },
       "title": "পেমেন্ট পদ্ধতি",
       "add_payment_method_button": "পেমেন্ট পদ্ধতি যোগ করুন",
@@ -1930,7 +1938,23 @@
       "expired": "এই কার্ডের মেয়াদ শেষ হয়ে গেছে।",
       "card_update_consent": "এই পেমেন্ট পদ্ধতিটি ভবিষ্যতের কেনাকাটার জন্য সংরক্ষণ করা হবে।",
       "card_update_consent_subscriptions": "এই পেমেন্ট পদ্ধতিটি ভবিষ্যতের কেনাকাটার জন্য সংরক্ষণ করা হবে এবং যেকোনো পুনরাবৃত্ত বা বিলম্বিত কেনাকাটার জন্য ব্যবহার করা যেতে পারে।",
-      "digital_wallet_title": "ডিজিটাল ওয়ালেট"
+      "digital_wallet_title": "ডিজিটাল ওয়ালেট",
+      "add_payment_method": {
+        "title": "পেমেন্ট পদ্ধতি যোগ করুন",
+        "payment_method_added_confirmation": "পেমেন্ট পদ্ধতি যোগ করা হয়েছে",
+        "billing_address": {
+          "title": "বিলিং ঠিকানা",
+          "add_billing_address_button": "নতুন যোগ করুন",
+          "add_billing_address_button_accessibility_label": "নতুন বিলিং ঠিকানা যোগ করুন",
+          "choose_billing_address_from_list_button": "তালিকা থেকে বেছে নিন",
+          "choose_billing_address_from_list_button_accessibility_label": "তালিকা থেকে একটি বিলিং ঠিকানা বেছে নিন",
+          "missing_billing_address_error_message": "দয়া করে একটি বিলিং ঠিকানা উল্লেখ করুন",
+          "default_checkbox": "ডিফল্ট পেমেন্ট পদ্ধতি হিসেবে সেট করুন"
+        }
+      },
+      "three_d_secure": {
+        "title": "3D সিকিউর"
+      }
     },
     "B2B": {
       "draft_order_details": {
@@ -2715,6 +2739,102 @@
         }
       },
       "add_button": "যোগ করুন"
+    },
+    "payment_method_brands": {
+      "visa": "ভিসা",
+      "mastercard": "মাস্টারকার্ড",
+      "americanexpress": "আমেরিকান এক্সপ্রেস",
+      "discover": "আবিষ্কার করুন",
+      "dinersclub": "ডাইনার্স ক্লাব",
+      "jcb": "জেসিবি",
+      "elo": "এলো",
+      "visaelectron": "ভিসা ইলেকট্রন",
+      "maestro": "মায়েস্ট্রো",
+      "forbrugsforeningen": "ফরব্রগসফোরেনিংজেন",
+      "dankort": "ডানকোর্ট",
+      "hipercard": "হাইপারকার্ড",
+      "unionpay": "ইউনিয়নপে",
+      "laser": "লেজার",
+      "shoppay": "দোকান বেতন",
+      "applepay": "অ্যাপল পে",
+      "googlepay": "গুগল পে",
+      "paypal": "পেপ্যাল",
+      "storecredit": "স্টোর ক্রেডিট",
+      "bogus": "ভুয়া"
+    },
+    "privacy_banner": {
+      "cookie_preferences_link": "কুকির পছন্দ"
+    },
+    "shop_policies": {
+      "legal_notice": "আইনি নোটিশ",
+      "privacy_policy": "গোপনীয়তা নীতি",
+      "refund_policy": "ফেরত নীতি",
+      "shipping_policy": "শিপিং নীতি",
+      "subscription_policy": "বাতিলকরণ নীতি",
+      "terms_of_sale": "বিক্রয়ের শর্তাবলী",
+      "terms_of_service": "পরিষেবার শর্তাবলী"
+    },
+    "ui_components": {
+      "clipboardCopied": "কপি করা হয়েছে",
+      "clipboardFailedToCopy": "কপি করা যায়নি",
+      "closeNotification": "বন্ধ করা",
+      "expandNotification": "আরও দেখুন",
+      "closeModal": "বন্ধ করা",
+      "submit": "জমা দিন",
+      "processing": "প্রক্রিয়াজাতকরণ হচ্ছে...",
+      "increase": "{{type}} বৃদ্ধি করুন",
+      "decrease": "{{type}} কমান",
+      "minimumReached": "সর্বনিম্ন {{value}} পৌঁছেছে",
+      "maximumReached": "সর্বোচ্চ {{value}} এ পৌঁছেছে",
+      "january": "জানুয়ারী",
+      "february": "ফেব্রুয়ারী",
+      "march": "মার্চ",
+      "april": "এপ্রিল",
+      "may": "মে",
+      "june": "জুন",
+      "july": "জুলাই",
+      "august": "আগস্ট",
+      "september": "সেপ্টেম্বর",
+      "october": "অক্টোবর",
+      "november": "নভেম্বর",
+      "december": "ডিসেম্বর",
+      "monday": "সোমবার",
+      "tuesday": "মঙ্গলবার",
+      "wednesday": "বুধবার",
+      "thursday": "বৃহস্পতিবার",
+      "friday": "শুক্রবার",
+      "saturday": "শনিবার",
+      "sunday": "রবিবার",
+      "mondayAbbreviation": "মো",
+      "tuesdayAbbreviation": "মঙ্গল",
+      "wednesdayAbbreviation": "আমরা",
+      "thursdayAbbreviation": "ম",
+      "fridayAbbreviation": "ফরাসী ভাষায়",
+      "saturdayAbbreviation": "শনি",
+      "sundayAbbreviation": "রবি",
+      "showNextMonth": "পরবর্তী মাস দেখান, {{month}} {{year}}",
+      "showPreviousMonth": "আগের মাস দেখান, {{month}} {{year}}",
+      "rangeStart": "রেঞ্জ শুরু",
+      "inRange": "পরিসরে",
+      "rangeEnd": "পরিসরের শেষ",
+      "autocompleteOptionsAvailable": {
+        "one": "{{count}} টি আইটেম উপলব্ধ",
+        "other": "{{count}} টি জিনিসপত্র উপলব্ধ"
+      },
+      "removeItem": "{{label}} সরান",
+      "removeTag": "ট্যাগ সরান",
+      "month": {
+        "one": "মাস",
+        "other": "মাস"
+      },
+      "mapClusterTitle": {
+        "one": "{{number}} মার্কার ক্লাস্টার",
+        "other": "{{number}} মার্কারগুলির ক্লাস্টার"
+      },
+      "expandSheet": "বিস্তৃত করুন",
+      "qrCode": "QR কোড",
+      "addFile": "ফাইল যোগ করুন",
+      "dropzoneInvalidFileType": "ফাইলের ধরণ সমর্থিত নয়"
     }
   },
   "recipient": {
