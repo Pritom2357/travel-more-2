@@ -311,6 +311,111 @@
   box-shadow: 0 0 0 2px rgba(var(--color-base-accent-1), 0.2);
 }
 
+/* Enhanced disclosure styling for floating selector */
+.floating-select-wrapper .disclosure {
+  position: relative;
+  width: 100%;
+}
+
+.floating-select-wrapper .disclosure__button {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid rgba(var(--color-foreground), 0.15);
+  border-radius: 8px;
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.floating-select-wrapper .disclosure__button:hover {
+  border-color: rgba(var(--color-foreground), 0.3);
+  background-color: rgba(var(--color-foreground), 0.02);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.floating-select-wrapper .disclosure__button:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.floating-select-wrapper .disclosure__list-wrapper {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgb(var(--color-background));
+  border: 2px solid rgba(var(--color-foreground), 0.15);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.floating-select-wrapper .disclosure__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.floating-select-wrapper .disclosure__link {
+  display: block;
+  padding: 10px 16px;
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.1);
+}
+
+.floating-select-wrapper .disclosure__link:last-child {
+  border-bottom: none;
+}
+
+.floating-select-wrapper .disclosure__link:hover {
+  background-color: rgba(var(--color-foreground), 0.05);
+  color: rgb(var(--color-foreground));
+}
+
+.floating-select-wrapper .disclosure__link[aria-current="true"] {
+  background-color: rgba(var(--color-foreground), 0.1);
+  font-weight: 600;
+}
+
+/* Hide the caret icon from theme's disclosure component */
+.floating-select-wrapper .disclosure__button svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+.floating-select-wrapper .disclosure__button[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+/* Mobile improvements */
+@media screen and (max-width: 768px) {
+  .floating-select-wrapper .disclosure__button {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 14px 16px;
+  }
+  
+  .floating-select-wrapper .disclosure__list-wrapper {
+    max-height: 150px;
+  }
+}
+
 /* === DISMISS BUTTON === */
 .floating-dismiss-button {
   width: 100%;
@@ -472,7 +577,7 @@ document.addEventListener('DOMContentLoaded', function() {
     sessionStorage.setItem(storageKey, 'true');
   }
   
-  // Event listeners
+  // Event listeners for floating controls
   if (toggleButton) {
     toggleButton.addEventListener('click', showExpanded);
   }
@@ -485,44 +590,174 @@ document.addEventListener('DOMContentLoaded', function() {
     dismissButton.addEventListener('click', hideSelector);
   }
   
-  // Auto-submit forms when selection changes - Updated selectors
-  const countrySelect = container.querySelector('#FloatingCountryForm .floating-select');
-  const languageSelect = container.querySelector('#FloatingLanguageForm .floating-select');
+  // === ENHANCED LOCALIZATION HANDLING ===
   
-  if (countrySelect) {
-    countrySelect.addEventListener('change', function() {
-      console.log('Country changed to:', this.value);
-      this.closest('form').submit();
+  // Handle disclosure-based country selector
+  const countryDisclosure = container.querySelector('#FloatingCountryForm .disclosure');
+  if (countryDisclosure) {
+    const countryButton = countryDisclosure.querySelector('.disclosure__button');
+    const countryList = countryDisclosure.querySelector('.disclosure__list-wrapper');
+    const countryLinks = countryDisclosure.querySelectorAll('.disclosure__link');
+    const countryHiddenInput = countryDisclosure.querySelector('input[name="country_code"]');
+    
+    // Toggle country dropdown
+    if (countryButton && countryList) {
+      countryButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        const isExpanded = countryButton.getAttribute('aria-expanded') === 'true';
+        
+        // Close all other dropdowns first
+        closeAllDropdowns();
+        
+        if (!isExpanded) {
+          countryButton.setAttribute('aria-expanded', 'true');
+          countryList.hidden = false;
+          countryList.style.display = 'block';
+        }
+      });
+    }
+    
+    // Handle country selection
+    countryLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const countryCode = this.getAttribute('data-value');
+        const countryName = this.querySelector('.country').textContent;
+        
+        console.log('Country selected:', countryCode, countryName);
+        
+        // Update hidden input
+        if (countryHiddenInput) {
+          countryHiddenInput.value = countryCode;
+        }
+        
+        // Update button text
+        if (countryButton) {
+          const buttonSpan = countryButton.querySelector('span');
+          if (buttonSpan) {
+            buttonSpan.textContent = this.querySelector('span:last-child').textContent;
+          }
+        }
+        
+        // Close dropdown
+        countryButton.setAttribute('aria-expanded', 'false');
+        countryList.hidden = true;
+        countryList.style.display = 'none';
+        
+        // Submit form
+        const form = this.closest('form');
+        if (form) {
+          form.submit();
+        }
+      });
     });
   }
   
-  if (languageSelect) {
-    languageSelect.addEventListener('change', function() {
-      console.log('Language changed to:', this.value);
-      this.closest('form').submit();
+  // Handle disclosure-based language selector
+  const languageDisclosure = container.querySelector('#FloatingLanguageForm .disclosure');
+  if (languageDisclosure) {
+    const languageButton = languageDisclosure.querySelector('.disclosure__button');
+    const languageList = languageDisclosure.querySelector('.disclosure__list-wrapper');
+    const languageLinks = languageDisclosure.querySelectorAll('.disclosure__link');
+    const languageHiddenInput = languageDisclosure.querySelector('input[name="locale_code"]');
+    
+    // Toggle language dropdown
+    if (languageButton && languageList) {
+      languageButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        const isExpanded = languageButton.getAttribute('aria-expanded') === 'true';
+        
+        // Close all other dropdowns first
+        closeAllDropdowns();
+        
+        if (!isExpanded) {
+          languageButton.setAttribute('aria-expanded', 'true');
+          languageList.hidden = false;
+          languageList.style.display = 'block';
+        }
+      });
+    }
+    
+    // Handle language selection
+    languageLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const localeCode = this.getAttribute('data-value');
+        const languageName = this.textContent.trim();
+        
+        console.log('Language selected:', localeCode, languageName);
+        
+        // Update hidden input
+        if (languageHiddenInput) {
+          languageHiddenInput.value = localeCode;
+        }
+        
+        // Update button text
+        if (languageButton) {
+          const buttonSpan = languageButton.querySelector('span');
+          if (buttonSpan) {
+            buttonSpan.textContent = this.querySelector('span:last-child').textContent;
+          }
+        }
+        
+        // Close dropdown
+        languageButton.setAttribute('aria-expanded', 'false');
+        languageList.hidden = true;
+        languageList.style.display = 'none';
+        
+        // Submit form
+        const form = this.closest('form');
+        if (form) {
+          form.submit();
+        }
+      });
     });
   }
   
-  // Alternative: Look for any select elements in the forms
+  // Function to close all dropdowns
+  function closeAllDropdowns() {
+    const allDisclosures = container.querySelectorAll('.disclosure');
+    allDisclosures.forEach(disclosure => {
+      const button = disclosure.querySelector('.disclosure__button');
+      const list = disclosure.querySelector('.disclosure__list-wrapper');
+      
+      if (button && list) {
+        button.setAttribute('aria-expanded', 'false');
+        list.hidden = true;
+        list.style.display = 'none';
+      }
+    });
+  }
+  
+  // Fallback: Handle any regular select elements (if they exist)
   const allSelects = container.querySelectorAll('select');
   allSelects.forEach(select => {
     select.addEventListener('change', function() {
-      console.log('Selection changed:', this.name, '=', this.value);
+      console.log('Select changed:', this.name, '=', this.value);
       this.closest('form').submit();
     });
   });
   
-  // Click outside to close expanded state
+  // Click outside to close dropdowns and floating panel
   document.addEventListener('click', function(event) {
-    if (expanded.style.display === 'block' && !container.contains(event.target)) {
-      showCollapsed();
+    if (!container.contains(event.target)) {
+      // Close all dropdowns
+      closeAllDropdowns();
+      
+      // Close expanded panel if open
+      if (expanded.style.display === 'block') {
+        showCollapsed();
+      }
     }
   });
   
-  // Escape key to close expanded state
+  // Escape key to close everything
   document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape' && expanded.style.display === 'block') {
-      showCollapsed();
+    if (event.key === 'Escape') {
+      closeAllDropdowns();
+      if (expanded.style.display === 'block') {
+        showCollapsed();
+      }
     }
   });
 });
