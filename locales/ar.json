@@ -712,6 +712,130 @@
         "credit_card_expiry_invalid": "أدخل تاريخ انتهاء الصلاحية صالحًا",
         "credit_card_month_invalid": "أدخل شهر انتهاء الصلاحية الصحيح",
         "credit_card_year_invalid": "أدخل سنة انتهاء الصلاحية الصالحة"
+      },
+      "order_summary": {
+        "shipping_pending_message": "غير متوفر بعد",
+        "shipping_policy_link": "تكاليف الشحن",
+        "taxes_label": "الضرائب",
+        "estimated_taxes_label": "الضرائب المقدرة",
+        "information_estimated_taxes_label": "الضرائب (تقديرية)",
+        "estimated_taxes_finalization_tooltip_content": "سيتم تأكيد الضريبة النهائية والإجمالي عبر البريد الإلكتروني أو رسالة نصية بعد تقديم طلبك.",
+        "order_total_label": "إجمالي الطلب",
+        "price_before_discount_aria_text": "السعر الأصلي",
+        "price_after_discount_aria_text": "سعر مخفض",
+        "discount_code_aria_text": "رمز الخصم",
+        "total_savings": "إجمالي المدخرات",
+        "total_label": "المجموع",
+        "total_outstanding_label": "المبلغ المستحق الدفع",
+        "deposit_label": "إيداع",
+        "total_due_today_label": "الإجمالي المستحق اليوم",
+        "total_due_later_label": "الإجمالي المستحق لاحقًا",
+        "partial_total_label": "المجموع",
+        "free_total_label": "حر",
+        "free_shipping_total_label": "حر",
+        "paid_label": "مدفوع",
+        "payment_due_label": "الدفع المستحق",
+        "vat_label_html": "بما في ذلك %{amount} في الضرائب",
+        "duties_included_label": "الإجمالي يشمل الضرائب والرسوم. لا توجد رسوم إضافية عند التوصيل.",
+        "discount_and_gift_card_savings_notice": "بعد %{discount_amount} في الخصومات و%{gift_card_amount} في بطاقات الهدايا",
+        "discount_savings_notice": "بعد %{discount_amount} في الخصومات",
+        "gift_card_savings_notice": "بعد %{gift_card_amount} في بطاقات الهدايا",
+        "cost_table_title": "ملخص التكلفة",
+        "cost_table_item_column_header": "غرض",
+        "cost_table_value_column_header": "قيمة",
+        "description_label": "وصف",
+        "price_label": "سعر",
+        "price_per_item": {
+          "accessibility_label": "%{price} لكل عنصر",
+          "label": "%{السعر}/للوحدة"
+        },
+        "quantity_label": "كمية",
+        "product_change_label": "يتغير",
+        "product_image_label": "صورة المنتج",
+        "product_image_quantity_label": "كمية",
+        "scroll_order_summary": "قم بالتمرير للحصول على المزيد من العناصر",
+        "expand_order_summary_short": "يعرض",
+        "collapse_order_summary_short": "يخفي",
+        "expand_order_summary": "إظهار ملخص الطلب",
+        "collapse_order_summary": "إخفاء ملخص الطلب",
+        "original_price": "السعر الأصلي",
+        "sale_price": "سعر البيع",
+        "total_updated_label": "السعر الإجمالي المحدث:",
+        "order_total_updated_label": "تم تحديث المجموع",
+        "total_already_paid_label": "مدفوع",
+        "unit_price": {
+          "accessible_separator": "لكل",
+          "content_html": "%{السعر}%{الفاصل المتاح}%{لكل وحدة}",
+          "per_item": {
+            "single": "%{price} لكل منهما",
+            "one": "%{price} لكل %{count} عنصر",
+            "other": "%{price} لكل %{count} عنصر"
+          },
+          "per_unit": {
+            "single": "%{السعر}/%{الوحدة}",
+            "plural": "%{السعر}/%{العدد}%{الوحدة}"
+          }
+        },
+        "gift_card_ending": "بطاقة الهدايا تنتهي بـ %{last_characters}",
+        "estimated_tax_label": "الضريبة المقدرة",
+        "multiple_shipping_lines_label": "إجمالي الشحن",
+        "recurring_subtotal_label": "المجموع الفرعي المتكرر",
+        "recurring_total_label": "المجموع المتكرر",
+        "recurring_total_tooltip": "لا يشمل الشحن أو الضرائب أو الرسوم أو أي خصومات قابلة للتطبيق.",
+        "confirmation_number_label": "رقم التأكيد #%{confirmation_number}",
+        "higher_value_discount_applied": "لا يمكن استخدام <strong style=\"text-transform:uppercase\">%{code}</strong> مع الخصومات الحالية لديك.",
+        "percent_off_shipping": "%{percent}% خصم على الشحن",
+        "amount_off_shipping": "%{amount} خصم على الشحن",
+        "deferred_payment_info": {
+          "title": "يجب دفع %{amount_due} في %{due_at}",
+          "description_html": "للاستفسارات حول طلبك، يرجى التواصل معنا عبر %{contact_us}.",
+          "paid_today": "إجمالي المبلغ المدفوع اليوم",
+          "due_on_fulfillment_title": "يجب دفع %{amount_due} عند التنفيذ",
+          "due_on_receipt_title": "يجب دفع %{amount_due} عند الاستلام"
+        },
+        "deferred_balance_info": {
+          "title": "الرصيد البالغ {{amount_due}} مستحق في {{due_at}}",
+          "due_on_fulfillment_title": "الرصيد البالغ {{amount_due}} مستحق عند التنفيذ"
+        },
+        "payment_terms_totals": {
+          "due_today": "الإجمالي المستحق اليوم",
+          "due_later": "الإجمالي المستحق %{due_at}",
+          "due_on_fulfillment": "الإجمالي المستحق عند التنفيذ",
+          "due_on_receipt": "الإجمالي المستحق عند الاستلام",
+          "due_later_checkout_to_draft": "الإجمالي المستحق لاحقًا",
+          "total_paid": "إجمالي المبلغ المدفوع"
+        },
+        "maximum_discount_code_limit_reached": "لقد وصلت إلى الحد الأقصى لعدد أكواد الخصم. احذف أي كود حالي لاستخدام <strong style=\"text-transform:uppercase\">%{code}</strong> .",
+        "discount_code_application_failed": "<strong style=\"text-transform:uppercase\">%{code}</strong> لا يعمل حاليًا. تواصل معنا للمساعدة.",
+        "due_on_fulfillment": "مستحق عند الوفاء",
+        "gift_card_masked": "•••• %{آخر_أحرف}",
+        "subscriptions": "الاشتراكات",
+        "duties_label": "الواجبات",
+        "duties_and_taxes_label": "الرسوم والضرائب",
+        "error_duties_tooltip": "يتم شحن هذا الطلب من بلد آخر، لذلك قد يتم فرض الرسوم والضرائب عند التسليم.",
+        "may_be_charged_on_delivery": "قد يتم فرض رسوم عند التسليم",
+        "total_updated_label_with_price": "السعر الإجمالي المحدث: %{totalPrice}",
+        "updated_shipping_method": "تم تحديث طريقة الشحن: %{shipping_method}",
+        "recurring_payments": "المدفوعات المتكررة",
+        "recurring_total_multiple_label": "يتضمن هذا الطلب رسومًا متكررة لعناصر متعددة.",
+        "deferred_total_due_date_label": "الإجمالي المستحق {{date}}",
+        "full_price": "السعر الكامل: %{price}",
+        "custom_discount": "خصم مخصص",
+        "expand_component_information": {
+          "one": "إظهار %{count} عنصر",
+          "other": "إظهار %{count} من العناصر"
+        },
+        "collapse_component_information": {
+          "one": "إخفاء %{count} عنصر",
+          "other": "إخفاء %{count} من العناصر"
+        },
+        "component_quantity_title": "%{الكمية} × %{عنوان المنتج}",
+        "discount_discovery": {
+          "add_code": "إضافة خصم",
+          "merchandise_quantity_label": {
+            "one": "%{count} عنصر"
+          }
+        }
       }
     },
     "pagination": {
@@ -744,6 +868,178 @@
       "province": "مقاطعة",
       "state": "ولاية",
       "state_and_territory": "الولاية/الإقليم"
+    }
+  },
+  "customer_accounts": {
+    "B2B": {
+      "draft_order_details": {
+        "payment_status": {
+          "pending": {
+            "description_authorized": "سيتم فرض رسوم على طريقة الدفع الخاصة بك في تاريخ الاستحقاق، أو يمكنك الدفع الآن.",
+            "description_waiting_for_manual_payment": "هذا الطلب عليه دفعة معلقة. سيتم تحديث الرصيد عند استلام الدفعة.",
+            "description_due_on_receipt": "سوف تتلقى فاتورة عندما يحين موعد الدفع.",
+            "description_due_on_receipt_partially_paid": "تم سداد هذا الطلب جزئيًا. يتبقى لديك رصيد. ستصلك فاتورة عند استحقاق الدفع.",
+            "description_due_on_fulfillment": "يجب أن يتم الدفع بمجرد استيفاء جميع العناصر في هذا الطلب.",
+            "description_due_on_fulfillment_partially_paid": "تم سداد جزء من هذا الطلب. يتبقى لديك رصيد. يُستحق الدفع عند استيفاء جميع بنود هذا الطلب."
+          },
+          "draft": {
+            "description": "يتم تحديد تفاصيل الدفع عند تأكيد الطلب.",
+            "title": "الدفع لم يستحق بعد",
+            "in_review": {
+              "description": "يتم تحديد تفاصيل الدفع عند تأكيد الطلب.",
+              "title": "الدفع لم يستحق بعد"
+            },
+            "submitted": {
+              "description": "قم بإرسال الدفعة لتأكيد هذا الطلب.",
+              "title": "ادفع للتأكيد",
+              "deposit": {
+                "title": "الدفع مستحق",
+                "due_later": "الرصيد هو وفقا لشروط {{translatedName}} ويجب سداده في {{dueDate}} .",
+                "due_on_fulfillment": "يصبح الرصيد مستحقًا بمجرد استيفاء جميع العناصر في هذا الطلب.",
+                "due_on_receipt": "سوف تتلقى فاتورة بالرصيد المتبقي.",
+                "due_on_date": "يجب سداد الرصيد في {{dueDate}} ."
+              }
+            },
+            "deposit": {
+              "due_later": "سيتم استحقاق {{depositAmount}} عند تأكيد طلبك. الرصيد المتبقي سيكون وفقًا لشروط {{translatedName}} .",
+              "due_on_fulfillment": "سيتم استحقاق {{depositAmount}} عند تأكيد طلبك. وسيُستحق الرصيد المتبقي عند إتمام الطلب.",
+              "due_on_receipt": "سيتم استحقاق {{depositAmount}} عند تأكيد طلبك. سيتم استحقاق الرصيد لاحقًا.",
+              "due_on_date": "سيتم استحقاق {{depositAmount}} عند تأكيد طلبك. وسيستحق الرصيد في {{dueDate}} ."
+            }
+          },
+          "paid": {
+            "title": "مدفوع",
+            "title_with_date": "تم الدفع في {{date}}",
+            "description": "تم دفع طلبك بالكامل."
+          },
+          "refund": {
+            "title": "تم استرداد المبلغ",
+            "title_with_date": "تم استرداد المبلغ {{date}}",
+            "description_full_refund": "لقد تلقيت استردادًا كاملاً لهذا الطلب.",
+            "description_single_refund": "لقد تلقيت استردادًا جزئيًا لهذا الطلب.",
+            "description_multiple_refunds": "لقد تلقيت استردادًا جزئيًا لهذا الطلب."
+          },
+          "canceled": {
+            "title": "تم إلغاء الدفع",
+            "description": "لم يتم توجيه أي تهمة إليك."
+          },
+          "pay_now": "ادفع الآن",
+          "pay_now_accessibility_label": "ادفع الآن للطلب {{orderName}}",
+          "title": "حالة الدفع"
+        },
+        "order_timeline": {
+          "expand_events_label": "إظهار التفاصيل",
+          "expand_events_accessibility_label": "إظهار تفاصيل طلب المسودة",
+          "hide_events_label": "إخفاء التفاصيل",
+          "hide_events_accessibility_label": "إخفاء تفاصيل طلب المسودة"
+        },
+        "subtitle": "تم الإرسال في {{date}}",
+        "title": "الطلب {{name}}"
+      },
+      "payment_methods": {
+        "payment_delete": {
+          "description_without_replacement": "لن تكون طريقة الدفع هذه متاحة للمشتريات المستقبلية من هذا الموقع.",
+          "description_with_replacement": "سيؤثر حذف طريقة الدفع هذه على المدفوعات المُصرّح بها مسبقًا لهذا الموقع. استبدلها بطريقة دفع بديلة لمواصلة استلام الطلبات القادمة."
+        },
+        "payment_details": {
+          "order_label": "الطلب {{name}}",
+          "draft_label": "مسودة الطلب {{name}}"
+        }
+      },
+      "purchase_order_number": {
+        "add_accessibility_label": "إضافة رقم الطلب",
+        "add_modal_title": "إضافة رقم الطلب",
+        "cancel": "يلغي",
+        "close_modal_accessibility_label": "إغلاق نموذج رقم طلب الشراء",
+        "discard": "ينبذ",
+        "discard_changes_modal_title": "تجاهل التغييرات؟",
+        "edit_accessibility_label": "تعديل رقم الطلب",
+        "edit_modal_title": "تعديل رقم الطلب",
+        "empty_state": "لا يوجد رقم طلب شراء",
+        "modal_po_number_input_label": "رقم الطلب",
+        "modal_po_number_input_max_length_error": "تحتوي أرقام طلب الشراء على الحد الأقصى من {{maxLength}} حرف.",
+        "save": "يحفظ",
+        "title": "رقم الطلب {{poNumber}}"
+      }
+    },
+    "errors": {
+      "address_deletion_error": {
+        "description": "حدثت مشكلة أثناء حذف هذا العنوان. حاول مرة أخرى أو حدّث الصفحة."
+      },
+      "addresses_loading_issue": {
+        "description": "خطأ في الاتصال. تحقق من اتصالك بالإنترنت وحاول مرة أخرى."
+      },
+      "banner_title": {
+        "one": "هناك خطأ {{count}}",
+        "other": "هناك {{count}} أخطاء"
+      },
+      "failed_address_creation": {
+        "description": "حدثت مشكلة أثناء إنشاء عنوانك. حاول تحديث هذه الصفحة أو التحقق من اتصالك بالإنترنت."
+      },
+      "failed_address_update": {
+        "description": "حدثت مشكلة أثناء تحديث عنوانك. حاول تحديث هذه الصفحة أو التحقق من اتصالك بالإنترنت."
+      },
+      "load_orders_error": {
+        "title": "غير قادر على تحميل الطلبات",
+        "description": "حاول مرة أخرى أو عد لاحقًا.",
+        "retry_button": "إعادة المحاولة"
+      },
+      "load_paypal_error": {
+        "description": "هناك مشكلة في تحميل باي بال. يُرجى المحاولة مرة أخرى."
+      },
+      "logout_everywhere": {
+        "description": "حدث خطأ أثناء تسجيل الخروج. يُرجى المحاولة مرة أخرى."
+      },
+      "no_access_to_locations": {
+        "description": "ليس لديك إمكانية الوصول إلى أي مواقع"
+      },
+      "not_found": {
+        "description": "تحقق من عنوان URL أو حاول مرة أخرى بعد بضع دقائق.",
+        "title": "هناك مشكلة في تحميل هذه الصفحة"
+      },
+      "order_not_found": {
+        "description": "هذا الطلب غير موجود أو ليس لديك الإذن لعرضه.",
+        "title": "لم يتم العثور على الطلب"
+      },
+      "profile_update_error": {
+        "description": "حدثت مشكلة أثناء تحديث ملفك الشخصي. حاول تحديث هذه الصفحة أو التحقق من اتصالك بالإنترنت."
+      },
+      "retry_action_label": "إعادة المحاولة",
+      "resend_link": {
+        "too_many_requests": "طلبات كثيرة جدًا. حاول مرة أخرى لاحقًا.",
+        "generic": "طلب فاشل"
+      },
+      "load_extension_error": {
+        "title": "خطأ",
+        "description": "قم بتحديث هذه الصفحة أو حاول مرة أخرى بعد بضع دقائق.",
+        "refresh_button": "تحديث الصفحة"
+      }
+    },
+    "throttle": {
+      "too_many_attempts": {
+        "message": "محاولات كثيرة جدًا",
+        "description": "الرجاء المحاولة مرة أخرى بعد بضع دقائق"
+      }
+    },
+    "payment_methods": {
+      "title": "طرق الدفع",
+      "add_payment_method_button": "إضافة طريقة الدفع",
+      "add_payment_method_banner": "أضف طريقة الدفع لتسريع عملية الدفع أو الحصول على خدمات معتمدة مسبقًا",
+      "no_payment_methods_banner": "لم تتم إضافة طرق الدفع",
+      "edit_payment_method_button_accessibility_label": "تعديل {{paymentMethodName}} الذي ينتهي بـ {{lastDigits}}",
+      "edit_payment_method_brand_button_accessibility_label": "تعديل {{paymentMethodName}}",
+      "delete_payment_method_button": "يمسح",
+      "delete_payment_method_button_accessibility_label": "حذف {{paymentMethodName}}",
+      "back_button": "خلف",
+      "back_button_accessibility_label": "العودة إلى {{paymentMethodStepTitle}}",
+      "default": "تقصير",
+      "generic_card": "بطاقة",
+      "expiration_warning_button_accessibility_label": "إظهار تحذير انتهاء الصلاحية لـ {{paymentMethodName}} المنتهي بـ {{lastDigits}}",
+      "expires_soon": "هذه البطاقة ستنتهي صلاحيتها قريبًا",
+      "expired": "هذه البطاقة منتهية الصلاحية",
+      "card_update_consent": "سيتم حفظ طريقة الدفع هذه للمشتريات المستقبلية.",
+      "card_update_consent_subscriptions": "سيتم حفظ طريقة الدفع هذه للمشتريات المستقبلية ويمكن استخدامها لأي عملية شراء متكررة أو مؤجلة.",
+      "digital_wallet_title": "المحفظة الرقمية"
     }
   }
 }
