@@ -26,6 +26,13 @@
 
   <!-- Expanded State -->
   <div class="floating-expanded" id="expanded-{{ floating_id }}" style="display: none;">
+    <select name="country" id="CountrySelector">
+    {% for country in shop.countries %}
+        <option value="{{ country.code }}">
+        {{ country.name }}
+        </option>
+    {% endfor %}
+    </select>
     <div class="floating-header">
       <span class="floating-title">{{ section.settings.expanded_title | default: 'Select Your Preferences' }}</span>
       <button class="floating-close-button" aria-label="Close selector">
@@ -765,7 +772,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 {% schema %}
 {
-  "name": "Floating Localization",  "class": "floating-localization-section",
+  "name": "Region Selector",
+  "class": "region-selector",
   "settings": [
     {
       "type": "header",
