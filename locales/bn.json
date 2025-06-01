@@ -2565,7 +2565,11 @@
       "message": "বার্তা",
       "max_characters": "{{ max_chars }} অক্ষর সর্বোচ্চ",
       "send_on": "বছর-মাস-দিন",
-      "send_on_label": "পাঠান (ঐচ্ছিক)"
+      "send_on_label": "পাঠান (ঐচ্ছিক)",
+      "checkbox": "আমি এটা উপহার হিসেবে পাঠাতে চাই।",
+      "expanded": "উপহার কার্ড প্রাপকের ফর্মটি প্রসারিত করা হয়েছে",
+      "collapsed": "উপহার কার্ড প্রাপকের ফর্মটি সঙ্কুচিত করা হয়েছে",
+      "email_label": "প্রাপকের ইমেল"
     }
   },
   "sections": {
@@ -2713,6 +2717,124 @@
         "increase": "{{ product }} এর পরিমাণ বাড়ান",
         "decrease": "{{ product }} এর পরিমাণ কমান"
       }
+    }
+  },
+  "customer": {
+    "activate_account": {
+      "subtext": "আপনার অ্যাকাউন্ট সক্রিয় করতে আপনার পাসওয়ার্ড তৈরি করুন।",
+      "password": "পাসওয়ার্ড",
+      "password_confirm": "পাসওয়ার্ড নিশ্চিত করুন",
+      "submit": "অ্যাকাউন্ট সক্রিয় করুন",
+      "cancel": "আমন্ত্রণ প্রত্যাখ্যান করুন"
+    },
+    "addresses": {
+      "title": "ঠিকানা",
+      "default": "ডিফল্ট",
+      "add_new": "একটি নতুন ঠিকানা যোগ করুন",
+      "edit_address": "ঠিকানা সম্পাদনা করুন",
+      "first_name": "প্রথম নাম",
+      "last_name": "পদবি",
+      "company": "কোম্পানির",
+      "address1": "ঠিকানা ১",
+      "address2": "ঠিকানা ২",
+      "city": "শহর",
+      "country": "দেশ/অঞ্চল",
+      "province": "প্রদেশ",
+      "zip": "পোস্টাল/জিপ কোড",
+      "phone": "ফোন",
+      "set_default": "ডিফল্ট ঠিকানা হিসেবে সেট করুন",
+      "add": "ঠিকানা যোগ করুন",
+      "update": "ঠিকানা আপডেট করুন",
+      "cancel": "বাতিল করুন",
+      "edit": "সম্পাদনা",
+      "delete": "মুছে ফেলুন",
+      "delete_confirm": "আপনি কি নিশ্চিত যে আপনি এই ঠিকানাটি মুছে ফেলতে চান?"
+    },
+    "log_in": "লগ ইন করুন",
+    "log_out": "লগ আউট করুন",
+    "login_page": {
+      "cancel": "বাতিল করুন",
+      "create_account": "অ্যাকাউন্ট তৈরি করুন",
+      "email": "ইমেইল",
+      "forgot_password": "আপনার পাসওয়ার্ড ভুলে গেছেন?",
+      "guest_continue": "চালিয়ে যান",
+      "guest_title": "অতিথি হিসেবে চালিয়ে যান",
+      "password": "পাসওয়ার্ড",
+      "title": "লগইন",
+      "sign_in": "প্রবেশ কর",
+      "submit": "জমা দিন",
+      "alternate_provider_separator": "অথবা"
+    },
+    "order": {
+      "title": "অর্ডার {{ name }}",
+      "date_html": "{{ date }} তারিখে স্থাপন করা হয়েছে",
+      "cancelled_html": "{{ date }} তারিখে অর্ডার বাতিল করা হয়েছে",
+      "cancelled_reason": "কারণ: {{ reason }}",
+      "billing_address": "বিলিং ঠিকানা",
+      "payment_status": "পেমেন্ট স্ট্যাটাস",
+      "shipping_address": "পাঠানোর ঠিকানা",
+      "fulfillment_status": "পরিপূর্ণতার স্থিতি",
+      "discount": "ছাড়",
+      "shipping": "পরিবহন",
+      "tax": "কর",
+      "product": "পণ্য",
+      "sku": "SKU সম্পর্কে",
+      "price": "দাম",
+      "quantity": "পরিমাণ",
+      "total": "মোট",
+      "total_refunded": "ফেরত দেওয়া হয়েছে",
+      "fulfilled_at_html": "পূরণ করা হয়েছে {{ date }}",
+      "track_shipment": "চালান ট্র্যাক করুন",
+      "tracking_url": "ট্র্যাকিং লিঙ্ক",
+      "tracking_company": "বাহক",
+      "tracking_number": "ট্র্যাকিং নম্বর",
+      "subtotal": "উপমোট",
+      "total_duties": "কর্তব্য"
+    },
+    "orders": {
+      "title": "অর্ডার ইতিহাস",
+      "order_number": "অর্ডার",
+      "order_number_link": "অর্ডার নম্বর {{ number }}",
+      "date": "তারিখ",
+      "payment_status": "পেমেন্টের অবস্থা",
+      "fulfillment_status": "পূরণের অবস্থা",
+      "total": "মোট",
+      "none": "তুমি এখনও কোন অর্ডার দাওনি।"
+    },
+    "recover_password": {
+      "title": "আপনার পাসওয়ার্ড রিসেট করুন",
+      "subtext": "আপনার পাসওয়ার্ড রিসেট করার জন্য আমরা আপনাকে একটি ইমেল পাঠাবো।",
+      "success": "আপনার পাসওয়ার্ড আপডেট করার জন্য আমরা আপনাকে একটি লিঙ্ক সহ একটি ইমেল পাঠিয়েছি।"
+    },
+    "register": {
+      "title": "অ্যাকাউন্ট তৈরি করুন",
+      "first_name": "প্রথম নাম",
+      "last_name": "পদবি",
+      "email": "ইমেইল",
+      "password": "পাসওয়ার্ড",
+      "submit": "তৈরি করুন"
+    },
+    "reset_password": {
+      "title": "অ্যাকাউন্টের পাসওয়ার্ড রিসেট করুন",
+      "subtext": "একটি নতুন পাসওয়ার্ড লিখুন",
+      "password": "পাসওয়ার্ড",
+      "password_confirm": "পাসওয়ার্ড নিশ্চিত করুন",
+      "submit": "পাসওয়ার্ড রিসেট করুন"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "how_to_use_gift_card": "অনলাইনে গিফট কার্ড কোড অথবা স্টোরে QR কোড ব্যবহার করুন",
+      "title": "{{ shop }} এর জন্য আপনার {{ value }} গিফট কার্ড ব্যালেন্স এখানে!",
+      "subtext": "তোমার গিফট কার্ড",
+      "gift_card_code": "উপহার কার্ড কোড",
+      "shop_link": "অনলাইন স্টোরে যান",
+      "add_to_apple_wallet": "অ্যাপল ওয়ালেটে যোগ করুন",
+      "qr_image_alt": "QR কোড — উপহার কার্ড রিডিম করতে স্ক্যান করুন",
+      "copy_code": "উপহার কার্ড কোড কপি করুন",
+      "expiration_date": "মেয়াদ শেষ {{ expires_on }}",
+      "copy_code_success": "কোডটি সফলভাবে কপি করা হয়েছে",
+      "expired": "মেয়াদোত্তীর্ণ"
     }
   }
 }
