@@ -1401,8 +1401,144 @@
               "no_shop_cash_label": "এই অর্ডারটি দেরিতে ডেলিভারি দাবির জন্য যোগ্য নয় কারণ এটি Shop Pay-এর মাধ্যমে পরিশোধ করা হয়নি।",
               "no_longer_guaranteed_label": "এই আইটেমগুলির আর ডেলিভারি গ্যারান্টি নেই।",
               "claim_shop_cash_title": "শপ ক্যাশে {{amount}} দাবি করতে স্ক্যান করুন।",
-              "claim_shop_cash_description": "আপনি শপ অ্যাপে ভবিষ্যতের কেনাকাটায় আপনার শপ ক্যাশ ব্যবহার করতে পারেন।"
-            }
+              "claim_shop_cash_description": "আপনি শপ অ্যাপে ভবিষ্যতের কেনাকাটায় আপনার শপ ক্যাশ ব্যবহার করতে পারেন।",
+              "may_be_eligible_label": "শপ প্রমিজ দ্রুত এবং নির্ভরযোগ্য ডেলিভারির নিশ্চয়তা দেয়। আপনার অর্ডার দেরিতে পৌঁছালে শপ ক্যাশ দাবি করুন।",
+              "may_be_eligible_not_authorized_label": "এই অর্ডারটি দেরিতে আসার কারণে আপনি শপ ক্যাশ দাবি করার যোগ্য হতে পারেন। বিস্তারিত দেখতে লগ ইন করুন।"
+            },
+            "title": "ডেলিভারি সমর্থন করেছেন",
+            "modal_accessiblity_label": "ডেলিভারি প্রতিশ্রুতির বিবরণ",
+            "delivery_guarantee_label": "ডেলিভারি গ্যারান্টি",
+            "delivery_by_label": "{{date}} মধ্যে ডেলিভারি",
+            "delivery_guaranteed_by_label": "{{date}} মধ্যে ডেলিভারি নিশ্চিত"
+          },
+          "promise_line": {
+            "single_brand_label": "ডেলিভারি সমর্থন করেছেন",
+            "mixed_brands_label": "ডেলিভারি নিশ্চিত",
+            "not_delivered_by_label": "{{date}} এর মধ্যে ডেলিভারি করা হয়নি",
+            "modal_accessibility_button_label": "ডেলিভারি প্রতিশ্রুতির বিবরণ"
+          },
+          "claim_shop_cash_cta": {
+            "has_shop_app_label": "আপনার দোকানের নগদ দাবি করুন",
+            "no_shop_app_label": "শপ ক্যাশ দাবি করতে {{appDownloadLink}}",
+            "download_shop_app_label": "দোকান ডাউনলোড করুন"
+          }
+        },
+        "ready_for_pickup_label": "পিকআপের জন্য প্রস্তুত",
+        "ready_for_pickup_description": "এই আইটেমগুলি পিকআপের জন্য প্রস্তুত। অর্ডার নেওয়ার সময় অনুগ্রহ করে আপনার অর্ডার কনফার্মেশনটি সাথে আনুন।",
+        "ready_for_pickup_location": "আপনার অর্ডারটি লোকেশনে পিকআপের জন্য প্রস্তুত।",
+        "picked_up_label": "তুলে নেওয়া হয়েছে",
+        "picked_up_description": "এই জিনিসপত্রগুলো তুলে নেওয়া হয়েছে।",
+        "canceled_description": "আপনার অর্ডার {{date}} তারিখে বাতিল করা হয়েছে।",
+        "canceled_label": "বাতিল করা হয়েছে",
+        "canceled_title": "আপনার অর্ডার বাতিল করা হয়েছে।",
+        "come_back": "আপনার শিপমেন্টের অবস্থা সম্পর্কে আপডেট পেতে এই পৃষ্ঠায় ফিরে আসুন।",
+        "company_tracking_number": "{{company}} ট্র্যাকিং নম্বর:",
+        "confirmed_label": "নিশ্চিত করা হয়েছে",
+        "confirmed_title": "আপনার অর্ডার নিশ্চিত করা হয়েছে।",
+        "confirmed_description_pickup": "আপনার অর্ডার পিকআপের জন্য প্রস্তুত হলে আপনি একটি ইমেল পাবেন।",
+        "confirmed_description_digital": "আপনার অর্ডার প্রস্তুত হলে আপনি একটি ইমেল পাবেন।",
+        "confirmed_description_gift_card_text": "আপনার অর্ডার প্রস্তুত হলে আপনি একটি টেক্সট পাবেন।",
+        "delivered_description": "এই চালানটি ডেলিভারি করা হয়েছে।",
+        "complete_label": "সম্পূর্ণ",
+        "delivered_label": "বিতরণ করা হয়েছে",
+        "delivered_title": "আপনার চালান পৌঁছে দেওয়া হয়েছে।",
+        "delivered_description_digital": {
+          "one": "এই আইটেমটি সম্পূর্ণ।",
+          "other": "এই জিনিসগুলো সম্পূর্ণ।"
+        },
+        "delivered_description_gift_card": {
+          "one": "গিফট কার্ডটি ইমেলের মাধ্যমে পাঠানো হয়েছে।",
+          "other": "উপহার কার্ডগুলি ইমেলের মাধ্যমে পাঠানো হয়েছিল।"
+        },
+        "delivered_description_gift_card_text": {
+          "one": "উপহার কার্ডটি টেক্সটের মাধ্যমে পাঠানো হয়েছে।",
+          "other": "উপহার কার্ডগুলি টেক্সটের মাধ্যমে পাঠানো হয়েছিল।"
+        },
+        "gift_card_label": {
+          "one": "উপহার কার্ড",
+          "other": "উপহার কার্ড"
+        },
+        "gift_card_resend_button": {
+          "one": "উপহার কার্ড আবার পাঠান",
+          "other": "উপহার কার্ড আবার পাঠান"
+        },
+        "gift_resend_success": {
+          "one": "উপহার কার্ডটি আবার পাঠানো হয়েছে",
+          "other": "উপহার কার্ডগুলি আবার পাঠানো হয়েছে"
+        },
+        "gift_resend_failure": {
+          "one": "আপনার উপহার কার্ডটি পুনরায় পাঠানোর সময় সমস্যা হয়েছে। আবার চেষ্টা করুন অথবা আমাদের সাথে যোগাযোগ করুন।",
+          "other": "আপনার উপহার কার্ডগুলি পুনরায় পাঠানোর সময় একটি সমস্যা হয়েছে। আবার চেষ্টা করুন অথবা আমাদের সাথে যোগাযোগ করুন।"
+        },
+        "confirmed_gift_card_additional_description": {
+          "one": "উপহার কার্ডটি একটি পৃথক ইমেলে পাঠানো হবে।",
+          "other": "প্রতিটি উপহার কার্ড একটি পৃথক ইমেলে পাঠানো হবে।"
+        },
+        "confirmed_gift_card_additional_description_text": {
+          "one": "উপহার কার্ডটি আলাদা টেক্সটে পাঠানো হবে।",
+          "other": "প্রতিটি উপহার কার্ড আলাদা টেক্সটে পাঠানো হবে।"
+        },
+        "status_timestamp": "আপডেট করা হয়েছে {{date}}",
+        "estimated_delivery": "প্রত্যাশিত {{date}}",
+        "delivered": "পৌঁছেছে {{date}}",
+        "buy_with_prime_logo_accessibility_label": "অ্যামাজন বাই উইথ প্রাইম লোগো",
+        "in_review_description": "আমাদের আরও তথ্যের প্রয়োজন হলে অথবা আপনার অর্ডার নিশ্চিত হলে আমরা আপনাকে জানাব।",
+        "in_review_label": "পর্যালোচনায়",
+        "in_review_title": "আপনার অর্ডার পর্যালোচনা করা হচ্ছে।",
+        "last_updated": "সর্বশেষ আপডেট {{date}}",
+        "multiple_shipments_label": "একাধিক চালান",
+        "multiple_statuses_label": "একাধিক অর্ডার স্ট্যাটাস",
+        "no_tracking_number": "এই চালানের জন্য কোন ট্র্যাকিং নম্বর নেই।",
+        "tracking_number": {
+          "one": "ট্র্যাকিং নম্বর",
+          "other": "ট্র্যাকিং নম্বর"
+        },
+        "on_its_way_label": "পথে",
+        "on_its_way_title": "তোমার শিপমেন্ট আসছে।",
+        "out_for_delivery_label": "ডেলিভারির জন্য বাইরে",
+        "out_for_delivery_title": "আপনার চালান ডেলিভারির জন্য বেরিয়ে গেছে।",
+        "resume_tracking": "ট্র্যাকিং পুনরায় শুরু করুন",
+        "submitted_label": "জমা দেওয়া হয়েছে",
+        "submitted_description": "অর্ডার এবং পেমেন্টের বিবরণ পর্যালোচনা করুন।",
+        "there_was_a_problem_label": "একটা সমস্যা ছিল।",
+        "track_shipment": "চালান ট্র্যাক করুন",
+        "request_return": "ফেরতের অনুরোধ করুন",
+        "view_order_for_details": "বিস্তারিত জানার জন্য অর্ডার দেখুন",
+        "external_promise_manage_button_label": {
+          "buy_with_prime": "Amazon-এ পরিচালনা করুন"
+        },
+        "amazon_buy_with_prime": {
+          "order_tracking_link": {
+            "text": "Amazon দিয়ে পরিচালনা করুন",
+            "new_window_disclaimer": "(একটি নতুন উইন্ডো খোলে)"
+          }
+        },
+        "delivery_promise_v2": {
+          "promise_line": {
+            "shop_promise_brand_label": "ডেলিভারি নিশ্চিত করেছেন",
+            "external_promise_brand_label": "ডেলিভারি",
+            "not_delivered_by_label": "{{date}} এর পরে বিতরণ করা হয়েছে",
+            "delivery_guarantee_expired_label": "ডেলিভারি গ্যারান্টির মেয়াদ শেষ হয়ে গেছে",
+            "modal_accessibility_button_label": "ডেলিভারি প্রতিশ্রুতির বিবরণ",
+            "download_shop_app_button_label": "ট্র্যাক করতে দোকান ডাউনলোড করুন",
+            "track_with_shop_button_label": "দোকানের সাথে ট্র্যাক করুন",
+            "claim_shop_cash_button_label": "দোকানের নগদ দাবি করুন"
+          },
+          "details_modal": {
+            "title": "ডেলিভারি গ্যারান্টি",
+            "active_delivery_guarantee_label": "{{date}} মধ্যে ডেলিভারি",
+            "expired_delivery_guarantee_description": "এই অর্ডারের ৩০ দিনের শপ প্রমিজ গ্যারান্টির মেয়াদ শেষ হয়ে গেছে।",
+            "expired_badge_label": "মেয়াদোত্তীর্ণ",
+            "order_includes_guarantees_label": "আপনার অর্ডারে {{deliveryAgreementsCount}} গ্যারান্টি রয়েছে",
+            "order_includes_guarantees_description": "শপ প্রমিজ দ্রুত, নির্ভরযোগ্য ডেলিভারির নিশ্চয়তা দেয়। আপনার অর্ডার {{date}} এর পরে আসলে শপ ক্যাশ দাবি করুন।",
+            "delivered_after_label": "{{date}} এর পরে বিতরণ করা হয়েছে",
+            "delivered_after_description": "যেহেতু আপনার অর্ডার দেরিতে পৌঁছেছে, আপনি {{amount}} শপ ক্যাশ দাবি করার যোগ্য।",
+            "claimed_shop_cash_description": "যেহেতু এই অর্ডারটি দেরিতে এসেছে, আপনি {{amount}} Shop Cash দাবি করেছেন।",
+            "eligible_to_claim_shop_cash_description": "যেহেতু আপনার অর্ডার দেরিতে পৌঁছেছে, আপনি {{amount}} শপ ক্যাশ দাবি করার যোগ্য।",
+            "learn_more_button_label": "আরও জানুন",
+            "claim_shop_cash_button_label": "দোকানের নগদ দাবি করুন",
+            "view_balance_in_shop_button_label": "দোকানে ব্যালেন্স দেখুন",
+            "scan_to_claim_shop_cash_label": "{{amount}} দাবি করতে স্ক্যান করুন নগদ টাকা কিনুন"
           }
         }
       },
