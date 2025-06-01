@@ -1726,11 +1726,53 @@
       "account": "হিসাব",
       "create_account": "অ্যাকাউন্ট তৈরি করুন",
       "reset_account": "অ্যাকাউন্ট রিসেট করুন",
-      "addresses": "ঠিকানা"
+      "addresses": "ঠিকানা",
+      "order": "অর্ডার %{name}",
+      "search": "অনুসন্ধান করুন",
+      "search_results": {
+        "one": "অনুসন্ধান: \"%{terms}\" এর জন্য %{count} ফলাফল পাওয়া গেছে",
+        "other": "অনুসন্ধান: \"%{terms}\" এর জন্য %{count} ফলাফল পাওয়া গেছে"
+      },
+      "collections": "সংগ্রহ",
+      "not_found": "৪০৪ খুঁজে পাওয়া যায়নি",
+      "challenge": "চ্যালেঞ্জ",
+      "checkpoint": "চেকপয়েন্ট"
     },
     "sentence": {
       "two_words_connector": " এবং ",
       "last_word_connector": ", এবং "
+    },
+    "cart": {
+      "discounts_with_count": "%{count} ছাড় প্রয়োগ করা হয়েছে"
+    },
+    "challenge": {
+      "message": "চালিয়ে যেতে, আমাদের জানান যে আপনি কোনও রোবট নন।",
+      "error": "আপনার উত্তরটি সঠিক ছিল না, দয়া করে আবার চেষ্টা করুন।",
+      "submit_button_text": "জমা দিন"
+    },
+    "checkpoint": {
+      "message": "চালিয়ে যেতে ক্যাপচা সমাধান করুন",
+      "error": "ক্যাপচা যাচাইকরণ ব্যর্থ হয়েছে",
+      "submit_button_text": "জমা দিন"
+    },
+    "store_availability": {
+      "pick_up_time": {
+        "one_hour": "সাধারণত ১ ঘন্টার মধ্যে প্রস্তুত হয়ে যায়",
+        "two_hours": "সাধারণত ২ ঘন্টার মধ্যে প্রস্তুত হয়ে যায়",
+        "four_hours": "সাধারণত ৪ ঘন্টার মধ্যে প্রস্তুত হয়ে যায়",
+        "twenty_four_hours": "সাধারণত ২৪ ঘন্টার মধ্যে প্রস্তুত হয়ে যায়",
+        "two_to_four_days": "সাধারণত ২-৪ দিনের মধ্যে প্রস্তুত হয়ে যায়",
+        "five_or_more_days": "সাধারণত ৫+ দিনের মধ্যে প্রস্তুত হয়ে যায়",
+        "zero_to_two_hours": "সাধারণত ২ ঘন্টার মধ্যে প্রস্তুত হয়ে যায়",
+        "two_to_four_hours": "সাধারণত ৪ ঘন্টার মধ্যে প্রস্তুত হয়ে যায়",
+        "immediately": "এখন পিকআপের জন্য প্রস্তুত",
+        "next_day": "পরের দিন পিকআপের জন্য প্রস্তুত"
+      }
+    },
+    "subscriptions": {
+      "buyer_consent_product": "এই আইটেমটি একটি পুনরাবৃত্ত বা বিলম্বিত ক্রয়। চালিয়ে যাওয়ার মাধ্যমে, আমি %{cancellationPolicyLink}-এর সাথে সম্মত হচ্ছি এবং আপনাকে আমার পেমেন্ট পদ্ধতি থেকে এই পৃষ্ঠায় তালিকাভুক্ত মূল্য, ফ্রিকোয়েন্সি এবং তারিখ অনুসারে চার্জ করার অনুমতি দিচ্ছি যতক্ষণ না আমার অর্ডার পূরণ হয় অথবা যদি অনুমতি দেওয়া হয় তবে আমি বাতিল করি।",
+      "buyer_consent_cart": "আপনার কার্টে থাকা এক বা একাধিক আইটেম পুনরাবৃত্ত বা বিলম্বিত ক্রয়। চালিয়ে যাওয়ার মাধ্যমে, আমি %{cancellationPolicyLink}-এর সাথে সম্মত হচ্ছি এবং আপনাকে এই পৃষ্ঠায় তালিকাভুক্ত মূল্য, ফ্রিকোয়েন্সি এবং তারিখ অনুসারে আমার পেমেন্ট পদ্ধতিতে চার্জ করার অনুমতি দিচ্ছি যতক্ষণ না আমার অর্ডার পূরণ হয় অথবা যদি অনুমতি দেওয়া হয় তবে আমি বাতিল করি।",
+      "cancellation_policy": "বাতিলকরণ নীতি"
     }
   },
   "customer_accounts": {
@@ -2331,8 +2373,22 @@
           }
         },
         "table_view": "টেবিল ভিউ দেখান",
-        "show_order_actions_accessibility_label": "{{name}} অর্ডারের জন্য অর্ডার অ্যাকশন দেখান"
-      }
+        "show_order_actions_accessibility_label": "{{name}} অর্ডারের জন্য অর্ডার অ্যাকশন দেখান",
+        "column_headers": {
+          "order": "অর্ডার",
+          "items": "আইটেম",
+          "total": "মোট",
+          "actions_accessibility_label": "কর্ম",
+          "products_accessibility_label": "পণ্য"
+        }
+      },
+      "list_layout_accessibility_label": "লেআউট বিকল্পগুলি",
+      "list_title": "অর্ডার",
+      "list_title_with_pending_orders": "আদেশ:",
+      "list_title_confirmed_orders_accessibility_label": "অর্ডার: নিশ্চিত করা হয়েছে",
+      "list_title_pending_orders_accessibility_label": "অর্ডার: মুলতুবি",
+      "switch_order_type_pending_orders_accessibility_label": "অর্ডারের ধরণ পরিবর্তন করুন, বর্তমানে মুলতুবি থাকা অর্ডারগুলি দেখছেন",
+      "switch_order_type_confirmed_orders_accessibility_label": "অর্ডারের ধরণ পরিবর্তন করুন, বর্তমানে নিশ্চিত অর্ডারগুলি দেখছেন"
     },
     "order_details": {
       "shipment_timeline": {
@@ -2579,6 +2635,86 @@
       "cancel_accessibility_label": "{{address}} ঠিকানা সম্পাদনা বাতিল করুন",
       "creation_success_notification": "ঠিকানা যোগ করা হয়েছে",
       "default_address": "এটি আমার ডিফল্ট ঠিকানা।"
+    },
+    "date": {
+      "humanize": {
+        "lessThanOneHourAgo": {
+          "one": "{{count}} মিনিট আগে",
+          "other": "{{count}} মিনিট আগে"
+        },
+        "lessThanOneMinuteAgo": "এখনই",
+        "yesterday": "গতকাল {{time}} এ",
+        "today": "আজ {{time}} এ",
+        "tomorrow": "আগামীকাল {{time}} এ"
+      }
+    },
+    "enable_javascript": "আপনার অ্যাকাউন্ট দেখতে, আপনার ব্রাউজার সেটিংসে জাভাস্ক্রিপ্ট সক্ষম করুন অথবা অন্য ব্রাউজার দিয়ে লগ ইন করুন।",
+    "navigation_and_structure": {
+      "account_menu": {
+        "hide_accessibility_label": "অ্যাকাউন্ট মেনু লুকান",
+        "label": "হিসাব",
+        "show_accessibility_label": "অ্যাকাউন্ট মেনু দেখান",
+        "nav_accessibility_label": "অ্যাকাউন্ট নেভিগেশন",
+        "open_menu_accessibility_label": "অ্যাকাউন্ট নেভিগেশন খুলুন",
+        "close_menu_accessibility_label": "অ্যাকাউন্ট নেভিগেশন বন্ধ করুন",
+        "loading_message": "অ্যাকাউন্ট নেভিগেশন লোড হচ্ছে"
+      },
+      "action_menu_accessibility_label": "আরও পদক্ষেপ",
+      "close_menu_accessibility_label": "প্রধান নেভিগেশন বন্ধ করুন",
+      "contact_email_subject": "{{shopName}} অনলাইন স্টোর থেকে যোগাযোগ করুন",
+      "contact_link": "যোগাযোগের তথ্য",
+      "delete_confirmation": {
+        "cancel": "বাতিল করুন",
+        "delete": "মুছে ফেলুন"
+      },
+      "dismiss_toast": "খারিজ করুন",
+      "document_title": "{{sectionName}} - {{shopName}} - অ্যাকাউন্ট",
+      "go_to_store_link": "দোকানে যান",
+      "loading_message": "লোড হচ্ছে",
+      "log_out_link": "লগ আউট করুন",
+      "logout_overlay_label": "তোমাকে লগ আউট করা হচ্ছে...",
+      "nav_label_accessibility_label": "প্রধান নেভিগেশন",
+      "navigation_accessibility_message": "আপনি {{sectionName}} এ নেভিগেট করেছেন",
+      "open_menu_accessibility_label": "প্রধান নেভিগেশন খুলুন",
+      "orders_link_label": "অর্ডার",
+      "shop_logo_accessibility_label": "{{shopName}} লোগো",
+      "subscriptions_link_label": "সাবস্ক্রিপশন",
+      "settings_link": "সেটিংস",
+      "country_switcher_toast_message": "দেশটি {{countryName}} তে পরিবর্তন করা হয়েছে",
+      "switch_country": "দেশ পরিবর্তন করুন",
+      "location_switcher_toast_message": "লোকেশনটি {{locationName}} এ স্যুইচ করা হয়েছে",
+      "switch_location": "অবস্থান পরিবর্তন করুন",
+      "view_details": "বিস্তারিত দেখুন",
+      "company_location": "কোম্পানির অবস্থান",
+      "search": "অনুসন্ধান করুন"
+    },
+    "account_information": {
+      "loading_accessibility_message": "অ্যাকাউন্টের তথ্য লোড হচ্ছে",
+      "loading_finished_accessibility_message": "অ্যাকাউন্টের তথ্য লোড হয়েছে",
+      "profile_card": {
+        "cancel": "বাতিল করুন",
+        "cancel_accessibility_label": "প্রোফাইল সম্পাদনা বাতিল করুন",
+        "edit": "সম্পাদনা",
+        "edit_accessibility_label": "প্রোফাইল সম্পাদনা করুন",
+        "email_help_text": "লগইনের জন্য ব্যবহৃত ইমেল পরিবর্তন করা যাবে না।",
+        "first_name": "প্রথম নাম",
+        "last_name": "পদবি",
+        "no_name_provided_accessibility_label": "কোনও নাম যোগ করা হয়নি",
+        "phone_number_help_text": "লগইনের জন্য ব্যবহৃত ফোন নম্বর পরিবর্তন করা যাবে না।",
+        "save": "সংরক্ষণ করুন",
+        "save_accessibility_label": "প্রোফাইল সংরক্ষণ করুন",
+        "title": "প্রোফাইলের"
+      },
+      "profile_update_confirmation_message": "প্রোফাইল আপডেট করা হয়েছে",
+      "title": "প্রোফাইলের",
+      "people": {
+        "pagination": {
+          "load_more": "আরও লোড করুন",
+          "load_more_accessibility_label": "আরও লোক লোড করুন",
+          "loading_accessibility_label": "লোকেদের লোড করা হচ্ছে"
+        }
+      },
+      "add_button": "যোগ করুন"
     }
   },
   "recipient": {
