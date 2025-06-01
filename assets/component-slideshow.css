@@ -12,12 +12,23 @@ slideshow-component .slideshow.banner {
   overflow-y: hidden;
 }
 
+.slideshow {
+  position: relative;
+  overflow: hidden;
+}
+
 .slideshow__slide {
   padding: 0;
   position: relative;
   display: flex;
   flex-direction: column;
   visibility: visible;
+  display: none;
+  width: 100%;
+}
+
+.slideshow__slide.slider__slide--active {
+  display: block;
 }
 
 @media screen and (max-width: 749px) {
@@ -198,4 +209,38 @@ slideshow-component:not(.page-width) .slider-buttons {
   visibility: hidden;
   opacity: 0;
   transform: scale(0.8);
+}
+
+.slider-buttons {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: currentColor;
+  transition: opacity 0.2s ease;
+}
+
+.slider-button:hover {
+  opacity: 0.7;
+}
+
+.slider-button--prev {
+  transform: rotate(180deg);
+}
+
+.announcement-bar-slider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.announcement-bar-slider .slider {
+  flex: 1;
 }

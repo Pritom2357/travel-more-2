@@ -222,6 +222,8 @@ slider-component.slider-component-full-width {
   scrollbar-color: rgb(var(--color-foreground)) rgba(var(--color-foreground), 0.04);
   -ms-overflow-style: none;
   scrollbar-width: none;
+  position: relative;
+  overflow: hidden;
 }
 
 .slider::-webkit-scrollbar {
@@ -374,4 +376,22 @@ slider-component.slider-component-full-width {
 
 .slider-button--prev:not([disabled]):hover .icon {
   transform: rotate(90deg) scale(1.1);
+}
+
+.slider__slide {
+  width: 100%;
+  display: none;
+}
+
+.slider__slide.slider__slide--active {
+  display: block;
+}
+
+.grid--1-col {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.grid__item {
+  position: relative;
 }
