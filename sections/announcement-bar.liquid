@@ -46,7 +46,7 @@
           </label>
           <form method="post" action="{{ routes.localization_form_url }}" id="FloatingCountryForm" class="floating-form" accept-charset="UTF-8">
             <input type="hidden" name="form_type" value="localization">
-            <input type="hidden" name="return_to" value="{{ request.path }}{{ request.search }}">
+            <input type="hidden" name="return_to" value="{{ canonical_url | default: request.origin }}">
             <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
             <div class="floating-select-wrapper">
               <select name="country_code" id="country-selector-FloatingCountry" class="floating-select" aria-labelledby="FloatingCountryLabel">
@@ -71,7 +71,7 @@
           </label>
           <form method="post" action="{{ routes.localization_form_url }}" id="FloatingLanguageForm" class="floating-form" accept-charset="UTF-8">
             <input type="hidden" name="form_type" value="localization">
-            <input type="hidden" name="return_to" value="{{ request.path }}{{ request.search }}">
+            <input type="hidden" name="return_to" value="{{ canonical_url | default: request.origin }}">
             <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
             <div class="floating-select-wrapper">
               <select name="locale_code" id="language-selector-FloatingLanguage" class="floating-select" aria-labelledby="FloatingLanguageLabel">
