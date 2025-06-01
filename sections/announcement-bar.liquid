@@ -245,6 +245,61 @@
   padding-right: 40px;
 }
 
+/* Enhanced select styling - add this to the existing CSS in announcement-bar.liquid */
+.floating-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid rgba(var(--color-foreground), 0.15);
+  border-radius: 8px;
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6,9 12,15 18,9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 45px;
+}
+
+.floating-select:hover {
+  border-color: rgba(var(--color-foreground), 0.3);
+  background-color: rgba(var(--color-foreground), 0.02);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.floating-select:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  background-color: rgb(var(--color-background));
+}
+
+.current-selection {
+  display: block;
+  padding: 12px 16px;
+  background: rgba(var(--color-foreground), 0.05);
+  border: 2px solid rgba(var(--color-foreground), 0.1);
+  border-radius: 8px;
+  color: rgba(var(--color-foreground), 0.8);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Improve mobile select styling */
+@media screen and (max-width: 768px) {
+  .floating-select {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 14px 16px;
+    padding-right: 45px;
+  }
+}
+
 .floating-select-wrapper select:hover {
   border-color: rgba(var(--color-foreground), 0.3);
   background-color: rgba(var(--color-foreground), 0.02);
@@ -430,21 +485,32 @@ document.addEventListener('DOMContentLoaded', function() {
     dismissButton.addEventListener('click', hideSelector);
   }
   
-  // Auto-submit forms when selection changes
-  const countrySelect = container.querySelector('#FloatingCountryForm select');
-  const languageSelect = container.querySelector('#FloatingLanguageForm select');
+  // Auto-submit forms when selection changes - Updated selectors
+  const countrySelect = container.querySelector('#FloatingCountryForm .floating-select');
+  const languageSelect = container.querySelector('#FloatingLanguageForm .floating-select');
   
   if (countrySelect) {
     countrySelect.addEventListener('change', function() {
+      console.log('Country changed to:', this.value);
       this.closest('form').submit();
     });
   }
   
   if (languageSelect) {
     languageSelect.addEventListener('change', function() {
+      console.log('Language changed to:', this.value);
       this.closest('form').submit();
     });
   }
+  
+  // Alternative: Look for any select elements in the forms
+  const allSelects = container.querySelectorAll('select');
+  allSelects.forEach(select => {
+    select.addEventListener('change', function() {
+      console.log('Selection changed:', this.name, '=', this.value);
+      this.closest('form').submit();
+    });
+  });
   
   // Click outside to close expanded state
   document.addEventListener('click', function(event) {

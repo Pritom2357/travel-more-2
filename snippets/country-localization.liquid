@@ -153,4 +153,15 @@
   </div>
   <div class="country-selector__overlay"></div>
 </div>
+{%- if localization.available_countries.size > 1 -%}
+  <select name="country_code" id="country-selector-{{ localPosition }}" class="floating-select" aria-labelledby="{{ localPosition }}CountryLabel">
+    {%- for country in localization.available_countries -%}
+      <option value="{{ country.iso_code }}" {%- if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+        {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+      </option>
+    {%- endfor -%}
+  </select>
+{%- else -%}
+  <span class="current-selection">{{ localization.country.name }} ({{ localization.country.currency.iso_code }})</span>
+{%- endif -%}
 <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
