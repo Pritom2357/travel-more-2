@@ -3,8 +3,10 @@
 {%- endcomment -%}
 
 {%- assign floating_id = 'floating-lang-' | append: section.id -%}
-{%- assign has_country = localization.available_countries.size > 1 -%}
-{%- assign has_language = localization.available_languages.size > 1 -%}
+{%- assign has_country_size = localization.available_countries.size -%}
+{%- assign has_country = has_country_size > 1 -%}
+{%- assign has_language_size = localization.available_languages.size -%}
+{%- assign has_language = has_language_size > 1 -%}
 
 <div id="{{ floating_id }}"
      class="floating-localization-container {{ section.settings.position_class }}">
