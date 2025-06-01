@@ -1,0 +1,265 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "shopify": {
+    "checkout": {
+      "general": {
+        "errors": {
+          "captcha": {
+            "token_not_valid_for_session": "এই চেকআউটের সাথে প্রদত্ত ক্যাপচা ব্যবহার করা যাবে না।"
+          },
+          "fx_reconciliation_override": {
+            "shop_currency_mismatch": "প্রাপ্ত পরিমাণ অবশ্যই দোকানের মুদ্রায় হতে হবে।"
+          },
+          "checkout_source": {
+            "revoked": "এই চেকআউটটি আর উপলব্ধ নেই।"
+          }
+        },
+        "full_price": "সম্পূর্ণ মূল্য:",
+        "title": "চেকআউট - {{shopName}}",
+        "full_title": "{{pageTitle}} - {{shopName}} - চেকআউট",
+        "loading": "লোড হচ্ছে...",
+        "loading_title": "চেকআউট - {{shopName}}",
+        "google_map_title": "গুগল ম্যাপ",
+        "confirm_order_button_label": "অর্ডার নিশ্চিত করুন",
+        "submit_order_button_label": "অর্ডার জমা দিন",
+        "submit_for_review_button_label": "পর্যালোচনার জন্য জমা দিন",
+        "submit_for_review_notice_label": "আপনার অর্ডার পর্যালোচনা না করা পর্যন্ত পেমেন্ট করা হবে না।",
+        "continue_to_payment_plans_button_label": "পেমেন্ট প্ল্যানে এগিয়ে যান",
+        "back_button_label": "প্রত্যাবর্তন",
+        "choose_delivery_strategy": "একটি ডেলিভারি পদ্ধতি বেছে নিন",
+        "autocomplete_zero_item": "কোনও আইটেম উপলব্ধ নেই",
+        "autocomplete_powered_by_google": "{{brandName}} দ্বারা পরিচালিত",
+        "submit": "জমা দিন",
+        "processing": "প্রক্রিয়াজাতকরণ হচ্ছে...",
+        "stepper": {
+          "increase": "{{type}} বৃদ্ধি করুন",
+          "decrease": "{{type}} কমান",
+          "minimum_reached": "সর্বনিম্ন {{value}} পৌঁছেছে",
+          "maximum_reached": "সর্বোচ্চ {{value}} এ পৌঁছেছে"
+        },
+        "remove_item": "%{লেবেল} সরান",
+        "remove_tag": "ট্যাগ সরান",
+        "dates": {
+          "weekdays": {
+            "monday": "সোমবার",
+            "tuesday": "মঙ্গলবার",
+            "wednesday": "বুধবার",
+            "thursday": "বৃহস্পতিবার",
+            "friday": "শুক্রবার",
+            "saturday": "শনিবার",
+            "sunday": "রবিবার"
+          },
+          "weekdays_abbreviation": {
+            "monday": "মো",
+            "tuesday": "মঙ্গল",
+            "wednesday": "আমরা",
+            "thursday": "ম",
+            "friday": "ফরাসী ভাষায়",
+            "saturday": "শনি",
+            "sunday": "রবি"
+          },
+          "months": {
+            "january": "জানুয়ারী",
+            "february": "ফেব্রুয়ারী",
+            "march": "মার্চ",
+            "april": "এপ্রিল",
+            "may": "মে",
+            "june": "জুন",
+            "july": "জুলাই",
+            "august": "আগস্ট",
+            "september": "সেপ্টেম্বর",
+            "october": "অক্টোবর",
+            "november": "নভেম্বর",
+            "december": "ডিসেম্বর"
+          }
+        },
+        "datepicker": {
+          "show_previous_month": "আগের মাস দেখান, {{month}} {{year}}",
+          "show_next_month": "পরবর্তী মাস দেখান, {{month}} {{year}}",
+          "range_start": "রেঞ্জ শুরু",
+          "in_range": "পরিসরে",
+          "range_end": "পরিসরের শেষ"
+        },
+        "map": {
+          "cluster_title": {
+            "one": "{{number}} মার্কার ক্লাস্টার",
+            "other": "{{number}} মার্কারগুলির ক্লাস্টার"
+          }
+        },
+        "sheet": {
+          "expand": "বিস্তৃত করুন"
+        },
+        "dropzone": {
+          "add_file": "ফাইল যোগ করুন",
+          "invalid_file_type": "ফাইলের ধরণ সমর্থিত নয়",
+          "dragged_over": "আপলোড করার জন্য ফাইলটি ফেলে দিন"
+        }
+      },
+      "contact": {
+        "title": "তথ্য",
+        "address_title": "জানুন",
+        "shipping_used_as_billing_notice": "এই অর্ডারের জন্য এটি আপনার বিলিং ঠিকানা হিসেবেও ব্যবহার করা হবে।",
+        "delivery_option_title": "ডেলিভারি পদ্ধতি",
+        "contact_method_title": "যোগাযোগ",
+        "email_label": "ইমেইল",
+        "email_placeholder": "ইমেইল",
+        "email_or_phone_label": "ইমেল অথবা মোবাইল ফোন নম্বর",
+        "email_or_phone_placeholder": "ইমেল অথবা মোবাইল ফোন নম্বর",
+        "stored_addresses_label": "সংরক্ষিত ঠিকানা",
+        "available_addresses_label": "উপলব্ধ ঠিকানাগুলি",
+        "new_address_label": "একটি নতুন ঠিকানা ব্যবহার করুন",
+        "first_name_label": "প্রথম নাম",
+        "optional_first_name_label": "প্রথম নাম (ঐচ্ছিক)",
+        "last_name_label": "পদবি",
+        "company_label": "কোম্পানির",
+        "company_attention_label": "কোম্পানি/মনোযোগ",
+        "optional_company_attention_label": "কোম্পানি/মনোযোগ (ঐচ্ছিক)",
+        "optional_company_label": "কোম্পানি (ঐচ্ছিক)",
+        "address1_label": "জানুন",
+        "address2_label": "অ্যাপার্টমেন্ট, স্যুট, ইত্যাদি।",
+        "optional_address2_label": "অ্যাপার্টমেন্ট, স্যুট, ইত্যাদি (ঐচ্ছিক)",
+        "city_label": "শহর",
+        "country_label": "দেশ/অঞ্চল",
+        "country_code": "দেশ/অঞ্চল কোড",
+        "province_label": "প্রদেশ",
+        "province_placeholder": "প্রদেশ",
+        "county_label": "কাউন্টি",
+        "county_placeholder": "কাউন্টি",
+        "state_label": "রাজ্য",
+        "state_placeholder": "রাজ্য",
+        "region_label": "অঞ্চল",
+        "region_placeholder": "অঞ্চল",
+        "region_none": "কোনওটিই নির্বাচিত হয়নি",
+        "prefecture_label": "প্রিফেকচার",
+        "prefecture_placeholder": "প্রিফেকচার",
+        "governorate_label": "গভর্নরেট"
+      },
+      "shipping": {
+        "shipping_information_required_notice": "শিপিং তথ্য প্রয়োজন। {{link}} .",
+        "shipping_information_redirect_link": "এখানে আপনার তথ্য লিখুন",
+        "loading_progressive_rates": "আরও রেট খুঁজছি…",
+        "no_other_methods_available": "অন্য কোনও পদ্ধতি উপলব্ধ নেই",
+        "duties_and_taxes_options": {
+          "ddu_title": "ডেলিভারির সময় পেমেন্ট করুন",
+          "ddu_caption": "অতিরিক্ত ফি প্রযোজ্য হতে পারে",
+          "ddp_title": "এখনই পেমেন্ট করুন",
+          "ddp_caption": "ডেলিভারিতে কোনও অতিরিক্ত ফি নেই"
+        },
+        "shipping_method_combinations": {
+          "without_separator": "%{প্রথম পদ্ধতি}, %{দ্বিতীয় পদ্ধতি}",
+          "with_separator": "%{বিশ্রাম}, %{বর্তমান},",
+          "combination": "%{বিশ্রাম} এবং %{বর্তমান}"
+        },
+        "shipping_used_as_billing_notice": "এই অর্ডারের জন্য এটি আপনার বিলিং ঠিকানা হিসেবেও ব্যবহার করা হবে।",
+        "address_update": "ঠিকানা আপডেট করুন",
+        "shipping_address_title": "পাঠান",
+        "add_address": "একটি ভিন্ন ঠিকানা ব্যবহার করুন",
+        "add_delivery_instructions": "ডেলিভারি নির্দেশাবলী যোগ করুন",
+        "edit": "সম্পাদনা",
+        "delete": "মুছে ফেলুন",
+        "address_more": "এই ঠিকানার জন্য আরও পদক্ষেপ",
+        "address_edit": "ঠিকানা সম্পাদনা করুন",
+        "address_delete": "ঠিকানা মুছুন",
+        "address_confirm": "আপনি কি নিশ্চিত যে আপনি আপনার অ্যাকাউন্ট থেকে এই ঠিকানাটি মুছে ফেলতে চান?",
+        "address_default": "ডিফল্ট হিসেবে সেট করুন",
+        "address_form": {
+          "add_address": "ঠিকানা যোগ করুন",
+          "save": "সংরক্ষণ করুন",
+          "cancel": "বাতিল করুন",
+          "generic_error": "আপনার ঠিকানা সংরক্ষণ করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+          "one_time_address_subtitle": "এই অর্ডারের জন্য একটি এককালীন ঠিকানা ব্যবহার করুন"
+        },
+        "different_shipping_method_summary": "উপলব্ধ শিপিং পদ্ধতিগুলি দেখতে একটি ভিন্ন শিপিং ঠিকানা লিখুন",
+        "invalid_shipping_method_summary": "উপলব্ধ শিপিং পদ্ধতিগুলি দেখতে একটি বৈধ শিপিং ঠিকানা লিখুন",
+        "method_summary": {
+          "incomplete_address_entered": "উপলব্ধ শিপিং পদ্ধতিগুলি দেখতে একটি সম্পূর্ণ শিপিং ঠিকানা লিখুন",
+          "incomplete_address_selected": "উপলব্ধ শিপিং পদ্ধতিগুলি দেখতে একটি সম্পূর্ণ শিপিং ঠিকানা নির্বাচন করুন"
+        },
+        "local_pickup": {
+          "search_address": "ঠিকানা খুঁজুন",
+          "rollup_title": "স্টোরের অবস্থান"
+        },
+        "missing_shipping_address": "শিপিং ঠিকানাটি অনুপস্থিত।",
+        "split_shipping_merchandise_quantity_label_standard": "%{পরিমাণ}টি আইটেম",
+        "split_shipping_merchandise_quantity_label_additional": "+%{পরিমাণ} বেশি",
+        "split_shipping_merchandise_shipment_number": "মোট %{এর মধ্যে %{সংখ্যা} চালান",
+        "pre_order_ships_now": "এখন পাঠানো হচ্ছে",
+        "pre_order_ships_later": "পরে পাঠানো হবে",
+        "pre_order_ships_date": "%{date} পাঠানো হয়েছে",
+        "split_shipping_shipped_by_shop": "%{shop_name} দ্বারা পাঠানো হয়েছে",
+        "split_shipping_multiple_shipment_label": "একাধিক চালান",
+        "split_shipping_shipping_label": "পদ্ধতি",
+        "split_shipping_shipment_notice": "আপনার অর্ডার %{quantity_shipments} এর মধ্যে পৌঁছে যাবে।",
+        "split_shipping_multiple_shipment_quantity_label": "%{পরিমাণ} চালান",
+        "split_shipping_multiple_shipment_notice": "আপনার অর্ডার একাধিক চালানে পৌঁছাবে।",
+        "split_shipping_multiple_shipment_notice_one_time_purchase": "আপনার অর্ডার %{quantity} শিপমেন্টে পৌঁছে যাবে",
+        "split_shipping_more_shipping_options": "আরও শিপিং বিকল্প",
+        "split_shipping_shipment_number": "চালান %{সংখ্যা}",
+        "split_shipping_merchandise_quantity_label_inline_primary": "পরিমাণ: %{পরিমাণ}",
+        "split_shipping_merchandise_quantity_label_inline": "%{পণ্যের_শিরোনাম} ×%{পরিমাণ}",
+        "split_shipping_option_free": "বিনামূল্যে পরিবহন",
+        "split_shipping_option_lowest_price": "সর্বনিম্ন দাম",
+        "split_shipping_option_fastest": "দ্রুততম",
+        "split_shipping_option_recommended": "প্রস্তাবিত",
+        "split_shipping_option_custom": "কাস্টম"
+      },
+      "localized_fields": {
+        "additional_information": {
+          "title": "অতিরিক্ত তথ্য"
+        }
+      },
+      "payment": {
+        "network_card_payment_options": "একটি কার্ড নেটওয়ার্ক বেছে নিন",
+        "network_card_persistence_description": "নির্বাচিত নেটওয়ার্কটি ভবিষ্যতের লেনদেনের জন্য আপনার পেমেন্ট পদ্ধতিতে সংরক্ষণ করা হবে।",
+        "amazon_payments_label": "অ্যামাজন পে",
+        "amazon_payments_login_hint": "আপনাকে Amazon দিয়ে লগইন করতে বলা হবে।",
+        "amazon_payments_logout": "Amazon Pay থেকে লগ আউট করুন",
+        "amazon_payments_failed_mfa_challenge": "নির্বাচিত পেমেন্ট পদ্ধতি ব্যবহার করা যায়নি। অন্য একটি পদ্ধতি নির্বাচন করুন অথবা আপনার ব্যাঙ্ক বা কার্ড প্রদানকারীর সাথে যোগাযোগ করুন।",
+        "amazon_payments_abandoned_mfa_challenge": "আপনার পেমেন্ট সম্পূর্ণ করা যায়নি। অন্য একটি পেমেন্ট পদ্ধতি ব্যবহার করে দেখুন অথবা আপনার ব্যাঙ্ক বা কার্ড ইস্যুকারীর সাথে যোগাযোগ করুন।",
+        "amazon_payments_could_not_enqueue_authorize": "আপনার পেমেন্ট প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে। আবার চেষ্টা করুন অথবা অন্য একটি পেমেন্ট পদ্ধতি ব্যবহার করুন।",
+        "title": "পেমেন্ট",
+        "amount_left_to_pay_label": "পরিশোধের বাকি:",
+        "discount_button_action_label": "ডিসকাউন্ট কোড প্রয়োগ করুন",
+        "gift_card_code_label": "উপহার কার্ড কোড",
+        "apply_gift_card_button_label": "প্রয়োগ করুন",
+        "gift_card_balance_label": "ব্যালেন্স:",
+        "supported_card_brands_more_label": "এবং আরও অনেক কিছু…",
+        "detected_card_brand": "শনাক্ত করা কার্ড ব্র্যান্ড: {brand}",
+        "credit_card_vaulting_sign_in_banner_title": "আপনার ক্রেডিট কার্ড সংরক্ষণ করুন",
+        "credit_card_vaulting_sign_in_banner_info": "ভবিষ্যতের কেনাকাটার জন্য আপনার ক্রেডিট কার্ড সংরক্ষণ করতে লগ ইন করুন অথবা একটি অ্যাকাউন্ট তৈরি করুন।",
+        "credit_card_vaulting_sign_in_banner_button_label": "লগ ইন করুন",
+        "ftd_vault_credit_card_label": "দ্রুত চেকআউটের জন্য এই ক্রেডিট কার্ডটি আমার অ্যাকাউন্টে সংরক্ষণ করুন।",
+        "card_number_label": "কার্ড নম্বর",
+        "card_number_placeholder": "কার্ড নম্বর",
+        "card_pay_with": "এর মাধ্যমে অর্থ প্রদান করুন:",
+        "card_security_notice": "সমস্ত লেনদেন নিরাপদ এবং এনক্রিপ্ট করা।",
+        "card_security_vault_notice": "ভবিষ্যতের পেমেন্টের জন্য আমাদের আপনার বিবরণ প্রয়োজন। সমস্ত লেনদেন নিরাপদ এবং এনক্রিপ্ট করা।",
+        "card_information_notice": "সমস্ত লেনদেন নিরাপদ এবং এনক্রিপ্ট করা হয়। ক্রেডিট কার্ডের তথ্য কখনও সংরক্ষণ করা হয় না।",
+        "name_on_card_label": "কার্ডে নাম",
+        "name_on_card_placeholder": "কার্ডে নাম",
+        "card_nickname_label": "ডাকনাম (ঐচ্ছিক)",
+        "card_expired": "মেয়াদোত্তীর্ণ",
+        "card_expiry_label": "মেয়াদ শেষ হওয়ার তারিখ (মাস / বছর)",
+        "card_expiry_placeholder": "মেয়াদ শেষ হওয়ার তারিখ (মাস / বছর)",
+        "credit_card_start_month": "শুরুর মাস",
+        "credit_card_start_year": "শুরুর বছর",
+        "delete_customer_mandate_modal_title": "এই পেমেন্ট কার্ডটি সরাবেন?",
+        "delete_customer_mandate_modal_body": "আপনি যদি এই কার্ডটি সরিয়ে দেন, তাহলে পেমেন্টের জন্য এটি ব্যবহার করার আগে আপনাকে এটি আবার যোগ করতে হবে।",
+        "delete_customer_mandate_modal_confirm": "কার্ড সরান",
+        "delete_customer_mandate_modal_cancel": "বাতিল করুন",
+        "card_verification_value_label": "নিরাপত্তা কোড",
+        "card_verification_value_placeholder": "নিরাপত্তা কোড",
+        "card_verification_confirm": "যাচাইকরণের জন্য, আপনার কার্ডের নিরাপত্তা কোডটি লিখুন।",
+        "card_expiry_date_explanation": "কার্ডের মেয়াদ শেষ হওয়ার তারিখ ফরম্যাটে: মাস, মাস, বছর, বছর"
+      }
+    }
+  }
+}
