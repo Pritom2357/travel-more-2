@@ -796,6 +796,292 @@
         "credit_card_month_invalid": "একটি বৈধ মেয়াদ শেষ হওয়ার মাস লিখুন",
         "credit_card_year_invalid": "একটি বৈধ মেয়াদ শেষ হওয়ার বছর লিখুন"
       }
+    },
+    "addresses": {
+      "county": "কাউন্টি",
+      "emirate": "আমিরাত",
+      "governorate": "গভর্নরেট",
+      "confirm": "আপনি কি নিশ্চিত যে আপনি এই ঠিকানাটি মুছে ফেলতে চান?"
+    },
+    "collections": {
+      "sorting": {
+        "manual": "বৈশিষ্ট্যযুক্ত",
+        "best_selling": "সর্বাধিক বিক্রিত",
+        "az": "বর্ণানুক্রমিকভাবে, AZ",
+        "za": "বর্ণানুক্রমিকভাবে, ZA",
+        "price_ascending": "দাম, কম থেকে বেশি",
+        "price_descending": "দাম, বেশি থেকে কম",
+        "date_ascending": "তারিখ, পুরাতন থেকে নতুন",
+        "date_descending": "তারিখ, নতুন থেকে পুরাতন"
+      }
+    },
+    "errors": {
+      "blank": "খালি থাকতে পারে না।",
+      "blocked_address": "এই অবস্থানটি সমর্থিত নয়",
+      "credit_card_session_expired": "ক্রেডিট কার্ড অনুমোদনের মেয়াদ শেষ হয়ে গেছে, অনুগ্রহ করে আপনার পেমেন্ট তথ্য আবার লিখুন। আপনার কার্ড থেকে কোনও চার্জ নেওয়া হয়নি।",
+      "empty": "খালি থাকতে পারে না।",
+      "invalid_email": "একটি বৈধ ইমেল ঠিকানা হতে হবে",
+      "discount_disabled": "এই ছাড়টি বন্ধ করা হয়েছে।",
+      "discount_expired": "এই ছাড় আর বৈধ নয়।",
+      "discount_limit_reached": "এই ছাড়টি ব্যবহারের সীমায় পৌঁছে গেছে।",
+      "discount_not_found": "প্রবেশ করানো কোডের সাথে মিলে যাওয়া বৈধ ছাড় খুঁজে পাওয়া যাচ্ছে না।",
+      "customer_already_used_once_per_customer_discount_notice": "এই ছাড়টি ব্যবহারের সীমায় পৌঁছে গেছে।",
+      "gift_card_already_applied": "আপনার চেকআউটে কোডটি ইতিমধ্যেই প্রয়োগ করা হয়েছে।",
+      "gift_card_code_invalid": "কোডটি অবৈধ।",
+      "gift_card_currency_mismatch": "আপনার গিফট কার্ডটি %{gift_card_currency} ভাষায়। এটি %{checkout_currency} ভাষায় পুনরায় ইস্যু করার জন্য আমাদের সাথে যোগাযোগ করুন।",
+      "gift_card_depleted": "এই উপহার কার্ডে আর কোনও তহবিল অবশিষ্ট নেই।",
+      "gift_card_disabled": "উপহার কার্ড বন্ধ করা আছে",
+      "gift_card_expired": "গিফট কার্ডের মেয়াদ শেষ হয়ে গেছে",
+      "invalid": "অবৈধ",
+      "bad_domain": "একটি অবৈধ ডোমেন নাম রয়েছে",
+      "taken": "ইতিমধ্যেই নেওয়া হয়েছে",
+      "contains_html_tags": "HTML ট্যাগ থাকতে পারে না",
+      "too_short": "খুবই ছোট (সর্বনিম্ন %{count} অক্ষর)",
+      "too_long": "খুব লম্বা (সর্বোচ্চ %{count} অক্ষর)",
+      "password_mismatch": "প্রদত্ত পাসওয়ার্ডের সাথে মিল থাকতে হবে",
+      "contains_spaces": "স্পেস দিয়ে শুরু বা শেষ হয়।",
+      "email_domain_invalid": "সরবরাহকারী সমর্থিত নয়",
+      "invalid_for_country": "%{country} এর জন্য বৈধ নয়",
+      "invalid_for_country_and_province": "%{প্রদেশ} এবং %{দেশ} এর জন্য বৈধ নয়",
+      "invalid_province_in_country": "%{country}-এ একটি বৈধ প্রদেশ নয়",
+      "invalid_state_in_country": "%{country}-এ একটি বৈধ রাজ্য নয়",
+      "invalid_region_in_country": "%{country}-এর মধ্যে একটি বৈধ অঞ্চল নয়",
+      "less_than_or_equal_to": "%{count} এর কম বা সমান হতে হবে",
+      "not_supported": "সমর্থিত নয়",
+      "full_name_required": "একটি প্রথম নাম এবং পদবি লিখুন",
+      "invalid_for_card_type": "বৈধ নয়",
+      "invalid_type": "দুঃখিত, আমরা এই ধরণের কার্ড গ্রহণ করি না।",
+      "invalid_format": "ফর্ম্যাটটি বৈধ নয়।",
+      "expired": "মেয়াদ শেষ হয়ে গেছে",
+      "invalid_start_date_or_issue_number_for_debit": "একটি বৈধ শুরুর তারিখ বা ইস্যু নম্বর প্রয়োজন",
+      "invalid_expiry_year": "মেয়াদ শেষ হওয়ার বছর বৈধ নয়",
+      "reset_password_html": "এই ইমেল ঠিকানাটি ইতিমধ্যেই একটি অ্যাকাউন্টের সাথে যুক্ত। যদি এই অ্যাকাউন্টটি আপনার হয়, তাহলে আপনি <a href=\"/account/login#recover\">আপনার পাসওয়ার্ড পুনরায় সেট</a> করতে পারেন।",
+      "verify_email": "আমরা %{customer_email} ঠিকানায় একটি ইমেল পাঠিয়েছি, আপনার ইমেল ঠিকানা যাচাই করতে অনুগ্রহ করে অন্তর্ভুক্ত লিঙ্কে ক্লিক করুন।",
+      "product_not_available": "এই গ্রাহকের জন্য পণ্যটি প্রকাশিত হয়নি।",
+      "shop_404": {
+        "title": "একটি ই-কমার্স ওয়েবসাইট তৈরি করুন এবং অনলাইনে বিক্রি করুন! Shopify এর ই-কমার্স সফটওয়্যার",
+        "heros": {
+          "store_unavailable": "দুঃখিত, এই দোকানটি বর্তমানে অনুপলব্ধ।",
+          "store_not_exist": "এই দোকানটি বিদ্যমান নেই।",
+          "no_storefront": "এই দোকানের এখনও কোনও ওয়েবসাইট নেই।"
+        },
+        "links": {
+          "explore_other_stores": "অন্যান্য দোকান ঘুরে দেখুন",
+          "start_free_trial": "একটি বিনামূল্যের ট্রায়াল শুরু করুন"
+        },
+        "owner_ctas": {
+          "header": "তুমি কি দোকানের মালিক?",
+          "fix_domain": "আপনার নতুন ওয়েব ঠিকানা সেট আপ করা শেষ করুন, %{domain_settings_link} এ যান। \"Connect domain\" এ ক্লিক করুন এবং লিখুন: %{domain}।<br> যদি আপনার দোকানে প্রবেশ করতে সমস্যা হয়, তাহলে %{forgot_your_store_link} পৃষ্ঠাটি চেষ্টা করে দেখুন।",
+          "fix_domain_link_text": "আপনার ডোমেন সেটিংস",
+          "forgot_your_store_link_text": "তোমার দোকান ভুলে গেছি",
+          "add_storefront": "আপনার %{admin_link}-এ অনলাইন স্টোর চ্যানেল যোগ করে আপনি আপনার ওয়েবসাইট সেট আপ করতে পারেন। যদি আপনার দোকানে প্রবেশ করতে সমস্যা হয়, তাহলে %{forgot_your_store_link} পৃষ্ঠাটি চেষ্টা করে দেখুন।",
+          "admin_link_text": "অ্যাডমিন"
+        },
+        "ctas": {
+          "sell_in_person": {
+            "header": "সশরীরে বিক্রি করুন",
+            "caption": "আপনার খুচরা দোকান চালানোর জন্য প্রয়োজনীয় বৈশিষ্ট্যগুলি পান, আপনি শুরু করছেন বা বড় করছেন, যাই হোক না কেন।",
+            "link_text": "বিনামূল্যে ট্রায়াল শুরু করুন"
+          },
+          "open_a_store": {
+            "header": "একটি নতুন Shopify স্টোর খুলুন",
+            "caption": "৩ দিনের বিনামূল্যে ট্রায়াল শুরু করুন, তারপর পরবর্তী ৩ মাস $১/মাসে চালিয়ে যান।",
+            "link_text": "এখনই সাইন আপ করুন"
+          },
+          "editions": {
+            "header": "Shopify সংস্করণগুলি দেখুন",
+            "caption": "১০০+ পণ্য আপডেটের মাধ্যমে, আপনি আপনার কল্পনার চেয়েও বেশি উৎপাদনশীল, সৃজনশীল এবং বাণিজ্যে শক্তিশালী হতে পারবেন।",
+            "link_text": "সর্বশেষ সংস্করণগুলি অন্বেষণ করুন"
+          },
+          "store_owner": {
+            "header": "তুমি কি দোকানের মালিক?",
+            "caption": "আপনার দোকানে ঢুকতে কি সমস্যা হচ্ছে? %{forgot_your_store_link} বৈশিষ্ট্যটি ব্যবহার করে দেখুন। আপনার দোকানটি পুনরায় সক্রিয় করতে চাইলে %{shopify_support_link} এ যোগাযোগ করুন।",
+            "shopify_support_link_text": "Shopify সাপোর্ট"
+          }
+        }
+      }
+    },
+    "notices": {
+      "customer": {
+        "password_reset_error": "পাসওয়ার্ড রিসেট ত্রুটি",
+        "subscribe_error": "সাবস্ক্রাইব করার সময় ত্রুটি",
+        "unsubscribe_error": "আনসাবস্ক্রাইব করার সময় ত্রুটি",
+        "no_account_found": "ওই ইমেলটির কোনও অ্যাকাউন্ট খুঁজে পাওয়া যায়নি।",
+        "invalid_credentials": "ভুল ইমেল বা পাসওয়ার্ড।",
+        "denylisted_reset_password": "আপনার অ্যাকাউন্ট অ্যাক্সেস করা যায়নি কারণ বর্তমান পাসওয়ার্ডটি নিরাপদ নয়। আপনার পাসওয়ার্ড আপডেট করার জন্য আপনি একটি ইমেল পাবেন।",
+        "signup_disabled": "গ্রাহক অ্যাকাউন্ট তৈরি বন্ধ করা হয়েছে।"
+      },
+      "address": {
+        "updated": "ঠিকানা সফলভাবে আপডেট করা হয়েছে।",
+        "error_updating": "ঠিকানা আপডেট করার সময় ত্রুটি হয়েছে",
+        "created": "ঠিকানা সফলভাবে তৈরি করা হয়েছে",
+        "error_creating": "ঠিকানা তৈরি করতে ত্রুটি।",
+        "deleted": "ঠিকানা সফলভাবে মুছে ফেলা হয়েছে",
+        "error_deleting": "ঠিকানা মুছে ফেলার সময় ত্রুটি।"
+      },
+      "line_item": {
+        "item_status": {
+          "add_variant": "%{delta} যোগ করা হয়েছে",
+          "increment_item": "%{delta} যোগ করা হয়েছে",
+          "decrement_item": "%{মোট} এর %{ডেল্টা} সরানো হয়েছে",
+          "decrement_fulfilled_line_item": "%{মোট} এর %{ডেল্টা} ফেরত দেওয়া হয়েছে",
+          "decrement_return_line_item": "রিটার্ন থেকে %{delta} সরানো হয়েছে"
+        }
+      },
+      "order": {
+        "not_available": "এই অর্ডারটি উপলব্ধ নয়",
+        "financial_status": {
+          "authorized": "অনুমোদিত",
+          "pending": "মুলতুবি",
+          "paid": "পরিশোধিত",
+          "unpaid": "অবৈতনিক",
+          "voided": "শূন্য",
+          "partially_paid": "আংশিকভাবে পরিশোধিত",
+          "partially_refunded": "আংশিকভাবে ফেরত দেওয়া হয়েছে",
+          "refunded": "ফেরত দেওয়া হয়েছে",
+          "expired": "মেয়াদোত্তীর্ণ"
+        },
+        "fulfillment_status": {
+          "fulfilled": "পূর্ণ হয়েছে",
+          "complete": "সম্পূর্ণ",
+          "partial": "আংশিক",
+          "unfulfilled": "অপূর্ণ",
+          "restocked": "পুনঃস্থাপিত"
+        },
+        "transaction_status": {
+          "success": "সাফল্য",
+          "pending": "মুলতুবি",
+          "failure": "ব্যর্থতা",
+          "error": "ত্রুটি"
+        },
+        "cancel_reason": {
+          "declined": "পেমেন্ট প্রত্যাখ্যান করা হয়েছে",
+          "inventory": "আইটেমগুলি অনুপলব্ধ",
+          "fraud": "প্রতারণামূলক অর্ডার",
+          "customer": "গ্রাহক অর্ডার পরিবর্তন/বাতিল করেছেন",
+          "staff": "কর্মীদের ত্রুটি",
+          "other": "অন্যান্য"
+        },
+        "cash_on_delivery": "ক্যাশ অন ডেলিভারি (সিওডি)"
+      },
+      "cart": {
+        "only_n_items_available": "আপনি কার্টে শুধুমাত্র %{count} %{name} যোগ করতে পারবেন।",
+        "too_many_items_in_cart": "আপনি কার্টে আর %{name} যোগ করতে পারবেন না।",
+        "only_one_added_to_cart": "প্রাপ্যতার কারণে আপনার কার্টে মাত্র ১টি আইটেম যোগ করা হয়েছে।",
+        "only_n_added_to_cart": "প্রাপ্যতার কারণে আপনার কার্টে শুধুমাত্র %{quantity} টি আইটেম যোগ করা হয়েছে।",
+        "maximum_available_quantity_reached": "এই আইটেমের সর্বাধিক পরিমাণ ইতিমধ্যেই আপনার কার্টে রয়েছে।",
+        "less_than_minimum": "এই আইটেমটিতে সর্বনিম্ন %{min} আছে।",
+        "more_than_maximum": "এই আইটেমটির সর্বোচ্চ %{max} আছে।",
+        "not_respect_step": "আপনি এই আইটেমটি শুধুমাত্র %{step} এর বৃদ্ধিতে যোগ করতে পারবেন।",
+        "all_items_in_cart": "সব %{count} %{name} আপনার কার্টে আছে।",
+        "empty_update": "খালি কার্ট আপডেট করা যাচ্ছে না",
+        "missing_parameters": "কোনও বৈধ আইডি বা লাইন প্যারামিটার নেই",
+        "generic_error": "কার্ট ত্রুটি",
+        "invalid_input": "%{parameter} প্যারামিটারটি অবৈধ।",
+        "product_not_available": "পণ্যটি উপলব্ধ নয়",
+        "too_many_line_items_error": "আপনার কার্টে %{max} এর বেশি আইটেম থাকতে পারবে না।",
+        "link_expired": "লিঙ্কের মেয়াদ শেষ হয়ে গেছে",
+        "link_no_longer_exists": "লিঙ্কটি আর বিদ্যমান নেই।",
+        "stock_problems_html": "এক বা একাধিক আইটেম আর উপলব্ধ নেই। আমরা একটি <a href=\"%{link}\">আপডেট করা কার্ট</a> প্রদান করেছি।",
+        "changed": "কার্ট পরিবর্তন করা হয়েছে",
+        "items_changed": "এক বা একাধিক আইটেম পরিবর্তিত হয়েছে।",
+        "product_sold_out": "'%{name}' পণ্যটি ইতিমধ্যেই বিক্রি হয়ে গেছে।",
+        "variant_not_found": "ভেরিয়েন্ট খুঁজে পাচ্ছি না",
+        "variant_requires_selling_plan": "ভেরিয়েন্টটি শুধুমাত্র একটি বিক্রয় পরিকল্পনার মাধ্যমে কেনা যাবে।",
+        "selling_plan_not_available_for_company_locations": "B2B অর্ডারের জন্য শুধুমাত্র একবারের জন্য কেনাকাটা করা যাবে",
+        "digital_product_not_available_for_company_locations": "এই আইটেমটি B2B অর্ডারে যোগ করা যাবে না।",
+        "buyer_cannot_purchase_for_company_locations": "আপনি এই অবস্থানের জন্য কিনতে পারবেন না",
+        "selling_plan_not_applicable": "ভেরিয়েন্টে বিক্রয় পরিকল্পনা প্রয়োগ করা যাবে না",
+        "shipping_address_not_required": "এই কার্টের শিপিং প্রয়োজন নেই",
+        "shipping_address_invalid": "আপনার শিপিং রেট গণনা করতে সমস্যা হচ্ছে। আপনার অর্ডার সম্পূর্ণ করার আগে একটি শিপিং রেট বেছে নিতে চেকআউট চালিয়ে যান।",
+        "bundle_requires_components": "'%{name}' বান্ডেল পণ্যটি কার্টে যোগ করা যাবে না।",
+        "gift_card_with_components_not_supported": "'%{name}' বান্ডেল পণ্যটি কার্টে যোগ করা যাবে না।",
+        "gift_card_price_must_be_greater_than_zero": "'%{name}' বান্ডেল পণ্যটি কার্টে যোগ করা যাবে না।",
+        "gift_card_recipient_validation_error": "নির্দিষ্ট উপহার কার্ড প্রাপক অবৈধ।",
+        "view_lines_limit_reached": "লাইনগুলি অবশ্যই %{limit} এর কম হতে হবে",
+        "cart_too_large": "কার্টটি খুব বড়।",
+        "cart_attributes_error": "কার্ট অ্যাট্রিবিউটগুলিতে অবৈধ ডেটা রয়েছে।",
+        "merchandise_line_transformers": {
+          "run_error": "আপনার কার্টে একটি ত্রুটি ঘটেছে।"
+        }
+      },
+      "storefront": {
+        "invalid_password": "পাসওয়ার্ড ভুল, আবার চেষ্টা করুন।"
+      },
+      "tags": {
+        "add_articles": "%{tag} ট্যাগ আছে এমন নিবন্ধগুলিতে অনুসন্ধান সীমিত করুন",
+        "add_products": "%{tag} ট্যাগের সাথে মিলে যাওয়া পণ্যের নির্বাচন সীমিত করুন",
+        "remove_articles": "%{tag} ট্যাগ করা হয়নি এমন নিবন্ধগুলিতে অনুসন্ধান প্রসারিত করুন",
+        "remove_products": "%{tag} ট্যাগটি সরান"
+      }
+    },
+    "email_marketing": {
+      "subscribed": {
+        "confirmation": "আমাদের মেইলিং লিস্টে সাবস্ক্রাইব করার জন্য আপনাকে ধন্যবাদ।",
+        "disclaimer": "আপনি যেকোনো সময় আনসাবস্ক্রাইব করতে পারেন।",
+        "unsubscribe": "আনসাবস্ক্রাইব করুন"
+      },
+      "unsubscribed": {
+        "confirmation": "আপনি আমাদের মেইলিং তালিকা থেকে সদস্যতা ত্যাগ করেছেন।",
+        "disclaimer": "আপনি আমাদের কাছ থেকে আর কোনও মার্কেটিং আপডেট পাবেন না। আপনি যেকোনো সময় আবার সাবস্ক্রাইব করতে পারেন।",
+        "preview": "গ্রাহকরা যখন আনসাবস্ক্রাইব করবেন তখন তারা কী দেখতে পাবেন তা আপনি প্রিভিউ করছেন।"
+      },
+      "open_tracking": {
+        "opt_in": {
+          "opted_in_html": "<b>আপনি ইমেল ওপেন ট্র্যাকিং বেছে নিয়েছেন।</b>",
+          "visibility": "ইমেল খোলার হার বেনামে রিপোর্ট করা হবে। আমরা কেবল তখনই দেখব যে আপনি একটি সমষ্টিগত ইমেল খোলার হারের অংশ হিসেবে একটি ইমেল খুলেছেন কিনা।",
+          "opt_out_html": "আপনি যদি এই তথ্যটি শেয়ার করতে না চান তবে আপনি ইমেল ওপেন ট্র্যাকিং থেকে <a style=\"text-decoration:underline;\" href=\"%{link}\">বেরিয়ে আসতে</a> পারেন।",
+          "preview_bar": "গ্রাহকরা যখন ইমেল ওপেন ট্র্যাকিং বেছে নেবেন তখন তারা কী দেখতে পাবেন তা আপনি প্রিভিউ করছেন।"
+        },
+        "opt_out": {
+          "opted_out_html": "<b>আপনি ইমেল খোলা ট্র্যাকিং থেকে বেরিয়ে এসেছেন।</b>",
+          "visibility": "তুমি আমাদের ইমেল খুলেছো কিনা আমরা দেখব না।",
+          "opt_in_html": "ইমেল ওপেন ট্র্যাকিং <a style=\"text-decoration:underline;\" href=\"%{link}\">বেছে নিন</a> ।",
+          "preview_bar": "গ্রাহকরা যখন ইমেল ওপেন ট্র্যাকিং থেকে বেরিয়ে আসবেন তখন তারা কী দেখতে পাবেন তা আপনি প্রিভিউ করছেন।"
+        },
+        "no_longer_track": {
+          "status_html": "<b>আমরা আর কোনও ইমেল খোলার ট্র্যাক রাখি না।</b>",
+          "privacy_policy": "এই ইমেলটি পাঠানোর পর, আমরা আমাদের গোপনীয়তা নীতি আপডেট করেছি এবং আমরা আর খোলার ট্র্যাক রাখি না।"
+        },
+        "track": {
+          "status_html": "<b>ইমেল খোলা ট্র্যাকিং রিপোর্ট করা হয়েছে।</b>",
+          "visibility": "মোট ইমেল খোলার হারের অংশ হিসেবে, আমরা কেবল দেখব যে আপনি ইমেলটি খুলেছেন কিনা।"
+        },
+        "updated_policy": {
+          "status_html": "<b>ইমেল খোলা ট্র্যাকিং রিপোর্ট করা হয়েছে।</b>",
+          "visibility": "আমরা আমাদের নীতি আপডেট করেছি, এবং এখন ইমেল খোলার হার ট্র্যাক করব। ইমেল খোলার হার বেনামে রিপোর্ট করা হবে। আমরা কেবল দেখব যে আপনি মোট ইমেল খোলার হারের অংশ হিসাবে কোনও ইমেল খুলেছেন কিনা।",
+          "opt_out_html": "আপনি যদি এই তথ্যটি শেয়ার করতে না চান, তাহলে আপনি <a style=\"text-decoration:underline;\" href=\"%{link}\">সদস্যতা ত্যাগ করতে পারেন।</a>"
+        }
+      }
+    },
+    "filters": {
+      "availability": {
+        "value": {
+          "in_stock": "মজুদে আছে",
+          "out_of_stock": "স্টক শেষ"
+        }
+      },
+      "boolean": {
+        "true_label": "হাঁ",
+        "false_label": "না"
+      }
+    },
+    "search": {
+      "error": "আপনার অনুসন্ধানের ফলাফল লোড করতে সমস্যা হচ্ছে। অনুগ্রহ করে পৃষ্ঠাটি রিফ্রেশ করুন অথবা পরে আবার চেষ্টা করুন।",
+      "sorting": {
+        "relevance": "প্রাসঙ্গিকতা",
+        "price_ascending": "দাম, কম থেকে বেশি",
+        "price_descending": "দাম, বেশি থেকে কম"
+      }
+    },
+    "page_titles": {
+      "blog_or_article_with_error": "ত্রুটি - %{শিরোনাম}",
+      "products": "পণ্য",
+      "shopping_cart": "আপনার শপিং কার্ট",
+      "account": "হিসাব",
+      "create_account": "অ্যাকাউন্ট তৈরি করুন",
+      "reset_account": "অ্যাকাউন্ট রিসেট করুন",
+      "addresses": "ঠিকানা"
     }
   },
   "customer_accounts": {
