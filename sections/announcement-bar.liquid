@@ -26,15 +26,6 @@
 
   <!-- Expanded State -->
   <div class="floating-expanded" id="expanded-{{ floating_id }}" style="display: none;">
-    <div>Testing for the country</div>
-    <select name="country" id="CountrySelector">
-        {% for country in localization.available_countries %}
-            <option value="{{ country.code }}">
-                {{ country.name }}
-            </option>
-        {% endfor %}
-    </select>
-    <div>Testing ended</div>
     <div class="floating-header">
       <span class="floating-title">{{ section.settings.expanded_title | default: 'Select Your Preferences' }}</span>
       <button class="floating-close-button" aria-label="Close selector">
@@ -615,15 +606,54 @@ document.addEventListener('DOMContentLoaded', function() {
     dismissButton.addEventListener('click', hideSelector);
   }
   
-  // === ENHANCED LOCALIZATION HANDLING ===
+  // === ENHANCED SELECT-BASED LOCALIZATION HANDLING ===
   
-  // Handle disclosure-based country selector
+  // Handle standard select elements (our new simplified approach)
+  const countrySelect = container.querySelector('#FloatingCountryForm select[name="country_code"]');
+  const languageSelect = container.querySelector('#FloatingLanguageForm select[name="locale_code"]');
+  
+  if (countrySelect) {
+    countrySelect.addEventListener('change', function(e) {
+      const selectedCountry = this.options[this.selectedIndex];
+      console.log('Country changed to:', this.value, '- Text:', selectedCountry.text);
+      
+      // Show loading state
+      this.style.opacity = '0.7';
+      this.disabled = true;
+      
+      // Submit form to change country/currency
+      const form = this.closest('form');
+      if (form) {
+        form.submit();
+      }
+    });
+  }
+  
+  if (languageSelect) {
+    languageSelect.addEventListener('change', function(e) {
+      const selectedLanguage = this.options[this.selectedIndex];
+      console.log('Language changed to:', this.value, '- Text:', selectedLanguage.text);
+      
+      // Show loading state
+      this.style.opacity = '0.7';
+      this.disabled = true;
+      
+      // Submit form to change language
+      const form = this.closest('form');
+      if (form) {
+        form.submit();
+      }
+    });
+  }
+  
+  // === FALLBACK: HANDLE DISCLOSURE COMPONENTS (if still present) ===
+  
+  // Handle disclosure-based country selector (fallback)
   const countryDisclosure = container.querySelector('#FloatingCountryForm .disclosure');
-  if (countryDisclosure) {
+  if (countryDisclosure && !countrySelect) {
     const countryButton = countryDisclosure.querySelector('.disclosure__button');
     const countryList = countryDisclosure.querySelector('.disclosure__list-wrapper');
     const countryLinks = countryDisclosure.querySelectorAll('.disclosure__link');
-    const countryHiddenInput = countryDisclosure.querySelector('input[name="country_code"]');
     
     // Toggle country dropdown
     if (countryButton && countryList) {
@@ -647,20 +677,15 @@ document.addEventListener('DOMContentLoaded', function() {
       link.addEventListener('click', function(e) {
         e.preventDefault();
         const countryCode = this.getAttribute('data-value');
-        const countryName = this.querySelector('.country').textContent;
+        const countryName = this.textContent.trim();
         
-        console.log('Country selected:', countryCode, countryName);
-        
-        // Update hidden input
-        if (countryHiddenInput) {
-          countryHiddenInput.value = countryCode;
-        }
+        console.log('Country selected (disclosure):', countryCode, countryName);
         
         // Update button text
         if (countryButton) {
           const buttonSpan = countryButton.querySelector('span');
           if (buttonSpan) {
-            buttonSpan.textContent = this.querySelector('span:last-child').textContent;
+            buttonSpan.textContent = this.textContent.trim();
           }
         }
         
@@ -672,19 +697,28 @@ document.addEventListener('DOMContentLoaded', function() {
         // Submit form
         const form = this.closest('form');
         if (form) {
+          // Set the country code in a hidden input if it exists
+          let hiddenInput = form.querySelector('input[name="country_code"]');
+          if (!hiddenInput) {
+            hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'country_code';
+            form.appendChild(hiddenInput);
+          }
+          hiddenInput.value = countryCode;
+          
           form.submit();
         }
       });
     });
   }
   
-  // Handle disclosure-based language selector
+  // Handle disclosure-based language selector (fallback)
   const languageDisclosure = container.querySelector('#FloatingLanguageForm .disclosure');
-  if (languageDisclosure) {
+  if (languageDisclosure && !languageSelect) {
     const languageButton = languageDisclosure.querySelector('.disclosure__button');
     const languageList = languageDisclosure.querySelector('.disclosure__list-wrapper');
     const languageLinks = languageDisclosure.querySelectorAll('.disclosure__link');
-    const languageHiddenInput = languageDisclosure.querySelector('input[name="locale_code"]');
     
     // Toggle language dropdown
     if (languageButton && languageList) {
@@ -710,18 +744,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const localeCode = this.getAttribute('data-value');
         const languageName = this.textContent.trim();
         
-        console.log('Language selected:', localeCode, languageName);
-        
-        // Update hidden input
-        if (languageHiddenInput) {
-          languageHiddenInput.value = localeCode;
-        }
+        console.log('Language selected (disclosure):', localeCode, languageName);
         
         // Update button text
         if (languageButton) {
           const buttonSpan = languageButton.querySelector('span');
           if (buttonSpan) {
-            buttonSpan.textContent = this.querySelector('span:last-child').textContent;
+            buttonSpan.textContent = this.textContent.trim();
           }
         }
         
@@ -733,6 +762,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Submit form
         const form = this.closest('form');
         if (form) {
+          // Set the locale code in a hidden input if it exists
+          let hiddenInput = form.querySelector('input[name="locale_code"]');
+          if (!hiddenInput) {
+            hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'locale_code';
+            form.appendChild(hiddenInput);
+          }
+          hiddenInput.value = localeCode;
+          
           form.submit();
         }
       });
@@ -753,15 +792,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-  
-  // Fallback: Handle any regular select elements (if they exist)
-  const allSelects = container.querySelectorAll('select');
-  allSelects.forEach(select => {
-    select.addEventListener('change', function() {
-      console.log('Select changed:', this.name, '=', this.value);
-      this.closest('form').submit();
-    });
-  });
   
   // Click outside to close dropdowns and floating panel
   document.addEventListener('click', function(event) {
