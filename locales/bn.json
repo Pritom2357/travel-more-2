@@ -1274,5 +1274,151 @@
       "send_on": "বছর-মাস-দিন",
       "send_on_label": "পাঠান (ঐচ্ছিক)"
     }
+  },
+  "sections": {
+    "quick_order_list": {
+      "remove_all": "সবগুলো সরান",
+      "cancel": "বাতিল করুন",
+      "min_error": "এই আইটেমটিতে সর্বনিম্ন {{ min }} আছে",
+      "max_error": "এই আইটেমটির সর্বোচ্চ {{ max }}",
+      "step_error": "আপনি এই আইটেমটি শুধুমাত্র {{ step }} এর বৃদ্ধিতে যোগ করতে পারবেন।"
+    }
+  },
+  "general": {
+    "password_page": {
+      "login_form_heading": "পাসওয়ার্ড ব্যবহার করে দোকানে প্রবেশ করুন:",
+      "login_password_button": "পাসওয়ার্ড ব্যবহার করে লিখুন",
+      "login_form_password_label": "পাসওয়ার্ড",
+      "login_form_password_placeholder": "তোমার পাসওয়ার্ড",
+      "login_form_error": "ভুল পাসওয়ার্ড!",
+      "login_form_submit": "প্রবেশ করান",
+      "admin_link_html": "আপনি কি দোকানের মালিক? <a href=\"/admin\" class=\"link underlined-link\">এখানে লগ ইন করুন।</a>",
+      "powered_by_shopify_html": "এই দোকানটি {{ shopify }} দ্বারা পরিচালিত হবে"
+    },
+    "social": {
+      "alt_text": {
+        "share_on_facebook": "ফেসবুকে শেয়ার করুন",
+        "share_on_twitter": "X-এ শেয়ার করুন",
+        "share_on_pinterest": "Pinterest-এ পিন করুন"
+      },
+      "links": {
+        "twitter": "এক্স (টুইটার)",
+        "facebook": "ফেসবুক",
+        "pinterest": "পিন্টারেস্ট",
+        "instagram": "ইনস্টাগ্রাম",
+        "tumblr": "টাম্বলার",
+        "snapchat": "স্ন্যাপচ্যাট",
+        "youtube": "ইউটিউব",
+        "vimeo": "ভিমিও",
+        "tiktok": "টিকটোক"
+      }
+    },
+    "continue_shopping": "কেনাকাটা চালিয়ে যান",
+    "pagination": {
+      "label": "পৃষ্ঠাঙ্কন",
+      "page": "পৃষ্ঠা {{ number }}",
+      "next": "পরবর্তী পৃষ্ঠা",
+      "previous": "পূর্ববর্তী পৃষ্ঠা"
+    },
+    "search": {
+      "search": "অনুসন্ধান করুন",
+      "reset": "অনুসন্ধান শব্দ সাফ করুন"
+    },
+    "cart": {
+      "view": "কার্ট দেখুন ( {{ count }} )",
+      "view_empty_cart": "কার্ট দেখুন",
+      "item_added": "আপনার কার্টে আইটেম যোগ করা হয়েছে"
+    },
+    "share": {
+      "close": "ক্লোজ শেয়ার",
+      "copy_to_clipboard": "লিংক কপি করুন",
+      "share_url": "লিংক",
+      "success_message": "লিঙ্কটি ক্লিপবোর্ডে কপি করা হয়েছে"
+    },
+    "slider": {
+      "of": "এর",
+      "next_slide": "ডানদিকে স্লাইড করুন",
+      "previous_slide": "বাম দিকে স্লাইড করুন",
+      "name": "স্লাইডার"
+    }
+  },
+  "newsletter": {
+    "label": "ইমেইল",
+    "success": "সাবস্ক্রাইব করার জন্য ধন্যবাদ।"
+  },
+  "accessibility": {
+    "skip_to_text": "কন্টেন্টে চলে যান",
+    "skip_to_product_info": "পণ্যের তথ্যে যান",
+    "close": "বন্ধ করা",
+    "unit_price_separator": "প্রতি",
+    "vendor": "বিক্রেতা:",
+    "error": "ত্রুটি",
+    "refresh_page": "একটি নির্বাচন নির্বাচন করার ফলে পূর্ণ পৃষ্ঠা রিফ্রেশ হবে।",
+    "link_messages": {
+      "new_window": "একটি নতুন উইন্ডোতে খুলবে।",
+      "external": "বাহ্যিক ওয়েবসাইট খোলে।"
+    },
+    "loading": "লোড হচ্ছে...",
+    "total_reviews": "মোট পর্যালোচনা",
+    "star_reviews_info": "{{ rating_value }} এর মধ্যে {{ rating_max }} তারা",
+    "collapsible_content_title": "সংকুচিত করা যায় এমন কন্টেন্ট",
+    "complementary_products": "পরিপূরক পণ্য"
+  },
+  "blogs": {
+    "article": {
+      "blog": "ব্লগ",
+      "read_more_title": "আরও পড়ুন: {{ title }}",
+      "comments": {
+        "one": "{{ count }} মন্তব্য",
+        "other": "{{ count }} মন্তব্য"
+      },
+      "moderated": "অনুগ্রহ করে মনে রাখবেন, মন্তব্য প্রকাশের আগে অনুমোদিত হতে হবে।",
+      "comment_form_title": "মতামত দিন",
+      "name": "নাম",
+      "email": "ইমেইল",
+      "message": "মন্তব্য করুন",
+      "post": "মন্তব্য পোস্ট করুন",
+      "back_to_blog": "ব্লগে ফিরে যান",
+      "share": "এই প্রবন্ধটি শেয়ার করুন",
+      "success": "আপনার মন্তব্য সফলভাবে পোস্ট করা হয়েছে! ধন্যবাদ!",
+      "success_moderated": "আপনার মন্তব্য সফলভাবে পোস্ট করা হয়েছে। আমাদের ব্লগটি মডারেট হওয়ায় আমরা কিছুক্ষণের মধ্যেই এটি প্রকাশ করব।"
+    }
+  },
+  "onboarding": {
+    "product_title": "পণ্যের শিরোনামের উদাহরণ",
+    "collection_title": "আপনার সংগ্রহের নাম"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "কার্ট যোগ করুন",
+      "choose_options": "বিকল্পগুলি বেছে নিন",
+      "choose_product_options": "{{ product_name }} এর জন্য বিকল্পগুলি বেছে নিন",
+      "description": "বিবরণ",
+      "inventory_in_stock": "মজুদে আছে",
+      "inventory_in_stock_show_count": "{{ quantity }} মজুদে আছে",
+      "inventory_low_stock": "মজুদ কম",
+      "inventory_low_stock_show_count": "স্টক কম: {{ quantity }} বাকি আছে",
+      "inventory_out_of_stock": "স্টক শেষ",
+      "inventory_out_of_stock_continue_selling": "মজুদে আছে",
+      "sku": "SKU সম্পর্কে",
+      "on_sale": "বিক্রয় ( ছাড় )",
+      "product_variants": "পণ্যের ধরণ",
+      "media": {
+        "gallery_viewer": "গ্যালারি ভিউয়ার",
+        "load_image": "গ্যালারি ভিউতে ছবি {{ index }} লোড করুন",
+        "load_model": "গ্যালারি ভিউতে 3D মডেল {{ index }} লোড করুন",
+        "load_video": "গ্যালারি ভিউতে ভিডিও {{ index }} চালান",
+        "image_available": "ছবি {{ index }} এখন গ্যালারি ভিউতে উপলব্ধ।",
+        "open_media": "মোডালে মিডিয়া {{ index }} খুলুন",
+        "play_model": "3D ভিউয়ার খেলুন",
+        "play_video": "ভিডিও চালান"
+      },
+      "quantity": {
+        "label": "পরিমাণ",
+        "input_label": "{{ product }} এর পরিমাণ",
+        "increase": "{{ product }} এর পরিমাণ বাড়ান",
+        "decrease": "{{ product }} এর পরিমাণ কমান"
+      }
+    }
   }
 }
