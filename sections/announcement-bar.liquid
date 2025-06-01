@@ -44,11 +44,20 @@
             </svg>
             {{ section.settings.country_label | default: 'Country' }}
           </label>
-          {%- form 'localization', id: 'FloatingCountryForm', class: 'floating-form' -%}
+          <form method="post" action="{{ routes.localization_form_url }}" id="FloatingCountryForm" class="floating-form" accept-charset="UTF-8">
+            <input type="hidden" name="form_type" value="localization">
+            <input type="hidden" name="return_to" value="{{ request.path }}{{ request.search }}">
+            <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
             <div class="floating-select-wrapper">
-              {%- render 'country-localization', localPosition: 'FloatingCountry' -%}
+              <select name="country_code" id="country-selector-FloatingCountry" class="floating-select" aria-labelledby="FloatingCountryLabel">
+                {%- for country in localization.available_countries -%}
+                  <option value="{{ country.iso_code }}" {%- if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+                    {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                  </option>
+                {%- endfor -%}
+              </select>
             </div>
-          {%- endform -%}
+          </form>
         </div>
       {%- endif -%}
 
@@ -60,11 +69,20 @@
             </svg>
             {{ section.settings.language_label | default: 'Language' }}
           </label>
-          {%- form 'localization', id: 'FloatingLanguageForm', class: 'floating-form' -%}
+          <form method="post" action="{{ routes.localization_form_url }}" id="FloatingLanguageForm" class="floating-form" accept-charset="UTF-8">
+            <input type="hidden" name="form_type" value="localization">
+            <input type="hidden" name="return_to" value="{{ request.path }}{{ request.search }}">
+            <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
             <div class="floating-select-wrapper">
-              {%- render 'language-localization', localPosition: 'FloatingLanguage' -%}
+              <select name="locale_code" id="language-selector-FloatingLanguage" class="floating-select" aria-labelledby="FloatingLanguageLabel">
+                {%- for language in localization.available_languages -%}
+                  <option value="{{ language.iso_code }}" {%- if language.iso_code == localization.language.iso_code %} selected{% endif %}>
+                    {{ language.endonym_name }}
+                  </option>
+                {%- endfor -%}
+              </select>
             </div>
-          {%- endform -%}
+          </form>
         </div>
       {%- endif -%}
     </div>    <button class="floating-dismiss-button">
@@ -608,9 +626,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // === ENHANCED SELECT-BASED LOCALIZATION HANDLING ===
   
-  // Handle standard select elements (our new simplified approach)
-  const countrySelect = container.querySelector('#FloatingCountryForm select[name="country_code"]');
-  const languageSelect = container.querySelector('#FloatingLanguageForm select[name="locale_code"]');
+  // Handle standard select elements
+  const countrySelect = container.querySelector('#country-selector-FloatingCountry');
+  const languageSelect = container.querySelector('#language-selector-FloatingLanguage');
   
   if (countrySelect) {
     countrySelect.addEventListener('change', function(e) {
@@ -621,9 +639,16 @@ document.addEventListener('DOMContentLoaded', function() {
       this.style.opacity = '0.7';
       this.disabled = true;
       
-      // Submit form to change country/currency
+      // Set language in hidden input
       const form = this.closest('form');
       if (form) {
+        // Make sure we're preserving the current language
+        const localeInput = form.querySelector('input[name="locale_code"]');
+        if (localeInput) {
+          localeInput.value = '{{ localization.language.iso_code }}';
+        }
+        
+        // Submit form to change country/currency
         form.submit();
       }
     });
@@ -638,9 +663,16 @@ document.addEventListener('DOMContentLoaded', function() {
       this.style.opacity = '0.7';
       this.disabled = true;
       
-      // Submit form to change language
+      // Set country in hidden input
       const form = this.closest('form');
       if (form) {
+        // Make sure we're preserving the current country
+        const countryInput = form.querySelector('input[name="country_code"]');
+        if (countryInput) {
+          countryInput.value = '{{ localization.country.iso_code }}';
+        }
+        
+        // Submit form to change language
         form.submit();
       }
     });
