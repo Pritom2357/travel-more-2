@@ -1134,8 +1134,145 @@
         "method": "শিপিং পদ্ধতি",
         "summary": "পরিবহন",
         "free": "বিনামূল্যে",
-        "free_shipping_discount": "বিনামূল্যে পরিবহন"
-      }
+        "free_shipping_discount": "বিনামূল্যে পরিবহন",
+        "one_time": "এককালীন শিপিং",
+        "subscription": "সাবস্ক্রিপশন শিপিং"
+      },
+      "pickup": {
+        "pickup": "পিকআপ",
+        "pickup_location": "পিকআপের অবস্থান",
+        "pickup_point": "পিকআপ পয়েন্ট"
+      },
+      "show_items": "আইটেম দেখান",
+      "show_order_summary": "অর্ডারের সারাংশ দেখান",
+      "hide_order_summary": "অর্ডারের সারাংশ লুকান",
+      "subtitle": "নিশ্চিত {{date}}",
+      "subtotal": "উপমোট",
+      "summary_list_title_accessibility_label": "অর্ডার আইটেম",
+      "summary_title": "অর্ডারের সারাংশ",
+      "summary_totals_title_accessibility_label": "মোট অর্ডারের পরিমাণ",
+      "shop_order_tracking": {
+        "download_shop_to_track": "প্যাকেজ ট্র্যাক করার জন্য দোকান ডাউনলোড করুন",
+        "track_order_with_shop": "দোকানের মাধ্যমে অর্ডার ট্র্যাক করুন",
+        "title_header": "আপনার ফোন দিয়ে স্ক্যান করুন",
+        "real_time_delivery_updates": "আপনার অর্ডার পাঠানোর পর শপ আপনাকে রিয়েল-টাইম ডেলিভারি আপডেট পাঠাবে।"
+      },
+      "edit_summary": {
+        "added": "যোগ করা হয়েছে",
+        "added_with_quantity": "{{quantity}} যোগ করা হয়েছে",
+        "removed": "সরানো হয়েছে",
+        "removed_with_quantity": "{{quantity}} সরানো হয়েছে",
+        "updated_at": "আপনার অর্ডারটি {{date}} তারিখে আপডেট করা হয়েছে।",
+        "returned": "ফিরে এসেছে",
+        "returned_with_quantities": "{ {{total}} এর মধ্যে {{delta}} ফেরত দেওয়া হয়েছে",
+        "removed_with_quantities": "{ {{total}} {{delta}} সরানো হয়েছে",
+        "return_line_item_removed": "রিটার্ন থেকে সরানো হয়েছে",
+        "return_line_item_removed_with_quantities": "রিটার্ন থেকে {{delta}} সরানো হয়েছে"
+      },
+      "shop_pay": {
+        "order_completed_with": "অর্ডার সম্পন্ন হয়েছে এর সাথে",
+        "learn_more": "আরও জানুন"
+      },
+      "taxes": "কর",
+      "taxes_included": "করের মধ্যে {{amount}} অন্তর্ভুক্ত",
+      "duties_and_taxes_included": "মোট মূল্যে শুল্ক এবং কর অন্তর্ভুক্ত। ডেলিভারিতে কোনও অতিরিক্ত চার্জ নেই।",
+      "duties": "কর্তব্য",
+      "ok_duties_tooltip": "এই অর্ডারটি অন্য দেশ থেকে পাঠানো হচ্ছে, তাই আপনার অর্ডারের মোট মূল্যের সাথে শুল্ক যোগ করা হয়েছে।",
+      "error_duties_tooltip": "এই অর্ডারটি অন্য দেশ থেকে পাঠানো হচ্ছে, তাই ডেলিভারির সময় শুল্ক এবং কর ধার্য করা হতে পারে।",
+      "zero_duties_tooltip": "এই অর্ডারটি অন্য দেশ থেকে পাঠানো হচ্ছে। এই মূল্যের অর্ডারের উপর কোনও শুল্ক প্রযোজ্য নয়।",
+      "tip": "টিপ",
+      "title": "অর্ডার {{name}}",
+      "total": "মোট",
+      "unit_price": "{{price}} /ea",
+      "pagination": {
+        "load_more": "আরও লোড করুন",
+        "load_more_accessibility_label": "আরও আইটেম লোড করুন",
+        "loading_accessibility_label": "আইটেম লোড হচ্ছে"
+      },
+      "login_to_view_all_order_details": "সমস্ত অর্ডারের বিবরণ দেখতে লগ ইন করুন।",
+      "log_in": "লগ ইন করুন",
+      "logged_in_account_no_permission_to_order": "আপনি {{email}} হিসেবে লগ ইন করেছেন। এই অ্যাকাউন্টের এই অর্ডার পরিচালনা করার অনুমতি নেই।",
+      "log_in_to_a_different_account": "অন্য একটি অ্যাকাউন্টে লগ ইন করুন",
+      "fees": {
+        "restocking_fee": "পুনঃমজুদ ফি",
+        "return_shipping_fee": "ফেরত পাঠানো"
+      },
+      "vat_invoices": {
+        "title": "ভ্যাট ইনভয়েস"
+      },
+      "link_sent": "লিঙ্ক পাঠানো হয়েছে",
+      "cash_rounding": "নগদ রাউন্ডিং",
+      "adjusted_payment": "সামঞ্জস্যপূর্ণ পেমেন্ট",
+      "adjusted_total": "মোট পরিমাণ সামঞ্জস্য করা হয়েছে"
+    },
+    "addresses": {
+      "add_button": "ঠিকানা যোগ করুন",
+      "add_button_text": "যোগ করুন",
+      "add_button_accessibility_label": "ঠিকানা যোগ করুন",
+      "back_button": "পিছনে",
+      "back_button_accessibility_label": "সম্পাদনা ঠিকানায় ফিরে যান {{address}}",
+      "add_address_banner": "চেকআউটের সময় ব্যবহার করার জন্য ঠিকানা যোগ করুন",
+      "no_addresses_banner": "কোনও ঠিকানা যোগ করা হয়নি",
+      "address_deleted_notification": "ঠিকানা মুছে ফেলা হয়েছে",
+      "cancel_adding_address_accessibility_label": "ঠিকানা যোগ করা বাতিল করুন",
+      "cancel_deletion_button": "বাতিল করুন",
+      "cancel_deletion_button_accessibility_label": "{{address}} মুছে ফেলা বাতিল করুন",
+      "default_address": {
+        "title": "ডিফল্ট ঠিকানা",
+        "title_accessibility_label": "ডিফল্ট ঠিকানা: {{address}}"
+      },
+      "delete_button": "মুছে ফেলুন",
+      "delete_button_accessibility_label": "{{address}} মুছে ফেলুন",
+      "delete_confirmation_button": "ঠিকানা মুছুন",
+      "delete_confirmation_button_accessibility_label": "{{address}} মুছে ফেলুন",
+      "delete_confirmation_message": "ঠিকানা মুছে ফেলবেন? বিদ্যমান অর্ডারগুলি প্রভাবিত হবে না।",
+      "delete_confirmation_title": "ঠিকানা মুছে ফেলবেন?",
+      "delete_confirmation_description": "বিদ্যমান অর্ডারগুলি প্রভাবিত হয় না।",
+      "edit_button": "সম্পাদনা",
+      "edit_button_accessibility_label": "{{address}} সম্পাদনা করুন",
+      "edit_section_accessibility_label": "{{address}} সম্পাদনা করুন",
+      "edit_modal_title": {
+        "default": "ঠিকানা সম্পাদনা করুন",
+        "billing": "বিলিং ঠিকানা সম্পাদনা করুন",
+        "shipping": "শিপিং ঠিকানা সম্পাদনা করুন"
+      },
+      "loading_accessibility_message": "ঠিকানা লোড হচ্ছে",
+      "loading_addresses_accessibility_message": "ঠিকানা লোড হচ্ছে",
+      "loading_billing_accessibility_message": "বিলিং ঠিকানা লোড হচ্ছে",
+      "loading_finished_accessibility_message": "ঠিকানার নতুন পৃষ্ঠা লোড হয়েছে।",
+      "loading_shipping_accessibility_message": "শিপিং ঠিকানা লোড হচ্ছে",
+      "pagination": {
+        "load_more": "আরও লোড করুন",
+        "load_more_accessibility_label": "আরও ঠিকানা লোড করুন"
+      },
+      "save_new_address_accessibility_label": "ঠিকানা সংরক্ষণ করুন",
+      "title": "ঠিকানা",
+      "billing_address_dropdown_placeholder": "বিলিং ঠিকানা"
+    },
+    "address_form": {
+      "attention": "মনোযোগ",
+      "attention_company": "কোম্পানি/মনোযোগ",
+      "attention_help_text": "একজন ব্যক্তি বা বিভাগের নাম",
+      "auto_complete_close_accessibility_label": "পরামর্শ বন্ধ করুন",
+      "auto_complete_title": "পরামর্শ",
+      "billing_address": "বিলিং ঠিকানা হিসেবে ব্যবহার করুন",
+      "cancel": "বাতিল করুন",
+      "cancel_accessibility_label": "{{address}} ঠিকানা সম্পাদনা বাতিল করুন",
+      "creation_success_notification": "ঠিকানা যোগ করা হয়েছে",
+      "default_address": "এটি আমার ডিফল্ট ঠিকানা।"
+    }
+  },
+  "recipient": {
+    "form": {
+      "email_label_optional_for_no_js_behavior": "প্রাপকের ইমেল (ঐচ্ছিক)",
+      "email": "ইমেইল",
+      "name_label": "প্রাপকের নাম (ঐচ্ছিক)",
+      "name": "নাম",
+      "message_label": "বার্তা (ঐচ্ছিক)",
+      "message": "বার্তা",
+      "max_characters": "{{ max_chars }} অক্ষর সর্বোচ্চ",
+      "send_on": "বছর-মাস-দিন",
+      "send_on_label": "পাঠান (ঐচ্ছিক)"
     }
   }
 }
