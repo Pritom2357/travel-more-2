@@ -1885,14 +1885,150 @@
             "view_balance_in_shop_button_label": "দোকানে ব্যালেন্স দেখুন",
             "scan_to_claim_shop_cash_label": "{{amount}} দাবি করতে স্ক্যান করুন নগদ টাকা কিনুন"
           }
-        }
+        },
+        "attempted_delivery_label": "ডেলিভারির চেষ্টা করা হয়েছে",
+        "attempted_delivery_description": "ডেলিভারির প্রচেষ্টা ব্যর্থ হয়েছিল।",
+        "attempted_to_deliver_label": "পৌঁছে দেওয়ার চেষ্টা করা হয়েছে",
+        "confirmed_description": "আমরা আপনার অর্ডার পেয়েছি।",
+        "on_its_way_description": "এই চালানটি আসার পথে।",
+        "out_for_delivery_description": "এই চালানটি ডেলিভারির জন্য বাইরে রয়েছে।",
+        "preparing_for_shipping_label": "শিপিংয়ের জন্য প্রস্তুতি নিচ্ছে",
+        "preparing_for_shipping_description": "এই জিনিসপত্রগুলি পাঠানোর জন্য প্রস্তুত করা হচ্ছে।"
       },
       "status_mark_as_delivered": "ডেলিভারি করা হয়েছে হিসেবে চিহ্নিত করুন",
       "fulfillment_status_title": "পূরণের অবস্থা: {{status}}",
       "buy_again": "আবার কিনুন",
       "buy_again_accessibility_label": "{{orderId}} অর্ডারের জন্য আবার কিনুন",
       "manage": "পরিচালনা করুন",
-      "manage_accessiblity_label": "অর্ডার পরিচালনা করুন {{orderId}}"
+      "manage_accessiblity_label": "অর্ডার পরিচালনা করুন {{orderId}}",
+      "order_list": {
+        "delivered": "বিতরণ করা হয়েছে {{date}}",
+        "empty_state_order_source_description": "শুধুমাত্র {{email}} দ্বারা প্রদত্ত অর্ডারগুলি এখানে দেখানো হবে।",
+        "empty_state_subtitle": "অর্ডার দিতে দোকানে যান।",
+        "empty_state_title": "এখনও কোনও অর্ডার নেই।",
+        "empty_state_with_location_title": "{{locationName}} এর জন্য কোনও অর্ডার নেই",
+        "empty_state_title_for_pending_orders": "কোনও মুলতুবি অর্ডার নেই",
+        "no_order_banner": "অর্ডার স্ট্যাটাস পৃষ্ঠায় আপনার এক্সটেনশন পরীক্ষা করতে, একটি অর্ডার তৈরি করুন।",
+        "estimated_shortform": "আনুমানিক {{date}}",
+        "estimated_delivery": "প্রত্যাশিত {{date}}",
+        "one_images_accessibility_label": "অর্ডারে {{lineItemName1}} অন্তর্ভুক্ত রয়েছে",
+        "two_images_accessibility_label": "অর্ডারে {{lineItemName1}} , {{lineItemName2}} অন্তর্ভুক্ত রয়েছে",
+        "three_images_accessibility_label": "অর্ডারে {{lineItemName1}} , {{lineItemName2}} , {{lineItemName3}} অন্তর্ভুক্ত রয়েছে",
+        "four_images_accessibility_label": "অর্ডারে {{lineItemName1}} , {{lineItemName2}} , {{lineItemName3}} , {{lineItemName4}} অন্তর্ভুক্ত রয়েছে",
+        "more_than_three_products_accessibility_label": "অর্ডারে {{lineItemName1}} , {{lineItemName2}} , এবং {{numberOfAdditionalProducts}} টি আরও পণ্য অন্তর্ভুক্ত রয়েছে।",
+        "more_than_four_products_accessibility_label": "অর্ডারে {{lineItemName1}} , {{lineItemName2}} , {{lineItemName3}} , এবং {{numberOfAdditionalProducts}} টি আরও পণ্য অন্তর্ভুক্ত রয়েছে।",
+        "plus_more": "+ {{numberOfAdditionalProducts}}",
+        "plus_more_products": "+ {{numberOfAdditionalProducts}} পণ্য",
+        "carousel": {
+          "one_products_accessibility_label": "অর্ডারে {{lineItemName1}} পরিমাণ {{lineItemQuantity1}} অন্তর্ভুক্ত রয়েছে",
+          "two_products_accessibility_label": "অর্ডারে {{lineItemName1}} পরিমাণ {{lineItemQuantity1}} , {{lineItemName2}} পরিমাণ {{lineItemQuantity2}} অন্তর্ভুক্ত রয়েছে",
+          "three_products_accessibility_label": "অর্ডারে {{lineItemName1}} পরিমাণ {{lineItemQuantity1}} , {{lineItemName2}} পরিমাণ {{lineItemQuantity2}} , {{lineItemName3}} পরিমাণ {{lineItemQuantity3}} অন্তর্ভুক্ত রয়েছে",
+          "four_products_accessibility_label": "অর্ডারে {{lineItemName1}} পরিমাণ {{lineItemQuantity1}} , {{lineItemName2}} পরিমাণ {{lineItemQuantity2}} , {{lineItemName3}} পরিমাণ {{lineItemQuantity3}} , {{lineItemName4}} পরিমাণ {{lineItemQuantity4}} অন্তর্ভুক্ত রয়েছে",
+          "five_products_accessibility_label": "অর্ডারে {{lineItemName1}} পরিমাণ {{lineItemQuantity1}} , {{lineItemName2}} পরিমাণ {{lineItemQuantity2}} , {{lineItemName3}} পরিমাণ {{lineItemQuantity3}} , {{lineItemName4}} পরিমাণ {{lineItemQuantity4}} , {{lineItemName5}} পরিমাণ {{lineItemQuantity5}}",
+          "six_products_accessibility_label": "অর্ডারে অন্তর্ভুক্ত রয়েছে {{lineItemName1}} পরিমাণ {{lineItemQuantity1}} , {{lineItemName2}} পরিমাণ {{lineItemQuantity2}} , {{lineItemName3}} পরিমাণ {{lineItemQuantity3}} , {{lineItemName4}} পরিমাণ {{lineItemQuantity4}} , {{lineItemName5}} পরিমাণ {{lineItemQuantity5}} , {{lineItemName6}} পরিমাণ {{lineItemQuantity6}}",
+          "six_and_more_products_accessibility_label": "অর্ডারে {{lineItemName1}} পরিমাণ {{lineItemQuantity1}} , {{lineItemName2}} পরিমাণ {{lineItemQuantity2}} , {{lineItemName3}} পরিমাণ {{lineItemQuantity3}} , {{lineItemName4}} পরিমাণ {{lineItemQuantity4}} , {{lineItemName5}} পরিমাণ {{lineItemQuantity5}} , {{lineItemName6}} পরিমাণ {{lineItemQuantity6}} এবং আরও অনেক কিছু অন্তর্ভুক্ত রয়েছে।",
+          "view_order_details": "অর্ডারের বিবরণ দেখুন",
+          "previous": "পূর্ববর্তী",
+          "next": "পরবর্তী"
+        },
+        "items": {
+          "one": "{{count}} টি আইটেম",
+          "other": "{{count}} টি আইটেম"
+        },
+        "list_view": "তালিকা দৃশ্য দেখান",
+        "no_filtered_results_description": "আপনার অর্ডার দেখতে ফিল্টারগুলি সরান বা সামঞ্জস্য করুন",
+        "no_filtered_results_title": "কোনও ফিল্টার করা ফলাফল নেই",
+        "order_link": "অর্ডার দেখুন {{name}}",
+        "order_number": "অর্ডার {{name}}",
+        "orders_title": "নিশ্চিত করা হয়েছে",
+        "pagination": {
+          "nav_accessibility_label": "অর্ডার নেভিগেশন বোতাম",
+          "next": "পরবর্তী",
+          "next_accessibility_label": "পরবর্তী অর্ডার",
+          "previous": "পূর্ববর্তী",
+          "previous_accessibility_label": "পূর্ববর্তী অর্ডারগুলি",
+          "load_more": "আরও লোড করুন",
+          "load_more_accessibility_label": "আরও অর্ডার লোড করুন"
+        },
+        "order_status_message": {
+          "list_view": {
+            "view_order_for_details": "বিস্তারিত জানার জন্য অর্ডার দেখুন",
+            "estimated_delivery": "প্রত্যাশিত {{date}}",
+            "last_updated": "সর্বশেষ আপডেট {{date}}"
+          },
+          "table_view": {
+            "estimated_delivery": "আনুমানিক ডেলিভারি {{date}}"
+          }
+        },
+        "payment_status": {
+          "list_view": {
+            "overdue": "পেমেন্টের মেয়াদ শেষ হয়ে গেছে",
+            "due": "পেমেন্টের শেষ তারিখ {{date}}",
+            "due_today": "আজ পেমেন্ট বাকি আছে",
+            "due_without_date": "পেমেন্ট বাকি আছে",
+            "due_on_fulfillment": "পূরণের পর পরিশোধযোগ্য অর্থ",
+            "pay_to_confirm": "নিশ্চিত করতে পেমেন্ট করুন",
+            "payment_not_due": "পেমেন্ট এখনও বাকি নেই"
+          },
+          "table_view": {
+            "overdue": "মেয়াদোত্তীর্ণ",
+            "due": "শেষ তারিখ {{date}}",
+            "due_today": "আজ শেষ",
+            "paid": "পরিশোধিত",
+            "due_without_date": "বকেয়া",
+            "due_on_fulfillment": "পূরণের জন্য বকেয়া",
+            "pay_to_confirm": "নিশ্চিত করতে পেমেন্ট করুন",
+            "payment_not_due": "এখনও বকেয়া নেই"
+          }
+        },
+        "sort_by": "অনুসারে সাজান: {{option}}",
+        "sort_hide_options_accessibility_label": "নিশ্চিত অর্ডারের জন্য সাজানোর বিকল্পগুলি লুকান।",
+        "sort_show_options_accessibility_label": "নিশ্চিত অর্ডারের জন্য সাজানোর বিকল্পগুলি দেখান।",
+        "sort_currently_sorted_by_accessibility_label": "বর্তমানে এই অনুসারে সাজানো হয়েছে: {{option}}",
+        "sort_title": "সাজান",
+        "sort": {
+          "date": {
+            "newest": "নতুন থেকে পুরনো পর্যন্ত",
+            "oldest": "পুরনো থেকে নতুন"
+          },
+          "location": {
+            "ascending": "অবস্থান (AZ)",
+            "descending": "অবস্থান (জেডএ)"
+          },
+          "order_number": {
+            "ascending": "অর্ডার নম্বর (কম থেকে বেশি)",
+            "descending": "অর্ডার নম্বর (উচ্চ থেকে নিম্ন)"
+          },
+          "order_total": {
+            "ascending": "মোট অর্ডার (কম থেকে বেশি)",
+            "descending": "মোট অর্ডার (সর্বোচ্চ থেকে নিম্ন)"
+          }
+        },
+        "location_filter_picker": {
+          "all_location": "সকল অবস্থান",
+          "current_location": "বর্তমান অবস্থান",
+          "switch_view": "ভিউ স্যুইচ করুন"
+        },
+        "filter_title": "ফিল্টার",
+        "filter": {
+          "clear_section": "বিভাগটি সাফ করুন",
+          "clear_all": "সব সাফ করুন",
+          "apply": "প্রয়োগ করুন",
+          "date": {
+            "start_date": "শুরুর তারিখ",
+            "end_date": "শেষ তারিখ",
+            "title": "অর্ডারের তারিখ",
+            "today": "আজ",
+            "last_7_days": "গত ৭ দিন",
+            "last_30_days": "গত ৩০ দিন",
+            "last_90_days": "গত ৯০ দিন",
+            "last_365_days": "গত ১২ মাস",
+            "custom": "কাস্টম"
+          }
+        },
+        "table_view": "টেবিল ভিউ দেখান",
+        "show_order_actions_accessibility_label": "{{name}} অর্ডারের জন্য অর্ডার অ্যাকশন দেখান"
+      }
     },
     "order_details": {
       "shipment_timeline": {
