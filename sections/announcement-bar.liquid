@@ -1,29 +1,16 @@
 {%- comment -%}
-  Floating Country & Language Selector — native form submit (works everywhere)
+  Floating Language Selector — native form submit (works everywhere)
 {%- endcomment -%}
 
 {%- assign floating_id = 'floating-lang-' | append: section.id -%}
-{%- assign has_country_size = localization.available_countries.size -%}
-{%- if has_country_size > 1 -%}
-  {%- assign has_country = true -%}
-{%- else -%}
-  {%- assign has_country = false -%}
-{%- endif -%}
-
-{%- assign has_language_size = localization.available_languages.size -%}
-{%- if has_language_size > 1 -%}
-  {%- assign has_language = true -%}
-{%- else -%}
-  {%- assign has_language = false -%}
-{%- endif -%}
 
 <div id="{{ floating_id }}"
      class="floating-localization-container {{ section.settings.position_class }}">
 
   <!-- COLLAPSED BUTTON -->
   <div id="collapsed-{{ floating_id }}" class="floating-collapsed">
-    <button class="floating-toggle-button" aria-label="Open region selector">
-      🌐 <span>{{ section.settings.collapsed_label | default: 'Region' }}</span>
+    <button class="floating-toggle-button" aria-label="Open language selector">
+      🌐 <span>{{ section.settings.collapsed_label | default: 'Language' }}</span>
     </button>
   </div>
 
@@ -31,69 +18,43 @@
   <div id="expanded-{{ floating_id }}" class="floating-expanded" style="display:none">
     <div class="floating-header">
       <span class="floating-title">
-        {{ section.settings.expanded_title | default: 'Select Your Preferences' }}
+        {{ section.settings.expanded_title | default: 'Select Your Language' }}
       </span>
       <button class="floating-close-button" aria-label="Close selector">✕</button>
     </div>
 
     <div class="floating-content">
 
-      <!-- COUNTRY SELECTION FORM -->
-      {%- if has_country -%}
-        <div class="floating-selector-group">
-          <label class="floating-selector-label" id="FloatingCountryLabel">
-            🌎 {{ section.settings.country_label | default: 'Country' }}
-          </label>
-          
-          {% form 'localization', id: 'FloatingCountryForm', class: 'floating-form' %}
-            <input type="hidden" name="return_to" value="{{ canonical_url | default: request.origin }}">
-            <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
-            
-            <div class="floating-select-wrapper">
-              <select id="country-selector-FloatingCountry" 
-                      name="country_code"
-                      class="floating-select" 
-                      aria-labelledby="FloatingCountryLabel">
-                {% for country in localization.available_countries %}
-                  <option value="{{ country.iso_code }}"
-                          {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
-                    {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
-                  </option>
-                {% endfor %}
-              </select>
-            </div>
-          {% endform %}
-        </div>
-      {%- endif -%}
+      <!-- =======  LOCALIZATION FORM  ======= -->
+      {% form 'localization', id: 'FloatingLanguageForm', class: 'floating-form' %}
+        <!-- keep the current country so currency doesn’t change -->
+        <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+        <!-- Shopify writes return_to into its 302 Location header automatically,
+             but giving it here guarantees we stay on the same page -->
+        <input type="hidden" name="return_to" value="{{ request.full_path | escape }}">
+        <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
 
-      <!-- LANGUAGE SELECTION FORM -->
-      {%- if has_language -%}
         <div class="floating-selector-group">
           <label class="floating-selector-label" id="FloatingLanguageLabel">
-            🗣️ {{ section.settings.language_label | default: 'Language' }}
+            🌐 {{ section.settings.language_label | default: 'Language' }}
           </label>
 
-          {% form 'localization', id: 'FloatingLanguageForm', class: 'floating-form' %}
-            <input type="hidden" name="return_to" value="{{ canonical_url | default: request.origin }}">
-            <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
-            
-            <div class="floating-select-wrapper">
-              <select id="language-selector-FloatingLanguage"
-                      name="locale_code"
-                      class="floating-select"
-                      aria-labelledby="FloatingLanguageLabel">
-                {% for language in localization.available_languages %}
-                  <option value="{{ language.iso_code }}"
-                          {% if language.iso_code == localization.language.iso_code %}selected{% endif %}
-                          lang="{{ language.iso_code }}">
-                    {{ language.endonym_name }}
-                  </option>
-                {% endfor %}
-              </select>
-            </div>
-          {% endform %}
+          <div class="floating-select-wrapper">
+            <select id="language-selector-FloatingLanguage"
+                    class="floating-select"
+                    aria-labelledby="FloatingLanguageLabel">
+              {% for language in localization.available_languages %}
+                <option value="{{ language.iso_code }}"
+                        {% if language.iso_code == localization.language.iso_code %}selected{% endif %}
+                        lang="{{ language.iso_code }}">
+                  {{ language.endonym_name }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
-      {%- endif -%}
+      {% endform %}
+      <!-- /form -->
 
     </div>
 
@@ -104,7 +65,7 @@
 </div>
 
 <style>
-  /* --- Enhanced styling for both selectors --- */
+  /* --- minimal styling, identical to previous snippets --- */
   .floating-localization-container{position:fixed;z-index:9999;--br:12px;font-family:inherit}
   .floating-localization-container.bottom-right{bottom:20px;right:20px}
   .floating-localization-container.bottom-left{bottom:20px;left:20px}
@@ -117,47 +78,15 @@
   .floating-title{font-size:14px;font-weight:600}
   .floating-content{padding:20px}
   .floating-selector-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;margin-bottom:8px}
-  .floating-selector-group{margin-bottom:16px}
-  .floating-selector-group:last-child{margin-bottom:0}
   .floating-select-wrapper select{width:100%;padding:12px 16px;border:2px solid #d1d5db;border-radius:8px;font-size:13px;cursor:pointer}
   .floating-dismiss-button{width:100%;padding:12px 20px;background:#f9fafb;border:0;border-top:1px solid #f0f0f0;font-size:12px;cursor:pointer}
   .floating-localization-container.hidden{display:none!important}
-  
-  /* Select hover and focus states */
-  .floating-select-wrapper select:hover {
-    border-color: #a8b0c0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  }
-  .floating-select-wrapper select:focus {
-    outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
-  }
-  
-  /* Mobile responsiveness */
-  @media screen and (max-width: 768px) {
-    .floating-localization-container {
-      bottom: 20px !important;
-      right: 20px !important;
-      left: auto !important;
-      top: auto !important;
-    }
-    
-    .floating-expanded {
-      width: calc(100vw - 40px);
-      max-width: 320px;
-    }
-    
-    .floating-select-wrapper select {
-      font-size: 16px; /* Prevents iOS zoom */
-    }
-  }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ===== expand / collapse / dismiss behaviour ===== */
+  /* ===== expand / collapse / dismiss behaviour (unchanged) ===== */
   const id      = '{{ floating_id }}';
   const wrap    = document.getElementById(id);
   const col     = document.getElementById('collapsed-' + id);
@@ -165,14 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggle  = wrap.querySelector('.floating-toggle-button');
   const close   = wrap.querySelector('.floating-close-button');
   const bye     = wrap.querySelector('.floating-dismiss-button');
-  
-  // Get both selectors
-  const langSelect = document.getElementById('language-selector-FloatingLanguage');
-  const countrySelect = document.getElementById('country-selector-FloatingCountry');
-  
-  // Get both forms
-  const langForm = document.getElementById('FloatingLanguageForm');
-  const countryForm = document.getElementById('FloatingCountryForm');
+  const select  = document.getElementById('language-selector-FloatingLanguage');
+  const form    = document.getElementById('FloatingLanguageForm');
 
   const expKey  = id + '_expanded';
   const hideKey = id + '_hide';
@@ -187,44 +110,17 @@ document.addEventListener('DOMContentLoaded', () => {
   function showExp(){col.style.display='none';exp.style.display='block';sessionStorage.setItem(expKey,'1');}
   function showCol(){exp.style.display='none';col.style.display='block';sessionStorage.setItem(expKey,'0');}
 
-  /* ===== on language change: submit form ===== */
-  if (langSelect) {
-    langSelect.addEventListener('change', () => {
-      console.log('Language changed to:', langSelect.value);
-      langSelect.style.opacity = '0.7';
-      langSelect.disabled = true;
-      langForm.submit();
-    });
-  }
-  
-  /* ===== on country change: submit form ===== */
-  if (countrySelect) {
-    countrySelect.addEventListener('change', () => {
-      console.log('Country changed to:', countrySelect.value);
-      countrySelect.style.opacity = '0.7';
-      countrySelect.disabled = true;
-      countryForm.submit();
-    });
-  }
-  
-  /* ===== handle escape key and click outside ===== */
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && exp.style.display === 'block') {
-      showCol();
-    }
-  });
-  
-  document.addEventListener('click', function(e) {
-    if (exp.style.display === 'block' && !wrap.contains(e.target)) {
-      showCol();
-    }
+  /* ===== on language pick: update hidden input & POST ===== */
+  select.addEventListener('change', () => {
+    form.querySelector('input[name="locale_code"]').value = select.value;
+    form.submit();                      // Shopify handles redirect & cookie
   });
 });
 </script>
 
 {% schema %}
 {
-  "name": "Region Selector",
+  "name": "Floating Language Selector",
   "settings": [
     {
       "type": "select",
@@ -238,14 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
       ],
       "default": "bottom-right"
     },
-    { "type": "text", "id": "collapsed_label", "label": "Collapsed button label", "default": "Region" },
-    { "type": "text", "id": "expanded_title",  "label": "Expanded panel title",   "default": "Select Your Preferences" },
-    { "type": "text", "id": "country_label",   "label": "Country selector label", "default": "Country" },
-    { "type": "text", "id": "language_label",  "label": "Language selector label", "default": "Language" },
+    { "type": "text", "id": "collapsed_label", "label": "Collapsed button label", "default": "Language" },
+    { "type": "text", "id": "expanded_title",  "label": "Expanded panel title",   "default": "Select Your Language" },
+    { "type": "text", "id": "language_label",  "label": "Select box label",       "default": "Language" },
     { "type": "text", "id": "dismiss_text",    "label": "Dismiss button text",    "default": "Don't show again" }
   ],
   "presets": [
-    { "name": "Floating Region Selector" }
+    { "name": "Floating Language Selector" }
   ]
 }
 {% endschema %}
