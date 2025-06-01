@@ -1340,7 +1340,52 @@
         "credit_card_number_invalid": "أدخل رقم بطاقة صالحًا",
         "credit_card_expiry_invalid": "أدخل تاريخ انتهاء الصلاحية صالحًا",
         "credit_card_month_invalid": "أدخل شهر انتهاء الصلاحية الصحيح",
-        "credit_card_year_invalid": "أدخل سنة انتهاء الصلاحية الصالحة"
+        "credit_card_year_invalid": "أدخل سنة انتهاء الصلاحية الصالحة",
+        "credit_card_start_invalid": "أدخل تاريخ بدء البطاقة الصحيح",
+        "credit_card_start_month_invalid": "أدخل شهر بداية البطاقة الصالحة",
+        "credit_card_start_year_invalid": "أدخل سنة بدء البطاقة الصالحة",
+        "credit_card_number_blank": "أدخل رقم البطاقة",
+        "credit_card_verification_value_blank": "أدخل رمز CVV أو رمز الأمان الموجود على بطاقتك",
+        "delivery_line_detail_changed": "قد تكون بعض تفاصيل التسليم قد تغيرت. تأكد من طريقة الشحن وحاول مرة أخرى.",
+        "delivery_zone_not_found": "لم يتم العثور على المنطقة المحددة في البلد المحدد.",
+        "reduction_code_code_not_found": "أدخل رمز خصم صالح أو بطاقة هدية",
+        "reduction_code_discount_not_found": "أدخل رمز خصم صالح",
+        "reduction_code_gift_card_code_invalid": "أدخل بطاقة هدية صالحة",
+        "reduction_code_gift_card_unusable": "لا يمكنك استخدام بطاقة الهدايا لشراء بطاقة هدايا أخرى",
+        "reduction_code_gift_cards_not_supported_with_deferred_purchase_options": "لا يتم دعم بطاقات الهدايا مع خيارات الشراء المؤجلة.",
+        "shipping_line_phone_blank": "أدخل رقم الهاتف لاستخدام طريقة التسليم هذه",
+        "shipping_line_phone_invalid": "أدخل رقم هاتف صالح",
+        "tips_invalid_tip_amount": "أدخل إكرامية أقل من %{amount}",
+        "gift_card_already_applied": "لقد تم تطبيق بطاقة الهدية هذه بالفعل على طلبك",
+        "gift_card_disabled": "بطاقة الهدية هذه لم تعد متاحة",
+        "gift_card_expired": "انتهت صلاحية بطاقة الهدية هذه",
+        "gift_card_depleted": "بطاقة الهدية هذه لا يوجد بها رصيد متبقي",
+        "gift_card_currency_mismatch": "يمكن استخدام بطاقات الهدايا فقط في %{checkout_currency} مع هذا الطلب",
+        "gift_cards_not_supported_with_deferred_purchase_options": "لا يتم دعم بطاقات الهدايا مع خيارات الشراء المؤجلة.",
+        "gift_card_buying_gift_card": "لا يمكنك استخدام بطاقة الهدايا لشراء بطاقة هدايا أخرى",
+        "payment_gateway_missing": "اختر طريقة الدفع.",
+        "payment_gateway_needs_paid_plan_error": "طريقة الدفع هذه غير متاحة في المتجر حاليًا",
+        "payment_gateway_not_in_test_mode": "لم يتم إعداده لاختبار الطلبات. هذا المتجر لا يقبل الطلبات أو المدفوعات الفعلية.",
+        "payment_gateway_incompatible_with_multi_currency": "لإكمال عملية الدفع هذه بالعملة المحلية، يتعين عليك الدفع ببطاقة الائتمان.",
+        "payment_gateway_unsupported_for_subscriptions": "طريقة الدفع هذه غير متاحة لطلبات الاشتراك.",
+        "payment_gateway_unsupported_for_deferred_purchase_options": "طريقة الدفع هذه غير متاحة لخيارات الشراء المؤجل.",
+        "payment_gateway_unsupported_for_country": "طريقة الدفع هذه غير متاحة لبلد الشحن الخاص بك.",
+        "payment_gateway_unsupported_for_development_store_html": "لتقديم طلب تجريبي، ستحتاج إلى استخدام بوابة دفع تجريبية. تعرّف على المزيد حول <a href=\"%{docs_link}\">اختبار الطلبات في متاجر التطوير</a> .",
+        "payment_gateway_unsupported_for_order_above_maximum_orders_html": "لقد وصلتَ إلى الحد الأقصى لطلبات متجر التطوير باستخدام معالج الدفع هذا. لتقديم طلب آخر، ستحتاج إلى استخدام بوابة دفع تجريبية. تعرّف على المزيد حول <a href=\"%{docs_link}\">اختبار الطلبات في متاجر التطوير</a> .",
+        "purchase_options_agreement_blank": "لمواصلة عملية الشراء، يجب عليك الموافقة على شروط الشراء المؤجل أو المتكرر.",
+        "physical_gift_card_invalid_quantity": "يجب أن تحتوي عناصر بطاقة الهدايا المادية على كمية تتوافق مع عدد رموز بطاقة الهدايا.",
+        "physical_gift_card_duplicate_code": "يحتوي عنصر بطاقة الهدايا المادية على رمز مكرر.",
+        "physical_gift_card_invalid_code": "رمز بطاقة الهدية المادية غير صالح.",
+        "email_blank": "أدخل البريد الإلكتروني",
+        "phone_blank": "أدخل رقم الهاتف",
+        "address_country_invalid": "حدد بلدًا/منطقة من القائمة",
+        "address_zip_invalid": "أدخل رمزًا بريديًا صالحًا",
+        "gift_card_invalid": "بطاقة الهدية \"••••%{last_four_characters}\" لم تعد صالحة",
+        "vaulting_agreement_blank": "يجب حفظ بطاقتك لأن سداد رصيد هذا الطلب مستحق لاحقًا.",
+        "sms_marketing_phone_invalid": "أدخل رقم هاتف صالح",
+        "address_suggestion_did_you_mean_html": "هل تقصد %{html}؟",
+        "split_cart_international_shipping_not_supported": "يجب استخدام طريقة التسليم نفسها لجميع المنتجات عند الشحن الدولي. حدّث طريقة التسليم أو أنشئ طلبات متعددة.",
+        "invalid_delivery_address_reference_handle": "لم يتمكن من مطابقة عنوان التسليم المرجعي مع أي عناوين تسليم متاحة."
       },
       "order_summary": {
         "shipping_pending_message": "غير متوفر بعد",
@@ -1712,7 +1757,35 @@
         "return_to_store_simple": "العودة إلى المتجر"
       },
       "payment_gateway": {
-        "draft_order_deposit_due_on_fulfillment": "سيتم استحقاق {{depositAmount}} عند تأكيد طلبك. وسيُضاف الرصيد المتبقي بعد إتمام طلبك."
+        "draft_order_deposit_due_on_fulfillment": "سيتم استحقاق {{depositAmount}} عند تأكيد طلبك. وسيُضاف الرصيد المتبقي بعد إتمام طلبك.",
+        "credit_card_label": "بطاقة إئتمان",
+        "bank_deposit_label": "وديعة بنكية",
+        "cash_on_delivery_label": "الدفع عند الاستلام (COD)",
+        "money_order_label": "حوالة بريدية",
+        "debit_card_label": "بطاقة الخصم",
+        "deferred_payment_label": "اختر طريقة الدفع لاحقًا",
+        "fixed_payment_label": "سيكون موعد دفعتك مستحقًا في {{dueDate}} .",
+        "generic_payment_terms": "أنت على شروط {{translatedName}} . سيتم استحقاق دفعتك في {{dueDate}} .",
+        "login_prompt": {
+          "no_access": {
+            "message": "{{logIn}} إلى حساب لديه إمكانية الوصول إلى هذا الموقع لإضافة أو استخدام طرق الدفع المحفوظة.",
+            "link": "تسجيل الدخول"
+          }
+        },
+        "direct_payment_terms": "أنت على شروط {{translatedName}} . سيتم خصم المبلغ من بطاقتك في {{dueDate}} .",
+        "fixed_direct_payment_terms": "سيتم خصم المبلغ من بطاقتك في {{dueDate}} .",
+        "order_due_on_fulfillment_choose_later": "سيتم استحقاق الدفع الخاص بك بمجرد تنفيذ طلبك.",
+        "order_due_on_fulfillment_payment": "سيتم خصم المبلغ من بطاقتك بمجرد تنفيذ طلبك.",
+        "order_due_on_receipt_choose_later": "سيتم استحقاق الدفع الخاص بك عند الاستلام.",
+        "order_deposit_due_now": "{{depositAmount}} مستحق اليوم. الرصيد المتبقي مستحق الدفع وفقًا لشروط {{translatedName}} ، ويستحق في {{dueDate}} .",
+        "order_deposit_due_on_fulfillment": "{{depositAmount}} مستحق الدفع اليوم. سيتم استحقاق الرصيد بعد إتمام طلبك.",
+        "order_deposit_due_on_receipt": "{{depositAmount}} مستحق اليوم. سيتم استحقاق الرصيد لاحقًا.",
+        "order_deposit_due_on_fixed_date": "{{depositAmount}} مستحق اليوم. الرصيد المتبقي مستحق في {{dueDate}} .",
+        "draft_order_payment_due_later_no_terms": "سيتم استحقاق الدفع الخاص بك بمجرد تأكيد طلبك.",
+        "draft_order_payment_due_later_no_terms_payment_selected": "سيتم خصم المبلغ من بطاقتك بمجرد تأكيد طلبك.",
+        "draft_order_payment_due_later_terms": "سيتم قبول طلبك لدى {{translatedName}} بمجرد تأكيد طلبك.",
+        "draft_order_payment_due_on_fulfillment": "سيتم استحقاق الدفع الخاص بك بمجرد تأكيد طلبك وتنفيذه.",
+        "draft_order_deposit_due_later": "سيتم استحقاق {{depositAmount}} عند تأكيد طلبك. الرصيد المتبقي سيكون وفقًا لشروط {{translatedName}} ."
       },
       "shop_policies": {
         "purchase_options_cancellation_policy": "سياسة الإلغاء",
@@ -1950,6 +2023,173 @@
           },
           "label": "لا يوجد توصيل"
         }
+      },
+      "payment_errors": {
+        "transient_error": "حدثت مشكلة أثناء معالجة دفعتك. حاول تحديث هذه الصفحة أو التحقق من اتصالك بالإنترنت.",
+        "missing_shipping_address": "تعذّرت معالجة دفعتك بسبب عدم وجود عنوان الشحن. أضف عنوان الشحن وحاول مجددًا.",
+        "invalid_shipping_address": "تعذّرت معالجة دفعتك لعدم العثور على عنوان الشحن. يُرجى التحقق من عنوان الشحن والمحاولة مجددًا.",
+        "successful_offsite_with_gift_card_error": "حدثت مشكلة أثناء معالجة دفع بطاقة الهدية. حاول مرة أخرى أو استخدم طريقة دفع أخرى.",
+        "development_store_order_limit_reached": "لقد وصلتَ إلى الحد الأقصى لطلبات متجر التطوير باستخدام معالج الدفع هذا. لتقديم طلب آخر، ستحتاج إلى استخدام بوابة دفع تجريبية. تعرّف على المزيد حول %{development_store_order_testing_docs_link}.",
+        "development_store_with_order_limit": "لتقديم طلب تجريبي، ستحتاج إلى استخدام بوابة دفع تجريبية. تعرّف على المزيد حول %{development_store_order_testing_docs_link}.",
+        "development_store_order_testing_docs_link": "أوامر الاختبار في متاجر التطوير",
+        "payment_above_threshold": "مبلغ الدفع يتجاوز الحد الأقصى المسموح به لهذه المنطقة. خفّض المبلغ وحاول مجددًا.",
+        "risky": "حدثت مشكلة أثناء معالجة دفعتك. حاول مرة أخرى أو استخدم طريقة دفع أخرى.",
+        "expired_buyer_action": "انتهت صلاحية طريقة الدفع. يُرجى المحاولة مرة أخرى.",
+        "name_mismatch": "يرجى التحقق من بيانات بطاقتك. اسمك على بطاقتك وعنوان الفاتورة غير متطابقين.",
+        "amount_too_small": "يجب أن يكون الحد الأدنى لمبلغ الدفع أكبر من 0.50 دولار أمريكي. يُرجى المحاولة مرة أخرى بمبلغ أكبر.",
+        "method_not_available": "طريقة الدفع المطلوبة غير متاحة. اختر طريقة دفع أخرى وحاول مرة أخرى.",
+        "available_methods_updated": "تم تحديث طرق الدفع المتاحة.",
+        "generic_error": "حدثت مشكلة أثناء معالجة دفعتك. حاول مرة أخرى أو استخدم طريقة دفع أخرى.",
+        "rejected_transaction": "تم رفض دفعتك. حاول مرة أخرى أو استخدم طريقة دفع أخرى.",
+        "credit_card_processing": "تعذّرت معالجة دفعتك لأسباب فنية. حاول مجددًا بعد بضع دقائق أو استخدم طريقة دفع أخرى.",
+        "checkout_amount_changed": "تعذّرت معالجة دفعتك بسبب تغيير المبلغ المستحق عند الدفع. يُرجى مراجعة طلبك والمحاولة مرة أخرى.",
+        "deferred_payment_not_allowed": "لا يُسمح بالدفع المؤجل. يُرجى مراجعة طلبك والمحاولة مرة أخرى.",
+        "deferred_payment_required": "يتطلب هذا الطلب دفعًا مؤجلًا. يُرجى مراجعة طلبك والمحاولة مرة أخرى.",
+        "deferred_amount_changed": "تعذّرت معالجة دفعتك بسبب تغيير مبلغ الدفع المؤجل. يُرجى مراجعة طلبك والمحاولة مرة أخرى.",
+        "deferred_date_changed": "تعذّرت معالجة دفعتك بسبب تغيير تاريخ الدفع المؤجل. يُرجى مراجعة طلبك والمحاولة مرة أخرى.",
+        "order_total_changed": "لقد تغير إجمالي طلبك. راجعه وحاول مرة أخرى.",
+        "payment_processing": "تعذّرت معالجة دفعتك لأسباب فنية. حاول مجددًا أو استخدم طريقة دفع أخرى.",
+        "payment_processing_no_retry": "تعذّرت معالجة دفعتك لأسباب فنية. يُرجى تجربة طريقة دفع أخرى.",
+        "paypal_zero_amount": "لا يمكنك استخدام باي بال لطلبات بقيمة %{amount}. تأكد من صحة طلبك وأكمل عملية الشراء بدون باي بال.",
+        "paypal_invalid_token": "لم يكن PayPal متاحًا. حاول مرة أخرى أو استخدم طريقة دفع أخرى.",
+        "pay_later_failed": "حدث خطأ أثناء معالجة دفعتك باستخدام خيار \"الدفع لاحقًا\". اختر طريقة دفع أخرى وحاول مرة أخرى.",
+        "three_d_secure_failed": "تعذّر التحقق من دفعتك. حاول مجددًا أو استخدم طريقة دفع أخرى.",
+        "three_d_secure_failed_duplicate": "فشلت عملية مصادقة 3D Secure الخاصة ببطاقة الائتمان لأن عملية أخرى قيد التنفيذ بالفعل.",
+        "three_d_secure_failed_payment_method": "لم يتم التحقق من بطاقتك. حاول مرة أخرى أو أضف بطاقة أخرى.",
+        "three_d_secure_throttled": "محاولات كثيرة جدًا؛ يرجى الانتظار قبل المحاولة مرة أخرى",
+        "subscription_agreement_blank": "لشراء اشتراك، يجب حفظ بيانات الدفع. للمتابعة، أكّد موافقتك أو احذف عناصر الاشتراك من طلبك.",
+        "insufficient_funds": "تم رفض دفعتك لعدم كفاية الرصيد. حاول مرة أخرى أو استخدم طريقة دفع أخرى.",
+        "multiple_deferred_payment_not_allowed": "يُسمح بدفعة مؤجلة واحدة فقط لكل طلب. يُرجى مراجعة طلبك والمحاولة مرة أخرى.",
+        "shipping_must_match_billing": "يجب أن يتطابق عنوان الفاتورة مع عنوان الشحن. يُرجى استخدام طريقة دفع أخرى.",
+        "decision_rule_block": "حدثت مشكلة أثناء معالجة دفعتك. يُرجى التواصل مع صاحب المتجر.",
+        "pick_up_card": "تم رفض بطاقتك. حاول مرة أخرى أو استخدم طريقة دفع أخرى.",
+        "cannot_verify": "لم يتم التحقق من بيانات الدفع الخاصة بك. تحقق من بيانات بطاقتك وحاول مرة أخرى.",
+        "invalid_number": "أدخل رقم بطاقة صالحًا",
+        "invalid_expiry_date": "أدخل تاريخ انتهاء الصلاحية صالحًا",
+        "invalid_cvc": "أدخل رمز أمان صالحًا",
+        "expired_card": "انتهت صلاحية بطاقتك. استخدم طريقة دفع أخرى.",
+        "payment_method_not_applicable": "طريقة الدفع هذه غير متاحة. استخدم طريقة دفع أخرى.",
+        "card_declined": "تم رفض بطاقتك. حاول مرة أخرى أو استخدم طريقة دفع أخرى.",
+        "processing_error": "حدثت مشكلة أثناء معالجة دفعتك. حاول مرة أخرى أو استخدم طريقة دفع أخرى.",
+        "processing_error_checkout_as_guest": "حدثت مشكلة أثناء معالجة دفعتك. حاول مرة أخرى باستخدام طريقة دفع أخرى أو {{checkout_as_guest_link}} .",
+        "selected_payment_method": "حدثت مشكلة في طريقة الدفع التي اخترتها ولم يتم تحصيل أي مبلغ منك. حاول مرة أخرى أو استخدم طريقة دفع أخرى.",
+        "payment_method_billing_address": "حدثت مشكلة في عنوان إرسال الفاتورة لطريقة الدفع التي اخترتها، ولم يتم تحصيل أي مبلغ منك. تحقق من العنوان وحاول مرة أخرى أو استخدم طريقة دفع أخرى.",
+        "call_issuer": "تم رفض بطاقتك. استخدم طريقة دفع أخرى أو تواصل مع مصرفك لمزيد من المعلومات.",
+        "test_mode_live_card": "لا يمكن لهذا المتجر قبول الطلبات الحقيقية أو المدفوعات الحقيقية."
+      },
+      "shipping_errors": {
+        "shipping_method": "لقد تغيرت خيارات الشحن لطلبك. راجع اختيارك وحاول مرة أخرى.",
+        "shipping_method_not_available": "تم تحديث سلة التسوق الخاصة بك، ولا يمكن شحن المنتجات التي أضفتها إلى عنوانك. يُرجى إزالة المنتجات لإكمال طلبك.",
+        "shipping_method_not_available_generic": {
+          "one": "لا يمكن شحن طلبك إلى العنوان المحدد. راجع عنوانك للتأكد من صحته وحاول مرة أخرى، أو اختر عنوانًا آخر.",
+          "other": "بعض المنتجات في سلة التسوق الخاصة بك لا يمكن شحنها إلى العنوان الذي أدخلته. راجع عنوانك للتأكد من صحته وحاول مرة أخرى، أو اختر عنوانًا آخر."
+        },
+        "shipping_method_not_available_due_to_unsatisfied_conditions": "المنتجات في سلة التسوق لا تستوفي شروط السعر أو الوزن المطلوبة للشحن. حدّث سلة التسوق وحاول مرة أخرى.",
+        "shipping_method_not_available_updated": {
+          "one": "المنتج الذي أضفته لا يُشحن إلى موقعك. أزله لإتمام عملية الشراء، أو تواصل مع المتجر.",
+          "other": "منتج واحد أو أكثر أضفته لا يُشحن إلى موقعك. أزله لإتمام عملية الشراء، أو تواصل مع المتجر."
+        },
+        "payment_method_not_supported": "لا يمكنك استخدام طريقة الدفع هذه لـ %{country}. يُرجى استخدام طريقة دفع أخرى للشحن إلى هذا البلد.",
+        "empty_state": "أدخل عنوان الشحن الخاص بك لعرض طرق الشحن المتاحة.",
+        "title": "الشحن غير متاح",
+        "invalid_selected_address": "عنوان الشحن المحدد غير صالح",
+        "invalid_selected_address_with_update_link": "عنوان الشحن المحدد غير صالح. %{update_address_link} أو حدد عنوانًا مختلفًا",
+        "unavailable_selected_address": "الشحن غير متاح للعنوان المحدد",
+        "unavailable_selected_address_for_region": "الشحن غير متاح لـ {{region}} . اختر عنوانًا آخر للمتابعة."
+      },
+      "alternative_payment_method_banner": {
+        "express_checkout": "الدفع السريع",
+        "or": "أو",
+        "or_pay_another_way": "أو ادفع بطريقة أخرى",
+        "or_check_out_another_way": "أو تحقق من طريقة أخرى",
+        "or_pay_with_credit_card": "أو ادفع ببطاقة الائتمان",
+        "show_more_options": "إظهار المزيد من الخيارات",
+        "hide_more_options": "إخفاء المزيد من الخيارات"
+      },
+      "post_purchase": {
+        "page_title": "ما بعد الشراء",
+        "title": "ما بعد الشراء",
+        "escape_confirmation": "لقد دفعت ثمن طلبك.",
+        "escape_action": "عرض تأكيد الطلب ›",
+        "components": {
+          "close": "يغلق",
+          "expand": "عرض المزيد",
+          "processing": "يعالج…",
+          "submit": "يُقدِّم"
+        }
+      },
+      "processing": {
+        "redirecting_page_title": "إعادة التوجيه…",
+        "redirecting_title": "إعادة التوجيه…",
+        "redirecting_notice": "انتظر بينما نقوم بإعادة توجيهك.",
+        "redirecting_to_bank": "إعادة التوجيه إلى {{bank}}",
+        "complete_your_purchase_title": "أكمل عملية الشراء الخاصة بك",
+        "continue_to_payment_gateway_notice": "واصل الدفع لإضافة معلومات الدفع الخاصة بك.",
+        "continue_to_payment_gateway_button_label": "متابعة الدفع",
+        "complete_your_purchase_title_error": "تصحيح معلومات الدفع الخاصة بك",
+        "continue_to_payment_gateway_notice_error": "لم يتم التحقق من معلومات الدفع الخاصة بك.",
+        "continue_to_payment_gateway_button_label_error": "تحديث معلومات الدفع",
+        "page_title": "جاري معالجة الطلب",
+        "title": "جاري معالجة الطلب",
+        "your_order_has_been_received_title": "شكرا لطلبك",
+        "you_will_receive_confirmation": "نتلقى الكثير من الطلبات حاليًا. من المفترض أن يصلك تأكيد عبر البريد الإلكتروني أو رسالة نصية قريبًا. إذا لم تستلمه خلال الساعة القادمة، فأخبرنا.",
+        "you_will_not_be_charged": "لن يتم تحصيل رسوم منك بعد",
+        "wait": {
+          "short": "يتم معالجة طلبك.",
+          "medium": {
+            "one": "جاري معالجة طلبك. مدة الانتظار المتوقعة هي %{count} دقيقة.",
+            "other": "جاري معالجة طلبك. مدة الانتظار المتوقعة هي %{count} دقيقة."
+          },
+          "long": "ستصلك رسالة بريد إلكتروني فور معالجة طلبك. حاليًا، عدد الطلبات مرتفع.",
+          "no_auto_refresh_html": "إذا لم يتم إعادة توجيهك تلقائيًا، %{link}.",
+          "refresh_this_page": "تحديث هذه الصفحة"
+        },
+        "action_required": "الإجراء المطلوب",
+        "modal_notice": "نحن نتواصل مع {{paymentMethod}}"
+      },
+      "payment_challenge_modal": {
+        "instructions": "أكمل عملية الشراء باستخدام رمز {{paymentMethod}} الخاص بك",
+        "timer_message": "لديك {{timeLeft}} للدفع",
+        "copy_text": "نسخ رمز {{paymentMethod}}",
+        "open_app_text": "افتح تطبيق {{paymentMethod}}",
+        "header": "ادفع باستخدام {{paymentMethod}}",
+        "qr_code": {
+          "instructions": "أكمل عملية الشراء باستخدام رمز {{paymentMethod}} الخاص بك"
+        },
+        "external": {
+          "instructions": "قم بتأكيد الدفع على تطبيقك لإتمام عملية الشراء هذه"
+        },
+        "close": "اغلاق التحدي"
+      },
+      "failed_payment": {
+        "page_title": "لم يتم معالجة الدفع",
+        "title": "لم يتم معالجة الدفع",
+        "payment_not_processed_title": "لم يتم معالجة الدفع الخاص بك",
+        "payment_not_processed_text": "لم يتم تحصيل أي مبلغ منك. ارجع إلى سلة التسوق لإكمال عملية الشراء.",
+        "return_to_cart_button_label": "العودة إلى سلة التسوق"
+      },
+      "store_credit_errors": {
+        "generic_error": "حدثت مشكلة في رصيد متجرك. حاول مرة أخرى أو أعد تحميل الصفحة."
+      },
+      "redeemable_errors": {
+        "gift_card": {
+          "duplicate": "لقد تم تطبيق بطاقة الهدية على طلبك بالفعل",
+          "insufficient_funds": "بطاقة الهدية هذه لا يوجد بها رصيد متبقي",
+          "expired": "انتهت صلاحية بطاقة الهدية هذه",
+          "not_available": "بطاقة الهدية هذه لم تعد متاحة",
+          "invalid": "أدخل بطاقة هدية صالحة",
+          "currency_mismatch": "يتم قبول بطاقات الهدايا فقط في %{shop_currency}",
+          "generic": "لم يتم إضافة بطاقة الهدية إلى عملية الدفع",
+          "throttle_limit_exceeded": "لقد تجاوزت الحد الأقصى لعدد المحاولات. حاول مرة أخرى لاحقًا.",
+          "no_longer_available": "لم يعد من الممكن استخدام بطاقة الهدايا هذه مع عملية الدفع هذه"
+        }
+      },
+      "merchant_instruction_errors": {
+        "empty_stable_id": "تحتوي تعليمات البضاعة %{position} %{name} على معرف ثابت فارغ.",
+        "invalid_stable_id_target": "تشير تعليمات البضائع %{position} %{name} إلى معرف الاستقرار %{stable_id}، ولكن هذا المعرف غير موجود في أسطر البضائع.",
+        "duplicate_variant_id": "تحتوي تعليمات البضاعة %{position} %{name} على معرف متغير مكرر %{variant_id}.",
+        "invalid_variant_id_target": "تشير تعليمات البضائع %{name} إلى معرف المتغير %{variant_id}، ولكن هذا المتغير غير موجود في أسطر البضائع.",
+        "invalid_price_override_target": "تعليمات تجاوز سعر السلعة للعنصر %{stable_id} غير صالحة لأنها مكون حزمة."
       }
     },
     "pagination": {
