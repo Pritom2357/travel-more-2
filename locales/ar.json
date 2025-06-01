@@ -1180,7 +1180,22 @@
             "description_due_on_receipt": "سوف تتلقى فاتورة عندما يحين موعد الدفع.",
             "description_due_on_receipt_partially_paid": "تم سداد هذا الطلب جزئيًا. يتبقى لديك رصيد. ستصلك فاتورة عند استحقاق الدفع.",
             "description_due_on_fulfillment": "يجب أن يتم الدفع بمجرد استيفاء جميع العناصر في هذا الطلب.",
-            "description_due_on_fulfillment_partially_paid": "تم سداد جزء من هذا الطلب. يتبقى لديك رصيد. يُستحق الدفع عند استيفاء جميع بنود هذا الطلب."
+            "description_due_on_fulfillment_partially_paid": "تم سداد جزء من هذا الطلب. يتبقى لديك رصيد. يُستحق الدفع عند استيفاء جميع بنود هذا الطلب.",
+            "banner_overdue": {
+              "one": "دفعتك متأخرة عن الموعد المحدد بـ {{count}} يوم",
+              "other": "دفعتك متأخرة عن الموعد المحدد بـ {{count}} يوم"
+            },
+            "banner_due": {
+              "one": "سيتم استحقاق الدفع الخاص بك في {{count}} يوم",
+              "other": "سيتم استحقاق الدفع الخاص بك خلال {{count}} يوم"
+            },
+            "banner_due_today": "الدفع الخاص بك مستحق اليوم",
+            "title": "الدفع المستحق",
+            "title_with_date": "تاريخ الدفع المستحق: {{date}}",
+            "title_due_on_receipt": "الدفع غير مستحق بعد",
+            "title_due_on_fulfillment": "الدفع المستحق عند التنفيذ",
+            "description_overdue": "لقد تأخر الدفع الخاص بك.",
+            "description_partially_paid": "تم سداد هذا الطلب جزئيًا. يتبقى لديك رصيد."
           },
           "draft": {
             "description": "يتم تحديد تفاصيل الدفع عند تأكيد الطلب.",
@@ -1234,7 +1249,10 @@
           "hide_events_accessibility_label": "إخفاء تفاصيل طلب المسودة"
         },
         "subtitle": "تم الإرسال في {{date}}",
-        "title": "الطلب {{name}}"
+        "title": "الطلب {{name}}",
+        "draft_order_subtitle": "تم التأكيد بتاريخ {{date}} من الطلب {{draftOrderName}}",
+        "loading": "تحميل تفاصيل الطلب",
+        "loading_finished_accessibility_message": "تم تحميل تفاصيل الطلب"
       },
       "payment_methods": {
         "payment_delete": {
@@ -1260,6 +1278,102 @@
         "modal_po_number_input_max_length_error": "تحتوي أرقام طلب الشراء على الحد الأقصى من {{maxLength}} حرف.",
         "save": "يحفظ",
         "title": "رقم الطلب {{poNumber}}"
+      },
+      "account_information": {
+        "company_card_name_label": "اسم الشركة",
+        "company_card_section_accessibility_label": "شركة"
+      },
+      "locations": {
+        "contact_email": "بريد إلكتروني",
+        "contact_list_title": "الناس",
+        "contact_name": "اسم",
+        "contact_permissions": "الأذونات",
+        "contact_phone_number": "رقم التليفون",
+        "location_picker_label": "اسم الموقع",
+        "location_picker_accessibility_label": "اسم الموقع: {{locationName}}",
+        "net_payment_terms_description": "{{name}} : المدفوعات المستحقة خلال {{numberOfDays}} يومًا",
+        "deposit_percentage": "إيداع {{percentage}}",
+        "own_role_contact_name": "أنت",
+        "pagination": {
+          "load_more": "تحميل المزيد",
+          "load_more_accessibility_label": "تحميل المزيد من المواقع"
+        },
+        "payment_details_title": "تفاصيل الدفع",
+        "payment_terms": "شروط الدفع",
+        "permissions_label": "أذوناتك",
+        "permissions_title": "الأذونات",
+        "section_title": "موقع",
+        "shipping_address_required": "أضف عنوان الشحن إلى هذا الموقع لبدء تقديم الطلبات.",
+        "staff_and_permissions_title": "الموظفين والأذونات",
+        "tax_details_title": "تفاصيل الضريبة",
+        "tax_id": "رقم التعريف الضريبي",
+        "tax_exemptions": "الإعفاءات الضريبية",
+        "multiple_tax_exemptions": "{{taxExemptionsCount}} المزيد",
+        "multiple_tax_exemptions_and": "و",
+        "tax_exemptions_modal_close": "يغلق",
+        "taxes_none": "لا أحد",
+        "tax_exemption_not_applicable": "غير متوفر",
+        "tax_exemptions_modal_button_accessibility_label": "عرض جميع الإعفاءات الضريبية"
+      },
+      "location_selection": {
+        "continue_to_store": "متابعة التخزين",
+        "description": "إذا كان لديك بالفعل عناصر في عربة التسوق الخاصة بك، فقد يؤثر تغيير المواقع على أسعار عربة التسوق وكمياتها.",
+        "list_accessibility_label": "قائمة المواقع",
+        "list_item_without_address_accessibility_label": "{{name}} : لا يوجد عنوان",
+        "list_loading_accessibility_message": "جاري تحميل قائمة المواقع",
+        "list_loading_address_accessibility_message": "عنوان التحميل لـ {{locationName}}",
+        "list_loading_finished_accessibility_message": "تم تحميل قائمة المواقع",
+        "loading_store_accessibility_message": "الذهاب إلى المتجر",
+        "no_location_title": "الطلبات الشخصية فقط",
+        "no_location_description": "لم يعد لديك إذن لطلبات {{company}} . لا يزال بإمكانك تقديم طلبات شخصية.",
+        "no_locations_found": "لم يتم العثور على أي مواقع",
+        "search": "البحث عن موقع",
+        "search_location_title": "حدد موقعا",
+        "selection_cancel_button": "يلغي",
+        "selection_confirmation_button": "اختر الموقع",
+        "selection_continue_button": "يكمل",
+        "title": "ما هو الموقع الذي تشتريه؟",
+        "clear_search": "مسح البحث",
+        "try_new_search": "حاول البحث الجديد"
+      },
+      "addresses": {
+        "add_billing_address_button": "إضافة عنوان الفاتورة",
+        "add_billing_address_section_accessibility_label": "إضافة عنوان الفاتورة",
+        "add_shipping_address_button": "إضافة عنوان الشحن",
+        "add_shipping_address_section_accessibility_label": "إضافة عنوان الشحن",
+        "billing_address_card_title": "عنوان الفاتورة",
+        "cancel_adding_billing_address_accessibility_label": "إلغاء إضافة عنوان الفاتورة",
+        "cancel_adding_shipping_address_accessibility_label": "إلغاء إضافة عنوان الشحن",
+        "save_new_billing_address_accessibility_label": "حفظ عنوان الفاتورة",
+        "save_new_shipping_address_accessibility_label": "حفظ عنوان الشحن",
+        "shipping_address_card_title": "عنوان الشحن"
+      },
+      "orders": {
+        "draft_order_list": {
+          "hide_all": "إخفاء الكل",
+          "show_all": "إظهار الكل",
+          "hide_all_accessibility_label": "إخفاء جميع الطلبات في المراجعة",
+          "show_all_accessibility_label": "إظهار جميع الطلبات في المراجعة",
+          "show_all_orders_in_review": "إظهار جميع الطلبات في المراجعة",
+          "show_less_orders_in_review": "إظهار عدد أقل من الطلبات في المراجعة",
+          "title": "قيد الانتظار",
+          "pending_tab_accessibility_label": {
+            "no_pending_orders": "ليس لديك أي طلبات معلقة",
+            "pending_orders": {
+              "one": "لديك {{count}} طلب معلق",
+              "other": "لديك {{count}} طلب معلق"
+            },
+            "more_than_pagination_length": "لديك أكثر من {{count}} طلب معلق"
+          },
+          "pending_orders_count_more_than_pagination_length": "{{count}} +",
+          "pagination": {
+            "nav_accessibility_label": "أزرار التنقل الخاصة بالطلبات قيد المراجعة"
+          }
+        },
+        "order_list_column_headers_location": "موقع",
+        "order_list_column_headers_contact": "اتصال",
+        "order_list_column_headers_status": "حالة",
+        "removed_company_contact_tooltip": "تم إزالته من الشركة"
       }
     },
     "errors": {
@@ -1586,7 +1700,31 @@
       "cancel": "يلغي",
       "cancel_accessibility_label": "إلغاء تحرير العنوان {{address}}",
       "creation_success_notification": "تمت إضافة العنوان",
-      "default_address": "هذا هو عنواني الافتراضي"
+      "default_address": "هذا هو عنواني الافتراضي",
+      "default_address_creation_success_notification": "تمت إضافة العنوان الافتراضي",
+      "default_address_update_success_notification": "تم تحديث العنوان الافتراضي",
+      "loading_add_form_accessibility_message": "تحميل نموذج عنوان جديد",
+      "loading_edit_form_accessibility_message": "تحميل نموذج تحرير العنوان",
+      "loading_form_accessibility_message": "نموذج عنوان التحميل",
+      "loading_finished_accessibility_message": "تم تحميل نموذج العنوان",
+      "save": "يحفظ",
+      "save_accessibility_label": "حفظ العنوان {{address}}",
+      "section_title_accessibility_label": "إضافة عنوان",
+      "update_success_notification": "تم تحديث العنوان"
+    }
+  },
+  "recipient": {
+    "form": {
+      "email_label": "بريد المستلم الإلكتروني",
+      "email_label_optional_for_no_js_behavior": "بريد المستلم الإلكتروني (اختياري)",
+      "email": "بريد إلكتروني",
+      "name_label": "اسم المستلم (اختياري)",
+      "name": "اسم",
+      "message_label": "الرسالة (اختياري)",
+      "message": "رسالة",
+      "max_characters": "{{ max_chars }} حرف كحد أقصى",
+      "send_on": "سنة-شهر-يوم",
+      "send_on_label": "أرسل على (اختياري)"
     }
   }
 }
