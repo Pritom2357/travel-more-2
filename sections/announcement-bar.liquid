@@ -1,5 +1,6 @@
 {{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-social.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign social_icons = false
@@ -18,97 +19,71 @@
   endif
 -%}
 
-{% if social_icons %}
-  {{ 'component-list-social.css' | asset_url | stylesheet_tag }}
-{% endif %}
-
-<div class="utility-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border{% elsif section.settings.show_line_separator and section.settings.show_social and social_icons%} utility-bar--bottom-border-social-only{% endif %}{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header-localization{% endif %}">
+<div class="utility-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} utility-bar--bottom-border{% endif %}">
   <div class="page-width utility-bar__grid{% if announcement_bar and language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--3-col{% elsif language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--2-col{% endif %}">
     
+    {%- comment -%} Left: Social Icons (Optional) {%- endcomment -%}
     {%- if section.settings.show_social and social_icons -%}
-      {%- render 'social-icons' -%}
+      <div class="utility-bar__left">
+        {%- render 'social-icons' -%}
+      </div>
     {%- endif -%}
     
-    {%- if section.blocks.size == 1 -%}
-      <div class="announcement-bar{% if section.settings.show_social %} announcement-bar--one-announcement{% endif %}" role="region" aria-label="Announcement">
-        {%- assign block = section.blocks.first -%}
-        {%- if block.settings.text != blank -%}
-          {%- if block.settings.link != blank -%}
-            <a href="{{ block.settings.link }}" class="announcement-bar__link link link--text focus-inset animate-arrow">
-          {%- endif -%}
-          <p class="announcement-bar__message h5">
-            <span>{{ block.settings.text | escape }}</span>
-            {%- if block.settings.link != blank -%}
-              <svg class="icon icon-arrow" aria-hidden="true" focusable="false" viewBox="0 0 14 10">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor">
-              </svg>
+    {%- comment -%} Center: Announcement Text (Optional) {%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="announcement-bar-center">
+        {%- if section.blocks.size == 1 -%}
+          <div class="announcement-bar" role="region" aria-label="Announcement">
+            {%- assign block = section.blocks.first -%}
+            {%- if block.settings.text != blank -%}
+              {%- if block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}" class="announcement-bar__link">
+              {%- endif -%}
+              <p class="announcement-bar__message">
+                <span>{{ block.settings.text | escape }}</span>
+                {%- if block.settings.link != blank -%}
+                  <svg class="icon icon-arrow" aria-hidden="true" focusable="false" viewBox="0 0 14 10">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor">
+                  </svg>
+                {%- endif -%}
+              </p>
+              {%- if block.settings.link != blank -%}
+                </a>
+              {%- endif -%}
             {%- endif -%}
-          </p>
-          {%- if block.settings.link != blank -%}
-            </a>
-          {%- endif -%}
+          </div>
         {%- endif -%}
       </div>
-    {%- elsif section.blocks.size > 1 -%}
-      <slideshow-component class="announcement-bar" role="region" aria-roledescription="Carousel" aria-label="Announcement bar">
-        <div class="announcement-bar-slider slider-buttons">
-          <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="Previous announcement" aria-controls="Slider-{{ section.id }}">
-            <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
-            </svg>
-          </button>
-          
-          <div class="grid grid--1-col slider slider--everywhere" id="Slider-{{ section.id }}" aria-live="polite" aria-atomic="true" data-autoplay="{{ section.settings.auto_rotate }}" data-speed="{{ section.settings.change_slides_speed }}">
-            {%- for block in section.blocks -%}
-              <div class="slideshow__slide slider__slide grid__item grid--1-col{% if forloop.first %} slider__slide--active{% endif %}" id="Slide-{{ section.id }}-{{ forloop.index }}" {{ block.shopify_attributes }} role="group" aria-roledescription="Announcement" aria-label="{{ forloop.index }} of {{ forloop.length }}" tabindex="-1">
-                <div class="announcement-bar__announcement" role="region" aria-label="Announcement">
-                  {%- if block.settings.text != blank -%}
-                    {%- if block.settings.link != blank -%}
-                      <a href="{{ block.settings.link }}" class="announcement-bar__link link link--text focus-inset animate-arrow">
-                    {%- endif -%}
-                    <p class="announcement-bar__message h5">
-                      <span>{{ block.settings.text | escape }}</span>
-                      {%- if block.settings.link != blank -%}
-                        <svg class="icon icon-arrow" aria-hidden="true" focusable="false" viewBox="0 0 14 10">
-                          <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor">
-                        </svg>
-                      {%- endif -%}
-                    </p>
-                    {%- if block.settings.link != blank -%}
-                      </a>
-                    {%- endif -%}
-                  {%- endif -%}
-                </div>
-              </div>
-            {%- endfor -%}
-          </div>
-          
-          <button type="button" class="slider-button slider-button--next" name="next" aria-label="Next announcement" aria-controls="Slider-{{ section.id }}">
-            <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
-            </svg>
-          </button>
-        </div>
-      </slideshow-component>
     {%- endif -%}
     
+    {%- comment -%} Right: Country & Language Selectors (Main Purpose) {%- endcomment -%}
     <div class="localization-wrapper">
-      {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
-        <div class="localization-form">
+      {%- if section.settings.enable_country_selector -%}
+        <div class="localization-form localization-form--country">
           {%- form 'localization', id: 'AnnouncementCountryForm', class: 'localization-form' -%}
-            <div>
-              <h2 class="visually-hidden" id="AnnouncementCountryLabel">Country/Region</h2>
+            <div class="localization-selector">
+              <label class="localization-selector__label" for="country-selector">
+                <svg class="icon icon-globe" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+                {{ section.settings.country_label | default: 'Country' }}
+              </label>
               {%- render 'country-localization', localPosition: 'AnnouncementCountry' -%}
             </div>
           {%- endform -%}
         </div>
-      {% endif %}
+      {%- endif -%}
 
-      {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
-        <div class="localization-form">
+      {%- if section.settings.enable_language_selector -%}
+        <div class="localization-form localization-form--language">
           {%- form 'localization', id: 'AnnouncementLanguageForm', class: 'localization-form' -%}
-            <div>
-              <h2 class="visually-hidden" id="AnnouncementLanguageLabel">Language</h2>
+            <div class="localization-selector">
+              <label class="localization-selector__label" for="language-selector">
+                <svg class="icon icon-language" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                  <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/>
+                </svg>
+                {{ section.settings.language_label | default: 'Language' }}
+              </label>
               {%- render 'language-localization', localPosition: 'AnnouncementLanguage' -%}
             </div>
           {%- endform -%}
@@ -124,6 +99,7 @@
   text-align: center;
   position: relative;
   z-index: 3;
+  font-size: 1.4rem;
 }
 
 .utility-bar--bottom-border {
@@ -152,6 +128,14 @@
   grid-template-columns: auto 1fr auto;
 }
 
+.utility-bar__left {
+  justify-self: start;
+}
+
+.announcement-bar-center {
+  justify-self: center;
+}
+
 .announcement-bar {
   display: flex;
   align-items: center;
@@ -160,9 +144,9 @@
 
 .announcement-bar__message {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   line-height: 1.3;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .announcement-bar__link {
@@ -177,38 +161,84 @@
   text-decoration: underline;
 }
 
+/* Localization Wrapper - Main Feature */
+.localization-wrapper {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-self: end;
+  flex-wrap: wrap;
+}
+
+.localization-form {
+  position: relative;
+}
+
+.localization-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.6rem 1.2rem;
+  background-color: rgba(var(--color-foreground), 0.05);
+  border: 1px solid rgba(var(--color-foreground), 0.1);
+  border-radius: 2.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.localization-selector:hover {
+  background-color: rgba(var(--color-foreground), 0.1);
+  border-color: rgba(var(--color-foreground), 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(var(--color-foreground), 0.1);
+}
+
+.localization-selector__label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+  cursor: pointer;
+  color: currentColor;
+}
+
+.localization-form select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
+.localization-form select:focus {
+  outline: none;
+}
+
+.localization-form--country .localization-selector {
+  background: linear-gradient(45deg, rgba(var(--color-foreground), 0.05), rgba(var(--color-foreground), 0.08));
+}
+
+.localization-form--language .localization-selector {
+  background: linear-gradient(45deg, rgba(var(--color-foreground), 0.08), rgba(var(--color-foreground), 0.05));
+}
+
 .icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.icon-arrow {
   width: 1.2rem;
   height: 1.2rem;
-  fill: currentColor;
-}
-
-.slider-button {
-  background: transparent;
-  border: none;
-  color: currentColor;
-  cursor: pointer;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.slider-button:hover {
-  opacity: 0.7;
-}
-
-.announcement-bar-slider {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  justify-content: center;
-}
-
-.announcement-bar-slider .slider {
-  overflow: hidden;
-  min-width: 0;
 }
 
 .visually-hidden {
@@ -221,12 +251,6 @@
   border: 0;
   clip: rect(0 0 0 0);
   word-wrap: normal;
-}
-
-.localization-wrapper {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
 }
 
 /* Color scheme support */
@@ -255,86 +279,94 @@
   color: #633a00;
 }
 
+/* Mobile responsive */
 @media screen and (max-width: 749px) {
   .utility-bar__grid--3-col,
   .utility-bar__grid--2-col {
     grid-template-columns: 1fr;
-    gap: 0.5rem;
+    gap: 1rem;
+  }
+  
+  .utility-bar__left,
+  .localization-wrapper {
+    justify-self: center;
+  }
+  
+  .localization-wrapper {
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .localization-selector {
+    min-width: 120px;
+    padding: 0.5rem 1rem;
+  }
+  
+  .localization-selector__label {
+    font-size: 1.1rem;
   }
   
   .announcement-bar__message {
     font-size: 1.2rem;
   }
 }
+
+@media screen and (max-width: 480px) {
+  .localization-wrapper {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .localization-selector {
+    width: 100%;
+    justify-content: center;
+    max-width: 200px;
+  }
+}
+
+/* Focus states for accessibility */
+.localization-form select:focus + .localization-selector {
+  outline: 2px solid rgba(var(--color-foreground), 0.5);
+  outline-offset: 2px;
+}
+
+/* Hover effect for buttons */
+.localization-selector::after {
+  content: '⌄';
+  margin-left: auto;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
+}
+
+.localization-selector:hover::after {
+  transform: translateY(2px);
+}
 </style>
 
 <script>
-if (typeof slideshow === 'undefined') {
-  class SlideShowComponent extends HTMLElement {
-    constructor() {
-      super();
-      this.currentSlide = 0;
-      this.slides = this.querySelectorAll('.slider__slide');
-      this.totalSlides = this.slides.length;
-      
-      if (this.totalSlides > 1) {
-        this.setupSlideshow();
-      }
-    }
-    
-    setupSlideshow() {
-      const prevButton = this.querySelector('.slider-button--prev');
-      const nextButton = this.querySelector('.slider-button--next');
-      const autoplay = this.querySelector('.slider').dataset.autoplay === 'true';
-      const speed = parseInt(this.querySelector('.slider').dataset.speed) * 1000 || 5000;
-      
-      if (prevButton) {
-        prevButton.addEventListener('click', () => this.previousSlide());
-      }
-      
-      if (nextButton) {
-        nextButton.addEventListener('click', () => this.nextSlide());
-      }
-      
-      if (autoplay) {
-        this.startAutoplay(speed);
-      }
-      
-      this.showSlide(0);
-    }
-    
-    showSlide(index) {
-      this.slides.forEach((slide, i) => {
-        slide.classList.toggle('slider__slide--active', i === index);
-      });
-      this.currentSlide = index;
-    }
-    
-    nextSlide() {
-      const next = (this.currentSlide + 1) % this.totalSlides;
-      this.showSlide(next);
-    }
-    
-    previousSlide() {
-      const prev = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
-      this.showSlide(prev);
-    }
-    
-    startAutoplay(interval) {
-      setInterval(() => {
-        this.nextSlide();
-      }, interval);
-    }
+// Auto-submit forms when selection changes
+document.addEventListener('DOMContentLoaded', function() {
+  const countrySelector = document.querySelector('#AnnouncementCountryForm select');
+  const languageSelector = document.querySelector('#AnnouncementLanguageForm select');
+  
+  if (countrySelector) {
+    countrySelector.addEventListener('change', function() {
+      this.closest('form').submit();
+    });
   }
   
-  customElements.define('slideshow-component', SlideShowComponent);
-}
+  if (languageSelector) {
+    languageSelector.addEventListener('change', function() {
+      this.closest('form').submit();
+    });
+  }
+});
 </script>
 
 {% schema %}
 {
   "name": "Announcement bar",
-  "max_blocks": 12,
+  "max_blocks": 3,
   "class": "announcement-bar-section",
   "enabled_on": {
     "groups": ["header"]
@@ -354,43 +386,19 @@ if (typeof slideshow === 'undefined') {
     },
     {
       "type": "header",
-      "content": "Social media icons"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_social",
-      "default": false,
-      "label": "Show social media icons"
-    },
-    {
-      "type": "header",
-      "content": "Auto-rotate content"
-    },
-    {
-      "type": "checkbox",
-      "id": "auto_rotate",
-      "label": "Auto-rotate content",
-      "default": false
-    },
-    {
-      "type": "range",
-      "id": "change_slides_speed",
-      "min": 3,
-      "max": 10,
-      "step": 1,
-      "unit": "s",
-      "label": "Change slides every",
-      "default": 5
-    },
-    {
-      "type": "header",
       "content": "Country/Region Selector"
     },
     {
       "type": "checkbox",
       "id": "enable_country_selector",
-      "default": false,
+      "default": true,
       "label": "Enable country/region selector"
+    },
+    {
+      "type": "text",
+      "id": "country_label",
+      "default": "Country",
+      "label": "Country selector label"
     },
     {
       "type": "header",
@@ -399,8 +407,24 @@ if (typeof slideshow === 'undefined') {
     {
       "type": "checkbox",
       "id": "enable_language_selector",
-      "default": false,
+      "default": true,
       "label": "Enable language selector"
+    },
+    {
+      "type": "text",
+      "id": "language_label",
+      "default": "Language",
+      "label": "Language selector label"
+    },
+    {
+      "type": "header",
+      "content": "Social media icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "default": false,
+      "label": "Show social media icons"
     }
   ],
   "blocks": [
@@ -411,7 +435,7 @@ if (typeof slideshow === 'undefined') {
         {
           "type": "text",
           "id": "text",
-          "default": "Welcome to our store",
+          "default": "Free shipping worldwide",
           "label": "Text"
         },
         {
@@ -425,9 +449,17 @@ if (typeof slideshow === 'undefined') {
   "presets": [
     {
       "name": "Announcement bar",
+      "settings": {
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "show_social": false
+      },
       "blocks": [
         {
-          "type": "announcement"
+          "type": "announcement",
+          "settings": {
+            "text": "Free shipping worldwide"
+          }
         }
       ]
     }
