@@ -1136,6 +1136,176 @@
       },
       "address_management": {
         "confirm_address_deletion": "আপনি কি নিশ্চিত যে আপনি {{address}} ঠিকানাটি মুছে ফেলতে চান?"
+      },
+      "pickup_point": {
+        "selector_tabs": "পিকআপ পয়েন্ট নির্বাচক",
+        "selector_tab_map": "মানচিত্র",
+        "selector_tab_list": "তালিকা",
+        "could_not_resolve_address": "আপনার ঠিকানা খুঁজে পাওয়া যায়নি। আবার চেষ্টা করুন অথবা অন্য কোনও ঠিকানা ব্যবহার করুন।",
+        "no_pickup_points_near_you": "নির্বাচিত ঠিকানার কাছাকাছি কোনও পিকআপ পয়েন্ট পাওয়া যায়নি",
+        "no_pickup_points_near_location": "আপনার লোকেশনের কাছাকাছি কোনও পিকআপ পয়েন্ট পাওয়া যায়নি",
+        "pickup_unavailable_banner_title": {
+          "one": "আপনার আইটেমের জন্য কোনও পিকআপ পয়েন্ট নেই",
+          "other": "আপনার আইটেমগুলির জন্য কোনও পিকআপ পয়েন্ট উপলব্ধ নেই"
+        },
+        "no_pickup_points_found": "কোনও পিকআপ পয়েন্ট পাওয়া যায়নি",
+        "paginator": {
+          "next_accessibility_label": "পরবর্তী পৃষ্ঠা",
+          "previous_accessibility_label": "পূর্ববর্তী পৃষ্ঠা",
+          "header": {
+            "one": "%{first} - %{last} %{count} পয়েন্টের মধ্যে দেখানো হচ্ছে",
+            "other": "%{first} - %{last} %{count} পয়েন্টের মধ্যে দেখানো হচ্ছে"
+          },
+          "selected_pickup_point_label": {
+            "one": "%{গণনা} পয়েন্টের মধ্যে %{পিকআপ_পয়েন্ট_ইনডেক্স}",
+            "other": "%{গণনা} পয়েন্টের মধ্যে %{পিকআপ_পয়েন্ট_ইনডেক্স}"
+          },
+          "selected_page": {
+            "one": "%{প্রথম} - %{শেষ} %{গণনা} পয়েন্টের",
+            "other": "%{প্রথম} - %{শেষ} %{গণনা} পয়েন্টের মধ্যে"
+          }
+        },
+        "number_of_pickup_points_near_location": {
+          "one": "আপনার লোকেশনের কাছাকাছি %{count} পিকআপ পয়েন্ট",
+          "other": "আপনার লোকেশনের কাছাকাছি %{count}টি পিকআপ পয়েন্ট"
+        },
+        "change": "অবস্থান পরিবর্তন করুন",
+        "waiting_on_pickup_point_location_notice": "পিকআপ পয়েন্ট খুঁজছি...",
+        "geolocation": {
+          "shared_location_button": "আমার অবস্থান ব্যবহার করুন",
+          "errors": {
+            "unsuported_by_browser": "আপনার ব্রাউজারে জিওলোকেশন পাওয়া সমর্থিত নয়। আবার চেষ্টা করুন অথবা অন্য একটি ব্রাউজার ব্যবহার করুন।",
+            "permission_not_allowed": "আপনার অবস্থান শেয়ার করার অনুমতি দিন।",
+            "permission_denied": "আপনার লোকেশন পাওয়া যায়নি। আবার চেষ্টা করুন।"
+          }
+        }
+      },
+      "error_page": {
+        "terminal": {
+          "title": "আমাদের চেকআউটে সমস্যা হয়েছে।",
+          "message": "এই পৃষ্ঠাটি রিফ্রেশ করুন অথবা কয়েক মিনিটের মধ্যে আবার চেষ্টা করুন।",
+          "action": {
+            "cta": "পৃষ্ঠা রিফ্রেশ করুন"
+          },
+          "request_id": "অনুরোধ আইডি: {{requestId}}"
+        }
+      },
+      "notice_banner": {
+        "return_to_cart_link_text": "কার্টে ফিরে যান",
+        "return_to_cart_to_update_quantities": "পরিমাণ আপডেট করতে %{return_to_cart_link_text}",
+        "subscription_changed": "আপনার একটি সাবস্ক্রিপশন পরিবর্তন হয়েছে।",
+        "company_location_changed": "আপনার কার্ট আপডেট করা হয়েছে। জমা দেওয়ার আগে আপনার অর্ডারটি পর্যালোচনা করুন।",
+        "company_location_changed_product_removed": "আপনার কার্ট আপডেট করা হয়েছে কারণ কিছু পণ্য এই স্থানে পাওয়া যাচ্ছে না। জমা দেওয়ার আগে আপনার অর্ডারটি পর্যালোচনা করুন।",
+        "violations_title": "{{violation}} অনুপস্থিত অথবা অবৈধ",
+        "individual_violations_title": {
+          "DeliveryViolations": "পাঠানোর ঠিকানা",
+          "PaymentViolations": "বিলিং ঠিকানা",
+          "OtherViolations": "অর্ডার তথ্য",
+          "UnhandledViolations": "অর্ডার তথ্য"
+        },
+        "all_violations_content": "এই তথ্য আপডেট করতে এবং আপনার অর্ডার সম্পূর্ণ করতে আমাদের কল করুন অথবা {{emailLink}} করুন:",
+        "all_violations_email_link": "ইমেইল",
+        "editable_shipping_address_violations_message_title": "আপনার অর্ডার সম্পূর্ণ করতে এই তথ্য যোগ করুন:",
+        "editable_shipping_address_violations_message_footer": "এই অবস্থানের ঠিকানা স্থায়ীভাবে আপডেট করতে, {{emailLink}} ।",
+        "editable_shipping_address_violations_email_link": "যোগাযোগ করুন",
+        "shipping_address_incomplete_title": "শিপিং ঠিকানা অসম্পূর্ণ",
+        "calculating_shipping": "শিপিং এখনও গণনা করা হচ্ছে। কয়েক সেকেন্ড পরে আবার চেষ্টা করুন। আপনার কাছ থেকে কোনও চার্জ নেওয়া হয়নি।",
+        "calculating_taxes": "কর এখনও গণনা করা হচ্ছে। কয়েক সেকেন্ড পরে আবার চেষ্টা করুন। আপনার কাছ থেকে এখনও কোনও চার্জ নেওয়া হয়নি।",
+        "generic_processing_error": {
+          "title": "আপনার অর্ডার প্রক্রিয়াকরণে একটি সমস্যা হয়েছে",
+          "body": "আপনার কাছ থেকে এখনও চার্জ করা হয়নি। আবার চেষ্টা করুন অথবা ভিন্ন পেমেন্ট পদ্ধতি ব্যবহার করুন।"
+        },
+        "contact_information": {
+          "title": "যোগাযোগের তথ্য অবৈধ।",
+          "header": "আপনার তথ্য আপডেট করতে, {{emailLink}} ।",
+          "email_link": "যোগাযোগ করুন"
+        }
+      },
+      "marketplaces": {
+        "legal_notice": {
+          "legal_text": "পর্যালোচনা",
+          "link_label": "{{partnerDisplayName}} নিয়ম ও শর্তাবলী"
+        }
+      },
+      "online_store_chat": {
+        "title": "প্রশ্ন? আমাদের সাথে চ্যাট করুন"
+      },
+      "local_pickup": {
+        "location_address_search_label": "জানুন",
+        "location_information": {
+          "one": "%{count} স্টোর আছে যেখানে %{address} এর কাছাকাছি স্টক আছে।",
+          "other": "%{count} টি দোকান আছে যেখানে %{address} এর কাছাকাছি স্টক আছে।"
+        },
+        "toggle_location": "অবস্থান পরিবর্তন করুন",
+        "or": "অথবা",
+        "cancel": "বাতিল করুন",
+        "your_location": "তোমার অবস্থান",
+        "search_button": "দোকান খুঁজুন",
+        "no_stores_found": "কোন দোকান পাওয়া যায়নি",
+        "all_stores_far_away": {
+          "title": "নিকটতম দোকানগুলি %{distance} এরও বেশি দূরে অবস্থিত।",
+          "description": "পরিবর্তে একটি দোকান অথবা %{ship_to_address_link} নির্বাচন করুন।",
+          "ship_to_address_link": "ঠিকানায় পাঠান"
+        },
+        "could_not_resolve_address": "আপনার ঠিকানা খুঁজে পাওয়া যায়নি। আবার চেষ্টা করুন অথবা অন্য কোনও ঠিকানা ব্যবহার করুন।",
+        "paginator": {
+          "accessibility_label": "স্থানীয় পিকআপ পৃষ্ঠাঙ্কন",
+          "previous": "পূর্ববর্তী পৃষ্ঠা",
+          "next": "পরবর্তী পৃষ্ঠা",
+          "label": {
+            "one": "%{প্রথম} - %{গণনা} স্টোরের %{শেষ}",
+            "other": "%{প্রথম} - %{গণনা} স্টোরের %{শেষ}"
+          }
+        },
+        "reveal_more_label": {
+          "one": "আরও %{count}টি লোকেশন দেখান",
+          "other": "আরও %{count}টি অবস্থান দেখান"
+        }
+      },
+      "captcha": {
+        "title": "চালিয়ে যেতে ক্যাপচা পূরণ করুন",
+        "errors": {
+          "not_solved": "চালিয়ে যেতে ক্যাপচা পূরণ করুন"
+        }
+      },
+      "clipboard": {
+        "copied": "কপি করা হয়েছে",
+        "failed_to_copy": "কপি করা যায়নি"
+      },
+      "discount_errors": {
+        "generic_error": "আপনার ডিসকাউন্ট কোড আর উপলব্ধ না থাকায় আপনার অর্ডার প্রক্রিয়া করা যায়নি। আপনার অর্ডারের মোট পরিমাণ পর্যালোচনা করে আবার চেষ্টা করুন।"
+      },
+      "b2b_errors": {
+        "lost_b2b_purchasing_permissions": "আপনার আর B2B অর্ডার দেওয়ার অনুমতি নেই। পরিবর্তে ব্যক্তিগত অর্ডার দেওয়ার জন্য %{logout_url} ব্যবহার করুন।",
+        "log_out_link_text": "লগ আউট করুন",
+        "lost_permissions_subtitle": "আপনার আর B2B অর্ডার দেওয়ার অনুমতি নেই, ব্যক্তিগত অর্ডার দেওয়ার জন্য লগ আউট করুন।",
+        "lost_permissions_title": "কোনও লোকেশনের অনুমতি নেই"
+      },
+      "shop_pay_external": {
+        "title": "দোকানের বেতন চেকআউট",
+        "errors": {
+          "problem_loading": "Shop Pay লোড করতে সমস্যা হচ্ছে",
+          "try_again_later": "আপনার সংযোগ পরীক্ষা করুন অথবা এই উইন্ডোটি বন্ধ করুন এবং কিছুক্ষণের মধ্যে আবার চেষ্টা করুন।",
+          "checkout_has_expired": "আপনার চেকআউটের মেয়াদ শেষ হয়ে গেছে। এই উইন্ডোটি বন্ধ করুন এবং {{shopName}} থেকে আবার চেক আউট করার চেষ্টা করুন।"
+        },
+        "return_to_store": "{{shopName}} এ ফিরে যান",
+        "return_to_store_simple": "দোকানে ফিরে যান"
+      },
+      "wallets": {
+        "return_to_store": "দোকানে ফিরে যান",
+        "return_to_checkout": "চেকআউটে ফিরে যান",
+        "redirect_hint": "আপনাকে {{walletName}} দিয়ে লগইন করতে বলা হবে।",
+        "logged_in": "{{email}} এর সাথে সংযুক্ত",
+        "shipping_line_label": "পরিবহন",
+        "payment_in_progress_title": "পেমেন্ট চলছে",
+        "payment_in_progress_body": "আপনার পেমেন্ট প্রক্রিয়া করা হচ্ছে। আপনার অর্ডার শীঘ্রই সম্পন্ন হবে।",
+        "call_to_action": "{{walletName}} দিয়ে পেমেন্ট করুন",
+        "redirection_notice": "\" {{buttonLabel}} \" ক্লিক করার পর, আপনার কেনাকাটা নিরাপদে সম্পন্ন করার জন্য আপনাকে {{walletName}} এ পুনঃনির্দেশিত করা হবে।",
+        "errors": {
+          "unavailable": {
+            "title": "{{walletName}} উপলব্ধ নয়"
+          }
+        }
       }
     },
     "addresses": {
