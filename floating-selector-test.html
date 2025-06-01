@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Localization Selector Test</title>
+    <style>
+        /* Basic CSS variables to simulate Shopify theme variables */
+        :root {
+            --color-background: 255, 255, 255;
+            --color-foreground: 18, 18, 18;
+            --color-base-accent-1: 68, 158, 237;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .demo-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: rgb(var(--color-foreground));
+            margin-bottom: 20px;
+        }
+        
+        p {
+            color: rgba(var(--color-foreground), 0.8);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        /* === FLOATING LOCALIZATION SELECTOR CSS (from the file) === */
+        .floating-localization-container {
+            position: fixed;
+            z-index: 9999;
+            font-family: inherit;
+            --shadow-color: rgba(0, 0, 0, 0.15);
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+        }
+
+        /* Position Classes */
+        .floating-localization-container.bottom-right {
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .floating-localization-container.bottom-left {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .floating-localization-container.top-right {
+            top: 80px;
+            right: 20px;
+        }
+
+        .floating-localization-container.top-left {
+            top: 80px;
+            left: 20px;
+        }
+
+        /* === COLLAPSED STATE === */
+        .floating-collapsed {
+            background: rgb(var(--color-background));
+            border: 1px solid rgba(var(--color-foreground), 0.1);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 20px var(--shadow-color);
+            overflow: hidden;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .floating-collapsed:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow-color);
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        .floating-toggle-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, rgb(var(--color-base-accent-1)), rgba(var(--color-base-accent-1), 0.9));
+            border: none;
+            color: rgb(var(--color-background));
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .floating-toggle-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .floating-toggle-button:hover::before {
+            left: 100%;
+        }
+
+        .floating-toggle-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(var(--color-base-accent-1), 0.3);
+        }
+
+        /* === EXPANDED STATE === */
+        .floating-expanded {
+            background: rgb(var(--color-background));
+            border: 1px solid rgba(var(--color-foreground), 0.08);
+            border-radius: var(--border-radius);
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.15), 0 8px 30px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            max-width: calc(100vw - 40px);
+            animation: floatingSlideIn var(--transition-speed) ease;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        @keyframes floatingSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(var(--color-base-accent-1), 0.2);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(var(--color-base-accent-1), 0.4);
+            }
+        }
+
+        /* === HEADER === */
+        .floating-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, rgba(var(--color-base-accent-1), 0.05), rgba(var(--color-base-accent-1), 0.02));
+            border-bottom: 1px solid rgba(var(--color-foreground), 0.06);
+        }
+
+        .floating-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: rgb(var(--color-foreground));
+        }
+
+        .floating-close-button {
+            background: transparent;
+            border: none;
+            color: rgba(var(--color-foreground), 0.6);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-close-button:hover {
+            background: rgba(var(--color-foreground), 0.1);
+            color: rgb(var(--color-foreground));
+            transform: rotate(90deg);
+        }
+
+        /* === CONTENT === */
+        .floating-content {
+            padding: 20px;
+        }
+
+        .floating-selector-group {
+            margin-bottom: 20px;
+        }
+
+        .floating-selector-group:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .floating-selector-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(var(--color-foreground), 0.8);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .floating-form {
+            width: 100%;
+        }
+
+        .floating-select-wrapper {
+            position: relative;
+        }
+
+        .floating-select-wrapper select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(var(--color-foreground), 0.1);
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgb(var(--color-background)), rgba(var(--color-foreground), 0.01));
+            color: rgb(var(--color-foreground));
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath fill='%23666' d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 14px;
+            padding-right: 45px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .floating-select-wrapper select:hover {
+            border-color: rgba(var(--color-base-accent-1), 0.4);
+            background: rgba(var(--color-base-accent-1), 0.02);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .floating-select-wrapper select:focus {
+            outline: none;
+            border-color: rgb(var(--color-base-accent-1));
+            box-shadow: 0 0 0 3px rgba(var(--color-base-accent-1), 0.15), 0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* === DISMISS BUTTON === */
+        .floating-dismiss-button {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, rgba(var(--color-foreground), 0.03), rgba(var(--color-foreground), 0.01));
+            border: none;
+            border-top: 1px solid rgba(var(--color-foreground), 0.06);
+            color: rgba(var(--color-foreground), 0.7);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .floating-dismiss-button:hover {
+            background: linear-gradient(135deg, rgba(var(--color-foreground), 0.08), rgba(var(--color-foreground), 0.04));
+            color: rgb(var(--color-foreground));
+            transform: translateY(-1px);
+        }
+
+        /* === ICONS === */
+        .icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        .floating-toggle-button .icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .floating-selector-label .icon {
+            width: 14px;
+            height: 14px;
+        }
+
+        .floating-close-button .icon {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* === MOBILE RESPONSIVENESS === */
+        @media screen and (max-width: 768px) {
+            .floating-localization-container {
+                bottom: 20px !important;
+                right: 20px !important;
+                left: auto !important;
+                top: auto !important;
+            }
+            
+            .floating-expanded {
+                width: calc(100vw - 40px);
+                max-width: 320px;
+            }
+            
+            .floating-content {
+                padding: 16px;
+            }
+            
+            .floating-selector-group {
+                margin-bottom: 16px;
+            }
+        }
+
+        /* === HIDDEN STATE === */
+        .floating-localization-container.hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-content">
+        <h1>Floating Localization Selector Demo</h1>
+        <p>This page demonstrates the new floating country and language selector. Look for the floating blue button in the bottom-right corner of the page.</p>
+        <p>Features:</p>
+        <ul>
+            <li>Clean, modern design with smooth animations</li>
+            <li>Gradient background with shine effect on hover</li>
+            <li>Professional dropdown selectors</li>
+            <li>Close and dismiss functionality</li>
+            <li>Mobile-responsive positioning</li>
+            <li>Backdrop blur effect for modern appearance</li>
+        </ul>
+        <p>Try clicking on the floating selector to see it in action! You can also test the close and dismiss buttons.</p>
+        
+        <h2>Test Different Positions</h2>
+        <button onclick="changePosition('bottom-right')">Bottom Right</button>
+        <button onclick="changePosition('bottom-left')">Bottom Left</button>
+        <button onclick="changePosition('top-right')">Top Right</button>
+        <button onclick="changePosition('top-left')">Top Left</button>
+        
+        <p style="margin-top: 40px; color: #666;">
+            Scroll down to see more content and test the floating behavior...
+        </p>
+        
+        <div style="height: 800px; background: linear-gradient(to bottom, #f0f0f0, #e0e0e0); padding: 40px; border-radius: 8px; margin-top: 20px;">
+            <h3>Additional Content</h3>
+            <p>This is additional content to test the floating behavior during scrolling. The floating selector should remain fixed in its position regardless of page scroll.</p>
+        </div>
+    </div>
+
+    <!-- Floating Localization Selector -->
+    <div id="floating-localization-test" class="floating-localization-container bottom-right">
+        <!-- Collapsed State -->
+        <div class="floating-collapsed" id="collapsed-test">
+            <button class="floating-toggle-button" aria-label="Open country and language selector">
+                <svg class="icon icon-globe" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+                <span class="floating-label">Region</span>
+            </button>
+        </div>
+
+        <!-- Expanded State -->
+        <div class="floating-expanded" id="expanded-test" style="display: none;">
+            <div class="floating-header">
+                <span class="floating-title">Select Your Preferences</span>
+                <button class="floating-close-button" aria-label="Close selector">
+                    <svg class="icon icon-close" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="floating-content">
+                <div class="floating-selector-group">
+                    <label class="floating-selector-label">
+                        <svg class="icon icon-globe" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                        </svg>
+                        Country
+                    </label>
+                    <form class="floating-form">
+                        <div class="floating-select-wrapper">
+                            <select>
+                                <option value="US">United States (USD $)</option>
+                                <option value="CA">Canada (CAD $)</option>
+                                <option value="GB">United Kingdom (GBP £)</option>
+                                <option value="AU">Australia (AUD $)</option>
+                                <option value="DE">Germany (EUR €)</option>
+                                <option value="FR">France (EUR €)</option>
+                                <option value="JP">Japan (JPY ¥)</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="floating-selector-group">
+                    <label class="floating-selector-label">
+                        <svg class="icon icon-language" viewBox="0 0 24 24">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/>
+                        </svg>
+                        Language
+                    </label>
+                    <form class="floating-form">
+                        <div class="floating-select-wrapper">
+                            <select>
+                                <option value="en">English</option>
+                                <option value="es">Español</option>
+                                <option value="fr">Français</option>
+                                <option value="de">Deutsch</option>
+                                <option value="it">Italiano</option>
+                                <option value="pt">Português</option>
+                                <option value="ja">日本語</option>
+                                <option value="zh">中文</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <button class="floating-dismiss-button">
+                Don't show again
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('floating-localization-test');
+        const collapsed = document.getElementById('collapsed-test');
+        const expanded = document.getElementById('expanded-test');
+        const toggleButton = container.querySelector('.floating-toggle-button');
+        const closeButton = container.querySelector('.floating-close-button');
+        const dismissButton = container.querySelector('.floating-dismiss-button');
+        
+        // Toggle between collapsed and expanded
+        function showExpanded() {
+            collapsed.style.display = 'none';
+            expanded.style.display = 'block';
+        }
+        
+        function showCollapsed() {
+            expanded.style.display = 'none';
+            collapsed.style.display = 'block';
+        }
+        
+        function hideSelector() {
+            container.classList.add('hidden');
+            setTimeout(() => {
+                container.classList.remove('hidden');
+                showCollapsed();
+            }, 3000); // Show again after 3 seconds for demo
+        }
+        
+        // Event listeners
+        toggleButton.addEventListener('click', showExpanded);
+        closeButton.addEventListener('click', showCollapsed);
+        dismissButton.addEventListener('click', hideSelector);
+        
+        // Auto-submit simulation
+        const selects = container.querySelectorAll('select');
+        selects.forEach(select => {
+            select.addEventListener('change', function() {
+                console.log('Selected:', this.value);
+                // In real Shopify environment, this would submit the form
+                alert('Selection changed: ' + this.value + '\n(In Shopify, this would submit the localization form)');
+            });
+        });
+        
+        // Click outside to close
+        document.addEventListener('click', function(event) {
+            if (expanded.style.display === 'block' && !container.contains(event.target)) {
+                showCollapsed();
+            }
+        });
+        
+        // Escape key to close
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && expanded.style.display === 'block') {
+                showCollapsed();
+            }
+        });
+        
+        // Position change function for demo
+        function changePosition(position) {
+            container.className = 'floating-localization-container ' + position;
+        }
+    </script>
+</body>
+</html>

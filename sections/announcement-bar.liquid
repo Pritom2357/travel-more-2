@@ -119,6 +119,7 @@
 .floating-collapsed:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px var(--shadow-color);
+  animation: pulseGlow 2s ease-in-out infinite;
 }
 
 .floating-toggle-button {
@@ -126,41 +127,70 @@
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background: transparent;
+  background: linear-gradient(135deg, rgb(var(--color-base-accent-1)), rgba(var(--color-base-accent-1), 0.9));
   border: none;
-  color: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   width: 100%;
   text-align: left;
   transition: all var(--transition-speed) ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.floating-toggle-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.floating-toggle-button:hover::before {
+  left: 100%;
 }
 
 .floating-toggle-button:hover {
-  background: rgba(var(--color-foreground), 0.05);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(var(--color-base-accent-1), 0.3);
 }
 
 /* === EXPANDED STATE === */
 .floating-expanded {
   background: rgb(var(--color-background));
-  border: 1px solid rgba(var(--color-foreground), 0.1);
+  border: 1px solid rgba(var(--color-foreground), 0.08);
   border-radius: var(--border-radius);
-  box-shadow: 0 8px 30px var(--shadow-color);
-  width: 280px;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.15), 0 8px 30px rgba(0, 0, 0, 0.1);
+  width: 300px;
   max-width: calc(100vw - 40px);
   animation: floatingSlideIn var(--transition-speed) ease;
   overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 @keyframes floatingSlideIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(20px) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(var(--color-base-accent-1), 0.2);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(var(--color-base-accent-1), 0.4);
   }
 }
 
@@ -170,8 +200,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  background: rgba(var(--color-foreground), 0.03);
-  border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+  background: linear-gradient(135deg, rgba(var(--color-base-accent-1), 0.05), rgba(var(--color-base-accent-1), 0.02));
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.06);
 }
 
 .floating-title {
@@ -185,14 +215,20 @@
   border: none;
   color: rgba(var(--color-foreground), 0.6);
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
+  padding: 6px;
+  border-radius: 50%;
   transition: all 0.2s ease;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .floating-close-button:hover {
   background: rgba(var(--color-foreground), 0.1);
   color: rgb(var(--color-foreground));
+  transform: rotate(90deg);
 }
 
 /* === CONTENT === */
@@ -213,9 +249,11 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: rgba(var(--color-foreground), 0.8);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .floating-form {
@@ -228,140 +266,114 @@
 
 .floating-select-wrapper select {
   width: 100%;
-  padding: 10px 14px;
-  border: 1px solid rgba(var(--color-foreground), 0.2);
-  border-radius: 8px;
-  background: rgb(var(--color-background));
+  padding: 12px 16px;
+  border: 2px solid rgba(var(--color-foreground), 0.1);
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgb(var(--color-background)), rgba(var(--color-foreground), 0.01));
   color: rgb(var(--color-foreground));
   font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath fill='%23666' d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 12px;
-  padding-right: 40px;
+  background-position: right 14px center;
+  background-size: 14px;
+  padding-right: 45px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .floating-select-wrapper select:hover {
-  border-color: rgba(var(--color-foreground), 0.3);
-  background-color: rgba(var(--color-foreground), 0.02);
+  border-color: rgba(var(--color-base-accent-1), 0.4);
+  background: rgba(var(--color-base-accent-1), 0.02);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .floating-select-wrapper select:focus {
   outline: none;
   border-color: rgb(var(--color-base-accent-1));
-  box-shadow: 0 0 0 2px rgba(var(--color-base-accent-1), 0.2);
+  box-shadow: 0 0 0 3px rgba(var(--color-base-accent-1), 0.15), 0 4px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
-/* === DISMISS BUTTON === */
-.floating-dismiss-button {
+/* === DISCLOSURE INTEGRATION === */
+.floating-form .disclosure {
   width: 100%;
-  padding: 12px 20px;
-  background: rgba(var(--color-foreground), 0.03);
-  border: none;
-  border-top: 1px solid rgba(var(--color-foreground), 0.08);
-  color: rgba(var(--color-foreground), 0.7);
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.floating-dismiss-button:hover {
-  background: rgba(var(--color-foreground), 0.08);
+.floating-form .disclosure__button {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid rgba(var(--color-foreground), 0.1);
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgb(var(--color-background)), rgba(var(--color-foreground), 0.01));
   color: rgb(var(--color-foreground));
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* === ICONS === */
-.icon {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-  flex-shrink: 0;
+.floating-form .disclosure__button:hover {
+  border-color: rgba(var(--color-base-accent-1), 0.4);
+  background: rgba(var(--color-base-accent-1), 0.02);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.floating-toggle-button .icon {
-  width: 18px;
-  height: 18px;
+.floating-form .disclosure__button:focus {
+  outline: none;
+  border-color: rgb(var(--color-base-accent-1));
+  box-shadow: 0 0 0 3px rgba(var(--color-base-accent-1), 0.15), 0 4px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
-.floating-selector-label .icon {
-  width: 14px;
-  height: 14px;
-}
-
-.floating-close-button .icon {
-  width: 12px;
-  height: 12px;
-}
-
-/* === MOBILE RESPONSIVENESS === */
-@media screen and (max-width: 768px) {
-  .floating-localization-container {
-    bottom: 20px !important;
-    right: 20px !important;
-    left: auto !important;
-    top: auto !important;
-  }
-  
-  .floating-expanded {
-    width: calc(100vw - 40px);
-    max-width: 320px;
-  }
-  
-  .floating-content {
-    padding: 16px;
-  }
-  
-  .floating-selector-group {
-    margin-bottom: 16px;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .floating-localization-container {
-    bottom: 15px !important;
-    right: 15px !important;
-  }
-  
-  .floating-expanded {
-    width: calc(100vw - 30px);
-  }
-  
-  .floating-toggle-button {
-    padding: 10px 12px;
-    font-size: 13px;
-  }
-  
-  .floating-header {
-    padding: 12px 16px;
-  }
-  
-  .floating-content {
-    padding: 12px;
-  }
-}
-
-/* === ACCESSIBILITY === */
-.floating-toggle-button:focus,
-.floating-close-button:focus,
-.floating-dismiss-button:focus {
-  outline: 2px solid rgb(var(--color-base-accent-1));
-  outline-offset: 2px;
-}
-
-/* === UTILITY CLASSES === */
-.visually-hidden {
-  position: absolute !important;
+.floating-form .disclosure__list-wrapper {
+  margin-top: 8px;
+  border: 1px solid rgba(var(--color-foreground), 0.08);
+  border-radius: 8px;
+  background: rgb(var(--color-background));
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-  clip: rect(0 0 0 0);
-  word-wrap: normal;
+}
+
+.floating-form .disclosure__list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.floating-form .disclosure__item {
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.05);
+}
+
+.floating-form .disclosure__item:last-child {
+  border-bottom: none;
+}
+
+.floating-form .disclosure__link {
+  padding: 10px 16px;
+  display: block;
+  transition: all 0.2s ease;
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+}
+
+.floating-form .disclosure__link:hover {
+  background: rgba(var(--color-base-accent-1), 0.05);
+  color: rgb(var(--color-base-accent-1));
+}
+
+.floating-form .disclosure__link[aria-current="true"] {
+  background: rgba(var(--color-base-accent-1), 0.1);
+  color: rgb(var(--color-base-accent-1));
+  font-weight: 600;
 }
 
 /* === HIDDEN STATE === */
@@ -428,10 +440,13 @@ document.addEventListener('DOMContentLoaded', function() {
   if (dismissButton) {
     dismissButton.addEventListener('click', hideSelector);
   }
-  
-  // Auto-submit forms when selection changes
+    // Auto-submit forms when selection changes
   const countrySelect = container.querySelector('#FloatingCountryForm select');
   const languageSelect = container.querySelector('#FloatingLanguageForm select');
+  
+  // Also look for disclosure-based selectors from snippets
+  const countryDisclosure = container.querySelector('#FloatingCountryForm .disclosure__link');
+  const languageDisclosure = container.querySelector('#FloatingLanguageForm .disclosure__link');
   
   if (countrySelect) {
     countrySelect.addEventListener('change', function() {
@@ -442,6 +457,35 @@ document.addEventListener('DOMContentLoaded', function() {
   if (languageSelect) {
     languageSelect.addEventListener('change', function() {
       this.closest('form').submit();
+    });
+  }
+  
+  // Handle disclosure-based selectors
+  if (countryDisclosure) {
+    container.querySelectorAll('#FloatingCountryForm .disclosure__link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const form = this.closest('form');
+        const hiddenInput = form.querySelector('input[name="country_code"]');
+        if (hiddenInput) {
+          hiddenInput.value = this.getAttribute('data-value');
+          form.submit();
+        }
+      });
+    });
+  }
+  
+  if (languageDisclosure) {
+    container.querySelectorAll('#FloatingLanguageForm .disclosure__link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const form = this.closest('form');
+        const hiddenInput = form.querySelector('input[name="locale_code"]');
+        if (hiddenInput) {
+          hiddenInput.value = this.getAttribute('data-value');
+          form.submit();
+        }
+      });
     });
   }
   
@@ -542,13 +586,13 @@ document.addEventListener('DOMContentLoaded', function() {
       "default": true,
       "label": "Enable language selector",
       "info": "Requires languages to be added in Shopify Admin → Settings → Languages"
-    },
-    {
+    },    {
       "type": "text",
       "id": "language_label",
       "default": "Language",
       "label": "Language selector label"
-    }  ],
+    }
+  ],
   "presets": [
     {
       "name": "Floating Localization",
