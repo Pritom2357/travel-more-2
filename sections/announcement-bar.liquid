@@ -1,9 +1,8 @@
 {%- comment -%}
-  Floating Language Selector — background POST to /localization
+  Floating Language Selector — native form submit (works everywhere)
 {%- endcomment -%}
 
 {%- assign floating_id = 'floating-lang-' | append: section.id -%}
-{%- assign store_country = localization.country.iso_code | default: 'US' -%}
 
 <div id="{{ floating_id }}"
      class="floating-localization-container {{ section.settings.position_class }}">
@@ -25,26 +24,38 @@
     </div>
 
     <div class="floating-content">
-      <div class="floating-selector-group">
-        <label class="floating-selector-label" id="FloatingLanguageLabel">
-          🌐 {{ section.settings.language_label | default: 'Language' }}
-        </label>
 
-        <!-- THE SELECT (just one element; JS does the heavy lifting) -->
-        <div class="floating-select-wrapper">
-          <select id="language-selector-FloatingLanguage"
-                  class="floating-select"
-                  aria-labelledby="FloatingLanguageLabel">
-            {% for language in localization.available_languages %}
-              <option value="{{ language.iso_code }}"
-                      {% if language.iso_code == localization.language.iso_code %}selected{% endif %}
-                      lang="{{ language.iso_code }}">
-                {{ language.endonym_name }}
-              </option>
-            {% endfor %}
-          </select>
+      <!-- =======  LOCALIZATION FORM  ======= -->
+      {% form 'localization', id: 'FloatingLanguageForm', class: 'floating-form' %}
+        <!-- keep the current country so currency doesn’t change -->
+        <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+        <!-- Shopify writes return_to into its 302 Location header automatically,
+             but giving it here guarantees we stay on the same page -->
+        <input type="hidden" name="return_to" value="{{ request.full_path | escape }}">
+        <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
+
+        <div class="floating-selector-group">
+          <label class="floating-selector-label" id="FloatingLanguageLabel">
+            🌐 {{ section.settings.language_label | default: 'Language' }}
+          </label>
+
+          <div class="floating-select-wrapper">
+            <select id="language-selector-FloatingLanguage"
+                    class="floating-select"
+                    aria-labelledby="FloatingLanguageLabel">
+              {% for language in localization.available_languages %}
+                <option value="{{ language.iso_code }}"
+                        {% if language.iso_code == localization.language.iso_code %}selected{% endif %}
+                        lang="{{ language.iso_code }}">
+                  {{ language.endonym_name }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
-      </div>
+      {% endform %}
+      <!-- /form -->
+
     </div>
 
     <button class="floating-dismiss-button">
@@ -53,19 +64,18 @@
   </div>
 </div>
 
-<!-- ===== MINIMAL CSS (same look as before) ===== -->
 <style>
-  .floating-localization-container{position:fixed;z-index:9999;font-family:inherit;--shadow:rgba(0,0,0,.15);--br:12px}
+  /* --- minimal styling, identical to previous snippets --- */
+  .floating-localization-container{position:fixed;z-index:9999;--br:12px;font-family:inherit}
   .floating-localization-container.bottom-right{bottom:20px;right:20px}
   .floating-localization-container.bottom-left{bottom:20px;left:20px}
   .floating-localization-container.top-right{top:80px;right:20px}
   .floating-localization-container.top-left{top:80px;left:20px}
-  .floating-collapsed{background:#fff;border:1px solid #e5e7eb;border-radius:var(--br);box-shadow:0 4px 20px var(--shadow)}
+  .floating-collapsed{background:#fff;border:1px solid #e5e7eb;border-radius:var(--br);box-shadow:0 4px 20px rgba(0,0,0,.15)}
   .floating-toggle-button{display:flex;align-items:center;gap:8px;padding:12px 16px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border:0;color:#fff;font-size:14px;font-weight:500;width:100%;cursor:pointer}
-  .floating-expanded{background:#fff;border:1px solid #e5e7eb;border-radius:var(--br);box-shadow:0 12px 40px var(--shadow);width:300px;max-width:calc(100vw - 40px)}
+  .floating-expanded{background:#fff;border:1px solid #e5e7eb;border-radius:var(--br);box-shadow:0 12px 40px rgba(0,0,0,.15);width:300px;max-width:calc(100vw - 40px)}
   .floating-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #f0f0f0}
   .floating-title{font-size:14px;font-weight:600}
-  .floating-close-button{background:transparent;border:0;font-size:16px;cursor:pointer}
   .floating-content{padding:20px}
   .floating-selector-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;margin-bottom:8px}
   .floating-select-wrapper select{width:100%;padding:12px 16px;border:2px solid #d1d5db;border-radius:8px;font-size:13px;cursor:pointer}
@@ -73,54 +83,37 @@
   .floating-localization-container.hidden{display:none!important}
 </style>
 
-<!-- ===== JAVASCRIPT ===== -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const id     = '{{ floating_id }}';
-  const ctry   = '{{ store_country }}';        // current country code rendered server-side
-  const expKey = id + '_expanded';
-  const hidKey = id + '_hide';
 
-  const wrap   = document.getElementById(id);
-  const col    = document.getElementById('collapsed-' + id);
-  const exp    = document.getElementById('expanded-' + id);
-  const btn    = wrap.querySelector('.floating-toggle-button');
-  const xBtn   = wrap.querySelector('.floating-close-button');
-  const byeBtn = wrap.querySelector('.floating-dismiss-button');
-  const sel    = document.getElementById('language-selector-FloatingLanguage');
+  /* ===== expand / collapse / dismiss behaviour (unchanged) ===== */
+  const id      = '{{ floating_id }}';
+  const wrap    = document.getElementById(id);
+  const col     = document.getElementById('collapsed-' + id);
+  const exp     = document.getElementById('expanded-' + id);
+  const toggle  = wrap.querySelector('.floating-toggle-button');
+  const close   = wrap.querySelector('.floating-close-button');
+  const bye     = wrap.querySelector('.floating-dismiss-button');
+  const select  = document.getElementById('language-selector-FloatingLanguage');
+  const form    = document.getElementById('FloatingLanguageForm');
 
-  if (sessionStorage.getItem(hidKey)==='1'){wrap.style.display='none';return;}
+  const expKey  = id + '_expanded';
+  const hideKey = id + '_hide';
+
+  if (sessionStorage.getItem(hideKey)==='1'){wrap.style.display='none';return;}
   if (sessionStorage.getItem(expKey)==='1'){showExp();}
 
-  btn.addEventListener('click',  showExp);
-  xBtn.addEventListener('click', showCol);
-  byeBtn.addEventListener('click', ()=>{sessionStorage.setItem(hidKey,'1');wrap.style.display='none';});
+  toggle.addEventListener('click',  showExp);
+  close.addEventListener('click',   showCol);
+  bye.addEventListener('click', ()=>{sessionStorage.setItem(hideKey,'1');wrap.style.display='none';});
 
   function showExp(){col.style.display='none';exp.style.display='block';sessionStorage.setItem(expKey,'1');}
   function showCol(){exp.style.display='none';col.style.display='block';sessionStorage.setItem(expKey,'0');}
 
-  /* === MAIN LOGIC: POST to /localization then reload === */
-  sel.addEventListener('change', () => {
-    const locale = sel.value;
-    if (!locale) return;
-
-    const body = new URLSearchParams({
-      form_type:   'localization',
-      locale_code: locale,
-      country_code: ctry,
-      return_to:   window.location.pathname + window.location.search
-    });
-
-    /* Visual feedback */
-    sel.disabled = true; sel.style.opacity = '.6';
-
-    fetch('/localization', {
-      method: 'POST',
-      headers: { 'Content-Type':'application/x-www-form-urlencoded' },
-      body: body.toString()
-    })
-    .then(()=>window.location.reload())
-    .catch(()=>window.location.reload());   // reload anyway on failure
+  /* ===== on language pick: update hidden input & POST ===== */
+  select.addEventListener('change', () => {
+    form.querySelector('input[name="locale_code"]').value = select.value;
+    form.submit();                      // Shopify handles redirect & cookie
   });
 });
 </script>
@@ -141,30 +134,10 @@ document.addEventListener('DOMContentLoaded', () => {
       ],
       "default": "bottom-right"
     },
-    {
-      "type": "text",
-      "id": "collapsed_label",
-      "label": "Collapsed button label",
-      "default": "Language"
-    },
-    {
-      "type": "text",
-      "id": "expanded_title",
-      "label": "Expanded panel title",
-      "default": "Select Your Language"
-    },
-    {
-      "type": "text",
-      "id": "language_label",
-      "label": "Select box label",
-      "default": "Language"
-    },
-    {
-      "type": "text",
-      "id": "dismiss_text",
-      "label": "Dismiss button text",
-      "default": "Don't show again"
-    }
+    { "type": "text", "id": "collapsed_label", "label": "Collapsed button label", "default": "Language" },
+    { "type": "text", "id": "expanded_title",  "label": "Expanded panel title",   "default": "Select Your Language" },
+    { "type": "text", "id": "language_label",  "label": "Select box label",       "default": "Language" },
+    { "type": "text", "id": "dismiss_text",    "label": "Dismiss button text",    "default": "Don't show again" }
   ],
   "presets": [
     { "name": "Floating Language Selector" }
