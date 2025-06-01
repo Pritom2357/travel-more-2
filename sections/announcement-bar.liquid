@@ -26,13 +26,15 @@
 
   <!-- Expanded State -->
   <div class="floating-expanded" id="expanded-{{ floating_id }}" style="display: none;">
+    <div>Testing for the country</div>
     <select name="country" id="CountrySelector">
-    {% for country in shop.countries %}
-        <option value="{{ country.code }}">
-        {{ country.name }}
-        </option>
-    {% endfor %}
+        {% for country in shop.countries %}
+            <option value="{{ country.code }}">
+                {{ country.name }}
+            </option>
+        {% endfor %}
     </select>
+    <div>Testing ended</div>
     <div class="floating-header">
       <span class="floating-title">{{ section.settings.expanded_title | default: 'Select Your Preferences' }}</span>
       <button class="floating-close-button" aria-label="Close selector">
