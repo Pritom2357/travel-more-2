@@ -1,438 +1,119 @@
 {%- comment -%}
-  Floating Language Selector (no country picker). 
-  Paste this into your section (e.g. sections/region-selector.liquid).
+  Floating Language Selector – redirect version (no /localization form)
 {%- endcomment -%}
 
-{%- assign floating_id = 'floating-language-' | append: section.id -%}
+{%- assign floating_id = 'floating-lang-' | append: section.id -%}
 
-{%- liquid
-  assign has_language = section.settings.enable_language_selector
-  assign show_selector = has_language
--%}
+{% comment %}—–––– CONTAINER –––––{% endcomment %}
+<div id="{{ floating_id }}"
+     class="floating-localization-container {{ section.settings.position_class }}">
 
-{%- if show_selector -%}
-  <!-- ===== FLOATING LANGUAGE SELECTOR ===== -->
-  <div id="{{ floating_id }}" class="floating-localization-container {{ section.settings.position_class }}">
-    <!-- === COLLAPSED STATE === -->
-    <div class="floating-collapsed" id="collapsed-{{ floating_id }}">
-      <button class="floating-toggle-button" aria-label="Open language selector">
-        <svg class="icon icon-language" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
-          <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/>
-        </svg>
-        <span class="floating-label">{{ section.settings.collapsed_label | default: 'Language' }}</span>
-      </button>
+  {%- comment -%} COLLAPSED BUTTON {%- endcomment -%}
+  <div id="collapsed-{{ floating_id }}" class="floating-collapsed">
+    <button class="floating-toggle-button" aria-label="Open language selector">
+      🌐 <span>{{ section.settings.collapsed_label | default: 'Language' }}</span>
+    </button>
+  </div>
+
+  {%- comment -%} EXPANDED PANEL {%- endcomment -%}
+  <div id="expanded-{{ floating_id }}" class="floating-expanded" style="display:none">
+    <div class="floating-header">
+      <span class="floating-title">
+        {{ section.settings.expanded_title | default: 'Select Your Language' }}
+      </span>
+      <button class="floating-close-button" aria-label="Close selector">✕</button>
     </div>
 
-    <!-- === EXPANDED STATE === -->
-    <div class="floating-expanded" id="expanded-{{ floating_id }}" style="display: none;">
-      <div class="floating-header">
-        <span class="floating-title">{{ section.settings.expanded_title | default: 'Select Your Language' }}</span>
-        <button class="floating-close-button" aria-label="Close selector">
-          <svg class="icon icon-close" viewBox="0 0 16 16">
-            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-          </svg>
-        </button>
-      </div>
-      <div class="floating-content">
-        <div class="floating-selector-group">
-          <label class="floating-selector-label">
-            <svg class="icon icon-language" viewBox="0 0 24 24">
-              <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/>
-            </svg>
-            {{ section.settings.language_label | default: 'Language' }}
-          </label>
+    <div class="floating-content">
+      <div class="floating-selector-group">
+        <label class="floating-selector-label" id="FloatingLanguageLabel">
+          🌐 {{ section.settings.language_label | default: 'Language' }}
+        </label>
 
-          <!-- === LANGUAGE FORM === -->
-          <form method="post"
-                action="{{ routes.localization_form_url }}"
-                id="FloatingLanguageForm"
-                class="floating-form"
-                accept-charset="UTF-8">
-
-            <!-- Required hidden inputs for Shopify localization -->
-            <input type="hidden" name="form_type" value="localization">
-            <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
-            <input type="hidden" name="return_to" value="{{ request.path }}">
-
-            <div class="floating-select-wrapper">
-              <select name="locale_code"
-                      id="language-selector-FloatingLanguage"
-                      class="floating-select"
-                      aria-labelledby="FloatingLanguageLabel">
-                {%- for language in localization.available_languages -%}
-                  <option value="{{ language.iso_code }}"
-                    {%- if language.iso_code == localization.language.iso_code -%} selected{%- endif -%}>
-                    {{ language.endonym_name }}
-                  </option>
-                {%- endfor -%}
-              </select>
-            </div>
-          </form>
+        {%- comment -%} THE SELECT (value = language.url) {%- endcomment -%}
+        <div class="floating-select-wrapper">
+          <select id="language-selector-FloatingLanguage" class="floating-select"
+                  aria-labelledby="FloatingLanguageLabel">
+            {% for language in localization.available_languages %}
+              <option value="{{ language.url }}"
+                      {% if language.iso_code == localization.language.iso_code %}selected{% endif %}
+                      lang="{{ language.iso_code }}">
+                {{ language.endonym_name }}
+              </option>
+            {% endfor %}
+          </select>
         </div>
       </div>
-
-      <button class="floating-dismiss-button">
-        {{ section.settings.dismiss_text | default: "Don't show again" }}
-      </button>
     </div>
+
+    <button class="floating-dismiss-button">
+      {{ section.settings.dismiss_text | default: "Don't show again" }}
+    </button>
   </div>
-{%- endif -%}
+</div>
 
-
-<!-- ================== STYLES ================== -->
+{%- comment -%}===== BASIC STYLES (trimmed to essentials) ====={%- endcomment -%}
 <style>
-  /* ======= FLOATING LOCALIZATION CONTAINER ======= */
-  .floating-localization-container {
-    position: fixed;
-    z-index: 9999;
-    font-family: inherit;
-    --shadow-color: rgba(0, 0, 0, 0.15);
-    --border-radius: 12px;
-    --transition-speed: 0.3s;
-  }
+  .floating-localization-container{position:fixed;z-index:9999;font-family:inherit;--shadow:rgba(0,0,0,.15);--br:12px;--t:.3s}
+  .floating-localization-container.bottom-right{bottom:20px;right:20px}
+  .floating-localization-container.bottom-left{bottom:20px;left:20px}
+  .floating-localization-container.top-right{top:80px;right:20px}
+  .floating-localization-container.top-left{top:80px;left:20px}
 
-  /* Position Classes */
-  .floating-localization-container.bottom-right {
-    bottom: 20px;
-    right: 20px;
-  }
-  .floating-localization-container.bottom-left {
-    bottom: 20px;
-    left: 20px;
-  }
-  .floating-localization-container.top-right {
-    top: 80px;
-    right: 20px;
-  }
-  .floating-localization-container.top-left {
-    top: 80px;
-    left: 20px;
-  }
+  .floating-collapsed{background:#fff;border:1px solid #e5e7eb;border-radius:var(--br);box-shadow:0 4px 20px var(--shadow);transition:all var(--t)}
+  .floating-toggle-button{display:flex;align-items:center;gap:8px;padding:12px 16px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border:0;color:#fff;font-size:14px;font-weight:500;width:100%;cursor:pointer}
+  .floating-toggle-button:hover{transform:scale(1.02)}
 
-  /* ===== COLLAPSED STATE ===== */
-  .floating-collapsed {
-    background: #fff;
-    border: 1px solid rgba(var(--color-foreground), 0.1);
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 20px var(--shadow-color);
-    overflow: hidden;
-    transition: all var(--transition-speed) ease;
-  }
-  .floating-collapsed:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px var(--shadow-color);
-  }
-  .floating-toggle-button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
-    transition: all var(--transition-speed) ease;
-  }
-  .floating-toggle-button:hover {
-    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
-    transform: scale(1.02);
-  }
+  .floating-expanded{background:#fff;border:1px solid #e5e7eb;border-radius:var(--br);box-shadow:0 12px 40px var(--shadow);width:300px;max-width:calc(100vw - 40px);animation:fadeIn .3s}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:none}}
 
-  /* ===== EXPANDED STATE ===== */
-  .floating-expanded {
-    background: rgb(var(--color-background));
-    border: 1px solid rgba(var(--color-foreground), 0.1);
-    border-radius: var(--border-radius);
-    box-shadow: 0 12px 40px var(--shadow-color);
-    width: 300px;
-    max-width: calc(100vw - 40px);
-    animation: floatingSlideIn var(--transition-speed) ease;
-    overflow: hidden;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  @keyframes floatingSlideIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px) scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
+  .floating-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #f0f0f0}
+  .floating-title{font-size:14px;font-weight:600}
+  .floating-close-button{background:transparent;border:0;font-size:16px;cursor:pointer}
 
-  /* ===== HEADER ===== */
-  .floating-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    background: rgba(var(--color-foreground), 0.03);
-    border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
-  }
-  .floating-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: rgb(var(--color-foreground));
-  }
-  .floating-close-button {
-    background: transparent;
-    border: none;
-    color: rgba(var(--color-foreground), 0.6);
-    cursor: pointer;
-    padding: 6px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-  }
-  .floating-close-button:hover {
-    background: rgba(var(--color-foreground), 0.1);
-    color: rgb(var(--color-foreground));
-  }
-
-  /* ===== CONTENT ===== */
-  .floating-content {
-    padding: 20px;
-  }
-  .floating-selector-group {
-    margin-bottom: 20px;
-  }
-  .floating-selector-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    color: rgba(var(--color-foreground), 0.8);
-    margin-bottom: 8px;
-  }
-  .floating-form {
-    width: 100%;
-  }
-  .floating-select-wrapper {
-    position: relative;
-  }
-  .floating-select-wrapper select {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid rgba(var(--color-foreground), 0.15);
-    border-radius: 8px;
-    background: rgb(var(--color-background));
-    color: rgb(var(--color-foreground));
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 12px;
-    padding-right: 40px;
-  }
-  .floating-select-wrapper select:hover {
-    border-color: rgba(var(--color-foreground), 0.3);
-    background-color: rgba(var(--color-foreground), 0.02);
-  }
-  .floating-select-wrapper select:focus {
-    outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
-  }
-
-  /* ===== DISMISS BUTTON ===== */
-  .floating-dismiss-button {
-    width: 100%;
-    padding: 12px 20px;
-    background: rgba(var(--color-foreground), 0.03);
-    border: none;
-    border-top: 1px solid rgba(var(--color-foreground), 0.08);
-    color: rgba(var(--color-foreground), 0.7);
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .floating-dismiss-button:hover {
-    background: rgba(var(--color-foreground), 0.08);
-    color: rgb(var(--color-foreground));
-  }
-
-  /* ===== ICONS ===== */
-  .icon {
-    width: 16px;
-    height: 16px;
-    fill: currentColor;
-    flex-shrink: 0;
-  }
-  .floating-toggle-button .icon {
-    width: 18px;
-    height: 18px;
-  }
-  .floating-selector-label .icon {
-    width: 14px;
-    height: 14px;
-  }
-  .floating-close-button .icon {
-    width: 12px;
-    height: 12px;
-  }
-
-  /* ===== MOBILE RESPONSIVENESS ===== */
-  @media screen and (max-width: 768px) {
-    .floating-localization-container {
-      bottom: 20px !important;
-      right: 20px !important;
-      left: auto !important;
-      top: auto !important;
-    }
-    .floating-expanded {
-      width: calc(100vw - 40px);
-      max-width: 320px;
-    }
-    .floating-content {
-      padding: 16px;
-    }
-    .floating-selector-group {
-      margin-bottom: 16px;
-    }
-    .floating-select-wrapper select {
-      font-size: 14px !important;
-      padding: 14px 16px;
-    }
-  }
-  @media screen and (max-width: 480px) {
-    .floating-localization-container {
-      bottom: 15px !important;
-      right: 15px !important;
-    }
-    .floating-expanded {
-      width: calc(100vw - 30px);
-    }
-    .floating-toggle-button {
-      padding: 10px 12px;
-      font-size: 13px;
-    }
-    .floating-header {
-      padding: 12px 16px;
-    }
-    .floating-content {
-      padding: 12px;
-    }
-  }
-
-  /* ===== ACCESSIBILITY STYLES ===== */
-  .floating-toggle-button:focus,
-  .floating-close-button:focus,
-  .floating-dismiss-button:focus {
-    outline: 2px solid rgb(var(--color-base-accent-1));
-    outline-offset: 2px;
-  }
-
-  /* ===== HIDDEN STATE ===== */
-  .floating-localization-container.hidden {
-    display: none !important;
-  }
+  .floating-content{padding:20px}
+  .floating-selector-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;margin-bottom:8px}
+  .floating-select-wrapper select{width:100%;padding:12px 16px;border:2px solid #d1d5db;border-radius:8px;font-size:13px;background:#fff;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L2 4h8z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:40px;cursor:pointer}
+  .floating-dismiss-button{width:100%;padding:12px 20px;background:#f9fafb;border:0;border-top:1px solid #f0f0f0;font-size:12px;cursor:pointer}
+  .floating-localization-container.hidden{display:none!important}
 </style>
 
-
-<!-- ================== JAVASCRIPT ================== -->
+{%- comment -%}=====   JAVASCRIPT   ====={%- endcomment -%}
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const floatingId = '{{ floating_id }}';
-    const storageKey = floatingId + '_dismissed';
-    const expandedKey = floatingId + '_expanded';
+  document.addEventListener('DOMContentLoaded', () => {
+    const id          = '{{ floating_id }}';
+    const expKey      = id + '_expanded';
+    const hideKey     = id + '_hide';
+    const container   = document.getElementById(id);
+    const collapsed   = document.getElementById('collapsed-' + id);
+    const expanded    = document.getElementById('expanded-' + id);
+    const toggleBtn   = container.querySelector('.floating-toggle-button');
+    const closeBtn    = container.querySelector('.floating-close-button');
+    const dismissBtn  = container.querySelector('.floating-dismiss-button');
+    const select      = document.getElementById('language-selector-FloatingLanguage');
 
-    const container = document.getElementById(floatingId);
-    if (!container) return;
+    if (sessionStorage.getItem(hideKey) === '1') { container.style.display = 'none'; return; }
+    if (sessionStorage.getItem(expKey)  === '1') showExpanded();
 
-    const collapsed = document.getElementById('collapsed-' + floatingId);
-    const expanded = document.getElementById('expanded-' + floatingId);
-    const toggleButton = container.querySelector('.floating-toggle-button');
-    const closeButton = container.querySelector('.floating-close-button');
-    const dismissButton = container.querySelector('.floating-dismiss-button');
+    function showExpanded(){ collapsed.style.display='none'; expanded.style.display='block'; sessionStorage.setItem(expKey,'1'); }
+    function showCollapsed(){ expanded.style.display='none'; collapsed.style.display='block'; sessionStorage.setItem(expKey,'0'); }
 
-    // If user dismissed previously, hide the entire panel
-    const isDismissed = sessionStorage.getItem(storageKey) === 'true';
-    if (isDismissed) {
-      container.classList.add('hidden');
-      return;
-    }
+    toggleBtn.addEventListener('click',  showExpanded);
+    closeBtn.addEventListener('click',   showCollapsed);
+    dismissBtn.addEventListener('click', () => { sessionStorage.setItem(hideKey,'1'); container.style.display='none'; });
 
-    // If panel was expanded last time, show expanded
-    const wasExpanded = sessionStorage.getItem(expandedKey) === 'true';
-    if (wasExpanded) {
-      showExpanded();
-    }
-
-    // Show expanded / collapsed
-    function showExpanded() {
-      collapsed.style.display = 'none';
-      expanded.style.display = 'block';
-      sessionStorage.setItem(expandedKey, 'true');
-    }
-    function showCollapsed() {
-      expanded.style.display = 'none';
-      collapsed.style.display = 'block';
-      sessionStorage.setItem(expandedKey, 'false');
-    }
-    function hideSelector() {
-      container.classList.add('hidden');
-      sessionStorage.setItem(storageKey, 'true');
-    }
-
-    // Toggle between states
-    if (toggleButton) {
-      toggleButton.addEventListener('click', showExpanded);
-    }
-    if (closeButton) {
-      closeButton.addEventListener('click', showCollapsed);
-    }
-    if (dismissButton) {
-      dismissButton.addEventListener('click', hideSelector);
-    }
-
-    // Handle language <select> change
-    const languageSelect = container.querySelector('#language-selector-FloatingLanguage');
-    if (languageSelect) {
-      languageSelect.addEventListener('change', function() {
-        // Show a loading state
-        this.style.opacity = '0.7';
-        this.disabled = true;
-
-        // Submit the form
-        const form = this.closest('form');
-        if (form) {
-          form.submit();
-        }
-      });
-    }
-
-    // Click outside to close dropdown and panel
-    document.addEventListener('click', function(event) {
-      if (!container.contains(event.target)) {
-        if (expanded.style.display === 'block') {
-          showCollapsed();
-        }
-      }
-    });
-
-    // Escape key closes everything
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        if (expanded.style.display === 'block') {
-          showCollapsed();
-        }
-      }
+    /* === REDIRECT ON CHANGE === */
+    select.addEventListener('change', () => {
+      const url = select.value;               // value is language.url
+      if (url) window.location.href = url;    // instant redirect
     });
   });
 </script>
 
+{%- comment -%}=====  SECTION SCHEMA (Theme Editor options) ====={%- endcomment -%}
 {% schema %}
 {
-  "name": "Language Selector",
+  "name": "Floating Language Selector",
   "settings": [
     {
       "type": "select",
@@ -440,9 +121,9 @@
       "label": "Position",
       "options": [
         { "value": "bottom-right", "label": "Bottom Right" },
-        { "value": "bottom-left", "label": "Bottom Left" },
-        { "value": "top-right", "label": "Top Right" },
-        { "value": "top-left", "label": "Top Left" }
+        { "value": "bottom-left",  "label": "Bottom Left" },
+        { "value": "top-right",    "label": "Top Right" },
+        { "value": "top-left",     "label": "Top Left" }
       ],
       "default": "bottom-right"
     },
@@ -460,28 +141,20 @@
     },
     {
       "type": "text",
+      "id": "language_label",
+      "label": "Select box label",
+      "default": "Language"
+    },
+    {
+      "type": "text",
       "id": "dismiss_text",
       "label": "Dismiss button text",
       "default": "Don't show again"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_language_selector",
-      "label": "Enable language selector",
-      "default": true,
-      "info": "Requires languages to be added in Shopify Admin → Settings → Languages"
     }
   ],
   "presets": [
     {
-      "name": "Floating Language Selector",
-      "settings": {
-        "position_class": "bottom-right",
-        "collapsed_label": "Language",
-        "expanded_title": "Select Your Language",
-        "dismiss_text": "Don't show again",
-        "enable_language_selector": true
-      }
+      "name": "Floating Language Selector"
     }
   ]
 }
