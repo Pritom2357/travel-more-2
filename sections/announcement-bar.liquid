@@ -4,7 +4,11 @@
 {%- liquid
   assign has_country = section.settings.enable_country_selector
   assign has_language = section.settings.enable_language_selector
-  assign show_selector = has_country or has_language
+  if has_country or has_language
+    assign show_selector = true
+  else
+    assign show_selector = false
+  endif
 -%}
 
 {%- if show_selector -%}
