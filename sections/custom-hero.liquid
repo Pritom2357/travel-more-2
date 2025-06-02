@@ -441,7 +441,6 @@
     min-height: 42px;
   }
   .hero-section .nav-settings .btn-outline-success:hover {
-    {% comment %} background-color: {{ section.settings.search_btn_hover_color }} !important; {% endcomment %}
     border-color: transparent;
     color: {{ section.settings.search_btn_text_hover_color }} !important;
   }
@@ -456,7 +455,11 @@
     position: relative;
     width: 100%;
     min-height: 100vh;
-    background: none; 
+    max-height: unset; 
+    aspect-ratio: unset; 
+    overflow: hidden; 
+    background: url('{{ bg_img_url }}') center center no-repeat;
+    background-size: cover;
     isolation: isolate; 
   }
   .hero-section::before {
@@ -524,23 +527,24 @@
     margin-bottom: 1.5rem;
   }
   .hero-section .btn1 {
-    background-color: {{ section.settings.btn1_color }} !important;
-    border-color: {{ section.settings.btn1_color }} !important;
+    background: linear-gradient(45deg, {{ section.settings.btn1_color }}, {{ section.settings.btn1_hover_color }});
+    border: none;
     color: {{section.settings.btn1_text_color}} !important;
-    transition: background-color 0.3s, border-color 0.3s;
   }
   .hero-section .btn1:hover {
-    background-color: {{ section.settings.btn1_hover_color }} !important;
-    border-color: {{ section.settings.btn1_hover_color }} !important;
-    color: {{section.settings.btn1_text_hover_color}} !important;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    background: linear-gradient(45deg, {{ section.settings.btn1_hover_color }}, {{ section.settings.btn1_color }});
   }
   .hero-section .btn2{
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.8);
     color: {{section.settings.btn2_text_color}} !important;
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
   }
   .hero-section .btn2:hover {
-    background-color: {{ section.settings.btn2_hover_color }} !important;
-    border-color: {{ section.settings.btn2_hover_color }} !important;
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     color: {{ section.settings.btn2_text_hover_color }} !important;
   }
   .hero-section .btn1:focus, .hero-section .btn2:focus {
@@ -590,6 +594,7 @@
     flex-direction: column; 
     align-items: center; 
     gap: 10px; 
+    flex-wrap: nowrap;
   }
 
   .store-name {
@@ -608,21 +613,10 @@
     transition: color 0.3s ease;
   }
 
-  @media (max-width: 767px) {
-    .store-name {
-      font-size: calc({{ section.settings.store_name_text_size }}px * 0.75); 
-    }
-    
-    .logo-name-container {
-      gap: 8px;
-    }
-  }
-
-  .logo-name-container {
-    {% comment %} display: flex; {% endcomment %}
-    align-items: center;
-    gap: 10px;
-    flex-wrap: nowrap;
+  .store-name-link:hover .store-name {
+    text-decoration: underline;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
   }
 
   .navbar-nav .dropdown-menu {
@@ -637,6 +631,7 @@
     z-index: 1000;
     min-width: 200px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: none !important;
   }
 
   .navbar-nav .dropdown-item {
@@ -644,6 +639,7 @@
     padding: 8px 15px;
     transition: all 0.3s ease;
     background-color: transparent;
+    cursor: pointer;
   }
 
   .navbar-nav .dropdown-item:hover {
@@ -673,6 +669,7 @@
     top: 0;
     left: 100%;
     margin-left: 0.1rem;
+    margin-top: -6px;
     border-radius: 4px;
     display: none;
     z-index: 1001;
@@ -710,10 +707,6 @@
     visibility: visible;
   }
 
-  .navbar-nav .dropdown-submenu {
-    position: relative;
-  }
-
   .navbar-nav .dropdown-submenu:before {
     content: '';
     position: absolute;
@@ -722,67 +715,6 @@
     width: 15px;
     height: 100%;
     z-index: 1000;
-  }
-
-  @media (max-width: 991px) {
-    .navbar-nav .dropdown-menu {
-      position: static;
-      float: none;
-      width: auto;
-      margin-top: 0;
-      background-color: transparent;
-      border: 0;
-      box-shadow: none;
-      padding-left: 15px;
-    }
-    
-    .navbar-nav .dropdown-menu.show {
-      display: block;
-    }
-    
-    .navbar-nav .dropdown-submenu .dropdown-menu {
-      position: static !important;
-      margin-left: 0;
-      padding-left: 15px;
-      display: none !important;
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    .navbar-nav .dropdown-submenu .dropdown-menu.show {
-      display: block !important;
-    }
-    
-    .navbar-nav .dropdown-submenu > .dropdown-item.dropdown-toggle::after {
-      content: "▼";
-      float: right;
-      transform: rotate(0deg);
-    }
-
-    .navbar-nav .dropdown-submenu.show > .dropdown-item.dropdown-toggle::after {
-      content: "▲";
-      transform: rotate(0deg);
-    }
-
-    .navbar-nav .dropdown-submenu:before {
-      display: none;
-    }
-  }
-
-  .navbar-nav .dropdown-toggle,
-  .navbar-nav .dropdown-item.dropdown-toggle {
-    background-color: transparent !important;
-  }
-
-  .navbar-nav .dropdown-item.dropdown-toggle:hover {
-    background-color: rgba(255,255,255,0.1) !important;
-  }
-
-  .store-name-link:hover .store-name {
-    color: {{ section.settings.store_name_hover_color }} !important;
-    text-decoration: underline;
-    transform: scale(1.05);
-    transition: all 0.3s ease;
   }
 
   .hero-content-wrapper {
@@ -844,30 +776,6 @@
     overflow: hidden;
     transition: all 0.4s ease;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  }
-  
-  .btn1 {
-    background: linear-gradient(45deg, {{ section.settings.btn1_color }}, {{ section.settings.btn1_hover_color }});
-    border: none;
-    color: {{section.settings.btn1_text_color}} !important;
-  }
-  
-  .btn1:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    background: linear-gradient(45deg, {{ section.settings.btn1_hover_color }}, {{ section.settings.btn1_color }});
-  }
-  
-  .btn2 {
-    background: transparent;
-    border: 2px solid rgba(255,255,255,0.8);
-    color: {{section.settings.btn2_text_color}} !important;
-  }
-  
-  .btn2:hover {
-    background: rgba(255,255,255,0.1);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
   }
   
   .btn-content {
