@@ -1344,38 +1344,75 @@
   });
 
   function initializeDropdowns() {
-    // Single click handler for all dropdowns
+    // Remove any existing event listeners to prevent duplicates
+    const existingHandler = document.querySelector('[data-dropdown-initialized]');
+    if (existingHandler) return;
+    
+    // Mark as initialized
+    document.body.setAttribute('data-dropdown-initialized', 'true');
+    
+    // Single click handler for mobile dropdowns
     document.addEventListener('click', function(e) {
-      const toggle = e.target.closest('.dropdown-toggle');
+      // Only handle mobile clicks
+      if (window.innerWidth > 991) return;
+      
+      // Find the dropdown toggle that was clicked
+      let toggle = null;
+      if (e.target.classList.contains('dropdown-toggle')) {
+        toggle = e.target;
+      } else if (e.target.closest('.dropdown-toggle')) {
+        toggle = e.target.closest('.dropdown-toggle');
+      }
+      
       if (!toggle) return;
       
+      // Get the dropdown menu
       const dropdownMenu = toggle.nextElementSibling;
       if (!dropdownMenu || !dropdownMenu.classList.contains('dropdown-menu')) return;
       
-      // Only handle clicks on mobile
-      if (window.innerWidth <= 991) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const isCurrentlyShown = dropdownMenu.classList.contains('show');
-        
-        // Toggle the dropdown menu AND the toggle element at the same time
-        dropdownMenu.classList.toggle('show', !isCurrentlyShown);
-        toggle.classList.toggle('show', !isCurrentlyShown);
-        toggle.setAttribute('aria-expanded', String(!isCurrentlyShown));
-        
-        // Handle parent container classes
-        const submenuParent = toggle.closest('.dropdown-submenu');
-        const mainDropdown = toggle.closest('.dropdown');
-        
-        if (submenuParent) {
-          // This is a submenu toggle
-          submenuParent.classList.toggle('show', !isCurrentlyShown);
-        } else if (mainDropdown) {
-          // This is a main dropdown toggle
-          mainDropdown.classList.toggle('show', !isCurrentlyShown);
+      // Prevent default and stop propagation
+      e.preventDefault();
+      e.stopPropagation();
+      
+      console.log('Toggle clicked:', toggle.textContent.trim()); // Debug log
+      
+      // Check current state
+      const isCurrentlyShown = dropdownMenu.classList.contains('show');
+      console.log('Currently shown:', isCurrentlyShown); // Debug log
+      
+      // Toggle both the menu and the toggle
+      if (isCurrentlyShown) {
+        dropdownMenu.classList.remove('show');
+        toggle.classList.remove('show');
+        toggle.setAttribute('aria-expanded', 'false');
+      } else {
+        dropdownMenu.classList.add('show');
+        toggle.classList.add('show');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+      
+      // Handle parent containers
+      const submenuParent = toggle.closest('.dropdown-submenu');
+      const mainDropdown = toggle.closest('.dropdown');
+      
+      if (submenuParent) {
+        // This is a submenu
+        if (isCurrentlyShown) {
+          submenuParent.classList.remove('show');
+        } else {
+          submenuParent.classList.add('show');
+        }
+      } else if (mainDropdown) {
+        // This is a main dropdown
+        if (isCurrentlyShown) {
+          mainDropdown.classList.remove('show');
+        } else {
+          mainDropdown.classList.add('show');
         }
       }
+      
+      console.log('After toggle - Menu has show:', dropdownMenu.classList.contains('show')); // Debug log
+      console.log('After toggle - Toggle has show:', toggle.classList.contains('show')); // Debug log
     });
     
     // Desktop hover functionality (only if desktop)
