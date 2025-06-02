@@ -1419,19 +1419,20 @@
       
       const isCurrentlyShown = dropdownMenu.classList.contains('show');
       
-      // Toggle the dropdown menu
+      // Toggle the dropdown menu AND the toggle element at the same time
       dropdownMenu.classList.toggle('show', !isCurrentlyShown);
+      toggle.classList.toggle('show', !isCurrentlyShown);
       toggle.setAttribute('aria-expanded', String(!isCurrentlyShown));
       
-      // If this is a submenu, also toggle the parent submenu class
+      // Handle different dropdown types
       const submenuParent = toggle.closest('.dropdown-submenu');
-      if (submenuParent) {
-        submenuParent.classList.toggle('show', !isCurrentlyShown);
-      }
-      
-      // If this is a main dropdown, also toggle the main dropdown class
       const mainDropdown = toggle.closest('.dropdown');
-      if (mainDropdown && !submenuParent) {
+      
+      if (submenuParent) {
+        // This is a submenu toggle - only toggle the submenu parent
+        submenuParent.classList.toggle('show', !isCurrentlyShown);
+      } else if (mainDropdown) {
+        // This is a main dropdown toggle - only toggle the main dropdown
         mainDropdown.classList.toggle('show', !isCurrentlyShown);
       }
     }
@@ -1529,9 +1530,14 @@
   
   // Close dropdowns when clicking outside
   document.addEventListener('click', function(e) {
-    if (!e.target.closest('.navbar-nav')) {
+    if (!e.target.closest('.navbar-nav') && window.innerWidth <= 991) {
       document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
         menu.classList.remove('show');
+        const toggle = menu.previousElementSibling;
+        if (toggle && toggle.classList.contains('dropdown-toggle')) {
+          toggle.classList.remove('show');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
         const submenuParent = menu.closest('.dropdown-submenu');
         if (submenuParent) {
           submenuParent.classList.remove('show');
@@ -1541,16 +1547,6 @@
           mainDropdown.classList.remove('show');
         }
       });
-      
-      if (window.innerWidth > 991) {
-        document.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(submenu => {
-          submenu.style.display = 'none';
-          const submenuParent = submenu.closest('.dropdown-submenu');
-          if (submenuParent) {
-            submenuParent.classList.remove('show');
-          }
-        });
-      }
     }
   });
 }
