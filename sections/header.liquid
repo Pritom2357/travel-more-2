@@ -1312,11 +1312,16 @@
       }
       
       if (!toggle) return;
+
+      console.log(`Toggle button: ${toggle} exists so far`);
       
       // Get the dropdown menu
       const dropdownMenu = toggle.nextElementSibling;
+      console.log(`The next element sibling is: ${dropdownMenu}`)
       if (!dropdownMenu || !dropdownMenu.classList.contains('dropdown-menu')) return;
       
+      console.log(`The next element sibling: ${dropdownMenu} exists so far`)
+
       // Prevent default and stop propagation
       e.preventDefault();
       e.stopPropagation();
@@ -1328,7 +1333,7 @@
       console.log('Currently shown:', isCurrentlyShown);
       
       // Toggle both the menu and the toggle
-      if (isCurrentlyShown) {
+      {% comment %} if (isCurrentlyShown) {
         dropdownMenu.classList.remove('show');
         toggle.classList.remove('show');
         toggle.setAttribute('aria-expanded', 'false');
@@ -1336,7 +1341,7 @@
         dropdownMenu.classList.add('show');
         toggle.classList.add('show');
         toggle.setAttribute('aria-expanded', 'true');
-      }
+      } {% endcomment %}
       
       // Handle parent containers
       const submenuParent = toggle.closest('.dropdown-submenu');
