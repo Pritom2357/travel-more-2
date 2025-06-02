@@ -322,24 +322,7 @@
   });
   
   // Close dropdowns when clicking outside the nav
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.navbar-nav') && !e.target.closest('.navbar-toggler')) {
-      const heroSection = document.querySelector('.hero-section');
-      if (heroSection) {
-        heroSection.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-          menu.classList.remove('show');
-          const submenuParent = menu.closest('.dropdown-submenu');
-          if (submenuParent) {
-            submenuParent.classList.remove('show');
-          }
-          const toggle = menu.previousElementSibling;
-          if (toggle) {
-            toggle.setAttribute('aria-expanded', 'false');
-          }
-        });
-      }
-    }
-  });
+  
 }
 
   function initializeBookingButton() {
