@@ -1332,20 +1332,13 @@
       const isCurrentlyShown = dropdownMenu.classList.contains('show');
       console.log('Currently shown:', isCurrentlyShown);
       
-      // Toggle both the menu and the toggle
-      {% comment %} if (isCurrentlyShown) {
-        dropdownMenu.classList.remove('show');
-        toggle.classList.remove('show');
-        toggle.setAttribute('aria-expanded', 'false');
-      } else {
-        dropdownMenu.classList.add('show');
-        toggle.classList.add('show');
-        toggle.setAttribute('aria-expanded', 'true');
-      } {% endcomment %}
       
       // Handle parent containers
       const submenuParent = toggle.closest('.dropdown-submenu');
       const mainDropdown = toggle.closest('.dropdown');
+
+      console.log(`sub-parent menu: ${submenuParent}`)
+      console.log(`main-dropdown menu: ${mainDropdown}`)
     
       if (submenuParent) {
         // This is a submenu
