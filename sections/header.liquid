@@ -1343,10 +1343,7 @@
       if (submenuParent) {
         // This is a submenu
         submenuParent.classList.toggle('show', !isCurrentlyShown);
-      } else if (mainDropdown) {
-        // This is a main dropdown
-        mainDropdown.classList.toggle('show', !isCurrentlyShown);
-      }
+      } 
       
       console.log('After toggle - Menu has show:', dropdownMenu.classList.contains('show'));
       console.log('After toggle - Toggle has show:', toggle.classList.contains('show'));
