@@ -1404,229 +1404,156 @@
     updateCartCount();
   });
 
-
-
   function initializeDropdowns() {
+  document.addEventListener('click', function(e) {
+    const toggle = e.target.closest('.dropdown-toggle');
+    if (!toggle) return;
+    
+    const dropdownMenu = toggle.nextElementSibling;
+    if (!dropdownMenu || !dropdownMenu.classList.contains('dropdown-menu')) return;
+    
+    // Only handle clicks on mobile
+    if (window.innerWidth <= 991) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const isCurrentlyShown = dropdownMenu.classList.contains('show');
+      
+      // Toggle the dropdown menu
+      dropdownMenu.classList.toggle('show', !isCurrentlyShown);
+      toggle.setAttribute('aria-expanded', String(!isCurrentlyShown));
+      
+      // If this is a submenu, also toggle the parent submenu class
+      const submenuParent = toggle.closest('.dropdown-submenu');
+      if (submenuParent) {
+        submenuParent.classList.toggle('show', !isCurrentlyShown);
+      }
+      
+      // If this is a main dropdown, also toggle the main dropdown class
+      const mainDropdown = toggle.closest('.dropdown');
+      if (mainDropdown && !submenuParent) {
+        mainDropdown.classList.toggle('show', !isCurrentlyShown);
+      }
+    }
+  });
+  
+  // Desktop hover functionality (unchanged)
+  if (window.innerWidth > 991) {
     let hoverTimeouts = new Map();
     
-    // Use event delegation for better performance and reliability with dynamic content
-    document.addEventListener('click', function(e) {
-      // Check if the clicked element is a dropdown toggle
-      if (e.target.classList.contains('dropdown-toggle') || 
-          e.target.closest('.dropdown-toggle')) {
-        
-        const toggle = e.target.classList.contains('dropdown-toggle') ? 
-                      e.target : e.target.closest('.dropdown-toggle');
-        const dropdownMenu = toggle.nextElementSibling;
-        
-        if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
-          e.preventDefault();
-          e.stopPropagation();
-          
-          // Check if this is a grandchild menu (submenu)
-          const isSubmenu = toggle.closest('.dropdown-submenu');
-          
-          if (window.innerWidth <= 991 || isSubmenu) {
-            // Toggle the dropdown menu
-            const isCurrentlyShown = dropdownMenu.classList.contains('show');
-            
-            if (isSubmenu) {
-              // For submenus, toggle the parent submenu class as well
-              const submenuParent = toggle.closest('.dropdown-submenu');
-              submenuParent.classList.toggle('show', !isCurrentlyShown);
-            }
-            
-            dropdownMenu.classList.toggle('show', !isCurrentlyShown);
-            
-            // Set aria-expanded for accessibility
-            toggle.setAttribute('aria-expanded', !isCurrentlyShown);
-            
-            // Close sibling menus at the same level
-            const parentContainer = isSubmenu ? 
-              toggle.closest('.dropdown-menu') : 
-              toggle.closest('.navbar-nav');
-              
-            if (parentContainer) {
-              const siblingMenus = parentContainer.querySelectorAll(
-                isSubmenu ? 
-                ':scope > li.dropdown-submenu > .dropdown-menu' : 
-                ':scope > li.dropdown > .dropdown-menu'
-              );
-              
-              siblingMenus.forEach(menu => {
-                if (menu !== dropdownMenu && menu.classList.contains('show')) {
-                  menu.classList.remove('show');
-                  const siblingSubmenu = menu.closest('.dropdown-submenu');
-                  if (siblingSubmenu) {
-                    siblingSubmenu.classList.remove('show');
-                  }
-                  const siblingToggle = menu.previousElementSibling;
-                  if (siblingToggle) {
-                    siblingToggle.setAttribute('aria-expanded', 'false');
-                  }
-                }
-              });
-            }
-          }
+    document.querySelectorAll('.navbar-nav .dropdown').forEach(dropdown => {
+      dropdown.addEventListener('mouseenter', function() {
+        const menu = this.querySelector('.dropdown-menu');
+        if (menu) {
+          clearTimeout(hoverTimeouts.get(menu));
+          menu.classList.add('show');
         }
-      }
+      });
+      
+      dropdown.addEventListener('mouseleave', function() {
+        const menu = this.querySelector('.dropdown-menu');
+        if (menu) {
+          const timeoutId = setTimeout(() => {
+            menu.classList.remove('show');
+            this.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(submenu => {
+              submenu.style.display = 'none';
+              const submenuParent = submenu.closest('.dropdown-submenu');
+              if (submenuParent) {
+                submenuParent.classList.remove('show');
+              }
+            });
+          }, 150);
+          hoverTimeouts.set(menu, timeoutId);
+        }
+      });
     });
 
-    // Enhanced desktop hover functionality with stable hover zones
-    if (window.innerWidth > 991) {
-      // Main dropdown hover
-      document.querySelectorAll('.navbar-nav .dropdown').forEach(dropdown => {
-        dropdown.addEventListener('mouseenter', function() {
-          const menu = this.querySelector('.dropdown-menu');
-          if (menu) {
-            clearTimeout(hoverTimeouts.get(menu));
-            menu.classList.add('show');
-          }
-        });
-        
-        dropdown.addEventListener('mouseleave', function() {
-          const menu = this.querySelector('.dropdown-menu');
-          if (menu) {
-            const timeoutId = setTimeout(() => {
-              menu.classList.remove('show');
-              // Also hide all submenus
-              this.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(submenu => {
-                submenu.style.display = 'none';
-                const submenuParent = submenu.closest('.dropdown-submenu');
-                if (submenuParent) {
-                  submenuParent.classList.remove('show');
-                }
-              });
-            }, 150); // Increased delay for more stability
-            hoverTimeouts.set(menu, timeoutId);
-          }
-        });
-      });
-
-      // Enhanced submenu hover with stable transition zones
-      document.querySelectorAll('.navbar-nav .dropdown-submenu').forEach(submenu => {
-        submenu.addEventListener('mouseenter', function() {
-          const submenuDropdown = this.querySelector('.dropdown-menu');
-          if (submenuDropdown) {
-            clearTimeout(hoverTimeouts.get(submenuDropdown));
-            submenuDropdown.style.display = 'block';
-            this.classList.add('show');
-            
-            // Hide sibling submenus
-            const parentMenu = this.closest('.dropdown-menu');
-            if (parentMenu) {
-              parentMenu.querySelectorAll(':scope > li.dropdown-submenu').forEach(sibling => {
-                if (sibling !== this) {
-                  const siblingMenu = sibling.querySelector('.dropdown-menu');
-                  if (siblingMenu) {
-                    siblingMenu.style.display = 'none';
-                    sibling.classList.remove('show');
-                  }
-                }
-              });
-            }
-          }
-        });
-        
-        submenu.addEventListener('mouseleave', function() {
-          const submenuDropdown = this.querySelector('.dropdown-menu');
-          if (submenuDropdown) {
-            const timeoutId = setTimeout(() => {
-              submenuDropdown.style.display = 'none';
-              this.classList.remove('show');
-            }, 150);
-            hoverTimeouts.set(submenuDropdown, timeoutId);
-          }
-        });
-      });
-
-      // Prevent menu from closing when hovering over the gap between parent and submenu
-      document.querySelectorAll('.navbar-nav .dropdown-menu').forEach(menu => {
-        menu.addEventListener('mouseenter', function() {
-          clearTimeout(hoverTimeouts.get(this));
-        });
-        
-        menu.addEventListener('mouseleave', function() {
-          const parentDropdown = this.closest('.dropdown');
-          if (parentDropdown) {
-            const timeoutId = setTimeout(() => {
-              this.classList.remove('show');
-              // Hide all submenus when main menu closes
-              this.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(submenu => {
-                submenu.style.display = 'none';
-                const submenuParent = submenu.closest('.dropdown-submenu');
-                if (submenuParent) {
-                  submenuParent.classList.remove('show');
-                }
-              });
-            }, 150);
-            hoverTimeouts.set(this, timeoutId);
-          }
-        });
-      });
-    }
-    
-    // Enhanced touch support for mobile devices using event delegation
-    if ('ontouchstart' in document.documentElement) {
-      document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('dropdown-item') && 
-            e.target.classList.contains('dropdown-toggle') &&
-            e.target.closest('.dropdown-submenu') && 
-            window.innerWidth <= 991) {
+    document.querySelectorAll('.navbar-nav .dropdown-submenu').forEach(submenu => {
+      submenu.addEventListener('mouseenter', function() {
+        const submenuDropdown = this.querySelector('.dropdown-menu');
+        if (submenuDropdown) {
+          clearTimeout(hoverTimeouts.get(submenuDropdown));
+          submenuDropdown.style.display = 'block';
+          this.classList.add('show');
           
-          const item = e.target;
-          const parent = item.parentElement;
-          const submenu = item.nextElementSibling;
-          
-          if (submenu && submenu.classList.contains('dropdown-menu')) {
-            e.preventDefault();
-            
-            const isCurrentlyShown = submenu.classList.contains('show');
-            
-            // Close other submenus
-            document.querySelectorAll('.dropdown-submenu').forEach(otherSubmenu => {
-              if (otherSubmenu !== parent) {
-                const otherMenu = otherSubmenu.querySelector('.dropdown-menu');
-                if (otherMenu) {
-                  otherMenu.classList.remove('show');
-                  otherSubmenu.classList.remove('show');
+          const parentMenu = this.closest('.dropdown-menu');
+          if (parentMenu) {
+            parentMenu.querySelectorAll(':scope > li.dropdown-submenu').forEach(sibling => {
+              if (sibling !== this) {
+                const siblingMenu = sibling.querySelector('.dropdown-menu');
+                if (siblingMenu) {
+                  siblingMenu.style.display = 'none';
+                  sibling.classList.remove('show');
                 }
               }
             });
-            
-            // Toggle current submenu
-            submenu.classList.toggle('show', !isCurrentlyShown);
-            parent.classList.toggle('show', !isCurrentlyShown);
           }
         }
       });
-    }
+      
+      submenu.addEventListener('mouseleave', function() {
+        const submenuDropdown = this.querySelector('.dropdown-menu');
+        if (submenuDropdown) {
+          const timeoutId = setTimeout(() => {
+            submenuDropdown.style.display = 'none';
+            this.classList.remove('show');
+          }, 150);
+          hoverTimeouts.set(submenuDropdown, timeoutId);
+        }
+      });
+    });
 
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function(e) {
-      if (!e.target.closest('.navbar-nav')) {
-        document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-          menu.classList.remove('show');
-          const submenuParent = menu.closest('.dropdown-submenu');
+    document.querySelectorAll('.navbar-nav .dropdown-menu').forEach(menu => {
+      menu.addEventListener('mouseenter', function() {
+        clearTimeout(hoverTimeouts.get(this));
+      });
+      
+      menu.addEventListener('mouseleave', function() {
+        const parentDropdown = this.closest('.dropdown');
+        if (parentDropdown) {
+          const timeoutId = setTimeout(() => {
+            this.classList.remove('show');
+            this.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(submenu => {
+              submenu.style.display = 'none';
+              const submenuParent = submenu.closest('.dropdown-submenu');
+              if (submenuParent) {
+                submenuParent.classList.remove('show');
+              }
+            });
+          }, 150);
+          hoverTimeouts.set(this, timeoutId);
+        }
+      });
+    });
+  }
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.navbar-nav')) {
+      document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+        menu.classList.remove('show');
+        const submenuParent = menu.closest('.dropdown-submenu');
+        if (submenuParent) {
+          submenuParent.classList.remove('show');
+        }
+        const mainDropdown = menu.closest('.dropdown');
+        if (mainDropdown) {
+          mainDropdown.classList.remove('show');
+        }
+      });
+      
+      if (window.innerWidth > 991) {
+        document.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(submenu => {
+          submenu.style.display = 'none';
+          const submenuParent = submenu.closest('.dropdown-submenu');
           if (submenuParent) {
             submenuParent.classList.remove('show');
           }
         });
-        
-        // Also hide desktop submenus
-        if (window.innerWidth > 991) {
-          document.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(submenu => {
-            submenu.style.display = 'none';
-            const submenuParent = submenu.closest('.dropdown-submenu');
-            if (submenuParent) {
-              submenuParent.classList.remove('show');
-            }
-          });
-        }
       }
-    });
-  }
-
+    }
+  });
+}
 document.addEventListener('DOMContentLoaded', function() {
   const languageSwitcherItems = document.querySelectorAll('[data-shopify-locale-switcher]');
   languageSwitcherItems.forEach(item => {
