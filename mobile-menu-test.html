@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Menu Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Mobile Navigation Styles */
+        @media (max-width: 991px) {
+            .navbar-nav .dropdown-menu {
+                display: none;
+                position: static;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+                padding-left: 20px;
+            }
+            
+            .navbar-nav .dropdown-menu.show {
+                display: block;
+            }
+            
+            .dropdown-submenu {
+                position: relative;
+            }
+            
+            .dropdown-submenu .dropdown-menu {
+                padding-left: 40px;
+            }
+            
+            .dropdown-submenu.show > .dropdown-menu {
+                display: block;
+            }
+            
+            .dropdown-toggle::after {
+                content: '▶';
+                float: right;
+                transition: transform 0.3s ease;
+            }
+            
+            .dropdown-submenu.show > .dropdown-toggle::after {
+                transform: rotate(90deg);
+            }
+        }
+        
+        .test-info {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="test-info">
+            <h3>Mobile Hierarchical Navigation Test</h3>
+            <p><strong>Instructions:</strong> Resize your browser to mobile width (&lt;992px) or use mobile device. Test the dropdown hierarchy:</p>
+            <ol>
+                <li>Click "Destinations" - should expand child items</li>
+                <li>Click "Europe" - should expand grandchild items</li>
+                <li>Click "France" - should show final destinations</li>
+                <li>Test collapsing by clicking parent items again</li>
+            </ol>
+        </div>
+        
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="#">Travel More</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">
+                                Destinations
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Europe</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a class="dropdown-item dropdown-toggle" href="#">France</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#">Paris</a></li>
+                                                <li><a class="dropdown-item" href="#">Lyon</a></li>
+                                                <li><a class="dropdown-item" href="#">Nice</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a class="dropdown-item dropdown-toggle" href="#">Italy</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#">Rome</a></li>
+                                                <li><a class="dropdown-item" href="#">Venice</a></li>
+                                                <li><a class="dropdown-item" href="#">Florence</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#">Spain</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Asia</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a class="dropdown-item dropdown-toggle" href="#">Japan</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#">Tokyo</a></li>
+                                                <li><a class="dropdown-item" href="#">Kyoto</a></li>
+                                                <li><a class="dropdown-item" href="#">Osaka</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#">Thailand</a></li>
+                                        <li><a class="dropdown-item" href="#">Singapore</a></li>
+                                    </ul>
+                                </li>
+                                <li><a class="dropdown-item" href="#">Americas</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">
+                                Travel Packages
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Luxury Tours</a></li>
+                                <li><a class="dropdown-item" href="#">Budget Travel</a></li>
+                                <li><a class="dropdown-item" href="#">Adventure Tours</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="container mt-4">
+            <div class="alert alert-info">
+                <strong>Current Status:</strong>
+                <ul class="mb-0 mt-2">
+                    <li>✅ Duplicate <code>initializeDropdowns</code> functions removed</li>
+                    <li>✅ Single comprehensive dropdown function retained</li>
+                    <li>✅ Mobile hierarchical navigation should now work properly</li>
+                    <li>✅ Desktop hover functionality preserved</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Enhanced dropdown initialization function (from header.liquid)
+        function initializeDropdowns() {
+            let hoverTimeouts = new Map();
+            
+            // Use event delegation for better performance and reliability with dynamic content
+            document.addEventListener('click', function(e) {
+              // Check if the clicked element is a dropdown toggle
+              if (e.target.classList.contains('dropdown-toggle') || 
+                  e.target.closest('.dropdown-toggle')) {
+                
+                const toggle = e.target.classList.contains('dropdown-toggle') ? 
+                              e.target : e.target.closest('.dropdown-toggle');
+                const dropdownMenu = toggle.nextElementSibling;
+                
+                if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  
+                  // Check if this is a grandchild menu (submenu)
+                  const isSubmenu = toggle.closest('.dropdown-submenu');
+                  
+                  if (window.innerWidth <= 991 || isSubmenu) {
+                    // Toggle the dropdown menu
+                    const isCurrentlyShown = dropdownMenu.classList.contains('show');
+                    
+                    if (isSubmenu) {
+                      // For submenus, toggle the parent submenu class as well
+                      const submenuParent = toggle.closest('.dropdown-submenu');
+                      submenuParent.classList.toggle('show', !isCurrentlyShown);
+                    }
+                    
+                    dropdownMenu.classList.toggle('show', !isCurrentlyShown);
+                    
+                    // Set aria-expanded for accessibility
+                    toggle.setAttribute('aria-expanded', !isCurrentlyShown);
+                    
+                    // Close sibling menus at the same level
+                    const parentContainer = isSubmenu ? 
+                      toggle.closest('.dropdown-menu') : 
+                      toggle.closest('.navbar-nav');
+                      
+                    if (parentContainer) {
+                      const siblingMenus = parentContainer.querySelectorAll(
+                        isSubmenu ? 
+                        ':scope > li.dropdown-submenu > .dropdown-menu' : 
+                        ':scope > li.dropdown > .dropdown-menu'
+                      );
+                      
+                      siblingMenus.forEach(menu => {
+                        if (menu !== dropdownMenu && menu.classList.contains('show')) {
+                          menu.classList.remove('show');
+                          const siblingSubmenu = menu.closest('.dropdown-submenu');
+                          if (siblingSubmenu) {
+                            siblingSubmenu.classList.remove('show');
+                          }
+                          const siblingToggle = menu.previousElementSibling;
+                          if (siblingToggle) {
+                            siblingToggle.setAttribute('aria-expanded', 'false');
+                          }
+                        }
+                      });
+                    }
+                  }
+                }
+              }
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+              if (!e.target.closest('.navbar-nav')) {
+                document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                  menu.classList.remove('show');
+                  const submenuParent = menu.closest('.dropdown-submenu');
+                  if (submenuParent) {
+                    submenuParent.classList.remove('show');
+                  }
+                });
+              }
+            });
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDropdowns();
+            console.log('Mobile hierarchical navigation initialized');
+        });
+    </script>
+</body>
+</html>
