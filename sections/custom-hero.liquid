@@ -286,44 +286,34 @@
   }
 
   function initializeDropdowns() {
-  // Simple click handler for all dropdown toggles
-  document.addEventListener('click', function(e) {
-    // Find if we clicked on a dropdown toggle
-    let toggle = null;
-    if (e.target.classList.contains('dropdown-toggle')) {
-      toggle = e.target;
-    } else if (e.target.closest('.dropdown-toggle')) {
-      toggle = e.target.closest('.dropdown-toggle');
+    const heroSection = document.querySelector('.hero-section .navbar-nav');
+    if (!heroSection) {
+      return;
     }
-    
-    // If we found a toggle, handle it
-    if (toggle) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // Find the dropdown menu that should be toggled
-      const dropdownMenu = toggle.nextElementSibling;
-      
-      if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
-        // Check if menu is currently shown
-        const isCurrentlyShown = dropdownMenu.classList.contains('show');
+
+    heroSection.addEventListener('click', function(event) {
+      const toggle = event.target.closest('.dropdown-toggle');
+
+      if (toggle) {
+        event.preventDefault();
+        event.stopPropagation();
         
-        // Toggle the menu visibility
-        dropdownMenu.classList.toggle('show');
-        toggle.setAttribute('aria-expanded', !isCurrentlyShown);
-        
-        // If this is a submenu toggle, also toggle the parent li class
-        const submenuParent = toggle.closest('.dropdown-submenu');
-        if (submenuParent) {
-          submenuParent.classList.toggle('show');
+        const dropdownMenu = toggle.nextElementSibling;
+
+        if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+          const isCurrentlyShown = dropdownMenu.classList.contains('show');
+          
+          dropdownMenu.classList.toggle('show', !isCurrentlyShown);
+          toggle.setAttribute('aria-expanded', String(!isCurrentlyShown));
+
+          const listItem = toggle.closest('li.dropdown, li.dropdown-submenu');
+          if (listItem) {
+            listItem.classList.toggle('show', !isCurrentlyShown);
+          }
         }
       }
-    }
-  });
-  
-  // Close dropdowns when clicking outside the nav
-  
-}
+    });
+  }
 
   function initializeBookingButton() {
     const bookNowBtn = document.getElementById('bookNowBtn');
