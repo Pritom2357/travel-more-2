@@ -1339,6 +1339,7 @@
 
       console.log(`sub-parent menu: ${submenuParent}`)
       console.log(`main-dropdown menu: ${mainDropdown}`)
+      console.log(`classlist of maindropdown outside funciton: ${mainDropdown.classList}`);
     
       if (submenuParent) {
         // This is a submenu
@@ -1349,7 +1350,6 @@
           submenuParent.classList.remove('show');
         }
         console.log(`classlist of submenus: ${submenuParent.classList}`);
-        console.log(`classlist of maindropdown: ${mainDropdown.classList}`);
       } 
       
       console.log('After toggle - Menu has show:', dropdownMenu.classList.contains('show'));
