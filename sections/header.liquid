@@ -1332,10 +1332,6 @@
       const isCurrentlyShown = dropdownMenu.classList.contains('show');
       console.log('Currently shown:', isCurrentlyShown);
       
-      // FIRST: Toggle the clicked dropdown menu and toggle element
-      {% comment %} dropdownMenu.classList.toggle('show', !isCurrentlyShown);
-      toggle.classList.toggle('show', !isCurrentlyShown);
-      toggle.setAttribute('aria-expanded', String(!isCurrentlyShown)); {% endcomment %}
       
       // Handle parent containers
       const submenuParent = toggle.closest('.dropdown-submenu');
@@ -1347,24 +1343,7 @@
       if (submenuParent) {
         // This is a submenu
         submenuParent.classList.toggle('show', !isCurrentlyShown);
-        
-        // ALWAYS keep the main dropdown open when working with submenus
-        if (mainDropdown) {  // ✅ Fixed variable name
-          mainDropdown.classList.add('show');
-          const mainDropdownMenu = mainDropdown.querySelector('.dropdown-menu');
-          if (mainDropdownMenu) {
-            mainDropdownMenu.classList.add('show');
-          }
-          const mainToggle = mainDropdown.querySelector('.dropdown-toggle');
-          if (mainToggle) {
-            mainToggle.classList.add('show');
-            mainToggle.setAttribute('aria-expanded', 'true');
-          }
-        }
-      } else if (mainDropdown) {
-        // This is a main dropdown
-        mainDropdown.classList.toggle('show', !isCurrentlyShown);
-      }
+      } 
       
       console.log('After toggle - Menu has show:', dropdownMenu.classList.contains('show'));
       console.log('After toggle - Toggle has show:', toggle.classList.contains('show'));
