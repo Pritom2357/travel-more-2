@@ -1342,7 +1342,8 @@
     
       if (submenuParent) {
         // This is a submenu
-        console.log(`classlist of submenus: ${submenuParent.classList}`)
+        console.log(`classlist of submenus: ${submenuParent.classList}`);
+        console.log(`does contain show? ${submenuParent.classList.contains('show')}`);
         submenuParent.classList.toggle('show', !isCurrentlyShown);
       } 
       
