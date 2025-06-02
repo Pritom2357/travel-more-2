@@ -1333,9 +1333,9 @@
       console.log('Currently shown:', isCurrentlyShown);
       
       // FIRST: Toggle the clicked dropdown menu and toggle element
-      dropdownMenu.classList.toggle('show', !isCurrentlyShown);
+      {% comment %} dropdownMenu.classList.toggle('show', !isCurrentlyShown);
       toggle.classList.toggle('show', !isCurrentlyShown);
-      toggle.setAttribute('aria-expanded', String(!isCurrentlyShown));
+      toggle.setAttribute('aria-expanded', String(!isCurrentlyShown)); {% endcomment %}
       
       // Handle parent containers
       const submenuParent = toggle.closest('.dropdown-submenu');
