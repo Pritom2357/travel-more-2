@@ -211,34 +211,26 @@
 </section>
 
 <script>
-  // Consolidate all DOM content loaded events into one
   document.addEventListener('DOMContentLoaded', function() {
-    // Critical functions first
     updateCartCount();
     enhanceTextOutline();
     
-    // Initialize bootstrap components
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl);
     });
     
-    // Handle dropdowns
     initializeDropdowns();
     
-    // Handle booking button
     initializeBookingButton();
     
-    // Delay non-critical interactions
     requestIdleCallback(() => {
-      // Mouse movement effects and other non-critical features
       if (window.innerWidth > 992) {
         initializeHeroEffects();
       }
     });
   });
 
-  // Move your functions here
   function updateCartCount() {
     fetch('/cart.js')
       .then(response => response.json())
@@ -253,12 +245,10 @@
   }
 
   function enhanceTextOutline() {
-    // Apply enhanced text outline effect for better browser support
     function enhanceTextOutline() {
       if ('{{section.settings.title_effect}}' === 'outline') {
         const titleElement = document.querySelector('.hero-title');
         if (titleElement) {
-          // Check if browser supports text-stroke
           if (!CSS.supports('-webkit-text-stroke', '1px black')) {
             applyTextStrokePolyfill(titleElement, 
               '{{section.settings.title_effect_width}}',
@@ -270,7 +260,6 @@
       if ('{{section.settings.subtitle_effect}}' === 'outline') {
         const subtitleElement = document.querySelector('.hero-subtitle');
         if (subtitleElement) {
-          // Check if browser supports text-stroke
           if (!CSS.supports('-webkit-text-stroke', '1px black')) {
             applyTextStrokePolyfill(subtitleElement,
               '{{section.settings.subtitle_effect_width}}',
@@ -281,11 +270,9 @@
     }
     
     function applyTextStrokePolyfill(element, width, color) {
-      // Apply a shadow-based fallback for browsers without text-stroke support
       const shadowWidth = parseInt(width);
       const shadowColor = color;
       
-      // Create multiple text shadows to simulate stroke
       const shadows = [];
       for (let i = -shadowWidth; i <= shadowWidth; i++) {
         for (let j = -shadowWidth; j <= shadowWidth; j++) {
@@ -301,99 +288,31 @@
   }
 
   function initializeDropdowns() {
-  document.addEventListener('click', function(e) {
-    // Only handle clicks within the hero section
-    if (!e.target.closest('.hero-section')) return;
-    
-    // Find the actual dropdown toggle element
-    let toggle = null;
-    if (e.target.classList.contains('dropdown-toggle')) {
-      toggle = e.target;
-    } else if (e.target.closest('.dropdown-toggle')) {
-      toggle = e.target.closest('.dropdown-toggle');
-    }
-    
-    if (toggle) {
-      e.preventDefault();
-      e.stopPropagation(); // Prevent event bubbling
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.hero-section')) return;
       
-      const dropdownMenu = toggle.nextElementSibling;
-      
-      if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
-        const isSubmenu = toggle.closest('.dropdown-submenu');
-        const isCurrentlyShown = dropdownMenu.classList.contains('show');
+      if (e.target.classList.contains('dropdown-toggle') || 
+          e.target.closest('.dropdown-toggle')) {
         
-        // For mobile (screen width <= 991px)
-        if (window.innerWidth <= 991) {
-          // Mobile behavior - simpler toggle
-          if (isCurrentlyShown) {
-            dropdownMenu.classList.remove('show');
-            toggle.setAttribute('aria-expanded', 'false');
-            
-            // Close all child submenus when closing parent
-            const childMenus = dropdownMenu.querySelectorAll('.dropdown-menu.show');
-            childMenus.forEach(childMenu => {
-              childMenu.classList.remove('show');
-              const childSubmenu = childMenu.closest('.dropdown-submenu');
-              if (childSubmenu) {
-                childSubmenu.classList.remove('show');
-              }
-              const childToggle = childMenu.previousElementSibling;
-              if (childToggle) {
-                childToggle.setAttribute('aria-expanded', 'false');
-              }
-            });
-            
-            // Remove show class from submenu parent if it exists
-            if (isSubmenu) {
-              const submenuParent = toggle.closest('.dropdown-submenu');
-              submenuParent.classList.remove('show');
-            }
-          } else {
-            // Close all sibling menus at the same level first
-            const parentContainer = isSubmenu ? 
-              toggle.closest('.dropdown-menu') : 
-              toggle.closest('.navbar-nav');
-              
-            if (parentContainer) {
-              const siblingMenus = parentContainer.querySelectorAll(
-                isSubmenu ? 
-                ':scope > li.dropdown-submenu > .dropdown-menu.show' : 
-                ':scope > li.dropdown > .dropdown-menu.show'
-              );
-              
-              siblingMenus.forEach(menu => {
-                if (menu !== dropdownMenu) {
-                  menu.classList.remove('show');
-                  const siblingSubmenu = menu.closest('.dropdown-submenu');
-                  if (siblingSubmenu) {
-                    siblingSubmenu.classList.remove('show');
-                  }
-                  const siblingToggle = menu.previousElementSibling;
-                  if (siblingToggle) {
-                    siblingToggle.setAttribute('aria-expanded', 'false');
-                  }
-                }
-              });
-            }
-            
-            // Now open the clicked menu
-            dropdownMenu.classList.add('show');
-            toggle.setAttribute('aria-expanded', 'true');
-            
-            if (isSubmenu) {
-              const submenuParent = toggle.closest('.dropdown-submenu');
-              submenuParent.classList.add('show');
-            }
-          }
-        } else {
-          // Desktop behavior (unchanged)
+        const toggle = e.target.classList.contains('dropdown-toggle') ? 
+                      e.target : e.target.closest('.dropdown-toggle');
+        const dropdownMenu = toggle.nextElementSibling;
+        
+        if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const isSubmenu = toggle.closest('.dropdown-submenu');
+          
+          const isCurrentlyShown = dropdownMenu.classList.contains('show');
+          
           if (isSubmenu) {
             const submenuParent = toggle.closest('.dropdown-submenu');
             submenuParent.classList.toggle('show', !isCurrentlyShown);
           }
           
           dropdownMenu.classList.toggle('show', !isCurrentlyShown);
+          
           toggle.setAttribute('aria-expanded', !isCurrentlyShown);
           
           // Close sibling menus at the same level
@@ -424,31 +343,25 @@
           }
         }
       }
-    }
-  });
+    });
 
-  // Close dropdowns when clicking outside (improved for mobile)
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.navbar-nav') && !e.target.closest('.hero-section')) {
-      const heroSection = document.querySelector('.hero-section');
-      if (heroSection) {
-        // Close all open dropdowns
-        const openMenus = heroSection.querySelectorAll('.dropdown-menu.show');
-        openMenus.forEach(menu => {
-          menu.classList.remove('show');
-          const submenuParent = menu.closest('.dropdown-submenu');
-          if (submenuParent) {
-            submenuParent.classList.remove('show');
-          }
-          const toggle = menu.previousElementSibling;
-          if (toggle) {
-            toggle.setAttribute('aria-expanded', 'false');
-          }
-        });
+    // Close dropdowns when clicking outside (only for custom-hero section)
+    {% comment %} document.addEventListener('click', function(e) {
+      if (!e.target.closest('.navbar-nav') && !e.target.closest('.hero-section')) {
+        // Only affect dropdowns within the hero section
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection) {
+          heroSection.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+            menu.classList.remove('show');
+            const submenuParent = menu.closest('.dropdown-submenu');
+            if (submenuParent) {
+              submenuParent.classList.remove('show');
+            }
+          });
+        }
       }
-    }
-  });
-}
+    }); {% endcomment %}
+  }
 
   function initializeBookingButton() {
     const bookNowBtn = document.getElementById('bookNowBtn');
@@ -1496,32 +1409,6 @@
   .hero-section .navbar-nav .dropdown-submenu.show > .dropdown-toggle::after {
     content: "▲";
     transform: rotate(0deg);
-  }
-}
-
-/* Add this to your existing mobile dropdown styles */
-@media (max-width: 991px) {
-  .hero-section .navbar-nav .dropdown-menu {
-    transition: none !important; /* Remove transitions on mobile */
-    animation: none !important; /* Remove animations on mobile */
-  }
-  
-  .hero-section .navbar-nav .dropdown-submenu .dropdown-menu {
-    transition: none !important;
-    animation: none !important;
-  }
-  
-  /* Ensure proper click targets on mobile */
-  .hero-section .navbar-nav .dropdown-toggle {
-    touch-action: manipulation; /* Improve touch responsiveness */
-    -webkit-tap-highlight-color: transparent; /* Remove iOS tap highlight */
-  }
-  
-  /* Better spacing for touch targets */
-  .hero-section .navbar-nav .dropdown-item {
-    min-height: 44px; /* Minimum touch target size */
-    display: flex;
-    align-items: center;
   }
 }
 </style>
