@@ -45,57 +45,9 @@
 
       <div class="d-lg-none ms-auto mobile-logo-container">{{ logo_html }}</div>
 
-      {% comment %} {% capture locale_selector_html %}
-        <div class="locale-selectors d-flex align-items-center">
-          {%- if shop.published_locales.size > 1 -%}
-            <div class="language-selector dropdown">
-              <button class="btn btn-sm dropdown-toggle language-selector-btn" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-globe-americas me-1"></i>
-                {{ localization.language.endonym_name }}
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
-                {%- for locale in shop.published_locales -%}
-                  <li>
-                    <a class="dropdown-item{% if locale.iso_code == localization.language.iso_code %} active{% endif %}" 
-                       href="#"
-                       data-locale-code="{{ locale.iso_code }}"
-                       data-shopify-locale-switcher>
-                      {{ locale.endonym_name }}
-                    </a>
-                  </li>
-                {%- endfor -%}
-              </ul>
-            </div>
-          {%- endif -%}
-      
-          {%- if shop.available_countries.size > 1 -%}
-            <div class="country-selector dropdown ms-2">
-              <button class="btn btn-sm dropdown-toggle country-selector-btn" type="button" id="countryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-geo-alt me-1"></i>
-                {{ localization.country.name }}
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="countryDropdown">
-                {%- for country in shop.available_countries -%}
-                  <li>
-                    <a class="dropdown-item{% if country.iso_code == localization.country.iso_code %} active{% endif %}" 
-                       href="#"
-                       data-country-code="{{ country.iso_code }}" 
-                       data-shopify-country-switcher>
-                      {{ country.name }}
-                    </a>
-                  </li>
-                {%- endfor -%}
-              </ul>
-            </div>
-          {%- endif -%}
-        </div>
-      {% endcapture %} {% endcomment %}
 
       {% capture icons_html %}
         <div class="d-flex icons-container align-items-center">
-          {% comment %} {% if section.settings.enable_locale_selector %}
-            {{ locale_selector_html }}
-          {% endif %} {% endcomment %}
           
           <div class="ms-2 ms-lg-3">
             <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
@@ -1353,8 +1305,10 @@
       let toggle = null;
       if (e.target.classList.contains('dropdown-toggle')) {
         toggle = e.target;
+        console.log(`Clicked Button = ${toggle}`)
       } else if (e.target.closest('.dropdown-toggle')) {
         toggle = e.target.closest('.dropdown-toggle');
+        console.log(`Clicked Button = ${toggle}`)
       }
       
       if (!toggle) return;
