@@ -1313,6 +1313,22 @@
       
       if (!toggle) return;
 
+      const dropdownMenu = toggle.nextElementSibling;
+      console.log(`The next element sibling: ${dropdownMenu}`);
+
+      if (!dropdownMenu || !dropdownMenu.classList.contains('dropdown-menu')) return;
+
+      // Now log the dropdown menu's children
+      console.log('Dropdown menu children:', dropdownMenu.children);
+      console.log('Dropdown menu children (as array):', Array.from(dropdownMenu.children));
+
+      // To see each child individually:
+      Array.from(dropdownMenu.children).forEach((child, index) => {
+        console.log(`Child ${index}:`, child);
+        console.log(`Child ${index} HTML:`, child.outerHTML);
+      });
+
+
       console.log(`Toggle button: ${toggle} exists so far`);
       
       // Get the dropdown menu
