@@ -320,6 +320,19 @@
           "show_vendor": false,
           "enable_filtering": true
         }
+      },
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "position_class": "bottom-left",
+          "collapsed_label": "Region",
+          "expanded_title": "Select Your Preferences",
+          "dismiss_text": "Don't show again",
+          "enable_country_selector": true,
+          "country_label": "Country / Region",
+          "enable_language_selector": true,
+          "language_label": "Language"
+        }
       }
     },
     "content_for_index": [],
