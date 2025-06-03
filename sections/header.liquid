@@ -1313,96 +1313,10 @@
       
       if (!toggle) return;
 
-      const dropdownMenu = toggle.nextElementSibling;
-      console.log(`The next element sibling: ${dropdownMenu}`);
-
-      if (!dropdownMenu || !dropdownMenu.classList.contains('dropdown-menu')) return;
-
-      if(child.classList.contains('dropdown-submenu')){
-  // Look for dropdown menu inside this submenu item
-  const submenuDropdown = child.querySelector('.dropdown-menu');
-  if (submenuDropdown) {
-    console.log(`Submenu found for ${child.textContent.trim()}:`);
-    console.log(`Submenu children:`, submenuDropdown.children);
-    console.log(`Submenu children (as array):`, Array.from(submenuDropdown.children));
-    
-    // Now check each submenu child for further nesting
-        Array.from(submenuDropdown.children).forEach((subChild, subIndex) => {
-          console.log(`  Submenu Child ${subIndex}:`, subChild);
-          console.log(`  Submenu Child ${subIndex} HTML:`, subChild.outerHTML);
-          
-          // Check if this submenu child has its own nested dropdown
-          if(subChild.classList.contains('dropdown-submenu')){
-            const nestedDropdown = subChild.querySelector('.dropdown-menu');
-            if (nestedDropdown) {
-              console.log(`    Nested dropdown found for ${subChild.textContent.trim()}:`);
-              console.log(`    Nested children:`, nestedDropdown.children);
-              console.log(`    Nested children (as array):`, Array.from(nestedDropdown.children));
-              
-              // Log each deeply nested item
-              Array.from(nestedDropdown.children).forEach((deepChild, deepIndex) => {
-                console.log(`      Deep Child ${deepIndex}:`, deepChild);
-                console.log(`      Deep Child ${deepIndex} HTML:`, deepChild.outerHTML);
-              });
-            }
-          }
-        });
-      } else {
-        console.log(`No submenu dropdown found for ${child.textContent.trim()}`);
-      }
-    }
-
-
-      console.log(`Toggle button: ${toggle} exists so far`);
-      
-      // Get the dropdown menu
-      {% comment %} const dropdownMenu = toggle.nextElementSibling;
-      console.log(`The next element sibling is: ${dropdownMenu}`)
-      if (!dropdownMenu || !dropdownMenu.classList.contains('dropdown-menu')) return;
-      
-      console.log(`The next element sibling: ${dropdownMenu} exists so far`)
-
-      // Prevent default and stop propagation
       e.preventDefault();
       e.stopPropagation();
-    
-      console.log('Toggle clicked:', toggle.textContent.trim());
-      
-      // Check current state
-      const isCurrentlyShown = dropdownMenu.classList.contains('show');
-      console.log('Currently shown:', isCurrentlyShown);
-      
-      
-      // Handle parent containers
-      const submenuParent = toggle.closest('.dropdown-submenu');
-      const mainDropdown = toggle.closest('.dropdown');
 
-      console.log(`sub-parent menu: ${submenuParent}`)
-      console.log(`main-dropdown menu: ${mainDropdown}`)
-      console.log(`classlist of maindropdown outside funciton: ${dropdownMenu.classList}`);
       
-      if (submenuParent) {
-        // This is a submenu
-        console.log(`does contain show? ${submenuParent.classList.contains('show')}`);
-        if(!submenuParent.classList.contains('show')){
-          submenuParent.classList.add('show');
-        }else{
-          submenuParent.classList.remove('show');
-        }
-        console.log(`classlist of submenus: ${submenuParent.classList}`);
-        console.log(`classlist of maindropdown inside funciton: ${dropdownMenu.classList}`);
-      } 
-
-      if(dropdownMenu.classList.contains('show')){
-        dropdownMenu.classList.add('show');
-      }
-
-      if(toggle.classList.contains('show')){
-        toggle.classList.add('show');
-      }
-      
-      console.log('After toggle - Menu has show:', dropdownMenu.classList.contains('show'));
-      console.log('After toggle - Toggle has show:', toggle.classList.contains('show')); {% endcomment %}
     });
   
     // Desktop hover functionality (only if desktop)
