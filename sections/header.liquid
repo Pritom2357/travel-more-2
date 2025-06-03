@@ -1313,84 +1313,10 @@
       
       if (!toggle) return;
 
-      // Prevent default behavior
       e.preventDefault();
       e.stopPropagation();
 
-      const dropdownMenu = toggle.nextElementSibling;
-      console.log(`The next element sibling: ${dropdownMenu}`);
-
-      if (!dropdownMenu || !dropdownMenu.classList.contains('dropdown-menu')) return;
-
-      // Check current state
-      const isCurrentlyShown = dropdownMenu.classList.contains('show');
-      console.log('Currently shown:', isCurrentlyShown);
-
-      // Toggle the clicked dropdown
-      dropdownMenu.classList.toggle('show', !isCurrentlyShown);
-      toggle.classList.toggle('show', !isCurrentlyShown);
-      toggle.setAttribute('aria-expanded', String(!isCurrentlyShown));
-
-      // Handle parent containers
-      const submenuParent = toggle.closest('.dropdown-submenu');
-      const mainDropdown = toggle.closest('.dropdown');
-
-      if (submenuParent) {
-        // This is a submenu - ensure parent dropdown stays open
-        submenuParent.classList.toggle('show', !isCurrentlyShown);
-        
-        // Keep main dropdown open
-        if (mainDropdown) {
-          mainDropdown.classList.add('show');
-          const mainDropdownMenu = mainDropdown.querySelector('.dropdown-menu');
-          if (mainDropdownMenu) {
-            mainDropdownMenu.classList.add('show');
-          }
-          const mainToggle = mainDropdown.querySelector('.dropdown-toggle');
-          if (mainToggle) {
-            mainToggle.classList.add('show');
-            mainToggle.setAttribute('aria-expanded', 'true');
-          }
-        }
-      } else if (mainDropdown) {
-        // This is a main dropdown
-        mainDropdown.classList.toggle('show', !isCurrentlyShown);
-      }
-
-      // Log children for debugging (optional - remove when working)
-      console.log('Dropdown menu children:', Array.from(dropdownMenu.children));
-      Array.from(dropdownMenu.children).forEach((child, index) => {
-        console.log(`Child ${index}:`, child);
-        console.log(`Child ${index} HTML:`, child.outerHTML);
-        
-        if(child.classList.contains('dropdown-submenu')){
-          const submenuDropdown = child.querySelector('.dropdown-menu');
-          if (submenuDropdown) {
-            console.log(`Submenu found for ${child.textContent.trim()}:`);
-            console.log(`Submenu children:`, submenuDropdown.children);
-            
-            Array.from(submenuDropdown.children).forEach((subChild, subIndex) => {
-              console.log(`  Submenu Child ${subIndex}:`, subChild);
-              console.log(`  Submenu Child ${subIndex} HTML:`, subChild.outerHTML);
-              
-              if(subChild.classList.contains('dropdown-submenu')){
-                const nestedDropdown = subChild.querySelector('.dropdown-menu');
-                if (nestedDropdown) {
-                  console.log(`    Nested dropdown found for ${subChild.textContent.trim()}:`);
-                  console.log(`    Nested children:`, nestedDropdown.children);
-                  
-                  Array.from(nestedDropdown.children).forEach((deepChild, deepIndex) => {
-                    console.log(`      Deep Child ${deepIndex}:`, deepChild);
-                    console.log(`      Deep Child ${deepIndex} HTML:`, deepChild.outerHTML);
-                  });
-                }
-              }
-            });
-          }
-        }
-      });
-
-      console.log(`Toggle button: ${toggle} exists so far`);
+      
     });
   
     // Desktop hover functionality (only if desktop)
