@@ -1300,42 +1300,67 @@
   function initializeDropdowns() {
     
     document.addEventListener('click', function(e) {
-      // Only handle for mobile view
-      if (window.innerWidth > 991) return;
+  // Only run on mobile view
+  if (window.innerWidth > 991) return;
 
-      let toggle = null;
+  // Identify clicked dropdown toggle
+  let toggle = e.target.classList.contains('dropdown-toggle') 
+    ? e.target 
+    : e.target.closest('.dropdown-toggle');
+  
+  if (!toggle) return;
 
-      // Find the toggle button (either clicked directly or via children)
-      if (e.target.classList.contains('dropdown-toggle')) {
-        toggle = e.target;
-      } else if (e.target.closest('.dropdown-toggle')) {
-        toggle = e.target.closest('.dropdown-toggle');
-      }
+  e.preventDefault();
+  e.stopPropagation();
 
-      if (!toggle) return;
+  // Get the immediate submenu
+  const submenu = toggle.nextElementSibling;
+  if (!submenu || !submenu.classList.contains('dropdown-menu')) return;
 
-      e.preventDefault();
-      e.stopPropagation();
+  // Get parent list item
+  const parentLi = toggle.closest('li');
+  if (!parentLi) return;
 
-      // Find the closest parent <li> to the clicked toggle
-      const parentLi = toggle.closest('li');
+  // Close all sibling menus at the same level
+  const parentUl = parentLi.parentNode;
+  const siblings = Array.from(parentUl.children).filter(child => child !== parentLi);
+  
+  siblings.forEach(sibling => {
+    const siblingMenu = sibling.querySelector('.dropdown-menu');
+    if (siblingMenu) {
+      siblingMenu.classList.remove('show');
+      // Close any nested menus within siblings
+      siblingMenu.querySelectorAll('.dropdown-menu').forEach(nested => {
+        nested.classList.remove('show');
+      });
+    }
+  });
 
-      if (!parentLi) return;
+  // Toggle current menu
+  submenu.classList.toggle('show');
 
-      // Toggle visibility of the submenu under this <li>
-      const submenu = parentLi.querySelector('.dropdown-menu');
-
-      if (submenu) {
-        // Close other open submenus at the same level
-        const siblingSubmenus = parentLi.parentElement.querySelectorAll('.dropdown-menu.show');
-        siblingSubmenus.forEach(menu => {
-          if (menu !== submenu) menu.classList.remove('show');
-        });
-
-        // Toggle current submenu
-        submenu.classList.toggle('show');
-      }
+  // Close all children when opening a menu
+  if (submenu.classList.contains('show')) {
+    submenu.querySelectorAll('.dropdown-menu').forEach(childMenu => {
+      childMenu.classList.remove('show');
     });
+  }
+});
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+  if (window.innerWidth > 991) return;
+  
+  const dropdowns = document.querySelectorAll('.dropdown-menu.show');
+  if (dropdowns.length === 0) return;
+  
+  const isClickInside = e.target.closest('.dropdown-menu') || 
+                        e.target.closest('.dropdown-toggle');
+  
+  if (!isClickInside) {
+    dropdowns.forEach(menu => menu.classList.remove('show'));
+  }
+});
 
       
     // Desktop hover functionality (only if desktop)
