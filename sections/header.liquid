@@ -1308,10 +1308,8 @@
       // Find the toggle button (either clicked directly or via children)
       if (e.target.classList.contains('dropdown-toggle')) {
         toggle = e.target;
-        console.log(`Clicked Button main = ${toggle}`)
       } else if (e.target.closest('.dropdown-toggle')) {
         toggle = e.target.closest('.dropdown-toggle');
-        console.log(`Clicked Button = ${toggle}`)
       }
 
       if (!toggle) return;
@@ -1321,57 +1319,25 @@
 
       // Find the closest parent <li> to the clicked toggle
       const parentLi = toggle.closest('li');
-      console.log('Parent LI:', parentLi);
 
       if (!parentLi) return;
 
-      // Find the submenu under this <li>
+      // Toggle visibility of the submenu under this <li>
       const submenu = parentLi.querySelector('.dropdown-menu');
-      console.log('Submenu found:', submenu);
 
       if (submenu) {
-        // Check current state
-        const isCurrentlyShown = submenu.classList.contains('show');
-        console.log('Currently shown:', isCurrentlyShown);
+        // Close other open submenus at the same level
+        const siblingSubmenus = parentLi.parentElement.querySelectorAll('.dropdown-menu.show');
+        siblingSubmenus.forEach(menu => {
+          if (menu !== submenu) menu.classList.remove('show');
+        });
 
         // Toggle current submenu
-        submenu.classList.toggle('show', !isCurrentlyShown);
-        toggle.classList.toggle('show', !isCurrentlyShown);
-        toggle.setAttribute('aria-expanded', String(!isCurrentlyShown));
-
-        // Handle parent container classes
-        const isMainDropdown = parentLi.classList.contains('dropdown');
-        const isSubmenu = parentLi.classList.contains('dropdown-submenu');
-
-        if (isSubmenu) {
-          // This is a submenu - toggle the parent li class
-          parentLi.classList.toggle('show', !isCurrentlyShown);
-          
-          // Keep main dropdown open if this is a nested submenu
-          const mainDropdown = parentLi.closest('.dropdown');
-          if (mainDropdown) {
-            mainDropdown.classList.add('show');
-            const mainDropdownMenu = mainDropdown.querySelector('.dropdown-menu');
-            if (mainDropdownMenu) {
-              mainDropdownMenu.classList.add('show');
-            }
-            const mainToggle = mainDropdown.querySelector('.dropdown-toggle');
-            if (mainToggle) {
-              mainToggle.classList.add('show');
-              mainToggle.setAttribute('aria-expanded', 'true');
-            }
-          }
-        } else if (isMainDropdown) {
-          // This is a main dropdown
-          parentLi.classList.toggle('show', !isCurrentlyShown);
-        }
-
-        console.log('After toggle - Menu has show:', submenu.classList.contains('show'));
-        console.log('After toggle - Toggle has show:', toggle.classList.contains('show'));
-        console.log('After toggle - Parent LI classes:', parentLi.className);
+        submenu.classList.toggle('show');
       }
     });
-  
+
+      
     // Desktop hover functionality (only if desktop)
     if (window.innerWidth > 991) {
       let hoverTimeouts = new Map();
