@@ -1300,67 +1300,67 @@
   function initializeDropdowns() {
     
     document.addEventListener('click', function(e) {
-  // Only run on mobile view
-  if (window.innerWidth > 991) return;
+        // Only run on mobile view
+        if (window.innerWidth > 991) return;
 
-  // Identify clicked dropdown toggle
-  let toggle = e.target.classList.contains('dropdown-toggle') 
-    ? e.target 
-    : e.target.closest('.dropdown-toggle');
-  
-  if (!toggle) return;
+        // Identify clicked dropdown toggle
+        let toggle = e.target.classList.contains('dropdown-toggle') 
+          ? e.target 
+          : e.target.closest('.dropdown-toggle');
+        
+        if (!toggle) return;
 
-  e.preventDefault();
-  e.stopPropagation();
+        e.preventDefault();
+        e.stopPropagation();
 
-  // Get the immediate submenu
-  const submenu = toggle.nextElementSibling;
-  if (!submenu || !submenu.classList.contains('dropdown-menu')) return;
+        // Get the immediate submenu
+        const submenu = toggle.nextElementSibling;
+        if (!submenu || !submenu.classList.contains('dropdown-menu')) return;
 
-  // Get parent list item
-  const parentLi = toggle.closest('li');
-  if (!parentLi) return;
+        // Get parent list item
+        const parentLi = toggle.closest('li');
+        if (!parentLi) return;
 
-  // Close all sibling menus at the same level
-  const parentUl = parentLi.parentNode;
-  const siblings = Array.from(parentUl.children).filter(child => child !== parentLi);
-  
-  siblings.forEach(sibling => {
-    const siblingMenu = sibling.querySelector('.dropdown-menu');
-    if (siblingMenu) {
-      siblingMenu.classList.remove('show');
-      // Close any nested menus within siblings
-      siblingMenu.querySelectorAll('.dropdown-menu').forEach(nested => {
-        nested.classList.remove('show');
+        // Close all sibling menus at the same level
+        const parentUl = parentLi.parentNode;
+        const siblings = Array.from(parentUl.children).filter(child => child !== parentLi);
+        
+        siblings.forEach(sibling => {
+          const siblingMenu = sibling.querySelector('.dropdown-menu');
+          if (siblingMenu) {
+            siblingMenu.classList.remove('show');
+            // Close any nested menus within siblings
+            siblingMenu.querySelectorAll('.dropdown-menu').forEach(nested => {
+              nested.classList.remove('show');
+            });
+          }
+        });
+
+        // Toggle current menu
+        submenu.classList.toggle('show');
+
+        // Close all children when opening a menu
+        if (submenu.classList.contains('show')) {
+          submenu.querySelectorAll('.dropdown-menu').forEach(childMenu => {
+            childMenu.classList.remove('show');
+          });
+        }
       });
-    }
-  });
 
-  // Toggle current menu
-  submenu.classList.toggle('show');
-
-  // Close all children when opening a menu
-  if (submenu.classList.contains('show')) {
-    submenu.querySelectorAll('.dropdown-menu').forEach(childMenu => {
-      childMenu.classList.remove('show');
-    });
-  }
-});
-
-// Close dropdowns when clicking outside
-document.addEventListener('click', function(e) {
-  if (window.innerWidth > 991) return;
-  
-  const dropdowns = document.querySelectorAll('.dropdown-menu.show');
-  if (dropdowns.length === 0) return;
-  
-  const isClickInside = e.target.closest('.dropdown-menu') || 
-                        e.target.closest('.dropdown-toggle');
-  
-  if (!isClickInside) {
-    dropdowns.forEach(menu => menu.classList.remove('show'));
-  }
-});
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', function(e) {
+        if (window.innerWidth > 991) return;
+        
+        const dropdowns = document.querySelectorAll('.dropdown-menu.show');
+        if (dropdowns.length === 0) return;
+        
+        const isClickInside = e.target.closest('.dropdown-menu') || 
+                              e.target.closest('.dropdown-toggle');
+        
+        if (!isClickInside) {
+          dropdowns.forEach(menu => menu.classList.remove('show'));
+        }
+      });
 
       
     // Desktop hover functionality (only if desktop)
