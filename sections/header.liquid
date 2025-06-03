@@ -1316,7 +1316,7 @@
       console.log(`Toggle button: ${toggle} exists so far`);
       
       // Get the dropdown menu
-      const dropdownMenu = toggle.nextElementSibling;
+      {% comment %} const dropdownMenu = toggle.nextElementSibling;
       console.log(`The next element sibling is: ${dropdownMenu}`)
       if (!dropdownMenu || !dropdownMenu.classList.contains('dropdown-menu')) return;
       
@@ -1362,7 +1362,7 @@
       }
       
       console.log('After toggle - Menu has show:', dropdownMenu.classList.contains('show'));
-      console.log('After toggle - Toggle has show:', toggle.classList.contains('show'));
+      console.log('After toggle - Toggle has show:', toggle.classList.contains('show')); {% endcomment %}
     });
   
     // Desktop hover functionality (only if desktop)
