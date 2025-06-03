@@ -1313,51 +1313,10 @@
       
       if (!toggle) return;
 
-      // Prevent default behavior
       e.preventDefault();
       e.stopPropagation();
 
-      // Get the dropdown menu (next sibling)
-      const dropdownMenu = toggle.nextElementSibling;
-      if (!dropdownMenu || !dropdownMenu.classList.contains('dropdown-menu')) return;
-
-      console.log('Toggle clicked:', toggle.textContent.trim());
-
-      // Check current state
-      const isCurrentlyShown = dropdownMenu.classList.contains('show');
-      console.log('Currently shown:', isCurrentlyShown);
-
-      // Toggle the clicked dropdown
-      dropdownMenu.classList.toggle('show', !isCurrentlyShown);
-
-      // Handle parent containers
-      const submenuParent = toggle.closest('.dropdown-submenu');
-      const mainDropdown = toggle.closest('.dropdown');
-
-      if (submenuParent) {
-        // This is a submenu - ensure it toggles and keep main dropdown open
-        submenuParent.classList.toggle('show', !isCurrentlyShown);
-        
-        // ALWAYS keep the main dropdown open when working with submenus
-        if (mainDropdown) {
-          mainDropdown.classList.add('show');
-          const mainDropdownMenu = mainDropdown.querySelector('.dropdown-menu');
-          if (mainDropdownMenu) {
-            mainDropdownMenu.classList.add('show');
-          }
-          const mainToggle = mainDropdown.querySelector('.dropdown-toggle');
-          if (mainToggle) {
-            mainToggle.classList.add('show');
-            mainToggle.setAttribute('aria-expanded', 'true');
-          }
-        }
-      } else if (mainDropdown) {
-        // This is a main dropdown
-        mainDropdown.classList.toggle('show', !isCurrentlyShown);
-      }
-
-      console.log('After toggle - Menu has show:', dropdownMenu.classList.contains('show'));
-      console.log('After toggle - Toggle has show:', toggle.classList.contains('show'));
+      
     });
   
     // Desktop hover functionality (only if desktop)
