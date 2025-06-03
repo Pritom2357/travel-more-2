@@ -249,14 +249,72 @@
   </footer> 
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
 <script>
-  var footerCarousel = document.querySelector('#footerCarousel');
-  if (footerCarousel) {
-    var carousel = new bootstrap.Carousel(footerCarousel, {
-      interval: 3000,
-      wrap: true
-    });
-  }
+  document.addEventListener('DOMContentLoaded', function() {
+    // Function to initialize carousel
+    function initCarousel() {
+      var footerCarousel = document.querySelector('#footerCarousel');
+      if (!footerCarousel) return;
+      
+      // Check if Bootstrap is available
+      if (typeof bootstrap !== 'undefined') {
+        new bootstrap.Carousel(footerCarousel, {
+          interval: 3000,
+          wrap: true
+        });
+      } else {
+        console.log('Bootstrap not available, adding fallback behavior');
+        
+        // Simple fallback carousel behavior if Bootstrap isn't available
+        var items = footerCarousel.querySelectorAll('.carousel-item');
+        var total = items.length;
+        var current = 0;
+        
+        // Simple manual controls
+        var prevBtn = document.querySelector('[data-bs-target="#footerCarousel"][data-bs-slide="prev"]');
+        var nextBtn = document.querySelector('[data-bs-target="#footerCarousel"][data-bs-slide="next"]');
+        
+        function showSlide(index) {
+          // Hide all slides
+          items.forEach(item => {
+            item.classList.remove('active');
+          });
+          
+          // Show the current slide
+          items[index].classList.add('active');
+        }
+        
+        if (prevBtn) {
+          prevBtn.addEventListener('click', function() {
+            current = (current - 1 + total) % total;
+            showSlide(current);
+          });
+        }
+        
+        if (nextBtn) {
+          nextBtn.addEventListener('click', function() {
+            current = (current + 1) % total;
+            showSlide(current);
+          });
+        }
+        
+        // Auto rotation
+        setInterval(function() {
+          current = (current + 1) % total;
+          showSlide(current);
+        }, 3000);
+      }
+    }
+    
+    // Try to initialize now or after a delay if not ready
+    if (document.readyState === 'complete') {
+      initCarousel();
+    } else {
+      window.addEventListener('load', initCarousel);
+    }
+  });
 </script>
 
 <style>
