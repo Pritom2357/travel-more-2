@@ -43,73 +43,40 @@
          onload="this.classList.add('loaded')">
   </picture>
   {% if section.settings.is_header %}
-  <nav class="navbar navbar-expand-lg nav-settings">
-    <div class="container-fluid">
-      {% capture logo_html %}
-        <div class="logo-name-container">
-          <a class="navbar-brand" href="{{ routes.root_url }}">
-            <img
-              src="{{ section.settings.logo | img_url: '100x' }}"
-              alt="{{ shop.name }}"
-              width="{{ section.settings.logo_size }}"
-              height="auto"
-            >
-          </a>
-          {% if section.settings.store_name %}
-            <a href="{{ routes.root_url }}" class="store-name-link">
-              <div class="store-name">
-                {{ section.settings.store_name }}
-              </div>
+    <nav class="navbar navbar-expand-lg nav-settings">
+      <div class="container-fluid d-flex">
+        <div class="justify-content-start">
+          <div class="logo-name-container">
+            <a class="navbar-brand" href="#">
+              <img
+                src="{{ section.settings.logo | img_url: '100px' }}"
+                alt="{{ shop.name }}"
+                width="{{ section.settings.logo_size }}"
+                height="auto"
+              >
             </a>
-          {% endif %}
-        </div>
-      {% endcapture %}
-
-      {% capture toggle_button %}
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <i class="bi bi-list btn-outline-success"></i>
-        </button>
-      {% endcapture %}
-
-      <div class="d-lg-none ms-auto mobile-logo-container">{{ logo_html }}</div>
-
-      {% capture icons_html %}
-        <div class="d-flex icons-container align-items-center">
-          <div class="ms-2 ms-lg-3">
-            <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
-              <i class="bi bi-person-fill"></i>
-            </a>
-            <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2 cart-link-container" aria-label="Cart">
-              <i class="bi bi-cart-fill"></i>
-              <span class="cart-count-badge">{{ cart.item_count }}</span>
-            </a>
+            {% if section.settings.store_name %}
+              <a href="{{ routes.root_url }}" class="store-name-link">
+                <div class="store-name">
+                  {{ section.settings.store_name }}
+                </div>
+              </a>
+            {% endif %}
           </div>
         </div>
-      {% endcapture %}
-
-      {% capture search_html %}
-        <div class="d-none d-lg-flex nav-utilities {% if section.settings.enable_search_bar == false %}nav-utilities-empty{% endif %}">
-          {% if section.settings.enable_search_bar %}
-            <form class="d-flex search-form">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit" aria-label="Search">
-                <i class="bi bi-search"></i>
-              </button>
-            </form>
-          {% endif %}
-          <div class="d-none d-lg-block">{{ icons_html }}</div>
+        <div class="justify-content-end">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="bi bi-list btn-outline-success"></i>
+          </button>
         </div>
-      {% endcapture %}
-
-      {% capture menu_html %}
         <div class="collapse navbar-collapse nav-text" id="navbarSupportedContent">
           <ul class="navbar-nav mb-2 mb-lg-0 {{ alignment_class }} flex-grow-1">
             {% for menu in section.settings.menu.links %}
@@ -154,20 +121,12 @@
               </li>
             {% endfor %}
           </ul>
-          
-          <!-- Add icons inside the mobile menu -->
-          <div class="mobile-menu-icons d-flex d-lg-none justify-content-center mt-3">
-            <div class="ms-2 mobile-icons-add">
-              <div class="d-flex nav-utilities {% if section.settings.enable_search_bar == false %}nav-utilities-empty{% endif %}">
-                {% if section.settings.enable_search_bar %}
-                  <form class="d-flex search-form">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit" aria-label="Search">
-                      <i class="bi bi-search"></i>
-                    </button>
-                  </form>
-                {% endif %}
-              </div>
+          {% if section.settings.enable_search_bar %}
+            <form class="d-flex">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success ml-2" type="submit" aria-label="Search">
+                <i class="bi bi-search-heart-fill btn-outline-success"></i>
+              </button>
               <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
                 <i class="bi bi-person-fill"></i>
               </a>
@@ -175,19 +134,13 @@
                 <i class="bi bi-cart-fill"></i>
                 <span class="cart-count-badge">{{ cart.item_count }}</span>
               </a>
-            </div>
-          </div>
-        </div>
-      {% endcapture %}
-
-      <div class="d-lg-none order-1">{{ toggle_button }}</div>
-      <div class="d-none d-lg-block order-lg-1">{{ logo_html }}</div>
-      <div class="order-3 order-lg-2 flex-grow-1">{{ menu_html }}</div>
-      <div class="order-2 order-lg-3">{{ search_html }}</div>
-    </div>
-  </nav>
-  <div class="line"></div>
-{% endif %}
+            </form>
+          {% endif %}
+        </div> 
+      </div> 
+    </nav>
+    <div class="line"></div>
+  {% endif %}
 
   <div class="container position-relative d-flex">
     <div class="row align-items-center">
@@ -333,180 +286,31 @@
   }
 
   function initializeDropdowns() {
-    
-    document.addEventListener('click', function(e) {
-        // Only run on mobile view
-        if (window.innerWidth > 991) return;
-
-        // Identify clicked dropdown toggle
-        let toggle = e.target.classList.contains('dropdown-toggle') 
-          ? e.target 
-          : e.target.closest('.dropdown-toggle');
-        
-        if (!toggle) return;
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        // Get the immediate submenu
-        const submenu = toggle.nextElementSibling;
-        if (!submenu || !submenu.classList.contains('dropdown-menu')) return;
-
-        // Get parent list item
-        const parentLi = toggle.closest('li');
-        if (!parentLi) return;
-
-        // Close all sibling menus at the same level
-        const parentUl = parentLi.parentNode;
-        const siblings = Array.from(parentUl.children).filter(child => child !== parentLi);
-        
-        siblings.forEach(sibling => {
-          const siblingMenu = sibling.querySelector('.dropdown-menu');
-          if (siblingMenu) {
-            siblingMenu.classList.remove('show');
-            // Close any nested menus within siblings
-            siblingMenu.querySelectorAll('.dropdown-menu').forEach(nested => {
-              nested.classList.remove('show');
-            });
-          }
-        });
-
-        // Toggle current menu
-        submenu.classList.toggle('show');
-
-        // Close all children when opening a menu
-        if (submenu.classList.contains('show')) {
-          submenu.querySelectorAll('.dropdown-menu').forEach(childMenu => {
-            childMenu.classList.remove('show');
-          });
-        }
-      });
-
-      // Close dropdowns when clicking outside
-      document.addEventListener('click', function(e) {
-        if (window.innerWidth > 991) return;
-        
-        const dropdowns = document.querySelectorAll('.dropdown-menu.show');
-        if (dropdowns.length === 0) return;
-        
-        const isClickInside = e.target.closest('.dropdown-menu') || 
-                              e.target.closest('.dropdown-toggle');
-        
-        if (!isClickInside) {
-          dropdowns.forEach(menu => menu.classList.remove('show'));
-        }
-      });
-
-      
-    // Desktop hover functionality (only if desktop)
-    if (window.innerWidth > 991) {
-      let hoverTimeouts = new Map();
-      
-      document.querySelectorAll('.navbar-nav .dropdown').forEach(dropdown => {
-        dropdown.addEventListener('mouseenter', function() {
-          const menu = this.querySelector('.dropdown-menu');
-          if (menu) {
-            clearTimeout(hoverTimeouts.get(menu));
-            menu.classList.add('show');
-          }
-        });
-        
-        dropdown.addEventListener('mouseleave', function() {
-          const menu = this.querySelector('.dropdown-menu');
-          if (menu) {
-            const timeoutId = setTimeout(() => {
-              menu.classList.remove('show');
-              this.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(submenu => {
-                submenu.style.display = 'none';
-                const submenuParent = submenu.closest('.dropdown-submenu');
-                if (submenuParent) {
-                  submenuParent.classList.remove('show');
-                }
-              });
-            }, 150);
-            hoverTimeouts.set(menu, timeoutId);
-          }
-        });
-      });
-
-      document.querySelectorAll('.navbar-nav .dropdown-submenu').forEach(submenu => {
-        submenu.addEventListener('mouseenter', function() {
-          const submenuDropdown = this.querySelector('.dropdown-menu');
-          if (submenuDropdown) {
-            clearTimeout(hoverTimeouts.get(submenuDropdown));
-            submenuDropdown.style.display = 'block';
-            this.classList.add('show');
-            
-            const parentMenu = this.closest('.dropdown-menu');
-            if (parentMenu) {
-              parentMenu.querySelectorAll(':scope > li.dropdown-submenu').forEach(sibling => {
-                if (sibling !== this) {
-                  const siblingMenu = sibling.querySelector('.dropdown-menu');
-                  if (siblingMenu) {
-                    siblingMenu.style.display = 'none';
-                    sibling.classList.remove('show');
-                  }
-                }
-              });
-            }
-          }
-        });
-        
-        submenu.addEventListener('mouseleave', function() {
-          const submenuDropdown = this.querySelector('.dropdown-menu');
-          if (submenuDropdown) {
-            const timeoutId = setTimeout(() => {
-              submenuDropdown.style.display = 'none';
-              this.classList.remove('show');
-            }, 150);
-            hoverTimeouts.set(submenuDropdown, timeoutId);
-          }
-        });
-      });
-
-      document.querySelectorAll('.navbar-nav .dropdown-menu').forEach(menu => {
-        menu.addEventListener('mouseenter', function() {
-          clearTimeout(hoverTimeouts.get(this));
-        });
-        
-        menu.addEventListener('mouseleave', function() {
-          const parentDropdown = this.closest('.dropdown');
-          if (parentDropdown) {
-            const timeoutId = setTimeout(() => {
-              this.classList.remove('show');
-              this.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(submenu => {
-                submenu.style.display = 'none';
-                const submenuParent = submenu.closest('.dropdown-submenu');
-                if (submenuParent) {
-                  submenuParent.classList.remove('show');
-                }
-              });
-            }, 150);
-            hoverTimeouts.set(this, timeoutId);
-          }
-        });
-      });
+    const heroSection = document.querySelector('.hero-section .navbar-nav');
+    if (!heroSection) {
+      return;
     }
-  
-    // Close dropdowns when clicking outside (mobile only)
-    document.addEventListener('click', function(e) {
-      if (!e.target.closest('.navbar-nav') && window.innerWidth <= 991) {
-        document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-          menu.classList.remove('show');
-          const toggle = menu.previousElementSibling;
-          if (toggle && toggle.classList.contains('dropdown-toggle')) {
-            toggle.classList.remove('show');
-            toggle.setAttribute('aria-expanded', 'false');
+
+    heroSection.addEventListener('click', function(event) {
+      const toggle = event.target.closest('.dropdown-toggle');
+
+      if (toggle) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        const dropdownMenu = toggle.nextElementSibling;
+
+        if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+          const isCurrentlyShown = dropdownMenu.classList.contains('show');
+          
+          dropdownMenu.classList.toggle('show', !isCurrentlyShown);
+          toggle.setAttribute('aria-expanded', String(!isCurrentlyShown));
+
+          const listItem = toggle.closest('li.dropdown, li.dropdown-submenu');
+          if (listItem) {
+            listItem.classList.toggle('show', !isCurrentlyShown);
           }
-          const submenuParent = menu.closest('.dropdown-submenu');
-          if (submenuParent) {
-            submenuParent.classList.remove('show');
-          }
-          const mainDropdown = menu.closest('.dropdown');
-          if (mainDropdown) {
-            mainDropdown.classList.remove('show');
-          }
-        });
+        }
       }
     });
   }
@@ -1497,95 +1301,6 @@
   .hero-section .dropdown-submenu.show > .dropdown-toggle::after {
     content: "▲";
   }
-}
-
-/* Hero navbar styling to match header.liquid */
-.hero-section .navbar-nav .dropdown-menu {
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.3s, transform 0.3s;
-  display: block;
-  visibility: hidden;
-}
-
-.hero-section .navbar-nav .dropdown:hover > .dropdown-menu {
-  opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
-}
-
-/* Mobile menu enhancements */
-@media (max-width: 991.98px) {
-  .hero-section .navbar-collapse {
-    background: linear-gradient(to bottom, 
-      rgba({{ header_red }}, {{ header_green }}, {{ heaeder_blue }}, 0.95),
-      rgba({{ header_red }}, {{ header_green }}, {{ heaeder_blue }}, 0.98)
-    );
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 0 0 16px 16px;
-    padding-bottom: 1rem;
-    transform: translateY(-10px);
-    opacity: 0;
-    transition: transform 0.3s, opacity 0.3s;
-  }
-  
-  .hero-section .navbar-collapse.show {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  
-  .hero-section .logo-name-container {
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
-  }
-}
-
-/* Logo animation */
-.hero-section .navbar-brand img {
-  transition: transform 0.3s ease;
-}
-
-.hero-section .navbar-brand:hover img {
-  transform: scale(1.05);
-}
-
-/* Cart badge enhancement */
-.hero-section .cart-link-container {
-  position: relative;
-}
-
-/* Nav utilities */
-.hero-section .nav-utilities {
-  display: flex;
-  align-items: center;
-}
-
-.hero-section .mobile-icons-add {
-  display: flex;
-}
-
-.hero-section .mobile-menu-icons {
-  padding-top: 0.5rem;
-  margin-top: 1rem;
-  border-top: 1px solid rgba(255,255,255,0.1);
-}
-
-.hero-section .mobile-menu-icons .btn {
-  background-color: rgba(255,255,255,0.1);
-  margin: 0 5px;
-  padding: 0.5rem 0.75rem;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.hero-section .mobile-menu-icons .btn:hover {
-  background-color: rgba(255,255,255,0.2);
-  transform: translateY(-2px);
 }
 </style>
 
