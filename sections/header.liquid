@@ -112,7 +112,7 @@
                         </a>
   
                         {% if sub_menu.links.size > 0 %}
-                          <ul class="dropdown-menu">
+                          <ul class="dropdown-submenu">
                             {% for sub_sub_menu in sub_menu.links %}
                               <li>
                                 <a class="dropdown-item" href="{{ sub_sub_menu.url }}">{{ sub_sub_menu.title }}</a>
@@ -1316,6 +1316,9 @@
       e.preventDefault();
       e.stopPropagation();
 
+      if(e.target.classList.contains('dropdown-submenu')){
+        console.log(`Submenu found`);
+      }
       
     });
   
