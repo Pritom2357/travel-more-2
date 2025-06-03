@@ -55,6 +55,9 @@
       "next_slide": "Faire glisser vers la droite",
       "previous_slide": "Faire glisser vers la gauche",
       "name": "Carrousel"
+    },
+    "accessibility": {
+      "close": "Fermer"
     }
   },
   "newsletter": {
@@ -535,6 +538,44 @@
       "send_on_label": "Envoyer le (facultatif)",
       "expanded": "Formulaire de destinataire de carte-cadeau agrandi",
       "collapsed": "Formulaire de destinataire de carte-cadeau réduit"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Votre Panier",
+      "update": "Mettre à jour",
+      "checkout": "Paiement",
+      "added_to_cart": "Ajouté au panier",
+      "error_adding": "Erreur lors de l'ajout au panier"
+    },
+    "label": {
+      "product_info": "Information Produit",
+      "price": "Prix",
+      "quantity": "Quantité",
+      "final_price": "Prix Final",
+      "subtotal": "Sous-total",
+      "note": "Note",
+      "selling_plan": "Plan de vente"
+    }
+  },
+  "wishlist": {
+    "title": "Votre Liste de Souhaits",
+    "empty": "Votre liste de souhaits est vide",
+    "browse_experiences": "Parcourir les Expériences de Voyage",
+    "browse_experiences_aria": "Parcourir toutes les expériences et visites de voyage disponibles",
+    "actions": "Actions",
+    "add_to_cart": "Ajouter au Panier",
+    "remove": "Supprimer",
+    "removed": "Supprimé de la liste de souhaits"
+  },
+  "compare": {
+    "title": "Comparaison de Produits",
+    "selected": "Comparer la Sélection",
+    "select_min": "Sélectionner au moins 2 produits à comparer"
+  },
+  "product": {
+    "price": {
+      "view_for_price": "Voir le produit pour le prix"
     }
   }
 }

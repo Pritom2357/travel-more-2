@@ -55,6 +55,9 @@
       "next_slide": "Slide right",
       "previous_slide": "Slide left",
       "name": "Slider"
+    },
+    "accessibility": {
+      "close": "Close"
     }
   },
   "newsletter": {
@@ -524,6 +527,44 @@
       "max_characters": "{{ max_chars }} characters max",
       "send_on": "YYYY-MM-DD",
       "send_on_label": "Send on (optional)"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your Cart",
+      "update": "Update",
+      "checkout": "Checkout",
+      "added_to_cart": "Added to cart",
+      "error_adding": "Error adding to cart"
+    },
+    "label": {
+      "product_info": "Product Info",
+      "price": "Price",
+      "quantity": "Quantity",
+      "final_price": "Final Price",
+      "subtotal": "Subtotal",
+      "note": "Note",
+      "selling_plan": "Selling plan"
+    }
+  },
+  "wishlist": {
+    "title": "Your Wishlist",
+    "empty": "Your wishlist is empty",
+    "browse_experiences": "Browse Travel Experiences",
+    "browse_experiences_aria": "Browse all available travel experiences and tours",
+    "actions": "Actions",
+    "add_to_cart": "Add to Cart",
+    "remove": "Remove",
+    "removed": "Removed from wishlist"
+  },
+  "compare": {
+    "title": "Product Comparison",
+    "selected": "Compare Selected",
+    "select_min": "Select at least 2 products to compare"
+  },
+  "product": {
+    "price": {
+      "view_for_price": "View product for price"
     }
   }
 }

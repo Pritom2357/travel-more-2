@@ -1,7 +1,7 @@
 <div class="cart-page" id="{{ section.id }}">
   <div class="cart-heading p-4 mb-4">
     <div class="header bg-dark d-flex align-items-center justify-content-center">
-      <h3 class="text-light">Your Cart</h3>
+      <h3 class="text-light">{{ 'cart.general.title' | t }}</h3>
     </div>
   </div>
   <div class="container my-6">
@@ -12,10 +12,10 @@
             <table class="table table-responsive">
               <thead>
                 <tr>
-                  <th>Product Info</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Final Price</th>
+                  <th>{{ 'cart.label.product_info' | t }}</th>
+                  <th>{{ 'cart.label.price' | t }}</th>
+                  <th>{{ 'cart.label.quantity' | t }}</th>
+                  <th>{{ 'cart.label.final_price' | t }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -46,7 +46,7 @@
                             {% endif %}
                             {% if line_items.selling_plan_allocation %}
                               <div class="selling-plan">
-                                <span>Selling plan: {{ line_items.selling_plan_allocation.selling_plan.name }}</span>
+                                <span>{{ 'cart.label.selling_plan' | t }}: {{ line_items.selling_plan_allocation.selling_plan.name }}</span>
                               </div>
                             {% endif %}
                           {% endif %}
@@ -78,6 +78,7 @@
                             class="form-control"
                             name="updates[]"
                             value="{{ line_items.quantity }}"
+                            aria-label="{{ 'cart.label.quantity' | t }}"
                           >
                           <div class="input-group-append">
                             <a
@@ -110,17 +111,17 @@
             <div class="card">
               <div class="card-body">
                 <div class="card-info d-felx justify-content-between">
-                  <strong>Subtotal:</strong>
+                  <strong>{{ 'cart.label.subtotal' | t }}:</strong>
                   <h4 class="cart-subtotal">{{ cart.total_price | money_with_currency }}</h4>
                 </div>
                 <hr class="my-3">
                 <div class="cart-note">
-                  <label>Note: </label>
-                  <textarea class="form-control" name="note" placeholder="Note">{{ cart.note }}</textarea>
+                  <label>{{ 'cart.label.note' | t }}: </label>
+                  <textarea class="form-control" name="note" placeholder="{{ 'cart.label.note' | t }}">{{ cart.note }}</textarea>
                 </div>
                 <div class="cart-actions">
-                  <button type="submit" name="update" class="btn btn-primary w-100 my-2">Update</button>
-                  <button type="submit" name="checkout" class="btn btn-secondary w-100 my-2">Checkout</button>
+                  <button type="submit" name="update" class="btn btn-primary w-100 my-2">{{ 'cart.general.update' | t }}</button>
+                  <button type="submit" name="checkout" class="btn btn-secondary w-100 my-2">{{ 'cart.general.checkout' | t }}</button>
                 </div>
               </div>
             </div>
@@ -135,7 +136,7 @@
 <div class="wishlist-section mb-4" id="wishlist-container">
   <div class="wishlist-heading p-4 mb-4">
     <div class="header bg-dark d-flex align-items-center justify-content-center">
-      <h3 class="text-light">Your Wishlist</h3>
+      <h3 class="text-light">{{ 'wishlist.title' | t }}</h3>
     </div>
   </div>
   <div class="container my-4">
@@ -145,17 +146,17 @@
           <table class="table table-responsive" id="wishlist-table">
             <thead>
               <tr>
-                <th>Product Info</th>
-                <th>Price</th>
-                <th>Actions</th>
+                <th>{{ 'cart.label.product_info' | t }}</th>
+                <th>{{ 'cart.label.price' | t }}</th>
+                <th>{{ 'wishlist.actions' | t }}</th>
               </tr>
             </thead>
             <tbody id="wishlist-items">
               <!-- Wishlist items will be dynamically inserted here -->
               <tr class="wishlist-empty">
                 <td colspan="3" class="text-center py-5">
-                  <p>Your wishlist is empty</p>
-                  <a href="/collections/all" class="btn btn-primary" aria-label="Browse all available travel experiences and tours">Browse Travel Experiences</a>
+                  <p>{{ 'wishlist.empty' | t }}</p>
+                  <a href="/collections/all" class="btn btn-primary" aria-label="{{ 'wishlist.browse_experiences_aria' | t }}">{{ 'wishlist.browse_experiences' | t }}</a>
                 </td>
               </tr>
             </tbody>
@@ -168,7 +169,7 @@
 
 <div class="compare-controls" style="display: none;">
   <button type="button" class="btn btn-primary" id="compare-selected-btn" disabled>
-    Compare Selected (<span id="compare-count">0</span>)
+    {{ 'compare.selected' | t }} (<span id="compare-count">0</span>)
   </button>
 </div>
 
@@ -177,8 +178,8 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="compareModalLabel">Product Comparison</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="compareModalLabel">{{ 'compare.title' | t }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'general.accessibility.close' | t }}">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -186,7 +187,7 @@
         <!-- Comparison content will be populated here -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'general.accessibility.close' | t }}</button>
       </div>
     </div>
   </div>
@@ -768,7 +769,6 @@
       const emptyWishlistRow = document.querySelector('.wishlist-empty');
       
       const wishlist = JSON.parse(localStorage.getItem('tourWishlist') || '{}');
-      {% comment %} console.log(wishlist); {% endcomment %}
       const wishlistKeys = Object.keys(wishlist);
       
       if (wishlistKeys.length === 0) {
@@ -801,16 +801,16 @@
           </td>
           <td>
             <div class="price-wrapper">
-              <span>${item.price || 'View product for price'}</span>
+              <span>${item.price || '{{ "product.price.view_for_price" | t }}'}</span>
             </div>
           </td>
           <td>
             <div class="wishlist-actions">
               <button type="button" class="btn btn-sm btn-primary add-to-cart-btn" data-product-id="${item.id}">
-                Add to Cart
+                {{ 'wishlist.add_to_cart' | t }}
               </button>
               <button type="button" class="btn btn-sm btn-danger remove-from-wishlist-btn" data-product-id="${item.id}">
-                Remove
+                {{ 'wishlist.remove' | t }}
               </button>
             </div>
           </td>
@@ -855,7 +855,7 @@
         document.querySelector('.wishlist-empty').style.display = 'table-row';
       }
       
-      showToast('Removed from wishlist');
+      showToast('{{ "wishlist.removed" | t }}');
     }
     
     function addToCart(productId) {
@@ -871,13 +871,13 @@
       })
       .then(response => response.json())
       .then(data => {
-        showToast('Added to cart');
+        showToast('{{ "cart.general.added_to_cart" | t }}');
         
         window.location.reload();
       })
       .catch(error => {
         console.error('Error:', error);
-        showToast('Error adding to cart');
+        showToast('{{ "cart.general.error_adding" | t }}');
       });
     }
     
@@ -951,7 +951,7 @@
   // Update the compareProducts function
   async function compareProducts(productIds) {
     if (productIds.length < 2) {
-      showToast('Select at least 2 products to compare');
+      showToast('{{ "compare.select_min" | t }}');
       return;
     }
     
