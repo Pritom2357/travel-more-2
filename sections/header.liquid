@@ -1318,15 +1318,39 @@
 
       if (!dropdownMenu || !dropdownMenu.classList.contains('dropdown-menu')) return;
 
-      // Now log the dropdown menu's children
-      console.log('Dropdown menu children:', dropdownMenu.children);
-      console.log('Dropdown menu children (as array):', Array.from(dropdownMenu.children));
-
-      // To see each child individually:
-      Array.from(dropdownMenu.children).forEach((child, index) => {
-        console.log(`Child ${index}:`, child);
-        console.log(`Child ${index} HTML:`, child.outerHTML);
-      });
+      if(child.classList.contains('dropdown-submenu')){
+  // Look for dropdown menu inside this submenu item
+  const submenuDropdown = child.querySelector('.dropdown-menu');
+  if (submenuDropdown) {
+    console.log(`Submenu found for ${child.textContent.trim()}:`);
+    console.log(`Submenu children:`, submenuDropdown.children);
+    console.log(`Submenu children (as array):`, Array.from(submenuDropdown.children));
+    
+    // Now check each submenu child for further nesting
+        Array.from(submenuDropdown.children).forEach((subChild, subIndex) => {
+          console.log(`  Submenu Child ${subIndex}:`, subChild);
+          console.log(`  Submenu Child ${subIndex} HTML:`, subChild.outerHTML);
+          
+          // Check if this submenu child has its own nested dropdown
+          if(subChild.classList.contains('dropdown-submenu')){
+            const nestedDropdown = subChild.querySelector('.dropdown-menu');
+            if (nestedDropdown) {
+              console.log(`    Nested dropdown found for ${subChild.textContent.trim()}:`);
+              console.log(`    Nested children:`, nestedDropdown.children);
+              console.log(`    Nested children (as array):`, Array.from(nestedDropdown.children));
+              
+              // Log each deeply nested item
+              Array.from(nestedDropdown.children).forEach((deepChild, deepIndex) => {
+                console.log(`      Deep Child ${deepIndex}:`, deepChild);
+                console.log(`      Deep Child ${deepIndex} HTML:`, deepChild.outerHTML);
+              });
+            }
+          }
+        });
+      } else {
+        console.log(`No submenu dropdown found for ${child.textContent.trim()}`);
+      }
+    }
 
 
       console.log(`Toggle button: ${toggle} exists so far`);
