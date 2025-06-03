@@ -89,6 +89,8 @@
                     role="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
+                    aria-haspopup="true"
+                    role="menu"
                   {% endif %}
                 >
                   {{ menu.title }}
@@ -101,6 +103,7 @@
                         <a
                           class="dropdown-item {% if sub_menu.links.size > 0 %} dropdown-toggle {% endif %}"
                           href="{{ sub_menu.url }}"
+                          role="menuitem"
                         >
                           {{ sub_menu.title }}
                         </a>
@@ -109,7 +112,7 @@
                           <ul class="dropdown-menu">
                             {% for sub_sub_menu in sub_menu.links %}
                               <li>
-                                <a class="dropdown-item" href="{{ sub_sub_menu.url }}">{{ sub_sub_menu.title }}</a>
+                                <a class="dropdown-item" href="{{ sub_sub_menu.url }}" role="menuitem">{{ sub_sub_menu.title }}</a>
                               </li>
                             {% endfor %}
                           </ul>
@@ -286,34 +289,131 @@
   }
 
   function initializeDropdowns() {
-    const heroSection = document.querySelector('.hero-section .navbar-nav');
-    if (!heroSection) {
-      return;
-    }
+  // Function to handle all levels of dropdowns
+  function handleDropdownToggle(e) {
+    const toggle = e.target.closest('.dropdown-toggle');
 
-    heroSection.addEventListener('click', function(event) {
-      const toggle = event.target.closest('.dropdown-toggle');
+    if (toggle) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const dropdownMenu = toggle.nextElementSibling;
 
-      if (toggle) {
-        event.preventDefault();
-        event.stopPropagation();
+      if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+        const isCurrentlyShown = dropdownMenu.classList.contains('show');
         
-        const dropdownMenu = toggle.nextElementSibling;
+        // Fix typo: clzzassList → classList
+        dropdownMenu.classList.toggle('show', !isCurrentlyShown);
+        toggle.setAttribute('aria-expanded', String(!isCurrentlyShown));
 
-        if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
-          const isCurrentlyShown = dropdownMenu.classList.contains('show');
+        const listItem = toggle.closest('li.dropdown, li.dropdown-submenu');
+        if (listItem) {
+          listItem.classList.toggle('show', !isCurrentlyShown);
+        }
+        
+        // If we're closing this menu, also close all children
+        if (isCurrentlyShown) {
+          dropdownMenu.querySelectorAll('.dropdown-menu').forEach(childMenu => {
+            childMenu.classList.remove('show');
+          });
           
-          dropdownMenu.classList.toggle('show', !isCurrentlyShown);
-          toggle.setAttribute('aria-expanded', String(!isCurrentlyShown));
-
-          const listItem = toggle.closest('li.dropdown, li.dropdown-submenu');
-          if (listItem) {
-            listItem.classList.toggle('show', !isCurrentlyShown);
+          dropdownMenu.querySelectorAll('.dropdown-submenu').forEach(childSubmenu => {
+            childSubmenu.classList.remove('show');
+          });
+        } else {
+          // If we're opening a submenu, close all siblings at the current level
+          if (listItem.classList.contains('dropdown-submenu')) {
+            const parentUl = listItem.parentNode;
+            const siblings = Array.from(parentUl.children).filter(child => child !== listItem);
+            
+            siblings.forEach(sibling => {
+              const siblingMenu = sibling.querySelector('.dropdown-menu');
+              if (siblingMenu) {
+                siblingMenu.classList.remove('show');
+                sibling.classList.remove('show');
+                
+                // Close any nested menus within siblings
+                siblingMenu.querySelectorAll('.dropdown-menu').forEach(nested => {
+                  nested.classList.remove('show');
+                });
+                
+                siblingMenu.querySelectorAll('.dropdown-submenu').forEach(nestedSubmenu => {
+                  nestedSubmenu.classList.remove('show');
+                });
+              }
+            });
+          } else {
+            // For top-level items, close all other top-level dropdowns
+            const allTopLevelItems = document.querySelectorAll('.hero-section .navbar-nav > li.dropdown');
+            allTopLevelItems.forEach(item => {
+              if (item !== listItem) {
+                const menu = item.querySelector('.dropdown-menu');
+                if (menu) {
+                  menu.classList.remove('show');
+                  item.classList.remove('show');
+                  
+                  // Close all submenus
+                  menu.querySelectorAll('.dropdown-menu').forEach(submenu => {
+                    submenu.classList.remove('show');
+                  });
+                  
+                  menu.querySelectorAll('.dropdown-submenu').forEach(submenu => {
+                    submenu.classList.remove('show');
+                  });
+                }
+              }
+            });
           }
         }
       }
+    }
+  }
+
+  // Handle clicking outside to close dropdowns
+  function handleOutsideClick(e) {
+    if (!e.target.closest('.dropdown-menu') && !e.target.closest('.dropdown-toggle')) {
+      document.querySelectorAll('.hero-section .dropdown-menu.show').forEach(menu => {
+        menu.classList.remove('show');
+        
+        const parentDropdown = menu.closest('.dropdown, .dropdown-submenu');
+        if (parentDropdown) {
+          parentDropdown.classList.remove('show');
+        }
+        
+        const toggle = menu.previousElementSibling;
+        if (toggle && toggle.classList.contains('dropdown-toggle')) {
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+  }
+  
+  // Set up event listeners
+  const heroSection = document.querySelector('.hero-section');
+  if (heroSection) {
+    heroSection.addEventListener('click', handleDropdownToggle);
+    document.addEventListener('click', handleOutsideClick);
+    
+    // Add keyboard navigation for accessibility
+    heroSection.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.hero-section .dropdown-menu.show').forEach(menu => {
+          menu.classList.remove('show');
+          
+          const parentDropdown = menu.closest('.dropdown, .dropdown-submenu');
+          if (parentDropdown) {
+            parentDropdown.classList.remove('show');
+          }
+          
+          const toggle = menu.previousElementSibling;
+          if (toggle && toggle.classList.contains('dropdown-toggle')) {
+            toggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
     });
   }
+}
 
   function initializeBookingButton() {
     const bookNowBtn = document.getElementById('bookNowBtn');
