@@ -43,40 +43,73 @@
          onload="this.classList.add('loaded')">
   </picture>
   {% if section.settings.is_header %}
-    <nav class="navbar navbar-expand-lg nav-settings">
-      <div class="container-fluid d-flex">
-        <div class="justify-content-start">
-          <div class="logo-name-container">
-            <a class="navbar-brand" href="#">
-              <img
-                src="{{ section.settings.logo | img_url: '100px' }}"
-                alt="{{ shop.name }}"
-                width="{{ section.settings.logo_size }}"
-                height="auto"
-              >
+  <nav class="navbar navbar-expand-lg nav-settings">
+    <div class="container-fluid">
+      {% capture logo_html %}
+        <div class="logo-name-container">
+          <a class="navbar-brand" href="{{ routes.root_url }}">
+            <img
+              src="{{ section.settings.logo | img_url: '100x' }}"
+              alt="{{ shop.name }}"
+              width="{{ section.settings.logo_size }}"
+              height="auto"
+            >
+          </a>
+          {% if section.settings.store_name %}
+            <a href="{{ routes.root_url }}" class="store-name-link">
+              <div class="store-name">
+                {{ section.settings.store_name }}
+              </div>
             </a>
-            {% if section.settings.store_name %}
-              <a href="{{ routes.root_url }}" class="store-name-link">
-                <div class="store-name">
-                  {{ section.settings.store_name }}
-                </div>
-              </a>
-            {% endif %}
+          {% endif %}
+        </div>
+      {% endcapture %}
+
+      {% capture toggle_button %}
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="bi bi-list btn-outline-success"></i>
+        </button>
+      {% endcapture %}
+
+      <div class="d-lg-none ms-auto mobile-logo-container">{{ logo_html }}</div>
+
+      {% capture icons_html %}
+        <div class="d-flex icons-container align-items-center">
+          <div class="ms-2 ms-lg-3">
+            <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
+              <i class="bi bi-person-fill"></i>
+            </a>
+            <a href="{{ routes.cart_url }}" class="btn btn-outline-success ms-2 cart-link-container" aria-label="Cart">
+              <i class="bi bi-cart-fill"></i>
+              <span class="cart-count-badge">{{ cart.item_count }}</span>
+            </a>
           </div>
         </div>
-        <div class="justify-content-end">
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i class="bi bi-list btn-outline-success"></i>
-          </button>
+      {% endcapture %}
+
+      {% capture search_html %}
+        <div class="d-none d-lg-flex nav-utilities {% if section.settings.enable_search_bar == false %}nav-utilities-empty{% endif %}">
+          {% if section.settings.enable_search_bar %}
+            <form class="d-flex search-form">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit" aria-label="Search">
+                <i class="bi bi-search"></i>
+              </button>
+            </form>
+          {% endif %}
+          <div class="d-none d-lg-block">{{ icons_html }}</div>
         </div>
+      {% endcapture %}
+
+      {% capture menu_html %}
         <div class="collapse navbar-collapse nav-text" id="navbarSupportedContent">
           <ul class="navbar-nav mb-2 mb-lg-0 {{ alignment_class }} flex-grow-1">
             {% for menu in section.settings.menu.links %}
@@ -121,12 +154,20 @@
               </li>
             {% endfor %}
           </ul>
-          {% if section.settings.enable_search_bar %}
-            <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success ml-2" type="submit" aria-label="Search">
-                <i class="bi bi-search-heart-fill btn-outline-success"></i>
-              </button>
+          
+          <!-- Add icons inside the mobile menu -->
+          <div class="mobile-menu-icons d-flex d-lg-none justify-content-center mt-3">
+            <div class="ms-2 mobile-icons-add">
+              <div class="d-flex nav-utilities {% if section.settings.enable_search_bar == false %}nav-utilities-empty{% endif %}">
+                {% if section.settings.enable_search_bar %}
+                  <form class="d-flex search-form">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit" aria-label="Search">
+                      <i class="bi bi-search"></i>
+                    </button>
+                  </form>
+                {% endif %}
+              </div>
               <a href="{{ routes.account_url }}" class="btn btn-outline-success ms-2" aria-label="Account">
                 <i class="bi bi-person-fill"></i>
               </a>
@@ -134,13 +175,19 @@
                 <i class="bi bi-cart-fill"></i>
                 <span class="cart-count-badge">{{ cart.item_count }}</span>
               </a>
-            </form>
-          {% endif %}
-        </div> 
-      </div> 
-    </nav>
-    <div class="line"></div>
-  {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endcapture %}
+
+      <div class="d-lg-none order-1">{{ toggle_button }}</div>
+      <div class="d-none d-lg-block order-lg-1">{{ logo_html }}</div>
+      <div class="order-3 order-lg-2 flex-grow-1">{{ menu_html }}</div>
+      <div class="order-2 order-lg-3">{{ search_html }}</div>
+    </div>
+  </nav>
+  <div class="line"></div>
+{% endif %}
 
   <div class="container position-relative d-flex">
     <div class="row align-items-center">
@@ -1450,6 +1497,95 @@
   .hero-section .dropdown-submenu.show > .dropdown-toggle::after {
     content: "▲";
   }
+}
+
+/* Hero navbar styling to match header.liquid */
+.hero-section .navbar-nav .dropdown-menu {
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+  display: block;
+  visibility: hidden;
+}
+
+.hero-section .navbar-nav .dropdown:hover > .dropdown-menu {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+/* Mobile menu enhancements */
+@media (max-width: 991.98px) {
+  .hero-section .navbar-collapse {
+    background: linear-gradient(to bottom, 
+      rgba({{ header_red }}, {{ header_green }}, {{ heaeder_blue }}, 0.95),
+      rgba({{ header_red }}, {{ header_green }}, {{ heaeder_blue }}, 0.98)
+    );
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 0 0 16px 16px;
+    padding-bottom: 1rem;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  
+  .hero-section .navbar-collapse.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  .hero-section .logo-name-container {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+/* Logo animation */
+.hero-section .navbar-brand img {
+  transition: transform 0.3s ease;
+}
+
+.hero-section .navbar-brand:hover img {
+  transform: scale(1.05);
+}
+
+/* Cart badge enhancement */
+.hero-section .cart-link-container {
+  position: relative;
+}
+
+/* Nav utilities */
+.hero-section .nav-utilities {
+  display: flex;
+  align-items: center;
+}
+
+.hero-section .mobile-icons-add {
+  display: flex;
+}
+
+.hero-section .mobile-menu-icons {
+  padding-top: 0.5rem;
+  margin-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.hero-section .mobile-menu-icons .btn {
+  background-color: rgba(255,255,255,0.1);
+  margin: 0 5px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.hero-section .mobile-menu-icons .btn:hover {
+  background-color: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
 }
 </style>
 
