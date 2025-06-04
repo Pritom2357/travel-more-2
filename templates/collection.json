@@ -13,7 +13,7 @@
       "type": "countdown-banner",
       "name": "Promo Countdown Banner",
       "settings": {
-        "bg_color": "#FF6B6B",
+        "bg_color": "#1ed4be",
         "fullwidth_banner": true,
         "sticky_banner": false,
         "display_type": "text",
