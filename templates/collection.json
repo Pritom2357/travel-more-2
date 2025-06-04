@@ -16,6 +16,7 @@
         "bg_color": "#2e54df",
         "fullwidth_banner": true,
         "sticky_banner": true,
+        "promo_image": "shopify://shop_images/dest6.jpg",
         "image_animation": true,
         "overlay_opacity": 0.7,
         "promo_subheading": "Limited Time",
