@@ -9,6 +9,36 @@
  */
 {
   "sections": {
+    "floating_countdown_modal_Kft6LN": {
+      "type": "floating-countdown-modal",
+      "name": "Floating Countdown Modal",
+      "settings": {
+        "bg_color": "#121212",
+        "promo_image": "shopify://shop_images/dest6.jpg",
+        "bg_animation_style": "heartbeat",
+        "overlay_opacity": 0.5,
+        "floating_position": "bottom-right",
+        "floating_icon_type": "percent",
+        "percent_off": "30",
+        "promo_subheading": "Limited Time Offer",
+        "promo_heading": "30% OFF ALL DESTINATIONS",
+        "promo_description": "Use promo code TRAVEL30 at checkout to get an exclusive discount on all our travel packages!",
+        "primary_font_size": 28,
+        "secondary_font_size": 16,
+        "primary_text_color": "#ffffff",
+        "secondary_text_color": "#eeeeee",
+        "end_date": "2025-12-31",
+        "timer_font_size": 24,
+        "timer_bg_color": "#ffffff33",
+        "timer_text_color": "#ffffff",
+        "hide_on_expire": true,
+        "button_text": "Book Now",
+        "button_link": "",
+        "button_bg_color": "#ffffff",
+        "button_text_color": "#ff6b6b",
+        "display_delay": 3
+      }
+    },
     "custom_hero_VL6Rmr": {
       "type": "custom-hero",
       "settings": {
@@ -71,7 +101,7 @@
         "form_title": "Book Perfect Tour",
         "form_bg_color": "#449eed",
         "form_bg_opacity": 0.6,
-        "form_text_color": "#000000",
+        "form_text_color": "#ffffff",
         "input1": "Destination",
         "input2": "Tour Type",
         "input3": "Month",
@@ -471,6 +501,7 @@
     }
   },
   "order": [
+    "floating_countdown_modal_Kft6LN",
     "custom_hero_VL6Rmr",
     "featured_collection",
     "intro_section_tH7HDm",
