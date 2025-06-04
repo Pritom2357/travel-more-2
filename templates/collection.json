@@ -13,7 +13,7 @@
       "type": "countdown-banner",
       "name": "Promo Countdown Banner",
       "settings": {
-        "bg_color": "#334fb4",
+        "bg_color": "#2e54df",
         "fullwidth_banner": true,
         "sticky_banner": true,
         "promo_image": "shopify://shop_images/dest6.jpg",
