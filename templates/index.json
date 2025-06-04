@@ -13,10 +13,10 @@
       "type": "floating-countdown-modal",
       "name": "Floating Countdown Modal",
       "settings": {
-        "bg_color": "#ff6b6b",
+        "bg_color": "#121212",
         "promo_image": "shopify://shop_images/dest6.jpg",
         "bg_animation_style": "pulse",
-        "overlay_opacity": 0.7,
+        "overlay_opacity": 0.3,
         "floating_position": "bottom-right",
         "floating_icon_type": "percent",
         "percent_off": "30",
