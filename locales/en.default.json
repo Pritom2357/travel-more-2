@@ -567,31 +567,4 @@
       "view_for_price": "View product for price"
     }
   },
-  "settings_schema": {
-    "typography": {
-      "name": "Typography",
-      "settings": {
-        "header__1": {
-          "content": "Body"
-        },
-        "header__2": {
-          "content": "Headings"
-        },
-        "type_header_font": {
-          "label": "Title Font Family",
-          "info": "Choose font for headings and titles"
-        },
-        "type_body_font": {
-          "label": "Content Font Family",
-          "info": "Choose font for body text and paragraphs"
-        },
-        "heading_scale": {
-          "label": "Heading font size scale"
-        },
-        "body_scale": {
-          "label": "Body font size scale"
-        }
-      }
-    }
-  }
 }
