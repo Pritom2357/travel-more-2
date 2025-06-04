@@ -50,6 +50,9 @@
   color: rgba(var(--color-foreground), 0.85);
   font-size: 1.4rem;
   margin: 0 2rem 0 0;
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
 }
 
 .facet-filters__summary {
@@ -63,6 +66,9 @@
   min-width: 25rem;
   margin-top: 2.4rem;
   border: 0.1rem solid rgba(var(--color-foreground), 0.55);
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
 }
 
 .facet-filters__summary::after {

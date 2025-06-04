@@ -17,6 +17,9 @@ volume-pricing li {
   padding: 0.6rem 0.8rem;
   display: flex;
   justify-content: space-between;
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
 }
 
 div.volume-pricing-note {
@@ -35,6 +38,9 @@ div.volume-pricing-note {
 volume-pricing .label-show-more {
   font-size: 1.2rem;
   letter-spacing: 0.07rem;
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
 }
 
 volume-pricing show-more-button {

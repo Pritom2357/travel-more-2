@@ -23,6 +23,9 @@ cart-items.is-empty .title-wrapper-with-link,
 
 .cart__empty-text {
   margin: 4.5rem 0 2rem;
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
 }
 
 .cart__contents > * + * {
@@ -31,6 +34,9 @@ cart-items.is-empty .title-wrapper-with-link,
 
 .cart__login-title {
   margin: 5.5rem 0 0.5rem;
+  font-family: var(--font-heading-family);
+  font-style: var(--font-heading-style);
+  font-weight: var(--font-heading-weight);
 }
 
 .cart__login-paragraph {

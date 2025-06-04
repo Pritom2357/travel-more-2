@@ -146,6 +146,9 @@ predictive-search[loading] .predictive-search__results-groups-wrapper ~ .predict
   text-align: left;
   text-decoration: none;
   width: 100%;
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
 }
 
 .predictive-search__item--link-with-thumbnail {
@@ -171,6 +174,9 @@ predictive-search[loading] .predictive-search__results-groups-wrapper ~ .predict
 
 .predictive-search__item-heading {
   margin: 0;
+  font-family: var(--font-heading-family);
+  font-style: var(--font-heading-style);
+  font-weight: var(--font-heading-weight);
 }
 
 .predictive-search__item-query-result *:not(mark) {
@@ -221,5 +227,4 @@ predictive-search[loading] .predictive-search__results-groups-wrapper ~ .predict
 .predictive-search__image {
   grid-area: product-image;
   object-fit: contain;
-  font-family: 'object-fit: contain';
 }
