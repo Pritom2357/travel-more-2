@@ -101,7 +101,7 @@
         "form_title": "Book Perfect Tour",
         "form_bg_color": "#449eed",
         "form_bg_opacity": 0.6,
-        "form_text_color": "#000000",
+        "form_text_color": "#ffffff",
         "input1": "Destination",
         "input2": "Tour Type",
         "input3": "Month",
