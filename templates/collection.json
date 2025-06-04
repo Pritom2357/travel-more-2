@@ -9,6 +9,37 @@
  */
 {
   "sections": {
+    "countdown_banner_wx6kqa": {
+      "type": "countdown-banner",
+      "name": "Promo Countdown Banner",
+      "settings": {
+        "bg_color": "#FF6B6B",
+        "fullwidth_banner": true,
+        "sticky_banner": false,
+        "display_type": "text",
+        "image_animation": true,
+        "overlay_opacity": 0.7,
+        "promo_subheading": "Limited Time",
+        "promo_heading": "30% OFF ALL DESTINATIONS",
+        "promo_description": "Use code: TRAVEL30",
+        "primary_font_size": 24,
+        "secondary_font_size": 14,
+        "primary_text_color": "#FFFFFF",
+        "secondary_text_color": "#EEEEEE",
+        "end_date": "",
+        "timer_font_size": 24,
+        "timer_bg_color": "rgba(255, 255, 255, 0.2)",
+        "timer_text_color": "#FFFFFF",
+        "hide_on_expire": true,
+        "button_text": "Shop Now",
+        "button_link": "",
+        "button_bg_color": "#FFFFFF",
+        "button_text_color": "#FF6B6B",
+        "button_pulse_color": "#FFFFFF",
+        "display_delay": 1,
+        "show_once_per_session": true
+      }
+    },
     "banner": {
       "type": "main-collection-banner",
       "disabled": true,
@@ -22,6 +53,7 @@
       "type": "main-collection-product-grid",
       "settings": {
         "product_per_page": 12,
+        "number_of_col": 3,
         "show_second_img": true,
         "show_vendor": false,
         "enable_filtering": true
@@ -29,6 +61,7 @@
     }
   },
   "order": [
+    "countdown_banner_wx6kqa",
     "banner",
     "product-grid"
   ]
