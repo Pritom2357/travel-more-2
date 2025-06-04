@@ -16,7 +16,7 @@
         "bg_color": "#121212",
         "promo_image": "shopify://shop_images/dest6.jpg",
         "bg_animation_style": "heartbeat",
-        "overlay_opacity": 0.3,
+        "overlay_opacity": 0.5,
         "floating_position": "bottom-right",
         "floating_icon_type": "percent",
         "percent_off": "30",
