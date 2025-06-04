@@ -10,8 +10,8 @@
 {
   "current": {
     "logo_width": 90,
-    "type_header_font": "courier_new_n4",
-    "type_body_font": "anonymous_pro_n4",
+    "type_header_font": "josefin_slab_n4",
+    "type_body_font": "abril_fatface_n4",
     "page_width": 1200,
     "spacing_sections": 0,
     "spacing_grid_horizontal": 8,
