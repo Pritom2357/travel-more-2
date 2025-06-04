@@ -16,7 +16,7 @@
         "bg_color": "#1ed4be",
         "fullwidth_banner": true,
         "sticky_banner": false,
-        "display_type": "image",
+        "display_type": "text",
         "promo_image": "shopify://shop_images/dest6.jpg",
         "image_animation": true,
         "overlay_opacity": 0.7,
