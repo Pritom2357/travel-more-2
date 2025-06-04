@@ -18,7 +18,7 @@
         "sticky_banner": true,
         "promo_image": "shopify://shop_images/dest6.jpg",
         "image_animation": true,
-        "overlay_opacity": 0.1,
+        "overlay_opacity": 0.3,
         "promo_subheading": "Limited Time",
         "promo_heading": "30% OFF ALL DESTINATIONS",
         "promo_description": "Use code: TRAVEL30",
