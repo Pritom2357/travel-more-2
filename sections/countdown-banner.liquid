@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
     bannerElement.classList.add('hide-banner');
     
     setTimeout(function() {
-      bannerElement.style.display = 'none';
+      {% comment %} bannerElement.style.display = 'none'; {% endcomment %}
       
       if ({{ section.settings.show_once_per_session }}) {
         localStorage.setItem(bannerKey, 'true');
