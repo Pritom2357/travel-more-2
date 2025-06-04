@@ -1,11 +1,11 @@
 {% assign banner_id = 'promo-countdown-' | append: section.id %}
 
 <div id="{{ banner_id }}" class="promo-countdown-banner {% if section.settings.fullwidth_banner %}w-100{% endif %}" 
-    style="background-color: {% if section.settings.promo_image != blank %}transparent{% else %}{{ section.settings.bg_color }}{% endif %};">
+    style="{% unless section.settings.promo_image != blank %}background-color: {{ section.settings.bg_color }};{% endunless %}">
   
   {% if section.settings.promo_image != blank %}
     <div class="promo-background-image" style="background-image: url('{{ section.settings.promo_image | img_url: '1920x' }}');"></div>
-    <div class="promo-background-overlay" style="background-color: {{ section.settings.bg_color }}; opacity: {{ section.settings.overlay_opacity }}"></div>
+    <div class="promo-background-overlay" style="background-color: {{ section.settings.bg_color }}; opacity: {{ section.settings.overlay_opacity }};"></div>
   {% endif %}
   
   <div class="promo-banner-container {% unless section.settings.fullwidth_banner %}container{% endunless %}">
@@ -144,23 +144,28 @@ document.addEventListener('DOMContentLoaded', function() {
   transform: translateY(-100%);
   transition: transform 0.5s ease-in-out;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden; 
+  overflow: hidden;
+  min-height: 80px; /* Ensure minimum height */
   {% if section.settings.sticky_banner %}
     position: sticky;
     top: 0;
   {% endif %}
 }
 
+/* Fix for background image */
 .promo-background-image {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  z-index: -2;
+  z-index: 1;
+  {% if section.settings.image_animation %}
+    animation: imagePulse 2s infinite alternate;
+  {% endif %}
 }
 
 .promo-background-overlay {
@@ -169,29 +174,20 @@ document.addEventListener('DOMContentLoaded', function() {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: 2;
+  background-color: {{ section.settings.bg_color }};
+  opacity: {{ section.settings.overlay_opacity }};
 }
 
-.promo-countdown-banner .promo-subheading,
-.promo-countdown-banner .promo-heading,
-.promo-countdown-banner .promo-description {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.promo-countdown-banner.show-banner {
-  transform: translateY(0);
-}
-
-.promo-countdown-banner.hide-banner {
-  transform: translateY(-100%);
-}
-
+/* Ensure content appears above background */
 .promo-banner-container {
+  position: relative;
+  z-index: 3;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px 15px;
-  position: relative;
+  width: 100%;
 }
 
 .promo-content-wrapper {
@@ -202,6 +198,23 @@ document.addEventListener('DOMContentLoaded', function() {
   gap: 20px;
   width: 100%;
   text-align: center;
+  position: relative;
+  z-index: 4;
+}
+
+/* Enhanced text shadow for better readability over background images */
+.promo-countdown-banner .promo-subheading,
+.promo-countdown-banner .promo-heading,
+.promo-countdown-banner .promo-description {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.promo-countdown-banner.show-banner {
+  transform: translateY(0);
+}
+
+.promo-countdown-banner.hide-banner {
+  transform: translateY(-100%);
 }
 
 /* Text styling */
@@ -239,6 +252,8 @@ document.addEventListener('DOMContentLoaded', function() {
   padding: 8px 15px;
   border-radius: 6px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .countdown-item {
@@ -254,6 +269,7 @@ document.addEventListener('DOMContentLoaded', function() {
   color: {{ section.settings.timer_text_color }};
   line-height: 1;
   position: relative;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .countdown-label {
@@ -261,6 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
   color: {{ section.settings.timer_text_color }};
   opacity: 0.8;
   text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .countdown-separator {
@@ -270,6 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
   opacity: 0.8;
   line-height: 1;
   margin-top: -8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Button styling */
@@ -291,12 +309,13 @@ document.addEventListener('DOMContentLoaded', function() {
   letter-spacing: 0.5px;
   white-space: nowrap;
   display: inline-block;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .promo-button:hover {
   opacity: 0.9;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
 }
 
 /* Close button */
@@ -305,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function() {
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  background: transparent;
+  background: rgba(0, 0, 0, 0.3);
   border: none;
   color: {{ section.settings.secondary_text_color }};
   cursor: pointer;
@@ -314,25 +333,16 @@ document.addEventListener('DOMContentLoaded', function() {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  border-radius: 50%;
+  z-index: 5;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .promo-close-button:hover {
+  background: rgba(0, 0, 0, 0.5);
   color: {{ section.settings.primary_text_color }};
   transform: translateY(-50%) scale(1.1);
-}
-
-/* Image styling */
-.promo-image-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 80px;
-}
-
-.promo-image {
-  max-width: 100%;
-  max-height: 50px;
-  object-fit: contain;
 }
 
 /* Animations */
@@ -342,10 +352,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 @keyframes glowPulse {
   0% {
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
   }
   100% {
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.3);
   }
 }
 
@@ -355,13 +365,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 @keyframes buttonPulse {
   0% {
-    box-shadow: 0 0 0 0 rgba({{ section.settings.button_pulse_color_rgb }}, 0.7);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba({{ section.settings.button_pulse_color_rgb }}, 0.7);
   }
   70% {
-    box-shadow: 0 0 0 10px rgba({{ section.settings.button_pulse_color_rgb }}, 0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 0 0 10px rgba({{ section.settings.button_pulse_color_rgb }}, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba({{ section.settings.button_pulse_color_rgb }}, 0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba({{ section.settings.button_pulse_color_rgb }}, 0);
   }
 }
 
@@ -419,6 +429,16 @@ document.addEventListener('DOMContentLoaded', function() {
   .countdown-item {
     min-width: 30px;
   }
+  
+  .promo-close-button {
+    right: 5px;
+    padding: 3px;
+  }
+}
+
+/* Debug styles - remove after testing */
+.promo-countdown-banner[style*="background-image"] {
+  background-color: transparent !important;
 }
 </style>
 
@@ -449,22 +469,6 @@ document.addEventListener('DOMContentLoaded', function() {
       "default": false
     },
     {
-      "type": "select",
-      "id": "display_type",
-      "label": "Display Type",
-      "options": [
-        {
-          "value": "text",
-          "label": "Text Only"
-        },
-        {
-          "value": "image",
-          "label": "With Image"
-        }
-      ],
-      "default": "text"
-    },
-    {
       "type": "image_picker",
       "id": "promo_image",
       "label": "Background Image",
@@ -473,7 +477,7 @@ document.addEventListener('DOMContentLoaded', function() {
     {
       "type": "checkbox",
       "id": "image_animation",
-      "label": "Animate Image",
+      "label": "Animate Background Image",
       "default": true
     },
     {
@@ -483,8 +487,8 @@ document.addEventListener('DOMContentLoaded', function() {
       "min": 0,
       "max": 1,
       "step": 0.1,
-      "default": 0.7,
-      "info": "Controls how dark the overlay on the background image will be"
+      "default": 0.5,
+      "info": "Controls how dark the overlay on the background image will be. Lower values make the image more visible."
     },
     {
       "type": "header",
@@ -506,7 +510,8 @@ document.addEventListener('DOMContentLoaded', function() {
       "type": "textarea",
       "id": "promo_description",
       "label": "Description",
-      "default": "Use code: TRAVEL30"    },
+      "default": "Use code: TRAVEL30"
+    },
     {
       "type": "range",
       "id": "primary_font_size",
@@ -546,8 +551,8 @@ document.addEventListener('DOMContentLoaded', function() {
     {
       "type": "text",
       "id": "end_date",
-      "label": "Pick a date. eg: yyyy-mm-dd",
-      "info": "The date when the offer expires"
+      "label": "End Date (YYYY-MM-DD HH:MM)",
+      "info": "The date when the offer expires. Format: 2024-12-31 23:59"
     },
     {
       "type": "range",
