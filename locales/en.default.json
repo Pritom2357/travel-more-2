@@ -319,6 +319,19 @@
         "quantity": "Quantity",
         "image": "Product image"
       },
+      "label": {
+        "product_info": "Product Information",
+        "price": "Price",
+        "quantity": "Quantity",
+        "final_price": "Total",
+        "selling_plan": "Subscription",
+        "subtotal": "Subtotal",
+        "note": "Order Notes"
+      },
+      "general": {
+        "update": "Update Cart",
+        "checkout": "Proceed to Checkout"
+      },
       "update": "Update",
       "login": {
         "title": "Have an account?",
@@ -539,6 +552,7 @@
     }
   },
   "cart": {
+    "title": "Your Cart",
     "general": {
       "title": "Your Cart",
       "update": "Update",

@@ -144,10 +144,10 @@
                       
                       <div class="result-price product-price" data-price="{{ item.price | times: 0.01 }}">
                         {% if item.compare_at_price > item.price %}
-                          <span class="sale-price">{{ item.price | money }}</span>
-                          <span class="compare-price">{{ item.compare_at_price | money }}</span>
+                          <span class="sale-price">{{ item.price | money_with_currency }}</span>
+                          <span class="compare-price">{{ item.compare_at_price | money_with_currency }}</span>
                         {% else %}
-                          <span>{{ item.price | money }}</span>
+                          <span>{{ item.price | money_with_currency }}</span>
                         {% endif %}
                       </div>
                       

@@ -183,7 +183,7 @@
           <div class="teaser-tags">
             {% for block in section.blocks limit: 3 %}
               {% if block.settings.destination_title %}
-                <a href="#" class="destination-tag" data-bs-toggle="tooltip" title="{{ block.settings.destination_title }} - Starts at {{ block.settings.unit_price | money }}">
+                <a href="#" class="destination-tag" data-bs-toggle="tooltip" title="{{ block.settings.destination_title }} - Starts at {{ block.settings.unit_price | money_with_currency }}">
                   {{ block.settings.destination_title }}
                 </a>
               {% endif %}

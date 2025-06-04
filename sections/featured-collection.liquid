@@ -27,7 +27,7 @@
         </div>
         <div class="product-info">
           <h3 class="product-title">{{ product.title }}</h3>
-          <strong class="price">Price: {{ product.price | money }}</strong>
+          <strong class="price">Price: {{ product.price | money_with_currency }}</strong>
         </div>
         <div>
           <button class="btn btn-primary">

@@ -176,7 +176,7 @@
             <option value="{{ variant.id }}" 
               {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
               {% unless variant.available %}disabled="disabled"{% endunless %}>
-              {{ variant.title }} - {{ variant.price | money }}
+              {{ variant.title }} - {{ variant.price | money_with_currency }}
             </option>
           {% endfor %}
         </select>
@@ -191,7 +191,7 @@
                 Save {{ savings }}%
               </span>
             {% else %}
-              <span data-regular-price="{{ product.price | money_without_currency }}">{{ product.price | money }}</span>
+              <span data-regular-price="{{ product.price | money_without_currency }}">{{ product.price | money_with_currency }}</span>
             {% endif %}
           </div>
           

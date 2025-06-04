@@ -23,7 +23,7 @@
                 {% when 'title' %}
                   <h2 class="title">{{ product.title | escape }}</h2>
                 {% when 'price' %}
-                  <h3 class="price">{{ product.price | money }}</h3>
+                  <h3 class="price">{{ product.price | money_with_currency }}</h3>
                 {% when 'variants' %}
                   <div class="product-variants">
                     <label for="ProductSelect-featured">Choose an option:</label>
@@ -34,7 +34,7 @@
                       aria-label="Product Variant Selector"
                     >
                       {% for variant in product.variants %}
-                        <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+                        <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
                       {% endfor %}
                     </select>
                   </div>

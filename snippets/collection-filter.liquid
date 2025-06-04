@@ -182,7 +182,7 @@
                 >
                   {%- assign min_value = filter.min_value.value | default: 0 -%}
                   {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
-                  Price: {{ min_value | money }} - {{ max_value | money }}
+                  Price: {{ min_value | money_with_currency }} - {{ max_value | money_with_currency }}
                   <i class="bi bi-x-circle ms-1"></i>
                 </a>
               {%- endif -%}

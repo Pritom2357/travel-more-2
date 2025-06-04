@@ -56,8 +56,8 @@
                     <td>
                       <div class="price-wrapper">
                         {% if line_items.original_price != line_items.final_price %}
-                          <del>{{ line_items.original_price | money }}</del><br>
-                          <span class="sale-price">{{ line_items.final_price | money }}</span>
+                          <del>{{ line_items.original_price | money_with_currency }}</del><br>
+                          <span class="sale-price">{{ line_items.final_price | money_with_currency }}</span>
                         {% else %}
                           <span>{{ line_items.original_price | money_with_currency }}</span>
                         {% endif %}
@@ -93,8 +93,8 @@
                     <td>
                       <div class="final-price-wrapper">
                         {% if line_items.original_line_price != line_items.final_line_price %}
-                          <del>{{ line_items.original_line_price | money }}</del><br>
-                          <span class="final-sale-price">{{ line_items.final_line_price | money }}</span>
+                          <del>{{ line_items.original_line_price | money_with_currency }}</del><br>
+                          <span class="final-sale-price">{{ line_items.final_line_price | money_with_currency }}</span>
                         {% else %}
                           <span>{{ line_items.original_line_price | money_with_currency }}</span>
                         {% endif %}

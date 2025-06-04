@@ -2,21 +2,21 @@
   {% if product.compare_at_price > product.price %}
     {% if product.price_varies %}
       <div class="var-price mt-4">
-        <span>Price: </span> <span id="variant-price-individual">{{ product.price_min | money }}</span>
+        <span>Price: </span> <span id="variant-price-individual">{{ product.price_min | money_with_currency }}</span>
       </div>
       {% comment %} need a compare at price {% endcomment %}
     {% else %}
-      <span class="text-success fw-bold">{{ product.price | money }}</span>
-      <span class="text-muted text-decoration-line-through ms-2">{{ product.compare_at_price | money }}</span>
+      <span class="text-success fw-bold">{{ product.price | money_with_currency }}</span>
+      <span class="text-muted text-decoration-line-through ms-2">{{ product.compare_at_price | money_with_currency }}</span>
     {% endif %}
   {% else %}
     {% if product.price_varies %}
-      <span class="text-success fw-bold">{{ product.price | money }}</span>
+      <span class="text-success fw-bold">{{ product.price | money_with_currency }}</span>
       {% if product.compare_at_price %}
-        <span class="text-muted text-decoration-line-through ms-2">{{ product.compare_at_price | money }}</span>
+        <span class="text-muted text-decoration-line-through ms-2">{{ product.compare_at_price | money_with_currency }}</span>
       {% endif %}
     {% else %}
-      <span class="text-success fw-bold">{{ product.price | money }}</span>
+      <span class="text-success fw-bold">{{ product.price | money_with_currency }}</span>
     {% endif %}
   {% endif %}
 </div>

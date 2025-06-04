@@ -237,7 +237,7 @@
                   <div class="tour-card-content">
                     {% if product.price > 0 %}
                       <div class="price-badge" style="background-color: {{ section.settings.accent_color }};">
-                        <span class="price">{{ product.price | money }}</span>
+                        <span class="price">{{ product.price | money_with_currency }}</span>
                         <span class="price-period">/person</span>
                       </div>
                     {% endif %}

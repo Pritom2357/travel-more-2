@@ -31,7 +31,7 @@
                       {% endif %}
                     </div>
                     <h3>{{ related_product.title }}</h3>
-                    <p class="price">{{ related_product.price | money }}</p>
+                    <p class="price">{{ related_product.price | money_with_currency }}</p>
                   </a>
                 </div>
               {% endif %}
@@ -63,7 +63,7 @@
                           {% endif %}
                         </div>
                         <h3>{{ trending_product.title }}</h3>
-                        <p class="price">{{ trending_product.price | money }}</p>
+                        <p class="price">{{ trending_product.price | money_with_currency }}</p>
                       </a>
                     </div>
                   {% endif %}
