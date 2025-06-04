@@ -3,7 +3,7 @@
 <div id="{{ banner_id }}" class="promo-countdown-banner {% if section.settings.fullwidth_banner %}w-100{% endif %}">
   
   {% if section.settings.promo_image != blank %}
-    <div class="promo-background-image" style="background-image: url('{{ section.settings.promo_image | img_url: '1920x' }}');"></div>
+    <div class="promo-background-image bg-animation-{{ section.settings.bg_animation_style }}" style="background-image: url('{{ section.settings.promo_image | img_url: '1920x' }}');"></div>
     <div class="promo-background-overlay" style="background-color: {{ section.settings.bg_color }}; opacity: {{ section.settings.overlay_opacity }};"></div>
   {% else %}
     <div class="solid-background" style="background-color: {{ section.settings.bg_color }};"></div>
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
     bannerElement.classList.add('hide-banner');
     
     setTimeout(function() {
-      {% comment %} bannerElement.style.display = 'none'; {% endcomment %}
+      bannerElement.style.display = 'none';
       
       if ({{ section.settings.show_once_per_session }}) {
         localStorage.setItem(bannerKey, 'true');
@@ -168,6 +168,214 @@ document.addEventListener('DOMContentLoaded', function() {
   {% if section.settings.image_animation %}
     animation: imagePulse 2s infinite alternate;
   {% endif %}
+}
+
+/* Enhanced Background Image Animations */
+.promo-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 1;
+}
+
+/* Animation Style 1: Gentle Pulse */
+.bg-animation-pulse {
+  animation: gentlePulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes gentlePulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+/* Animation Style 2: Zoom In/Out */
+.bg-animation-zoom {
+  animation: zoomInOut 6s ease-in-out infinite alternate;
+}
+
+@keyframes zoomInOut {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Animation Style 3: Slow Pan Left to Right */
+.bg-animation-pan-lr {
+  animation: panLeftRight 15s ease-in-out infinite alternate;
+  background-size: 110% auto;
+}
+
+@keyframes panLeftRight {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 100% center;
+  }
+}
+
+/* Animation Style 4: Slow Pan Up to Down */
+.bg-animation-pan-ud {
+  animation: panUpDown 12s ease-in-out infinite alternate;
+  background-size: auto 110%;
+}
+
+@keyframes panUpDown {
+  0% {
+    background-position: center 0%;
+  }
+  100% {
+    background-position: center 100%;
+  }
+}
+
+/* Animation Style 5: Rotate Zoom */
+.bg-animation-rotate-zoom {
+  animation: rotateZoom 8s ease-in-out infinite alternate;
+  transform-origin: center center;
+}
+
+@keyframes rotateZoom {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.08) rotate(1deg);
+  }
+  100% {
+    transform: scale(1.05) rotate(-1deg);
+  }
+}
+
+/* Animation Style 6: Breathing Effect */
+.bg-animation-breathe {
+  animation: breatheEffect 5s ease-in-out infinite;
+}
+
+@keyframes breatheEffect {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.03);
+    filter: brightness(1.1);
+  }
+}
+
+/* Animation Style 7: Float */
+.bg-animation-float {
+  animation: floatEffect 6s ease-in-out infinite;
+}
+
+@keyframes floatEffect {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.02);
+  }
+}
+
+/* Animation Style 8: Shimmer */
+.bg-animation-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-animation-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: shimmerEffect 3s ease-in-out infinite;
+}
+
+@keyframes shimmerEffect {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Animation Style 9: Ken Burns Effect */
+.bg-animation-ken-burns {
+  animation: kenBurns 10s ease-out infinite alternate;
+}
+
+@keyframes kenBurns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.1) translate(-2%, -1%);
+  }
+}
+
+/* Animation Style 10: Heartbeat */
+.bg-animation-heartbeat {
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.05);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+/* Animation Style 11: None (Static) */
+.bg-animation-none {
+  animation: none;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .promo-background-image {
+    animation: none !important;
+  }
+  
+  .promo-background-image::after {
+    animation: none !important;
+  }
 }
 
 /* Solid background for when no image is set */
@@ -482,10 +690,57 @@ document.addEventListener('DOMContentLoaded', function() {
       "info": "Optional: Add a background image to the banner"
     },
     {
-      "type": "checkbox",
-      "id": "image_animation",
-      "label": "Animate Background Image",
-      "default": true
+      "type": "select",
+      "id": "bg_animation_style",
+      "label": "Background Animation Style",
+      "default": "pulse",
+      "options": [
+        {
+          "value": "none",
+          "label": "None (Static)"
+        },
+        {
+          "value": "pulse",
+          "label": "Gentle Pulse"
+        },
+        {
+          "value": "zoom",
+          "label": "Zoom In/Out"
+        },
+        {
+          "value": "pan-lr",
+          "label": "Pan Left to Right"
+        },
+        {
+          "value": "pan-ud",
+          "label": "Pan Up to Down"
+        },
+        {
+          "value": "rotate-zoom",
+          "label": "Rotate & Zoom"
+        },
+        {
+          "value": "breathe",
+          "label": "Breathing Effect"
+        },
+        {
+          "value": "float",
+          "label": "Float"
+        },
+        {
+          "value": "shimmer",
+          "label": "Shimmer"
+        },
+        {
+          "value": "ken-burns",
+          "label": "Ken Burns Effect"
+        },
+        {
+          "value": "heartbeat",
+          "label": "Heartbeat"
+        }
+      ],
+      "info": "Choose an animation style for the background image"
     },
     {
       "type": "range",
