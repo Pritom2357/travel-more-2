@@ -563,6 +563,14 @@
             toggle.setAttribute('aria-expanded', 'false');
           }
         });
+        // Select the button using the class name
+        const toggleBtn = document.querySelector('.navbar-toggler');
+
+        // Set the aria-expanded attribute to false
+        if (toggleBtn) {
+          toggleBtn.setAttribute('aria-expanded', 'false');
+        }
+
       }
     }
 
