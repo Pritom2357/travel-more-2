@@ -238,7 +238,6 @@
     });
 
     initializeDropdowns();
-    initializeBootstrapNavbar(); // NEW: Initialize Bootstrap navbar functionality
     initializeBookingButton();
 
     requestIdleCallback(() => {
@@ -304,60 +303,19 @@
     }
   }
 
-  // NEW: Initialize Bootstrap navbar functionality
-  function initializeBootstrapNavbar() {
-    const navbarToggler = document.querySelector('.navbar-toggler');
-    const navbarCollapse = document.querySelector('#navbarSupportedContent');
-    
-    if (navbarToggler && navbarCollapse) {
-      // Initialize Bootstrap collapse
-      const bsCollapse = new bootstrap.Collapse(navbarCollapse, {
-        toggle: false
-      });
-      
-      // Handle toggler click
-      navbarToggler.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        bsCollapse.toggle();
-      });
-      
-      // Close navbar when clicking outside on mobile
-      document.addEventListener('click', function(e) {
-        if (window.innerWidth <= 991) {
-          if (!e.target.closest('.navbar-collapse') && 
-              !e.target.closest('.navbar-toggler') && 
-              navbarCollapse.classList.contains('show')) {
-            bsCollapse.hide();
-          }
-        }
-      });
-      
-      // Close navbar when clicking on nav links (mobile)
-      const navLinks = navbarCollapse.querySelectorAll('.nav-link:not(.dropdown-toggle)');
-      navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-          if (window.innerWidth <= 991) {
-            setTimeout(() => {
-              bsCollapse.hide();
-            }, 150);
-          }
-        });
-      });
-    }
-  }
-
   // Desktop hover behavior function
   function setupDesktopHoverBehavior() {
     if (window.innerWidth <= 991) return;
     
     let hoverTimeouts = new Map();
     
+    // Function to handle dropdown hover with proper sibling management
     function handleDropdownHover(dropdown, isMouseEnter) {
       const menu = dropdown.querySelector(':scope > .dropdown-menu');
       if (!menu) return;
       
       if (isMouseEnter) {
+        // Clear any existing timeout for this menu
         const existingTimeout = hoverTimeouts.get(menu);
         if (existingTimeout) {
           clearTimeout(existingTimeout);
@@ -375,6 +333,7 @@
                 siblingMenu.classList.remove('show');
                 sibling.classList.remove('show');
                 
+                // Close all nested submenus within siblings
                 siblingMenu.querySelectorAll('.dropdown-menu').forEach(nested => {
                   nested.classList.remove('show');
                   const nestedParent = nested.closest('.dropdown-submenu');
@@ -391,21 +350,25 @@
         menu.classList.add('show');
         dropdown.classList.add('show');
         
+        // Update ARIA attributes
         const toggle = dropdown.querySelector('.dropdown-toggle');
         if (toggle) {
           toggle.setAttribute('aria-expanded', 'true');
         }
         
       } else {
+        // Set timeout to hide menu after delay
         const timeoutId = setTimeout(() => {
           menu.classList.remove('show');
           dropdown.classList.remove('show');
           
+          // Update ARIA attributes
           const toggle = dropdown.querySelector('.dropdown-toggle');
           if (toggle) {
             toggle.setAttribute('aria-expanded', 'false');
           }
           
+          // Close all submenus when leaving
           menu.querySelectorAll('.dropdown-menu').forEach(submenu => {
             submenu.classList.remove('show');
             const submenuParent = submenu.closest('.dropdown-submenu');
@@ -414,13 +377,15 @@
             }
           });
           
+          // Clean up timeout reference
           hoverTimeouts.delete(menu);
-        }, 200);
+        }, 200); // 200ms delay before hiding
         
         hoverTimeouts.set(menu, timeoutId);
       }
     }
     
+    // Setup hover events for individual elements
     function setupHoverForElement(element) {
       element.addEventListener('mouseenter', function() {
         handleDropdownHover(this, true);
@@ -430,6 +395,7 @@
         handleDropdownHover(this, false);
       });
       
+      // Prevent hiding when hovering the menu itself
       const menu = element.querySelector(':scope > .dropdown-menu');
       if (menu) {
         menu.addEventListener('mouseenter', function() {
@@ -449,17 +415,14 @@
       }
     }
     
+    // Setup for all dropdown elements
     document.querySelectorAll('.hero-section .navbar-nav .dropdown, .hero-section .dropdown-submenu').forEach(setupHoverForElement);
   }
 
-  // FIXED: Click behavior function for mobile/tablet
+  // Click behavior function for mobile/tablet
   function setupClickBehavior() {
+    // Function to handle all levels of dropdowns for mobile/click
     function handleDropdownToggle(e) {
-      // Don't interfere with Bootstrap navbar toggle
-      if (e.target.closest('.navbar-toggler')) {
-        return;
-      }
-      
       const toggle = e.target.closest('.dropdown-toggle');
 
       if (toggle) {
@@ -471,6 +434,7 @@
         if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
           const isCurrentlyShown = dropdownMenu.classList.contains('show');
 
+          // Toggle the clicked menu
           dropdownMenu.classList.toggle('show', !isCurrentlyShown);
           toggle.setAttribute('aria-expanded', String(!isCurrentlyShown));
 
@@ -479,6 +443,7 @@
             listItem.classList.toggle('show', !isCurrentlyShown);
           }
 
+          // If we're closing this menu, also close all children
           if (isCurrentlyShown) {
             dropdownMenu.querySelectorAll('.dropdown-menu').forEach((childMenu) => {
               childMenu.classList.remove('show');
@@ -492,6 +457,7 @@
               childSubmenu.classList.remove('show');
             });
           } else {
+            // If we're opening a submenu, close all siblings at the current level
             if (listItem && listItem.classList.contains('dropdown-submenu')) {
               const parentUl = listItem.parentNode;
               const siblings = Array.from(parentUl.children).filter((child) => child !== listItem);
@@ -507,6 +473,7 @@
                     siblingToggle.setAttribute('aria-expanded', 'false');
                   }
 
+                  // Close any nested menus within siblings
                   siblingMenu.querySelectorAll('.dropdown-menu').forEach((nested) => {
                     nested.classList.remove('show');
                     const nestedToggle = nested.previousElementSibling;
@@ -521,6 +488,7 @@
                 }
               });
             } else {
+              // For top-level items, close all other top-level dropdowns
               const allTopLevelItems = document.querySelectorAll('.hero-section .navbar-nav > li.dropdown');
               allTopLevelItems.forEach((item) => {
                 if (item !== listItem) {
@@ -534,6 +502,7 @@
                       topToggle.setAttribute('aria-expanded', 'false');
                     }
 
+                    // Close all submenus
                     menu.querySelectorAll('.dropdown-menu').forEach((submenu) => {
                       submenu.classList.remove('show');
                       const subToggle = submenu.previousElementSibling;
@@ -554,16 +523,21 @@
       }
     }
     
-    // FIXED: Only attach to specific areas, not the entire hero section
-    const navbarNav = document.querySelector('.hero-section .navbar-nav');
-    if (navbarNav) {
-      navbarNav.addEventListener('click', handleDropdownToggle);
+    // Attach click handler
+    const heroSection = document.querySelector('.hero-section');
+    if (heroSection) {
+      heroSection.addEventListener('click', handleDropdownToggle);
     }
   }
 
-  // FIXED: Main initialization function
+  // Main initialization function
   function initializeDropdowns() {
-    // REMOVED: The problematic DOM replacement that was breaking Bootstrap
+    // Clean up any existing event listeners by cloning and replacing the hero section
+    const heroSection = document.querySelector('.hero-section');
+    if (heroSection) {
+      const newHeroSection = heroSection.cloneNode(true);
+      heroSection.parentNode.replaceChild(newHeroSection, heroSection);
+    }
     
     // Choose behavior based on screen size
     if (window.innerWidth > 991) {
@@ -572,14 +546,8 @@
       setupClickBehavior();
     }
     
-    // Handle clicking outside to close dropdowns (but not Bootstrap navbar)
+    // Handle clicking outside to close dropdowns (works for both modes)
     function handleOutsideClick(e) {
-      // Don't close if clicking on Bootstrap navbar elements
-      if (e.target.closest('.navbar-toggler') || 
-          e.target.closest('.navbar-collapse')) {
-        return;
-      }
-
       if (!e.target.closest('.dropdown-menu') && !e.target.closest('.dropdown-toggle')) {
         document.querySelectorAll('.hero-section .dropdown-menu.show').forEach((menu) => {
           menu.classList.remove('show');
@@ -599,10 +567,10 @@
 
     document.addEventListener('click', handleOutsideClick);
 
-    // Keyboard navigation
-    const heroSection = document.querySelector('.hero-section');
-    if (heroSection) {
-      heroSection.addEventListener('keydown', function (e) {
+    // Add keyboard navigation for accessibility
+    const currentHeroSection = document.querySelector('.hero-section');
+    if (currentHeroSection) {
+      currentHeroSection.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
           document.querySelectorAll('.hero-section .dropdown-menu.show').forEach((menu) => {
             menu.classList.remove('show');
@@ -622,7 +590,7 @@
     }
   }
 
-  // FIXED: Window resize handler
+  // Handle window resize to switch between hover and click behavior
   let resizeTimeout;
   window.addEventListener('resize', function() {
     clearTimeout(resizeTimeout);
@@ -639,12 +607,10 @@
         }
       });
       
-      // Reinitialize dropdown behavior only (not Bootstrap navbar)
-      if (window.innerWidth > 991) {
-        setupDesktopHoverBehavior();
-      } else {
-        setupClickBehavior();
-      }
+      // Reinitialize based on new screen size
+      setTimeout(() => {
+        initializeDropdowns();
+      }, 100);
     }, 250);
   });
 
