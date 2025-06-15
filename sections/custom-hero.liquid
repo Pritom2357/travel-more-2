@@ -239,7 +239,6 @@
 
     initializeDropdowns();
     initializeBookingButton();
-    initializeBootstrapNavbar();
 
     requestIdleCallback(() => {
       if (window.innerWidth > 992) {
@@ -549,30 +548,47 @@
     
     // Handle clicking outside to close dropdowns (works for both modes)
     function handleOutsideClick(e) {
-      if (!e.target.closest('.dropdown-menu') && !e.target.closest('.dropdown-toggle')) {
-        document.querySelectorAll('.hero-section .dropdown-menu.show').forEach((menu) => {
-          menu.classList.remove('show');
-
-          const parentDropdown = menu.closest('.dropdown, .dropdown-submenu');
-          if (parentDropdown) {
-            parentDropdown.classList.remove('show');
-          }
-
-          const toggle = menu.previousElementSibling;
-          if (toggle && toggle.classList.contains('dropdown-toggle')) {
-            toggle.setAttribute('aria-expanded', 'false');
-          }
-        });
-        // Select the button using the class name
-        const toggleBtn = document.querySelector('.navbar-toggler');
-
-        // Set the aria-expanded attribute to false
-        if (toggleBtn) {
-          toggleBtn.setAttribute('aria-expanded', 'false');
-        }
-
+  // Check if click is outside navbar collapse AND navbar toggler
+  if (!e.target.closest('.navbar-collapse') && !e.target.closest('.navbar-toggler')) {
+    
+    // Close Bootstrap navbar collapse
+    const navbarCollapse = document.querySelector('#navbarSupportedContent');
+    const toggleBtn = document.querySelector('.navbar-toggler');
+    
+    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+      // Use Bootstrap's collapse method to properly close
+      const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+      if (bsCollapse) {
+        bsCollapse.hide();
+      } else {
+        // Fallback: manually remove Bootstrap classes
+        navbarCollapse.classList.remove('show', 'collapsing');
+      }
+      
+      // Update aria-expanded
+      if (toggleBtn) {
+        toggleBtn.setAttribute('aria-expanded', 'false');
       }
     }
+  }
+
+  // Keep your existing dropdown logic
+  if (!e.target.closest('.dropdown-menu') && !e.target.closest('.dropdown-toggle')) {
+    document.querySelectorAll('.hero-section .dropdown-menu.show').forEach((menu) => {
+      menu.classList.remove('show');
+
+      const parentDropdown = menu.closest('.dropdown, .dropdown-submenu');
+      if (parentDropdown) {
+        parentDropdown.classList.remove('show');
+      }
+
+      const toggle = menu.previousElementSibling;
+      if (toggle && toggle.classList.contains('dropdown-toggle')) {
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+}
 
     document.addEventListener('click', handleOutsideClick);
 
@@ -697,55 +713,6 @@
     });
   });
 
-  function initializeBootstrapNavbar() {
-  const navbarToggler = document.querySelector('.navbar-toggler');
-  const navbarCollapse = document.querySelector('#navbarSupportedContent');
-  
-  if (navbarToggler && navbarCollapse) {
-    // Initialize Bootstrap collapse
-    const bsCollapse = new bootstrap.Collapse(navbarCollapse, {
-      toggle: false
-    });
-    
-    // Handle toggler click
-    navbarToggler.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      bsCollapse.toggle();
-    });
-    
-    // Listen for Bootstrap collapse events to update aria-expanded
-    navbarCollapse.addEventListener('shown.bs.collapse', function() {
-      navbarToggler.setAttribute('aria-expanded', 'true');
-    });
-    
-    navbarCollapse.addEventListener('hidden.bs.collapse', function() {
-      navbarToggler.setAttribute('aria-expanded', 'false');
-    });
-    
-    // Close navbar when clicking outside on mobile
-    document.addEventListener('click', function(e) {
-      if (window.innerWidth <= 991) {
-        if (!e.target.closest('.navbar-collapse') && 
-            !e.target.closest('.navbar-toggler') && 
-            navbarCollapse.classList.contains('show')) {
-          bsCollapse.hide(); // This will trigger 'hidden.bs.collapse' event
-        }
-      }
-    });
-    
-    // Close navbar when clicking on nav links (mobile)
-    const navLinks = navbarCollapse.querySelectorAll('.nav-link:not(.dropdown-toggle)');
-    navLinks.forEach(link => {
-      link.addEventListener('click', function() {
-        if (window.innerWidth <= 991) {
-          setTimeout(() => {
-            bsCollapse.hide(); // This will trigger 'hidden.bs.collapse' event
-          }, 150);
-        }
-      });
-    });
-  }
 }
 
 </script>
